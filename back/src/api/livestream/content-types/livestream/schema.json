@@ -1,0 +1,22 @@
+{
+  "kind": "singleType",
+  "collectionName": "livestreams",
+  "info": {
+    "singularName": "livestream",
+    "pluralName": "livestreams",
+    "displayName": "livestream"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "privateData": {
+      "type": "json",
+      "private": true
+    },
+    "publicData": {
+      "type": "json"
+    }
+  }
+}

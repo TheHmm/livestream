@@ -1,0 +1,15 @@
+{
+  "name": "live.thehmm.nl",
+  "version": "1.0.0",
+  "description": "livestreaam v2 for the hmm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Karl Moubarak",
+  "license": "ISC",
+  "dependencies": {
+    "@mux/mux-node": "^4.0.0",
+    "socket.io": "^4.4.1"
+  }
+}
