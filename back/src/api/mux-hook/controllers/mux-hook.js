@@ -49,12 +49,14 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     //   status,
     // }
 
-    await super
-    .create({
+    ctx.request.body.data = {
         event: data,
         streamID,
         status,
-      })
+    }
+
+    await super
+    .create(ctx)
 
     // // We thank mux.
 
