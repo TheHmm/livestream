@@ -12,7 +12,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
   // in this script we handle messages received from mux  
   // about the state of our livestream.
 
-  async create(ctx) {
+  create(ctx) {
 
 
     // From the mux event's body, we get the livestream's new
