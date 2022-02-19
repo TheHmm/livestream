@@ -9,8 +9,11 @@ module.exports = {
     // From the mux event's body, we get the livestream's new
     // status ( 'idle' or 'active' ).
 
-    const status = event.result.event.status
-    
+    const 
+
+      data   = event.result.event,
+      status = data.status
+      
     if ( status == 'idle' || status == 'active' ) {
 
       
