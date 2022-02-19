@@ -37,7 +37,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
     await strapi
     .service('api::mux-hook.mux-hook')
-    .createOrUpdate({
+    .create({
       event: data,
       streamID,
       status,
