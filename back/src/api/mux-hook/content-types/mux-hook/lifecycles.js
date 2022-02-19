@@ -14,7 +14,7 @@ module.exports = {
       data     = event.result.event,
       status   = data.status,
 
-      
+
       // our updated livestream will at least have a new value 
       // for its 'status' key.
 
@@ -32,6 +32,8 @@ module.exports = {
 
     // We update the 'livestream' entry in Strapi with this 
     // new information.
+
+    console.log('updating  livestream')
 
     await strapi
     .service('api::livestream.livestream')
