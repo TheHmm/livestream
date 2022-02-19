@@ -1,12 +1,14 @@
 'use strict';
 
 module.exports = {
+
   /**
    * An asynchronous register function that runs before
    * your application is initialized.
    *
    * This gives you an opportunity to extend code.
    */
+
   register(/*{ strapi }*/) {},
 
   /**
@@ -16,6 +18,7 @@ module.exports = {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
+
   bootstrap(/*{ strapi }*/) {
 
 
@@ -71,15 +74,17 @@ module.exports = {
 
       const initialize = async () => {
 
+
         // First we get the 'livestream' entry from Strapi.
         // This entry will contain these two JSON feilds:
-        // (1) data: livestream object that we create with MUX
+        // (1) privateData: livestream that we create with MUX
         // (2) publicData: a public-safe version of it
         
         strapi
         .service('api::livestream.livestream')
         .find()
         .then( async response => {
+
 
           // If the entry has already been created before, then
           // pull the livestream ID and request from the MUX API
@@ -89,7 +94,7 @@ module.exports = {
             console.log('Found existing livestream.')
             await mux
             .getLiveStream(response.privateData.id)
-            .then(result => LIVESTREAM = result )
+            .then(result => LIVESTREAM = result)
             .catch(err => console.log('mux err', err))
 
 
@@ -101,11 +106,12 @@ module.exports = {
             console.log('Requesting new livestream.')
             await mux
             .createLiveStream()
-            .then(result => LIVESTREAM = result )
+            .then(result => LIVESTREAM = result)
             .catch(err => console.log('mux err', err))
           }
 
           if (LIVESTREAM) {
+
 
             // Then, we update the 'livestream' entry in Strapi
             // with the new or updated livestream object and its
@@ -128,7 +134,7 @@ module.exports = {
           }
 
       })
-      .catch( err => console.log ('err:', err))
+      .catch( err => console.log('err:', err) )
 
     }
   
