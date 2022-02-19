@@ -11,23 +11,23 @@ module.exports = {
 
     const
 
-      data     = event.result.event,
-      status   = data.status,
+      livestream     = event.result.event
+      // status   = livestream.status,
 
 
       // our updated livestream will at least have a new value 
       // for its 'status' key.
 
-      livestream = { status }
+      // livestream = { status }
   
 
     // if the livestream has arrived at an 'idle' state, the 
     // event payload will additionally carry an array of recent
     // asset IDs, so we add this to our updated object.
 
-    if (status == 'idle') {
-      livestream.recent_asset_ids = data.recent_asset_ids
-    }
+    // if (status == 'idle') {
+      // livestream.recent_asset_ids = data.recent_asset_ids
+    // }
 
 
     // We update the 'livestream' entry in Strapi with this 
