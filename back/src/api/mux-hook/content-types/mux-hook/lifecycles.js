@@ -7,47 +7,66 @@ module.exports = {
   async afterCreate(event) {
 
     // From the mux event's body, we get the livestream's new
-    // status ( 'idle' or 'active' ) and a payload ( 'data' ).
+    // status ( 'idle' or 'active' ).
 
-    const
+    const status = event.result.event.status,
+      
+    if ( status == 'idle' || status == 'active' ) {
 
-      livestream     = event.result.event
-      // status   = livestream.status,
+      
+      // dfvdfdvfdfvd
+
+      let livestream
+      
+
+        // get exisitng livestream from strapi
+
+        await strapi
+        .service('api::livestream.livestream')
+        .find()
+        .then( async response => {
+
+          livestream = response?.privateData
+          livestream.status = status
 
 
-      // our updated livestream will at least have a new value 
-      // for its 'status' key.
+          // if the livestream has arrived at an 'idle' state, the 
+          // event payload will additionally carry an array of recent
+          // asset IDs, so we add this to our updated object.
 
-      // livestream = { status }
-  
-
-    // if the livestream has arrived at an 'idle' state, the 
-    // event payload will additionally carry an array of recent
-    // asset IDs, so we add this to our updated object.
-
-    // if (status == 'idle') {
-      // livestream.recent_asset_ids = data.recent_asset_ids
-    // }
+          if (status == 'idle') {
+            livestream.recent_asset_ids = data.recent_asset_ids
+          }
 
 
-    // We update the 'livestream' entry in Strapi with this 
-    // new information.
+          // We update the 'livestream' entry in Strapi with this 
+          // new information.
 
-    console.log(event, livestream)
+          console.log(livestream)
 
-    await strapi
-    .service('api::livestream.livestream')
-    .createOrUpdate({
-      data: {
-        privateData : livestream,
-        publicData  : strapi.mux.getPublicStreamDetails(livestream)
+          await strapi
+          .service('api::livestream.livestream')
+          .createOrUpdate({
+            data: {
+              privateData : livestream,
+              publicData  : strapi.mux.getPublicStreamDetails(livestream)
+            }
+          })
+          
+
+        })
+
+
+        // our updated livestream will at least have a new value 
+        // for its 'status' key.
+
+        
       }
-    })
+    
 
     // We still have to inform connected sockets of this change,
     // so we continue in the appropriate place:
     // back/src/api/livestream/content-types/livestream/lifecycles.js
-
 
   }
 
