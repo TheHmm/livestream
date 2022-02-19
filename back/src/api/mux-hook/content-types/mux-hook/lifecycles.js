@@ -45,8 +45,6 @@ module.exports = {
           // We update the 'livestream' entry in Strapi with this 
           // new information.
 
-          // console.log(livestream)
-
           await strapi
           .service('api::livestream.livestream')
           .createOrUpdate({
@@ -58,10 +56,6 @@ module.exports = {
           
 
         })
-
-
-        // our updated livestream will at least have a new value 
-        // for its 'status' key.
 
         
       }

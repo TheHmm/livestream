@@ -35,30 +35,16 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
     // We add the new mux-hook entry to our database.
 
-    // await strapi
-    // .service('api::mux-hook.mux-hook')
-    // .create({
-    //   event: data,
-    //   streamID,
-    //   status,
-    // })
-
-    // return {
-    //   event: data,
-    //   streamID,
-    //   status,
-    // }
-
     ctx.request.body.data = {
-        event: data,
-        streamID,
-        status,
+      event: data,
+      streamID,
+      status,
     }
 
-    await super
-    .create(ctx)
+    await super.create(ctx)
 
-    // // We thank mux.
+    
+    // We thank mux.
 
     return 'Thanks MUX!'
 
