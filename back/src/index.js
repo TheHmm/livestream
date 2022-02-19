@@ -98,7 +98,7 @@ module.exports = {
           // pull the livestream ID and request from the MUX API
           // the latest information about the stream.
 
-          if (response.privateData?.id) {
+          if (response?.privateData?.id) {
             console.log('Found existing livestream.')
             await mux
             .getLiveStream(response.privateData.id)
