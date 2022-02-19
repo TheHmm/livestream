@@ -64,10 +64,18 @@ module.exports = {
         return
       }
 
+
+      // We register these two objects onto our strapi 
+      // instance so that we can use them in other parts
+      // of our App.
+
+      strapi.mux = mux
+      strapi.io  = io
+
       
       // Our livestream object
 
-      let LIVESTREAM
+      let livestream
 
 
       // Our main livestream initialization function. 
@@ -94,7 +102,7 @@ module.exports = {
             console.log('Found existing livestream.')
             await mux
             .getLiveStream(response.privateData.id)
-            .then(result => LIVESTREAM = result)
+            .then(result => livestream = result)
             .catch(err => console.log('mux err', err))
 
 
@@ -106,11 +114,11 @@ module.exports = {
             console.log('Requesting new livestream.')
             await mux
             .createLiveStream()
-            .then(result => LIVESTREAM = result)
+            .then(result => livestream = result)
             .catch(err => console.log('mux err', err))
           }
 
-          if (LIVESTREAM) {
+          if (livestream) {
 
 
             // Then, we update the 'livestream' entry in Strapi
@@ -121,15 +129,15 @@ module.exports = {
             .service('api::livestream.livestream')
             .createOrUpdate({
               data: {
-                privateData : LIVESTREAM,
-                publicData  : mux.getPublicStreamDetails(LIVESTREAM)
+                privateData : livestream,
+                publicData  : mux.getPublicStreamDetails(livestream)
               }
             })
              
 
             // we log the STREAM-KEY so to be able to access it
 
-            console.log(`* STREAM KEY: ${LIVESTREAM.stream_key}`)
+            console.log(`* STREAM KEY: ${livestream.stream_key}`)
 
           }
 

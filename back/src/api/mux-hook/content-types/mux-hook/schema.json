@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "mux_hooks",
+  "info": {
+    "singularName": "mux-hook",
+    "pluralName": "mux-hooks",
+    "displayName": "Mux Hooks",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "event": {
+      "type": "json",
+      "private": true
+    },
+    "streamID": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    }
+  }
+}
