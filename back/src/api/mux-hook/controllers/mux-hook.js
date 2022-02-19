@@ -25,11 +25,23 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       status   = data.status
 
 
+    // we are only interested in the 'idle' or 'active' events
+    // so we stop here if it's another kind 
+    
+    if ( status !== 'idle' && status !== 'active' ) {
+      console.log(
+        (new Date).toLocaleTimeString(), 
+        `[ REJECTING MUX HOOK: ${status} ]`
+      )
+      return
+    } 
+
+
     // We log the hook to our consolw.
 
     console.log(
       (new Date).toLocaleTimeString(), 
-      `[ MUX HOOK: livestream is ${status} ]`
+      `[ PROCESSING MUX HOOK: ${status} ]`
     )
 
 
@@ -43,7 +55,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
     await super.create(ctx)
 
-    
+
     // We thank mux.
 
     return 'Thanks MUX!'

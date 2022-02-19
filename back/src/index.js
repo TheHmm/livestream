@@ -122,22 +122,13 @@ module.exports = {
 
 
             // Then, we update the 'livestream' entry in Strapi
-            // with the new or updated livestream object and its
-            // public-facing counterpart.
+            // with the new or updated livestream object.
 
             await strapi
             .service('api::livestream.livestream')
             .createOrUpdate({
-              data: {
-                privateData : livestream,
-                publicData  : mux.getPublicStreamDetails(livestream)
-              }
+              data: { livestream }
             })
-             
-
-            // we log the STREAM-KEY so to be able to access it
-
-            console.log(`* STREAM KEY: ${livestream.stream_key}`)
 
           }
 
