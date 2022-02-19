@@ -33,7 +33,7 @@ module.exports = {
     // We update the 'livestream' entry in Strapi with this 
     // new information.
 
-    console.log(livestream)
+    console.log(event, livestream)
 
     await strapi
     .service('api::livestream.livestream')
