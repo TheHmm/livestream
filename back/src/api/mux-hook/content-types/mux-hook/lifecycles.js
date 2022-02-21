@@ -57,6 +57,7 @@ const
 
     })
 
+    
   // We still have to inform connected sockets of this change,
   // so we continue in the appropriate place:
   // back/src/api/livestream/content-types/livestream/lifecycles.js

@@ -45,6 +45,7 @@ const
 
   afterUpdateHandler = async ( event, strapi ) => {
     
+    console.log('emittig socket event')
     strapi.io
     .emit(
       'streamUpdate', 
