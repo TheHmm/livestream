@@ -101,11 +101,14 @@ module.exports = {
           // the latest information about the stream.
 
           if (response?.privateData?.id) {
-            console.log('Found existing livestream.')
+            strapi.log.info('Found existing livestream.')
             await mux
             .getLiveStream(response.privateData.id)
             .then(result => livestream = result)
-            .catch(err => console.log('mux err', err))
+            .catch(err => {
+              strapi.log.fatal('mux err')
+              console.log(err)
+            })
 
 
           // Else, we request from the MUX API to create a new
@@ -113,15 +116,17 @@ module.exports = {
           // 'mux.js' module.
 
           } else {
-            console.log('Requesting new livestream.')
+            strapi.log.info('Requesting new livestream.')
             await mux
             .createLiveStream()
             .then(result => livestream = result)
-            .catch(err => console.log('mux err', err))
+            .catch(err => {
+              strapi.log.fatal('mux err')
+              console.log(err)
+            })
           }
 
           if (livestream) {
-
 
             // Then, we update the 'livestream' entry in Strapi
             // with the new or updated livestream object.
@@ -135,7 +140,10 @@ module.exports = {
           }
 
       })
-      .catch( err => console.log('err:', err) )
+      .catch(err => {
+        strapi.log.fatal('strapi err')
+        console.log(err)
+      })
 
     }
   

@@ -31,7 +31,7 @@ const
 
     // we log the STREAM-KEY to be able to access it
 
-    console.log(`* STREAM KEY: ${livestream.stream_key}`)
+    strapi.log.info(`* STREAM KEY: ${livestream.stream_key}`)
 
 
   },

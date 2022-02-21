@@ -29,20 +29,14 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     // so we stop here if it's another kind 
     
     if ( status !== 'idle' && status !== 'active' ) {
-      console.log(
-        (new Date).toLocaleTimeString(), 
-        `[ REJECTING MUX HOOK: ${status} ]`
-      )
+      strapi.log.warn(`[ REJECTING MUX HOOK: ${status} ]`)
       return
     } 
 
 
     // We log the hook to our consolw.
 
-    console.log(
-      (new Date).toLocaleTimeString(), 
-      `[ PROCESSING MUX HOOK: ${status} ]`
-    )
+    strapi.log.info(`[ PROCESSING MUX HOOK: ${status} ]`)
 
 
     // We add the new mux-hook entry to our database.
