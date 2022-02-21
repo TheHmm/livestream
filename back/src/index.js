@@ -156,7 +156,7 @@ module.exports = {
           ip = io.getIP(socket)
   
         strapi.log.info(`[ USER COUNT: ${userCount()} ]`)
-        io.emit('count', userCount)
+        io.emit('count', userCount())
   
         socket.on('user', user => {
           user.ip  = ip
@@ -208,7 +208,7 @@ module.exports = {
   
         socket.on('disconnect', () => {
           strapi.log.info(`[ USER COUNT: ${userCount()} ]`)
-          io.emit('users', userCount - 1)
+          io.emit('users', userCount() - 1)
         })
   
   
