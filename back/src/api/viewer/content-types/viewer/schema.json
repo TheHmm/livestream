@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "viewers",
+  "info": {
+    "singularName": "viewer",
+    "pluralName": "viewers",
+    "displayName": "viewer",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "uuid": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "moderator": {
+      "type": "boolean",
+      "default": false
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
+    },
+    "messages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::message.message",
+      "mappedBy": "sender"
+    },
+    "events": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::event.event",
+      "mappedBy": "viewers"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "kind": "singleType",
+  "collectionName": "metas",
+  "info": {
+    "singularName": "meta",
+    "pluralName": "metas",
+    "displayName": "Meta",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "metaTitle": {
+      "type": "string",
+      "required": true
+    },
+    "metaDescription": {
+      "type": "text",
+      "required": true
+    },
+    "about": {
+      "type": "richtext",
+      "required": true
+    },
+    "logo": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "pageNotFoundText": {
+      "type": "richtext",
+      "required": true
+    },
+    "donateText": {
+      "type": "string"
+    },
+    "defaultMarquee": {
+      "type": "richtext"
+    }
+  }
+}

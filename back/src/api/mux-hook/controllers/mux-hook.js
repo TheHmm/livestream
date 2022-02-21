@@ -14,7 +14,6 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
   async create(ctx) {
 
-    console.log('receiving mux event')
     
     // From the mux event's body, we get the livestream's new
     // status ( 'idle' or 'active' ), its ID, and a payload.

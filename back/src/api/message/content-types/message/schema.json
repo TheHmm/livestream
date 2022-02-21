@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "messages",
+  "info": {
+    "singularName": "message",
+    "pluralName": "messages",
+    "displayName": "message",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "body": {
+      "type": "richtext"
+    },
+    "censored": {
+      "type": "boolean",
+      "default": false
+    },
+    "sender": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::viewer.viewer",
+      "inversedBy": "messages"
+    },
+    "event": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::event.event",
+      "inversedBy": "messages"
+    }
+  }
+}

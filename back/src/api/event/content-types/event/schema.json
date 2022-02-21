@@ -1,0 +1,99 @@
+{
+  "kind": "collectionType",
+  "collectionName": "events",
+  "info": {
+    "singularName": "event",
+    "pluralName": "events",
+    "displayName": "event",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "starts": {
+      "type": "datetime",
+      "required": true
+    },
+    "ends": {
+      "type": "datetime",
+      "required": true
+    },
+    "marquee": {
+      "type": "richtext",
+      "default": "The Hmm || ",
+      "required": true
+    },
+    "info": {
+      "type": "richtext"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "rgb(255,255,255)"
+    },
+    "showViewerCount": {
+      "type": "enumeration",
+      "enum": [
+        "no",
+        "number",
+        "dots"
+      ]
+    },
+    "allowFlyingEmoji": {
+      "type": "boolean",
+      "default": true
+    },
+    "highlightDonateButton": {
+      "type": "boolean",
+      "default": false
+    },
+    "recordingURL": {
+      "type": "string"
+    },
+    "chatPlaybackDelay": {
+      "type": "decimal"
+    },
+    "messages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::message.message",
+      "mappedBy": "event"
+    },
+    "announcements": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::announcement.announcement",
+      "inversedBy": "events"
+    },
+    "viewers": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::viewer.viewer",
+      "inversedBy": "events"
+    },
+    "emoji_groups": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::emoji-group.emoji-group",
+      "inversedBy": "events"
+    }
+  }
+}

@@ -21,7 +21,7 @@ module.exports = {
    * run jobs, or perform some special logic.
    */
 
-  
+
   bootstrap(/*{ strapi }*/) {
 
 
@@ -33,7 +33,7 @@ module.exports = {
       // We get MUX_TOKEN_ details from root .env file.
   
       require('dotenv').config({ path: '../.env' })
-  
+
       const MUX_TOKEN = {
         ID     : process.env.MUX_TOKEN_ID,
         SECRET : process.env.MUX_TOKEN_SECRET
@@ -58,9 +58,8 @@ module.exports = {
         io  = require( './io'  )( strapi.server.httpServer )
   
       
-      // If either of the two were not configured 
-      // or initialized properly, we stop here and
-      // return an error 
+      // If either of the two were not initialized properly,
+      // we stop here and return an error 
   
       if (!mux || !io) {
         console.error('The MUX object or IO server was not initialized properly.')
