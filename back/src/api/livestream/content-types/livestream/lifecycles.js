@@ -47,7 +47,7 @@ const
     
     strapi.io
     .emit(
-      'streamUpdate', 
+      'stream_update', 
       event.result.publicData
     )
   

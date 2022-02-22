@@ -1,6 +1,37 @@
-<script setup>
+<script>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from '@/components/HelloWorld.vue'
+// import HelloWorld from '@/components/HelloWorld.vue'
+import { mapActions } from 'vuex'
+
+export default {
+  methods: {
+    ...mapActions([
+      'getMeta',
+      'getLivestream',
+    ]),
+    ...mapActions( 'events', [
+      'get_events',
+      'get_event'
+    ]),
+    ...mapActions( 'livestream', [
+      'get_livestream',
+    ])
+  },
+  async created() {
+    const meta =  await this.getMeta()
+    console.log(meta)
+
+    const livestream =  await this.get_livestream()
+    console.log(livestream)
+
+    const events =  await this.get_events()
+    console.log(events)
+
+    const test =  await this.get_event('test')
+    console.log(test)
+  }
+}
+
 </script>
 
 <template>
@@ -8,7 +39,7 @@ import HelloWorld from '@/components/HelloWorld.vue'
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <!-- <HelloWorld msg="You did it!" /> -->
 
       <nav>
         <RouterLink to="/">Home</RouterLink>

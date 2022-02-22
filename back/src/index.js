@@ -32,7 +32,7 @@ module.exports = {
 
       // We get MUX_TOKEN_ details from root .env file.
   
-      require('dotenv').config({ path: '../.env' })
+      require('dotenv').config()
 
       const MUX_TOKEN = {
         ID     : process.env.MUX_TOKEN_ID,

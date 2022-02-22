@@ -2,45 +2,42 @@ import { createApp }  from 'vue'
 import router         from './router'
 import store          from './store'
 
-import Axios          from 'axios'
 import { io }         from 'socket.io-client'
 import VueSocketIOExt from 'vue-socket.io-extended'
 import VueMarkdownIt  from 'vue3-markdown-it'
+import smoothscroll   from 'smoothscroll-polyfill'
 
 import App            from './App.vue'
 
-import smoothscroll   from 'smoothscroll-polyfill'
-
-smoothscroll.polyfill()
-
 
 const 
-  
-  url                = 'https://api.live.thehmm.karls.computer/',
 
-  socketURL          = url,
-  $apiURL            = url,
-  
-  markdownOptions    = {
+  $socketURL         = import.meta.env.VITE_APP_SOCKET_URL,
+
+  $mdOpts            = {
     html             : true,
     linkify          : true,
     typographer      : true
   },
-  
-  globalProperties   = {
-    $url             : url,
-    $apiURL          : url,
-    $http            : Axios,
-    $mdOpts          : markdownOptions
-  },
 
   app = createApp(App)
 
-
-app.config.globalProperties = globalProperties
+smoothscroll
+.polyfill()
 
 app
-.use(VueSocketIOExt, io(socketURL), { store })
+.config
+.globalProperties    = {
+  $socketURL,
+  $mdOpts,
+},
+
+app
+.use(
+  VueSocketIOExt, 
+  io($socketURL), 
+  { store }
+)
 .use(VueMarkdownIt)
 .use(store)
 .use(router)

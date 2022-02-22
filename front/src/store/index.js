@@ -1,5 +1,48 @@
-
 import { createStore } from 'vuex'
+import api from '../api'
+import livestream from './livestream'
+import events from './events'
+
+
+const DEFAULT_STATE = () => ({
+
+
+  meta             : null,
+  
+  isMobile         : false,
+  activeClasses    : [ 'active' ],
+
+  broadcasts       : [],
+  currentBroadcast : null,
+  pastBroadcast    : null,
+  colorPalette     : [ 
+    'background', 
+    'background2', 
+    'body', 
+    'highlight',
+    'controls', 
+    'chat' 
+  ],
+  
+  users            : {},
+  chat             : {},
+  announcements    : {},
+  
+  uid              : localStorage.uid
+    ? localStorage.uid
+    : null,
+  blocked          : false,
+  count            : 0,
+
+  geoblocked       : false,
+  isAdmin          : localStorage.administrator
+    ? JSON.parse(localStorage.administrator) 
+    : false,
+
+  forceSmog        : false,
+    
+})
+
 
 export default createStore({
 
@@ -7,45 +50,19 @@ export default createStore({
 
   strict: process.env.NODE_ENV !== 'production',
 
-  state: {
-  
-    metainfo: null,
-    isMobile: false,
-    
-    activeClasses: [ 'active' ],
-  
-    broadcasts: [],
-    currentBroadcast: null,
-    pastBroadcast: null,
-    colorPalette: [ 'background', 'background2', 'body', 'highlight', 'controls', 'chat' ],
-    
-    talkstream: null,
-    filmstream: null,
-    
-    users: {},
-    chat: {},
-    announcements: {},
-    
-    uid: localStorage.uid 
-      ? localStorage.uid
-      : null,
-    blocked: false,
-    count: 0,
+  state: DEFAULT_STATE(),
 
-    geoblocked: false,
-    isAdmin: localStorage.administrator 
-      ? JSON.parse(localStorage.administrator) 
-      : false,
-
-    forceSmog: false,
-    
+  modules: {
+    livestream,
+    events,
   },
 
-
   mutations: {
-  
-    setMetaInfo:      (state, metainfo) => state.metainfo = metainfo,
 
+
+  
+    SET_META       : ( state, meta )   => state.meta = meta,
+    
     setBroadcasts:    (state, broadcasts) => state.broadcasts = broadcasts,
     selectBroadcast:  (state, broadcast) => state.currentBroadcast = broadcast,
     setPastBroadcast: (state, pastBroadcast) => state.pastBroadcast = pastBroadcast,
@@ -75,10 +92,100 @@ export default createStore({
     toggleSmog:       state => state.forceSmog = !state.forceSmog,
     toggle3D:         state => state.force3D = !state.force3D,
 
+    RESET: state => {
+      const newState = DEFAULT_STATE()
+      Object
+      .keys( newState )
+      .forEach( key => state[ key ] = newState[ key ] )
+    },
+
   },
 
 
+  getters: {
+  
+    
+    meta: state => state.meta,
+    
+
+    isActive: state => status => [
+      ...state.activeClasses,
+      state.metainfo.buttonWhenStreamIsActive,
+      state.metainfo.buttonWhenStreamIsRewatchable,
+    ].includes(status),
+    
+    chatArray: state => (
+      Object.values(state.chat)
+    ),
+    
+    chatByTime: (state, getters) => {
+      let chatByTime = []
+      if (!state.isMobile) {
+        chatByTime = [...getters.chatArray]
+        .filter(m => !m.deleted)
+        .filter(m => m.time > 0)
+        .sort((a, b) => a.time - b.time)
+      } else {
+        chatByTime = [...getters.chatArray, ...getters.publishedAnns]
+        .filter(m => !m.deleted)
+        .filter(m => m.time > 0)
+        .sort((a, b) => {
+          const 
+            aTime = a.publishedAt || a.time,
+            bTime = b.publishedAt || b.time
+          return aTime - bTime
+        })
+      }
+      return chatByTime
+    },
+
+    publishedAnns: ( state, getters ) => ( getters
+      .announcementsArray
+      .filter(m => m.time > 0)
+      .filter(m => m.publishedAt > 0)
+      .sort((a, b) => a.publishedAt - b.publishedAt)
+    ),
+
+    unpublishedAnns: ( state, getters ) => ( getters
+      .announcementsArray
+      .filter(m => m.time > 0)
+      .filter(m => m.publishedAt == 0)
+      .sort((a, b) => a.time - b.time)
+    ),
+
+    announcementsArray: state => ( Object
+      .values(state.announcements)
+      .filter(m => m.deleted === false)
+    ),
+
+  },
+
   actions: {
+
+
+    // App meta-data such as titles and meta descriptions
+
+    fetchMeta({ commit }) { return new Promise( ( resolve, reject ) => 
+      api
+      .meta
+      .get()
+      .then( meta => {
+        commit( 'SET_META', meta )
+        resolve( meta ) 
+      } )
+      .catch( error => reject( error ) )
+    ) },
+
+    async getMeta({ getters, dispatch }) {
+      return getters.meta || await dispatch( 'fetchMeta' )
+    },
+
+
+    // reset store 
+
+    reset({ commit }) {
+      commit('RESET')
+    },
   
     registerBroadcasts({ state, commit }, broadcasts ) {
       commit(
@@ -93,16 +200,7 @@ export default createStore({
     }, 
     
   
-    socket_streamUpdate({ state, commit }, data) {
-      const receievedID = data.playbackId
-      if (receievedID == state.filmstream.playbackId) {
-        console.log('FILM:', data.status)
-        commit('setFilmstream', data)
-      } else if (receievedID == state.talkstream.playbackId) {
-        console.log('TALK:', data.status)
-        commit('setTalkstream', data)
-      }
-    },
+    
     
     socket_user({ state, commit }, user) {
       commit('setUser', user)
@@ -185,64 +283,7 @@ export default createStore({
   },
 
 
-  getters: {
   
-    ready: state => (
-      state.filmstream &&
-      state.talkstream 
-    ),
-    
-    isActive: state => status => [
-      ...state.activeClasses,
-      state.metainfo.buttonWhenStreamIsActive,
-      state.metainfo.buttonWhenStreamIsRewatchable,
-    ].includes(status),
-    
-    chatArray: state => (
-      Object.values(state.chat)
-    ),
-    
-    chatByTime: (state, getters) => {
-      let chatByTime = []
-      if (!state.isMobile) {
-        chatByTime = [...getters.chatArray]
-        .filter(m => !m.deleted)
-        .filter(m => m.time > 0)
-        .sort((a, b) => a.time - b.time)
-      } else {
-        chatByTime = [...getters.chatArray, ...getters.publishedAnns]
-        .filter(m => !m.deleted)
-        .filter(m => m.time > 0)
-        .sort((a, b) => {
-          const 
-            aTime = a.publishedAt || a.time,
-            bTime = b.publishedAt || b.time
-          return aTime - bTime
-        })
-      }
-      return chatByTime
-    },
-
-    publishedAnns: ( state, getters ) => ( getters
-      .announcementsArray
-      .filter(m => m.time > 0)
-      .filter(m => m.publishedAt > 0)
-      .sort((a, b) => a.publishedAt - b.publishedAt)
-    ),
-
-    unpublishedAnns: ( state, getters ) => ( getters
-      .announcementsArray
-      .filter(m => m.time > 0)
-      .filter(m => m.publishedAt == 0)
-      .sort((a, b) => a.time - b.time)
-    ),
-
-    announcementsArray: state => ( Object
-      .values(state.announcements)
-      .filter(m => m.deleted === false)
-    ),
-
-  },
 
 
 })
