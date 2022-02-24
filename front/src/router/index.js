@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '../store'
+import { logger } from '../utils'
 
 const 
   router = createRouter( {
@@ -48,12 +49,24 @@ const
   } ),
 
 
-  // 
+  // Before accessing any page, we need to make sure we
+  // have the livestream object
+
+  beforeEach = async to => {
+    try {
+      await store.dispatch( 'livestream/get_livestream' )
+    } catch ( error ) {
+      return '404'
+    }
+  },
+
+
+  // Before accessing the homepage, we make sure that 
+  // we have all the events from Strapi, to list them.
 
   beforeEnterHome = async () => {
     try {
-      const events = await store.dispatch( 'events/get_events' )
-      console.log(events)
+      await store.dispatch( 'events/get_events' )
     } catch ( error ) {
       return '404'
     }
@@ -68,10 +81,12 @@ const
     try {
       await store.dispatch( 'events/get_event', slug )
     } catch ( error ) {
-      console.error( `* ROUTER: Event page ${ slug } not found.`, error )
+      logger.error( `ROUTER`, `Event page ${ slug } not found.`, error )
       return '404'
     }
   }
+
+  router.beforeEach( async to => await beforeEach( to ) )
 
 
 export default router

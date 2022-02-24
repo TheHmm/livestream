@@ -1,7 +1,6 @@
 <script>
 
 import { RouterLink, RouterView } from 'vue-router'
-import { mapActions } from 'vuex'
 import { useMeta } from 'vue-meta'
 
 export default {
@@ -52,35 +51,6 @@ export default {
     RouterView 
   },
 
-  methods: {
-    ...mapActions([
-      'getMeta',
-      'getLivestream',
-    ]),
-    ...mapActions( 'events', [
-      'get_events',
-      'get_event'
-    ]),
-    ...mapActions( 'livestream', [
-      'get_livestream',
-    ])
-  },
-  
-  // async created() {
-
-    // const meta =  await this.getMeta()
-    // console.log(meta)
-
-    // const livestream =  await this.get_livestream()
-    // console.log(livestream)
-
-    // const events =  await this.get_events()
-    // console.log(events)
-
-    // const test =  await this.get_event('test')
-    // console.log(test)
-
-  // }
 }
 
 </script>
@@ -114,6 +84,9 @@ export default {
 header {
   line-height: 1.5;
   max-height: 100vh;
+}
+nav a {
+  margin-right: 1em;
 }
 
 </style>

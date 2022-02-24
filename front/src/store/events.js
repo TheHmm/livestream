@@ -85,13 +85,11 @@ export default {
     },
 
 
-    // Get all events ; always gets event count from
+    // Get all events; always fetches event count from
     // Strapi to check if we have all of them. If not,
     // we fetch them.
 
     async get_events( { getters, dispatch } ) {
-
-      console.log('events/get_events')
 
       const local_count = getters.get_events.length
       let remote_count

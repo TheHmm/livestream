@@ -1,8 +1,9 @@
 <script>
 import { mapGetters } from 'vuex'
 
-
 export default {
+
+  name: 'Home',
 
   computed: {
     ...mapGetters('events', [
@@ -19,14 +20,16 @@ export default {
 <template>
   <main>
       <ul>
-        <!-- {{ events }} -->
-        <router-link 
+        <li
           v-for="event in events"
           :key="event.slug"
-          :to="event.slug"
         >
-          {{ event.title }}
-        </router-link>
+          <router-link 
+            :to="event.slug"
+          >
+            {{ event.title }}
+          </router-link>
+        </li>
       </ul>
   </main>
 </template>

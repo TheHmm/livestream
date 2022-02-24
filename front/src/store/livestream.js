@@ -56,7 +56,7 @@ export default {
 
     socket_streamUpdate( { commit }, data ) {
       commit( 'SET_LIVESTREAM', data )
-      console.info(`* got livestream update: ${ data.status }` )
+      logger.info( `SOCK`, `got livestream update: ${ data.status }` )
     },
 
   }

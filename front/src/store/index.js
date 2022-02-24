@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import api from '../api'
 import livestream from './livestream'
 import events from './events'
+import network from './network'
 
 
 const DEFAULT_STATE = () => ({
@@ -47,6 +48,7 @@ export default createStore({
   modules: {
     livestream,
     events,
+    network
   },
 
   mutations: {
@@ -190,17 +192,17 @@ export default createStore({
         // user.uid.includes(state.uid.replace(user.name, '')) &&
       ) {
         if (user.blocked) {
-          console.log('blocked')
+          logger.warn(`STORE`, 'blocked')
           commit('setBlock', true)
         } else {
-          console.log('unblocked')
+          logger.warn(`STORE`, 'unblocked')
           commit('setBlock', false)
         }
       } 
     },
     
     socket_userConfirm({ commit }, uid) {
-      console.log('Your User ID:', uid)
+      logger.info('STORE', 'Your User ID:', uid)
       commit('setUid', uid)
       localStorage.uid = uid
     },
@@ -220,7 +222,6 @@ export default createStore({
     },
 
     register({ state }, name) {
-      console.log(state.users)
       this._vm.$socket.client.emit('user', {
         name: name,
         blocked: false,

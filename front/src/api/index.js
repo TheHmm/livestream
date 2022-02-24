@@ -1,8 +1,8 @@
 import axios from 'axios'
+import config from '../config'
+import { logger } from '../utils'
 
-axios
-.defaults
-.baseURL = import.meta.env.VITE_APP_API_URL
+axios.defaults.baseURL = config.apiURL
 
 const
   
@@ -19,6 +19,7 @@ const
 
   livestream = {
     get() { 
+      logger.info( `API`, `Fetching livestream.` )
       return new Promise( ( resolve, reject ) => 
         axios
         .get( `livestream` )
@@ -31,7 +32,7 @@ const
   events = {
 
     count() { 
-      console.info( `* API: Fetching event-count.` )
+      logger.info( `API`, `Counting events.` )
       return new Promise( ( resolve, reject ) => {
         axios
         .get( `events/count` )
@@ -41,11 +42,12 @@ const
     },
 
     getAll() { 
-      console.info( `* API: Fetching all events.` )
+      logger.info( `API`, `Fetching events.` )
       return new Promise( ( resolve, reject ) => {
         axios
         .get( `events` )
         .then( result => {
+          logger.info( `API`, result.headers['content-length'], result )
           const events = result.data.data
           for ( let e = 0; e < events.length; e ++ ) {
             events[e] = { ...events[e], ...events[e].attributes }
@@ -58,7 +60,7 @@ const
     },
 
     get( slug ) { 
-      console.info( `* API: Fetching event ${ slug }.` )
+      logger.info( `API`, `Fetching event ${ slug }.` )
       return new Promise( ( resolve, reject ) => {
         axios
         .get( `events/${ slug }` )

@@ -1,3 +1,5 @@
+import logger from "./logger"
+
 const 
 
   sortEventsByDate = (arr) => {
@@ -11,7 +13,8 @@ const
     return this.$options?.name?.toLowerCase()
   }
 
-export default {
+export {
+  logger,
   sortEventsByDate,
   $id,
 }
