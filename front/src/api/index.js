@@ -4,15 +4,17 @@ import { Service }         from 'axios-middleware'
 import { logger, network } from '../utils'
 import store               from '../store'
 
-axios.defaults.baseURL = config.apiURL
+// axios.defaults.baseURL = config.apiURL
 
 const
+
+  strapi = axios.create( { baseURL: config.apiURL } ),
   
   meta = {
 
-    get() { 
+    get: () => { 
       return new Promise( async ( resolve, reject ) => 
-        axios
+        strapi
         .get( `meta` )
         .then( result => resolve( result.data.data.attributes ) )
         .catch( error => reject( error ) )
@@ -23,10 +25,10 @@ const
 
   livestream = {
 
-    get() { 
+    get: () => { 
       logger.info( `API`, `Fetching livestream.` )
       return new Promise( ( resolve, reject ) => 
-        axios
+        strapi
         .get( `livestream` )
         .then( result => resolve( result.data.data.attributes.publicData ) )
         .catch( error => reject( error ) )
@@ -37,20 +39,20 @@ const
     
   events = {
 
-    count() { 
+    count: () => { 
       logger.info( `API`, `Counting events.` )
       return new Promise( ( resolve, reject ) => {
-        axios
+        strapi
         .get( `events/count` )
         .then( result => resolve( result.data ) )
         .catch( error => reject( error ) )
       } ) 
     },
 
-    getAll() { 
+    getAll: () => { 
       logger.info( `API`, `Fetching events.` )
       return new Promise( ( resolve, reject ) => {
-        axios
+        strapi
         .get( `events` )
         .then( result => {
           const events = result.data.data
@@ -64,10 +66,10 @@ const
       } ) 
     },
 
-    get( slug ) { 
+    get: slug => { 
       logger.info( `API`, `Fetching event ${ slug }.` )
       return new Promise( ( resolve, reject ) => {
-        axios
+        strapi
         .get( `events/${ slug }` )
         .then( result => {
           const 
@@ -83,9 +85,9 @@ const
   
   viewers = { 
 
-    get( uuid ) { 
+    get: uuid => { 
       return new Promise( ( resolve, reject ) => 
-        axios 
+        strapi 
         .get( `viewers`, { params: { uuid } } )
         .then( result => resolve( result.data ) )
         .catch( error => reject( error ) )
@@ -94,7 +96,7 @@ const
     
   },
 
-  service = new Service( axios )
+  service = new Service( strapi )
 
 
 // Here we inject two middleware functions into 
@@ -126,11 +128,62 @@ service.register( {
   }
 
 } )
+
+const
+
+
+  assets = {
+
+    head( asset ) {
+      return new Promise( ( resolve, reject ) => 
+        axios
+        .head( asset )
+        .then( result => resolve( result ) )
+        .catch( error => reject( error ) )
+      ) 
+
+    }
+
+  },
+
+  service2 = new Service( axios )
+
+
+// Here we inject two middleware functions into 
+// axios so that we can monitor our network activity
+// and report to the vuex store.
+
+service2.register( {
+
+
+  // Reporting data sent (in the form of axios requests)
+
+  onRequest( request ) {
+    store.dispatch( 'network/add_bytes_sent', { 
+      to    : 'assets',
+      bytes : network.api.get_bytes_sent( request )
+    } )
+    return request
+  },
+
+
+  // Reporting data received (in the form of responses)
+
+  onResponse( response ) {
+    store.dispatch( 'network/add_bytes_received', { 
+      from  : 'assets',
+      bytes : network.api.get_bytes_received( response )
+    } )
+    return response
+  }
+
+} )
   
 
 export default {
   meta,
   livestream,
   events,   
-  viewers
+  viewers,
+  assets,
 }

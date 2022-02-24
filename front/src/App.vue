@@ -4,6 +4,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import { useMeta } from 'vue-meta'
 import { mapGetters } from 'vuex'
 import { network } from './utils'
+import api from './api'
 
 export default {
 
@@ -27,13 +28,13 @@ export default {
       //   title: 'Twitter Title'
       // },
       // noscript: [
-      //   { tag: 'link', rel: 'stylesheet', href: 'style.css' }
+      //   { tag: 'link', href: 'stylesheet', href: 'style.css' }
       // ],
       // otherNoscript: {
       //   tag: 'noscript',
       //   'data-test': 'hello',
       //   children: [
-      //     { tag: 'link', rel: 'stylesheet', href: 'style2.css' }
+      //     { tag: 'link', href: 'stylesheet', href: 'style2.css' }
       //   ]
       // },
       // body: 'body-script1.js', // TODO: fix
@@ -65,10 +66,34 @@ export default {
     format_bytes: network.format_bytes
   },
 
-  created() {
-    window.onload = event => {
-      console.log(event)
+  async created() {
+
+    const 
+      scripts = document.querySelectorAll('script'),
+      styles = document.querySelectorAll('link')
+
+
+    for (const script of scripts) {
+      if (script.src && !script.src.includes('@')) {
+        try {
+          await api.assets.head( script.src )
+        } catch (err) {
+          console.log(err)
+        }
+      }
     }
+
+     for (const style of styles) {
+      if (style.href && !style.href.includes('@')) {
+        try {
+          await api.assets.head( style.href )
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    }
+
+
   }
 
 

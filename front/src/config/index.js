@@ -4,6 +4,7 @@ const
   // Environment file
 
   env       = import.meta.env,
+  URL       = env.VITE_APP_URL,
   apiURL    = env.VITE_APP_API_URL,
   socketURL = env.VITE_APP_SOCKET_URL,
 
@@ -19,6 +20,7 @@ const
   }
 
 export default {
+  URL,
   apiURL,
   socketURL,
   md
