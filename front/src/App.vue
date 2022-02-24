@@ -2,6 +2,8 @@
 
 import { RouterLink, RouterView } from 'vue-router'
 import { useMeta } from 'vue-meta'
+import { mapGetters } from 'vuex'
+import { network } from './utils'
 
 export default {
 
@@ -51,6 +53,25 @@ export default {
     RouterView 
   },
 
+  computed: {
+    ...mapGetters( 'network', [
+      'total_bytes_sent',
+      'total_bytes_received',
+      'total_bytes_transferred'
+    ] )
+  },
+
+  methods: {
+    format_bytes: network.format_bytes
+  },
+
+  created() {
+    window.onload = event => {
+      console.log(event)
+    }
+  }
+
+
 }
 
 </script>
@@ -59,11 +80,26 @@ export default {
   <header>
 
     <div class="wrapper">
-
+      <h1>The Hmm Livestream</h1>
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+      <br>
+      <table id="network">
+        <tr>
+          <td>total bytes sent</td>
+          <td>{{ format_bytes( total_bytes_sent ) }}</td>
+        </tr>
+        <tr>
+          <td>total bytes received</td>
+          <td>{{ format_bytes( total_bytes_received ) }}</td>
+        </tr>
+        <tr>
+          <td>total bytes transferred</td>
+          <td>{{ format_bytes( total_bytes_transferred ) }}</td>
+        </tr>
+      </table>
     </div>
   </header>
 
@@ -87,6 +123,17 @@ header {
 }
 nav a {
   margin-right: 1em;
+}
+
+table {
+  border-collapse: collapse;
+}
+table tr td {
+  border: 1px solid black;
+  padding: 0.1em 0.4em;
+}
+table tr td:nth-of-type(2) {
+  text-align: right;
 }
 
 </style>

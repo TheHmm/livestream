@@ -1,37 +1,15 @@
-import axios from 'axios'
-import config from '../config'
+import axios               from 'axios'
+import config              from '../config'
+import { Service }         from 'axios-middleware'
 import { logger, network } from '../utils'
-import { Service } from 'axios-middleware'
+import store               from '../store'
 
 axios.defaults.baseURL = config.apiURL
-
-const service = new Service(axios)
-
-service.register({
-  onResponse( response ) {
-    console.log(response)
-
-    const 
-      data         = response.data,
-      headers      = response.headers,
-      request      = response.request,
-      data_size    = +headers['content-length'] || data.length,
-      header_size  = network.jsonSize(headers),
-      request_size = network.jsonSize(request),
-      sum_down     = data_size + header_size,
-      sum_up       = request_size
-
-    console.log(sum_down, sum_up, sum_down + sum_up )
-    
-
-    return response
-  }
-})
-
 
 const
   
   meta = {
+
     get() { 
       return new Promise( async ( resolve, reject ) => 
         axios
@@ -40,9 +18,11 @@ const
         .catch( error => reject( error ) )
       ) 
     } 
+
   },
 
   livestream = {
+
     get() { 
       logger.info( `API`, `Fetching livestream.` )
       return new Promise( ( resolve, reject ) => 
@@ -52,6 +32,7 @@ const
         .catch( error => reject( error ) )
       ) 
     } 
+
   },
     
   events = {
@@ -101,6 +82,7 @@ const
   },
   
   viewers = { 
+
     get( uuid ) { 
       return new Promise( ( resolve, reject ) => 
         axios 
@@ -109,8 +91,43 @@ const
         .catch( error => reject( error ) )
       ) 
     } 
-  }
     
+  },
+
+  service = new Service( axios )
+
+
+// Here we inject two middleware functions into 
+// axios so that we can monitor our network activity
+// and report to the vuex store.
+
+service.register( {
+
+
+  // Reporting data sent (in the form of axios requests)
+
+  onRequest( request ) {
+    store.dispatch( 'network/add_bytes_sent', { 
+      to    : 'api',
+      bytes : network.api.get_bytes_sent( request )
+    } )
+    return request
+  },
+
+
+  // Reporting data received (in the form of responses)
+  
+  onResponse( response ) {
+    store.dispatch( 'network/add_bytes_received', { 
+      from  : 'api',
+      bytes : network.api.get_bytes_received( response )
+    } )
+    return response
+  }
+
+} )
+  
+
 export default {
   meta,
   livestream,
