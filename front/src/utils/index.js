@@ -1,4 +1,5 @@
 import logger from "./logger"
+import network from "./network"
 
 const 
 
@@ -14,7 +15,7 @@ const
   }
 
 export {
-  logger,
-  sortEventsByDate,
   $id,
+  logger,
+  network,
 }

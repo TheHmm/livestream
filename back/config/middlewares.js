@@ -10,7 +10,7 @@ module.exports = [
         "Server-Authorization", 
         "Access-Control-Allow-Credentials",
         "Access-Control-Allow-Origin",
-        "Access-Control-Expose-Headers",
+        // "Access-Control-Expose-Headers",
         "Connection",
         "Content-Length",
         "Content-Security-Policy",
