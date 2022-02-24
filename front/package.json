@@ -11,6 +11,7 @@
     "smoothscroll-polyfill": "^0.4.4",
     "socket.io-client": "^4.4.1",
     "vue": "^3.2.29",
+    "vue-meta": "^3.0.0-alpha.7",
     "vue-router": "^4.0.12",
     "vue-socket.io-extended": "^5.0.0-alpha.5",
     "vue3-markdown-it": "^1.0.10",

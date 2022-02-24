@@ -1,9 +1,56 @@
 <script>
 import { RouterLink, RouterView } from 'vue-router'
-// import HelloWorld from '@/components/HelloWorld.vue'
 import { mapActions } from 'vuex'
+import { useMeta } from 'vue-meta'
 
 export default {
+
+  name: 'App',
+
+  setup() {
+    useMeta({
+      base: { href: '/vue-router', target: '_blank' },
+      charset: 'utf8',
+      title: 'My Title',
+      // description: 'The Description',
+      // og: {
+      //   title: 'Og Title',
+      //   description: 'Bla bla',
+      //   image: [
+      //     'https://picsum.photos/600/400/?image=80',
+      //     'https://picsum.photos/600/400/?image=82'
+      //   ]
+      // },
+      // twitter: {
+      //   title: 'Twitter Title'
+      // },
+      // noscript: [
+      //   { tag: 'link', rel: 'stylesheet', href: 'style.css' }
+      // ],
+      // otherNoscript: {
+      //   tag: 'noscript',
+      //   'data-test': 'hello',
+      //   children: [
+      //     { tag: 'link', rel: 'stylesheet', href: 'style2.css' }
+      //   ]
+      // },
+      // body: 'body-script1.js', // TODO: fix
+      // htmlAttrs: {
+      //   amp: true,
+      //   lang: ['en']
+      // },
+      // bodyAttrs: {
+      //   class: ['theme-dark']
+      // },
+    })
+  },
+
+
+  components: { 
+    RouterLink, 
+    RouterView 
+  },
+
   methods: {
     ...mapActions([
       'getMeta',
@@ -17,18 +64,21 @@ export default {
       'get_livestream',
     ])
   },
+  
   async created() {
-    const meta =  await this.getMeta()
-    console.log(meta)
 
-    const livestream =  await this.get_livestream()
-    console.log(livestream)
+    // const meta =  await this.getMeta()
+    // console.log(meta)
 
-    const events =  await this.get_events()
-    console.log(events)
+    // const livestream =  await this.get_livestream()
+    // console.log(livestream)
 
-    const test =  await this.get_event('test')
-    console.log(test)
+    // const events =  await this.get_events()
+    // console.log(events)
+
+    // const test =  await this.get_event('test')
+    // console.log(test)
+
   }
 }
 
@@ -36,10 +86,8 @@ export default {
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <!-- <HelloWorld msg="You did it!" /> -->
 
       <nav>
         <RouterLink to="/">Home</RouterLink>

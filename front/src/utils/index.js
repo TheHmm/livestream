@@ -7,6 +7,11 @@ const
     ))
   }
 
-export {
-  sortEventsByDate
+  function $id() {
+    return this.$options?.name?.toLowerCase()
+  }
+
+export default {
+  sortEventsByDate,
+  $id,
 }

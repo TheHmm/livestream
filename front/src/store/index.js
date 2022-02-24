@@ -7,15 +7,11 @@ import events from './events'
 const DEFAULT_STATE = () => ({
 
 
-  meta             : null,
-  
-  isMobile         : false,
-  activeClasses    : [ 'active' ],
+  meta          : null,
 
-  broadcasts       : [],
-  currentBroadcast : null,
-  pastBroadcast    : null,
-  colorPalette     : [ 
+  isMobile      : false,
+
+  colorPalette  : [
     'background', 
     'background2', 
     'body', 
@@ -23,28 +19,24 @@ const DEFAULT_STATE = () => ({
     'controls', 
     'chat' 
   ],
-  
-  users            : {},
-  chat             : {},
-  announcements    : {},
-  
-  uid              : localStorage.uid
-    ? localStorage.uid
-    : null,
-  blocked          : false,
-  count            : 0,
 
-  geoblocked       : false,
-  isAdmin          : localStorage.administrator
-    ? JSON.parse(localStorage.administrator) 
-    : false,
+  activeClasses : [ 'active' ],
+  
+  users         : {},
+  chat          : {},
+  announcements : {},
+  
+  uid           : localStorage.uid ? localStorage.uid : null,
+  blocked       : false,
+  count         : 0,
 
-  forceSmog        : false,
-    
+  isAdmin       : localStorage.admin ? JSON.parse(localStorage.admin) : false,
+
 })
 
 
 export default createStore({
+
 
   // strict mode is only enabled for dev environment.
 
@@ -60,15 +52,8 @@ export default createStore({
   mutations: {
 
 
-  
     SET_META       : ( state, meta )   => state.meta = meta,
-    
-    setBroadcasts:    (state, broadcasts) => state.broadcasts = broadcasts,
-    selectBroadcast:  (state, broadcast) => state.currentBroadcast = broadcast,
-    setPastBroadcast: (state, pastBroadcast) => state.pastBroadcast = pastBroadcast,
-    
-    setTalkstream:    (state, talkstream) => state.talkstream = talkstream,
-    setFilmstream:    (state, filmstream) => state.filmstream = filmstream,
+    SET_MOBILE     : ( state, mobile ) => state.isMobile = mobile,
     
     setUsers:         (state, users) => state.users = users,
     setUser:          (state, user) => state.users[user.uid] = user,
@@ -83,15 +68,9 @@ export default createStore({
     setBlock:         (state, block) => state.blocked = block,
     setCount:         (state, count) => state.count = count,
 
-    geoblock:         state => state.geoblocked = true,
     setMobile:        (state, isMobile) => state.isMobile = isMobile,
     adminify:         state => state.isAdmin = true,
     
-    setSmog:          (state, smog) => state.forceSmog = smog,
-    set3D:            (state, effect3D) => state.force3D = effect3D,
-    toggleSmog:       state => state.forceSmog = !state.forceSmog,
-    toggle3D:         state => state.force3D = !state.force3D,
-
     RESET: state => {
       const newState = DEFAULT_STATE()
       Object
@@ -240,14 +219,6 @@ export default createStore({
       window.location.reload(true)
     },
 
-    socket_smog({ commit }, smog ) {
-      commit('setSmog', smog)
-    },
-
-    socket_effect3D({ commit }, effect3D ) {
-      commit('set3D', effect3D)
-    },
-    
     register({ state }, name) {
       console.log(state.users)
       this._vm.$socket.client.emit('user', {
@@ -272,13 +243,6 @@ export default createStore({
       }
     },
     
-    toggle3D({ state }) {
-      this._vm.$socket.client.emit('effect3D', !state.force3D)
-    },
-
-    toggleSmog({ state }) {
-      this._vm.$socket.client.emit('smog', !state.forceSmog)
-    },
 
   },
 

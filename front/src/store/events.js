@@ -6,7 +6,9 @@ export default {
   namespaced: true,
 
   state: {
+
     events: []
+
   },
 
   mutations: {
@@ -28,14 +30,16 @@ export default {
 
     events : state => state.events,
 
-    event  : state => slug => state.events.find(e => e.slug == slug),
+    event  : state => slug => state.events.find( e => e.slug === slug ),
+
+    event_slugs : state => state.events.map( e => e.slug )
 
   },
 
   actions: {
 
 
-    // fetch all events 
+    // Fetch all events 
 
     fetch_events( { commit } ) { 
       return new Promise( ( resolve, reject ) => 
@@ -51,7 +55,7 @@ export default {
     },
 
 
-    // fetch single event
+    // Fetch single event
 
     fetch_event( { commit }, slug ) { 
       return new Promise( ( resolve, reject ) => 
@@ -67,7 +71,7 @@ export default {
     },
 
 
-    // get all events 
+    // Get all events 
 
     async get_events( { getters, dispatch } ) { 
       return (
@@ -78,7 +82,7 @@ export default {
     },
 
 
-    // get single event
+    // Get single event
 
     async get_event( { getters, dispatch }, slug ) { 
       return (

@@ -5,7 +5,9 @@ export default {
   namespaced: true,
 
   state: {
+
     livestream: null
+
   },
 
   mutations: {
@@ -23,7 +25,7 @@ export default {
   actions: {
 
 
-    // fetch ivestream object, only the public data
+    // Fetch livestream object, only the public data
 
     fetch_livestream( { commit } ) { 
       return new Promise( ( resolve, reject ) => 
@@ -39,7 +41,7 @@ export default {
     },
 
 
-    // get livestream
+    // Get livestream
 
     async get_livestream( { getters, dispatch } ) {
       return (
@@ -49,8 +51,12 @@ export default {
     },
 
 
+    // Receiving livestream updates from Strapi via the custom
+    // Socket server and committing the changes to store.
+
     socket_streamUpdate( { commit }, data ) {
       commit( 'SET_LIVESTREAM', data )
+      console.info(`* got livestream update: ${ data.status }` )
     },
 
   }
