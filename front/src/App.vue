@@ -72,6 +72,11 @@ export default {
       scripts = document.querySelectorAll('script'),
       styles = document.querySelectorAll('link')
 
+    try {
+      await api.assets.head( 'index.html' )
+    } catch (err) {
+      console.log(err)
+    }
 
     for (const script of scripts) {
       if (script.src && !script.src.includes('@')) {
