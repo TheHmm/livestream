@@ -30,7 +30,18 @@ const
     
   events = {
 
+    count() { 
+      console.info( `* API: Fetching event-count.` )
+      return new Promise( ( resolve, reject ) => {
+        axios
+        .get( `events/count` )
+        .then( result => resolve( result.data ) )
+        .catch( error => reject( error ) )
+      } ) 
+    },
+
     getAll() { 
+      console.info( `* API: Fetching all events.` )
       return new Promise( ( resolve, reject ) => {
         axios
         .get( `events` )
@@ -47,15 +58,14 @@ const
     },
 
     get( slug ) { 
-      console.info(`* API: Fetching event ${ slug }` )
+      console.info( `* API: Fetching event ${ slug }.` )
       return new Promise( ( resolve, reject ) => {
         axios
         .get( `events/${ slug }` )
-        // .get( `events?filters[slug][$eq]=${ slug }` )
         .then( result => {
-          console.log(result)
-          let event = result.data.data[0]
-          event = { ...event, ...event.attributes }
+          const 
+            data  = result.data.data,
+            event = { ...data, ...data.attributes }
           delete event.attributes
           resolve( event )
         } )

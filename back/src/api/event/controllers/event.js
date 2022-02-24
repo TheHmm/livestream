@@ -15,29 +15,44 @@ module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
   
   async findOne(ctx) {
 
+
+    // We get the slug and query from ctx.
+
     const 
+      slug      = ctx.params.id,
+      { query } = ctx.request
 
-      // We get the slug which haas been passed in as the id.
+      
+    // Cutom "count" controller to count our events. This is used in 
+    // the front-end to check whether the client has the right number 
+    // of events locally before GETting them all. For some reason, i 
+    // can't register this in Strapi as it's own controller. See: 
+    // https://forum.strapi.io/t/how-to-count-in-rest-api-in-v4/14765
 
-      slug = ctx.params.id,
+    if ( slug == 'count' ) {
+
+      return strapi
+      .query( 'api::event.event' )
+      .count( { where: query } )
+
+    } else {
 
 
-      // We query the database for that entry by its slug.
+      // We query the database for the given entry by its slug.
 
-      entity = await strapi
+      const entity = await strapi
       .db
       .query( 'api::event.event' )
       .findOne( { where: { slug } } )
 
 
-    // We return the saitized and transformed entity.
+      // We return the saitized and transformed entity.
 
-    return this.transformResponse(
-      await this.sanitizeOutput( 
-        entity, 
-        ctx
+      return this.transformResponse(
+        await this.sanitizeOutput( entity, ctx )
       )
-    )
+      
+    }
 
   },
 

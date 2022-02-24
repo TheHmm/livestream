@@ -18,7 +18,7 @@ export default {
 
   getters: {
 
-    livestream: state => state.livestream,
+    get_livestream : state => state.livestream,
 
   },
 
@@ -45,7 +45,7 @@ export default {
 
     async get_livestream( { getters, dispatch } ) {
       return (
-        getters.livestream || 
+        getters.get_livestream || 
         await dispatch( 'fetch_livestream' )
       )
     },

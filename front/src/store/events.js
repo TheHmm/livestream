@@ -13,6 +13,7 @@ export default {
 
   mutations: {
 
+
     SET_EVENTS : ( state, events ) => state.events = events,
 
     SET_EVENT  : ( state, event )  => {
@@ -28,15 +29,28 @@ export default {
 
   getters: {
 
-    events : state => state.events,
+    get_events  : state => state.events,
 
-    event  : state => slug => state.events.find( e => e.slug === slug ),
+    get_event   : state => slug => state.events.find( e => e.slug === slug ),
 
     event_slugs : state => state.events.map( e => e.slug )
 
   },
 
   actions: {
+
+
+    // Fetch number of events
+
+    fetch_events_count( ) { 
+      return new Promise( ( resolve, reject ) => 
+        api
+        .events
+        .count()
+        .then( count => resolve( count ) )
+        .catch( error => reject( error ) )
+      ) 
+    },
 
 
     // Fetch all events 
@@ -71,14 +85,29 @@ export default {
     },
 
 
-    // Get all events 
+    // Get all events ; always gets event count from
+    // Strapi to check if we have all of them. If not,
+    // we fetch them.
 
-    async get_events( { getters, dispatch } ) { 
-      return (
-        getters.events.length 
-        && getters.events 
-        || await dispatch( 'fetch_events' )
-      )
+    async get_events( { getters, dispatch } ) {
+
+      console.log('events/get_events')
+
+      const local_count = getters.get_events.length
+      let remote_count
+
+      try {
+        remote_count = await dispatch( 'fetch_events_count' )
+      } catch ( error ) {
+        remote_count = local_count
+      }
+
+      if ( remote_count > local_count ) {
+        return await dispatch( 'fetch_events' )
+      } else {
+        return getters.get_events  
+      }
+
     },
 
 
@@ -86,7 +115,7 @@ export default {
 
     async get_event( { getters, dispatch }, slug ) { 
       return (
-        getters.event(slug) || 
+        getters.get_event(slug) || 
         await dispatch( 'fetch_event', slug )
       ) 
     },
