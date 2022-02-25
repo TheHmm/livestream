@@ -1,4 +1,9 @@
-import jsonSize from 'json-size'
+import jsonSize    from 'json-size'
+import axios       from 'axios'
+import { Service } from 'axios-middleware'
+import store       from '../store'
+import config      from '../config'
+import { logger }  from '.'
 
 const 
 
@@ -17,9 +22,14 @@ const
 
   assets = {
 
+    
+
   },
 
   api = {
+
+
+    url: config.apiURL,
 
 
     // Gets the size in bytes of requests sent to strapi.
@@ -36,6 +46,7 @@ const
         bytes_sent = jsonSize( request ) + HEADER_GAP
   
       return bytes_sent
+
     },
 
 
@@ -69,7 +80,49 @@ const
 
   mux = {
 
+  },
+
+  service = new Service( axios )
+
+
+
+// Here we inject two middleware functions into 
+// axios so that we can monitor our network activity
+// and report to the vuex store.
+
+service.register( {
+
+
+  // Reporting data sent (in the form of axios requests)
+
+  onRequest( request ) {
+    const 
+      url   = request.url,
+      to    = url.includes(api.url) ? 'api' : 'assets',
+      bytes = api.get_bytes_sent( request )
+    store.dispatch( 
+      'network/add_bytes_sent', 
+      { url, to, bytes } 
+    )
+    return request
+  },
+
+
+  // Reporting data received (in the form of responses)
+  
+  onResponse( response ) {
+    const
+      url   = response.request.responseURL,
+      from  = url.includes(api.url) ? 'api' : 'assets',
+      bytes = api.get_bytes_received( response )
+    store.dispatch( 
+      'network/add_bytes_received',
+      { url, from, bytes }  
+    )
+    return response
   }
+
+} )
 
 
 export default {

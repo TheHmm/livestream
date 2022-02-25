@@ -24,6 +24,7 @@ export default {
       assets: {
         bytes_sent: 0,
         bytes_received: 0,
+        registered: []
       },
   
       api: {
@@ -52,16 +53,35 @@ export default {
     // payloads with bytes sent and received.
 
     ADD_BYTES_SENT : ( state, { to, bytes } ) => {
-      state.transfers[ to ].bytes_sent += bytes
+      state
+      .transfers[ to ]
+      .bytes_sent += bytes
     },
 
     ADD_BYTES_RECEIVED : ( state, { from, bytes } ) => {
-      state.transfers[ from ].bytes_received += bytes
+      state
+      .transfers[ from ]
+      .bytes_received += bytes
+    },
+
+
+    // We store the URLs of our assets in an array so
+    // that we know not to HEAD them again.
+
+    REGISTER_ASSET : ( state, url ) => {
+      state
+      .transfers
+      .assets
+      .registered
+      .push( url )
     }
 
   },
 
   getters: {
+
+
+    
 
     total_bytes_sent : state => Object
       .values( state.transfers )
@@ -80,17 +100,32 @@ export default {
       getters.total_bytes_received
     ,
 
+    is_registered_asset : state => path =>
+      state
+      .transfers
+      .assets
+      .registered
+      .find( url => url.includes( path ) )
+    ,
+      
+
   },
 
   actions: {
 
-    add_bytes_sent( { commit }, { to, bytes } ) {
+    add_bytes_sent( { commit }, { url, to, bytes } ) {
       commit( 'ADD_BYTES_SENT', { to, bytes } )
+      if ( to == 'assets' ) {
+        commit( 'REGISTER_ASSET', url )
+      }
       logger.info( 'STORE', `Sent ${ bytes } bytes to ${ to }.` )
     },
 
-    add_bytes_received( { commit }, { from, bytes } ) {
+    add_bytes_received( { commit }, { url, from, bytes } ) {
       commit( 'ADD_BYTES_RECEIVED', { from, bytes } )
+      if ( from == 'assets' ) {
+        commit( 'REGISTER_ASSET', url )
+      }
       logger.info( 'STORE', `Received ${ bytes } bytes from ${ from }.` )
     }
 

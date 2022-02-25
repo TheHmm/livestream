@@ -54,51 +54,68 @@ export default {
     RouterView 
   },
 
+  data() {
+    return {
+      observer: null,
+    }
+  },
+
   computed: {
     ...mapGetters( 'network', [
       'total_bytes_sent',
       'total_bytes_received',
-      'total_bytes_transferred'
+      'total_bytes_transferred',
     ] )
   },
 
   methods: {
-    format_bytes: network.format_bytes
+
+    format_bytes: network.format_bytes,
+
+    async head_assets() {
+
+      await api.assets.head( 'index.html' )
+
+      const 
+        scripts = document.querySelectorAll('script'),
+        styles = document.querySelectorAll('link')
+
+      for (const script of scripts) {
+        if (script.src && !script.src.includes('@')) {
+          await api.assets.head( script.src )
+        }
+      }
+
+      for (const style of styles) {
+        if ( style.href ) {
+          await api.assets.head( style.href )
+        }
+      }
+    }
+
   },
 
   async created() {
 
-    const 
-      scripts = document.querySelectorAll('script'),
-      styles = document.querySelectorAll('link')
-
-    try {
-      await api.assets.head( 'index.html' )
-    } catch (err) {
-      console.log(err)
-    }
-
-    for (const script of scripts) {
-      if (script.src && !script.src.includes('@')) {
-        try {
-          await api.assets.head( script.src )
-        } catch (err) {
-          console.log(err)
-        }
-      }
-    }
-
-     for (const style of styles) {
-      if (style.href && !style.href.includes('@')) {
-        try {
-          await api.assets.head( style.href )
-        } catch (err) {
-          console.log(err)
-        }
-      }
-    }
+    this.head_assets()
+  },
 
 
+  mounted() {
+    
+
+    this.observer = new MutationObserver( mutations => {
+        mutations.forEach( mutation => {
+            console.log( 'new mutation:', mutation)
+            this.head_assets()
+        } )
+    } )
+    this.observer.observe( document.head, { childList: true } )
+   
+  },
+
+  beforedestroy() {
+    this.observer.disconnect
   }
 
 
