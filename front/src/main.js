@@ -19,8 +19,7 @@ const app = createApp( App )
 
 // Smooth scrolling on older browsers.
 
-smoothscroll
-.polyfill()
+smoothscroll.polyfill()
 
 
 // Set default options of markdown parser.

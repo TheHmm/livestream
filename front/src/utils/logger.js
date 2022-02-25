@@ -46,8 +46,11 @@ const
     console.info( `* * * * * * * * * * * * * * * * * * * * * * * * * * *` )
     console.info( `* * * * * * * * * * * The Hmm * * * * * * * * * * * *` )
     console.info( `* * * * * * * * * * * * * * * * * * * * * * * * * * *` )
-    console.info( `* API => ${ config.apiURL } *` ) 
-    console.info( `* SOCKETS => ${ config.socketURL } *` ) 
+    console.log ( )
+    console.info( `* STATIC URL => ${ config.URL }` ) 
+    console.info( `* STRAPI URL => ${ config.apiURL }` ) 
+    console.info( `* SOCKET URL => ${ config.socketURL }` ) 
+    console.log ( )
     console.info( `* * * * * * * * * * * * * * * * * * * * * * * * * * *` )
     console.log ( )
   }

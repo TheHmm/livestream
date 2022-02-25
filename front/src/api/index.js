@@ -1,13 +1,15 @@
 import axios      from 'axios'
 import config     from '../config'
 import { logger } from '../utils'
-import store      from '../store'
 
 const
 
   api_url = config.apiURL,
   
   meta = {
+
+    
+    // Fetch website meta-data.
 
     get: () => { 
       return new Promise( async resolve => 
@@ -21,6 +23,11 @@ const
   },
 
   livestream = {
+
+
+    // Fetch livestream publicData from Strapi. Called
+    // once only, all other updates to the livestream
+    // will be received from the socket server.
 
     get: () => { 
       logger.info( `API`, `Fetching livestream.` )
@@ -36,6 +43,10 @@ const
     
   events = {
 
+
+    // This method counts our events before fetching them
+    // See: back/src/api/event/controllers/event.js
+      
     count: () => { 
       logger.info( `API`, `Counting events.` )
       return new Promise( resolve => {
@@ -46,15 +57,35 @@ const
       } ) 
     },
 
+    
+    // Fetch all events; sort in reverse chronological 
+    // order (i.e. most recent event first).
+
     getAll: () => { 
       logger.info( `API`, `Fetching events.` )
       return new Promise( resolve => {
         axios
-        .get( `${ api_url }/events` )
+        .get( `${ api_url }/events`, { params: { 
+          sort: 'starts:desc',
+          fields: [ 
+            'title',
+            'slug',
+            'starts',
+            'ends',
+            'info',
+            'recordingURL'
+          ],
+          populate: [
+            'logo'
+          ]
+        } } )
         .then( result => {
           const events = result.data.data
           for ( let e = 0; e < events.length; e ++ ) {
-            events[e] = { ...events[e], ...events[e].attributes }
+            events[e] = { 
+              ...events[e], 
+              ...events[e].attributes 
+            }
             delete events[e].attributes
           }
           resolve( events )
@@ -63,11 +94,25 @@ const
       } ) 
     },
 
+
+    // Fetch event by slug. Non-standard implementation
+    // See: back/src/api/event/controllers/event.js
+
     get: slug => { 
       logger.info( `API`, `Fetching event ${ slug }.` )
       return new Promise( resolve => {
         axios
-        .get( `${ api_url }/events/${ slug }` )
+        .get( 
+          `${ api_url }/events/${ slug }`, { params: { 
+            fields: '*',
+            populate: [
+              'logo',
+              'viewers',
+              'messages',
+              'announcements',
+              'emoji_groups',
+            ]
+          } } )
         .then( result => {
           const 
             data  = result.data.data,

@@ -5,9 +5,6 @@ import { logger } from "../utils"
 // to keep track of the network activity (such as 
 // data transfer size) of this website.
 
-// This is an SPA, so a lot has hacked together 
-// to make this work. Yet it cannot be 100% accurate.
-
 export default {
 
   namespaced: true,

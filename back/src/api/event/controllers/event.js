@@ -13,14 +13,15 @@ module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
   // our own controller that defaults to the entry's
   // as it's ID (for easier front-end routing).
   
-  async findOne(ctx) {
+  async findOne( ctx ) {
 
 
     // We get the slug and query from ctx.
 
     const 
-      slug      = ctx.params.id,
-      { query } = ctx.request
+      { params } = ctx,
+      slug       = params.id,
+      { query }  = ctx.request
 
       
     // Cutom "count" controller to count our events. This is used in 
@@ -40,20 +41,23 @@ module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
 
       // We query the database for the given entry by its slug.
 
-      const entity = await strapi
-      .db
-      .query( 'api::event.event' )
-      .findOne( { where: { slug } } )
+      const 
+        entity = await strapi
+        .db
+        .query( 'api::event.event' )
+        .findOne( { 
+          where    : { slug },
+          select   : query.fields,
+          populate : query.populate
+        } )
 
-
-      // We return the saitized and transformed entity.
-
-      return this.transformResponse(
-        await this.sanitizeOutput( entity, ctx )
-      )
+      // We return the entity, transformed into a response.
+      
+      return this.transformResponse( entity )
       
     }
 
   },
+
 
 }))

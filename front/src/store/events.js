@@ -13,15 +13,20 @@ export default {
 
   mutations: {
 
-
-    SET_EVENTS : ( state, events ) => state.events = events,
-
     SET_EVENT  : ( state, event )  => {
       const found = state.events.find( e => e.slug == event.slug )
       if ( found ) {
-        state.events[ state.events.indexOf( found ) ] = event
+        state.events[ state.events.indexOf( found ) ] = {
+          ...found,
+          ...event,
+        }
       } else {
-        state.events.push( event )
+        const index = state.events.findIndex( e => e.starts < event.starts )
+        if ( index == -1 ) {
+          state.events.push( event )  
+        } else {
+          state.events.splice( index, 0, event )
+        }
       }
     },
 
@@ -29,11 +34,17 @@ export default {
 
   getters: {
 
-    get_events  : state => state.events,
+    get_events : state => state.events,
 
-    get_event   : state => slug => state.events.find( e => e.slug === slug ),
+    get_event : state => slug => state
+      .events
+      .find( e => e.slug === slug )
+    ,
 
-    event_slugs : state => state.events.map( e => e.slug )
+    get_event_slugs : state => state
+      .events
+      .map( e => e.slug )
+    ,
 
   },
 
@@ -61,7 +72,9 @@ export default {
         .events
         .getAll()
         .then( events => {
-          commit( 'SET_EVENTS', events )
+          for ( const event of events ) {
+            commit( 'SET_EVENT', event )
+          }
           resolve( events ) 
         } )
         .catch( error => reject( error ) )
@@ -109,13 +122,18 @@ export default {
     },
 
 
-    // Get single event
+    // Get single event; we only call this function
+    // when we are requesting the full event details
+    // (e.g. for the event page), so we first check if
+    // we have those details before calling fetch.
 
     async get_event( { getters, dispatch }, slug ) { 
-      return (
-        getters.get_event(slug) || 
-        await dispatch( 'fetch_event', slug )
-      ) 
+      const event = getters.get_event(slug)
+      if ( event && event.viewers ) {
+        return event
+      } else {
+        return await dispatch( 'fetch_event', slug ) 
+      }
     },
 
 

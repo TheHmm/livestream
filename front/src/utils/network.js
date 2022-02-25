@@ -7,6 +7,18 @@ import api         from '../api'
 import store       from '../store'
 import { logger }  from '.'
 
+
+// Network utilities: These functions try to
+// track the website's network activity
+
+// This is an SPA, so a lot has hacked together 
+// to make this work. It cannot be 100% accurate.
+// For example, we cannot access the browser's 
+// cache to see if assets have been loaded from 
+// there. 
+
+// The chosen approach is to over-calculate
+
 const 
 
   api_url = config.apiURL,
@@ -19,11 +31,11 @@ const
       return '0 Bytes' 
     }
     const 
-      k     = 1024,
-      dm    = decimals < 0 ? 0 : decimals,
-      sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-      i     = Math.floor( Math.log( bytes ) / Math.log( k ) ),
-      res   = parseFloat( ( bytes / Math.pow( k, i ) ).toFixed( dm ) ) + ' ' + sizes[ i ]
+      k   = 1024,
+      dm  = decimals < 0 ? 0 : decimals,
+      szs = [ 'Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ],
+      i   = Math.floor( Math.log(bytes) / Math.log(k) ),
+      res = parseFloat( (bytes / Math.pow(k, i)).toFixed(dm) ) + ' ' + szs[i]
     return res
   },
 
@@ -73,14 +85,12 @@ const
   // Reporting data sent to store.
 
   on_request = request => {
-    const 
-      url   = request.url,
-      to    = url.includes(api_url) ? 'api' : 'assets',
-      bytes = get_bytes_sent( request )
-    store.dispatch( 
-      'network/add_bytes_sent', 
-      { url, to, bytes } 
-    )
+    const url = request.url
+    store.dispatch( 'network/add_bytes_sent', { 
+      url   : url,
+      to    : url.includes(api_url) ? 'api' : 'assets',
+      bytes : get_bytes_sent( request )
+    } )
     return request
   },
 
@@ -88,14 +98,12 @@ const
   // Reporting data received to store.
 
   on_response = response => {
-    const
-      url   = response.request.responseURL,
-      from  = url.includes(api_url) ? 'api' : 'assets',
-      bytes = get_bytes_received( response )
-    store.dispatch( 
-      'network/add_bytes_received',
-      { url, from, bytes }  
-    )
+    const url = response.request.responseURL
+    store.dispatch( 'network/add_bytes_received', { 
+      url   : url,
+      from  : url.includes(api_url) ? 'api' : 'assets',
+      bytes : get_bytes_received( response )
+    } )
     return response
   },
 
@@ -171,14 +179,12 @@ const
   .observe( document.head, { childList: true } )
 
 
-
-
-
-
   // socket 
+
 
   // mux 
 
+  
 
 export default {
   format_bytes,

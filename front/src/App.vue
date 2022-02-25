@@ -1,57 +1,23 @@
 <script>
 
-import { RouterLink, RouterView } from 'vue-router'
 import { useMeta } from 'vue-meta'
-import { mapGetters } from 'vuex'
 import { network } from './utils'
-import api from './api'
+import   Header    from './components/Header/index.vue'
 
 export default {
-
-  name: 'App',
 
   setup() {
     useMeta({
       base: { href: '/vue-router', target: '_blank' },
       charset: 'utf8',
       title: 'My Title',
-      // description: 'The Description',
-      // og: {
-      //   title: 'Og Title',
-      //   description: 'Bla bla',
-      //   image: [
-      //     'https://picsum.photos/600/400/?image=80',
-      //     'https://picsum.photos/600/400/?image=82'
-      //   ]
-      // },
-      // twitter: {
-      //   title: 'Twitter Title'
-      // },
-      // noscript: [
-      //   { tag: 'link', href: 'stylesheet', href: 'style.css' }
-      // ],
-      // otherNoscript: {
-      //   tag: 'noscript',
-      //   'data-test': 'hello',
-      //   children: [
-      //     { tag: 'link', href: 'stylesheet', href: 'style2.css' }
-      //   ]
-      // },
-      // body: 'body-script1.js', // TODO: fix
-      // htmlAttrs: {
-      //   amp: true,
-      //   lang: ['en']
-      // },
-      // bodyAttrs: {
-      //   class: ['theme-dark']
-      // },
     })
   },
 
+  name: 'App',
 
   components: { 
-    RouterLink, 
-    RouterView 
+    Header
   },
 
   data() {
@@ -61,20 +27,15 @@ export default {
   },
 
   computed: {
-    ...mapGetters( 'network', [
-      'total_bytes_sent',
-      'total_bytes_received',
-      'total_bytes_transferred',
-    ] )
+   
   },
 
   methods: {
 
-    format_bytes: network.format_bytes,
 
   },
 
-  async created() {
+  created() {
 
     network.head_assets()
 
@@ -82,15 +43,9 @@ export default {
 
 
   mounted() {
-    
-
-    
    
   },
 
-  beforedestroy() {
-    // this.observer.disconnect
-  }
 
 
 }
@@ -98,33 +53,10 @@ export default {
 </script>
 
 <template>
-  <header>
-
-    <div class="wrapper">
-      <h1>The Hmm Livestream</h1>
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-      <br>
-      <table id="network">
-        <tr>
-          <td>total bytes sent</td>
-          <td>{{ format_bytes( total_bytes_sent ) }}</td>
-        </tr>
-        <tr>
-          <td>total bytes received</td>
-          <td>{{ format_bytes( total_bytes_received ) }}</td>
-        </tr>
-        <tr>
-          <td>total bytes transferred</td>
-          <td>{{ format_bytes( total_bytes_transferred ) }}</td>
-        </tr>
-      </table>
-    </div>
-  </header>
-
+  
+  <Header />
   <RouterView />
+
 </template>
 
 <style>

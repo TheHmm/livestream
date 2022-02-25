@@ -19,8 +19,9 @@ export default {
 
 <template>
 
-  <main v-if="event">
-      event page: {{ event }}
+  <main>
+    <h2>{{ event.title }}</h2>
+    <pre>{{ event }}</pre>
   </main>
   
 </template>
