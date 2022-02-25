@@ -107,7 +107,12 @@ export default {
     this.observer = new MutationObserver( mutations => {
         mutations.forEach( mutation => {
             console.log( 'new mutation:', mutation)
-            this.head_assets()
+            mutation.addedNodes.forEach( node => {
+              if ( node.href || node.src )
+              api.assets.head( node.href || node.src )
+            })
+
+            // this.head_assets()
         } )
     } )
     this.observer.observe( document.head, { childList: true } )

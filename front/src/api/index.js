@@ -102,7 +102,7 @@ const
     head: asset => {
       if ( store.getters['network/is_registered_asset']( asset ) ) {
         logger.warn( 'API', `Not HEAD-ing registered url ${ asset }` )
-        return
+        // return
       }
       logger.info( `API`, `Heading asset ${ asset }.` )
       return new Promise( resolve => 
