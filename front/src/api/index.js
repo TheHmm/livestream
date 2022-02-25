@@ -100,10 +100,6 @@ const
   assets = {
 
     head: asset => {
-      if ( store.getters['network/is_registered_asset']( asset ) ) {
-        logger.warn( 'API', `Not HEAD-ing registered url ${ asset }` )
-        // return
-      }
       logger.info( `API`, `Heading asset ${ asset }.` )
       return new Promise( resolve => 
         axios
@@ -111,7 +107,6 @@ const
         .then( result => resolve( result ) )
         .catch( error => logger.error( 'API', error ) )
       ) 
-    
     }
 
   }

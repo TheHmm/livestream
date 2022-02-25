@@ -72,32 +72,11 @@ export default {
 
     format_bytes: network.format_bytes,
 
-    async head_assets() {
-
-      await api.assets.head( 'index.html' )
-
-      const 
-        scripts = document.querySelectorAll('script'),
-        styles = document.querySelectorAll('link')
-
-      for (const script of scripts) {
-        if (script.src && !script.src.includes('@')) {
-          await api.assets.head( script.src )
-        }
-      }
-
-      for (const style of styles) {
-        if ( style.href ) {
-          await api.assets.head( style.href )
-        }
-      }
-    }
-
   },
 
   async created() {
 
-    this.head_assets()
+    network.head_assets()
 
   },
 
@@ -105,21 +84,12 @@ export default {
   mounted() {
     
 
-    this.observer = new MutationObserver( mutations => {
-      for ( const mutation of mutations ) {
-        for ( const node of mutation.addedNodes ) {
-          if ( node.href || node.src ) {
-            api.assets.head( node.href || node.src )
-          }
-        }
-      } 
-    })
-    this.observer.observe( document.head, { childList: true } )
+    
    
   },
 
   beforedestroy() {
-    this.observer.disconnect
+    // this.observer.disconnect
   }
 
 
