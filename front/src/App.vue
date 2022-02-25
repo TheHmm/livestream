@@ -108,8 +108,9 @@ export default {
         mutations.forEach( mutation => {
             console.log( 'new mutation:', mutation)
             mutation.addedNodes.forEach( node => {
-              if ( node.href || node.src )
-              api.assets.head( node.href || node.src )
+              if ( node.href || node.src ) {
+                api.assets.head( node.href || node.src )
+              }
             })
 
             // this.head_assets()
