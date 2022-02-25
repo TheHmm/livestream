@@ -98,6 +98,7 @@ export default {
   async created() {
 
     this.head_assets()
+
   },
 
 
@@ -105,17 +106,14 @@ export default {
     
 
     this.observer = new MutationObserver( mutations => {
-        mutations.forEach( mutation => {
-            console.log( 'new mutation:', mutation)
-            mutation.addedNodes.forEach( node => {
-              if ( node.href || node.src ) {
-                api.assets.head( node.href || node.src )
-              }
-            })
-
-            // this.head_assets()
-        } )
-    } )
+      for ( const mutation of mutations ) {
+        for ( const node of mutation.addedNodes ) {
+          if ( node.href || node.src ) {
+            api.assets.head( node.href || node.src )
+          }
+        }
+      } 
+    })
     this.observer.observe( document.head, { childList: true } )
    
   },
