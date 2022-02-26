@@ -10,6 +10,7 @@ import { createMetaManager } from 'vue-meta'
 // import marked from 'marked'
 import smoothscroll          from 'smoothscroll-polyfill'
 
+import axios from 'axios'
 import { io }                from 'socket.io-client'
 import VueSocketIOExt        from 'vue-socket.io-extended'
 
@@ -31,17 +32,12 @@ smoothscroll.polyfill()
 //   ...config.md 
 // }
 
-
 // Network monitoring
 
-network.init()
-
 const socket = io( config.socketURL )
-console.log(socket)
-socket.onAny((eventName, ...args) => {
-  console.log(eventName)
-  // ...
-});
+
+
+network.init( axios, socket )
 
 // Registering extensions and mounting app.
 

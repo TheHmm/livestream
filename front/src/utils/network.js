@@ -1,5 +1,4 @@
 import jsonSize    from 'json-size'
-import axios       from 'axios'
 import { Service } from 'axios-middleware'
 
 import config      from '../config'
@@ -176,7 +175,7 @@ const
 
     api_monitor : {
       
-      create() {
+      create( axios ) {
         return new Service( axios )
       },
 
@@ -190,6 +189,33 @@ const
       init( axios ) {
         const monitor = this.create( axios )
         this.register( monitor )
+      }
+
+    },
+
+
+
+    //
+    // 
+
+    socket_monitor : {
+      
+      create( ) {
+        return ( ( eventName, ...args ) => {
+          console.log( eventName, args )
+          // ...
+        });
+        
+      },
+
+      register( socket, monitor ) {
+        socket.onAny( monitor )
+
+      },
+
+      init( socket ) {
+        const monitor = this.create( socket )
+        this.register( socket, monitor )
       }
 
     },
@@ -212,7 +238,7 @@ const
         } )
       },
 
-      register(observer) {
+      register( observer ) {
         observer.observe( document.head, { childList: true } )
       },
 
@@ -226,11 +252,13 @@ const
   },
 
 
-  init = loglevel => {
+  init = ( axios, socket, loglevel) => {
 
 
-    watchers.api_monitor.init()
+    watchers.api_monitor.init( axios )
+    watchers.socket_monitor.init( socket )
     watchers.asset_observer.init()
+
     methods.head_assets()
 
     
