@@ -36,6 +36,13 @@ smoothscroll.polyfill()
 
 network.init()
 
+const socket = io( config.socketURL )
+console.log(socket)
+socket.onAny((eventName, ...args) => {
+  console.log(eventName)
+  // ...
+});
+
 // Registering extensions and mounting app.
 
 app.config.globalProperties = { logger, $id }

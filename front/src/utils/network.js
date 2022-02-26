@@ -174,7 +174,7 @@ const
     // axios so that we can monitor our network activity
     // and report to the vuex store.
 
-    axios_monitor : {
+    api_monitor : {
       
       create() {
         return new Service( axios )
@@ -198,7 +198,7 @@ const
     // We inject a mutation observer to check for newly 
     // added <script> and <style> tags ¯\_ (ツ)_/¯ 
 
-    head_children_observer: {
+    asset_observer: {
 
       create() { 
         return new MutationObserver( mutations => {
@@ -229,8 +229,8 @@ const
   init = loglevel => {
 
 
-    watchers.axios_monitor.init()
-    watchers.head_children_observer.init()
+    watchers.api_monitor.init()
+    watchers.asset_observer.init()
     methods.head_assets()
 
     
