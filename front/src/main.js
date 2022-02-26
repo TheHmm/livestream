@@ -2,7 +2,8 @@ import { createApp }         from 'vue'
 import router                from './router'
 import store                 from './store'
 import config                from './config'
-import { logger, $id }       from './utils'
+import { logger, $id, network } from './utils'
+
 
 import { createMetaManager } from 'vue-meta'
 // import VueMarkdownIt         from 'vue3-markdown-it'
@@ -30,6 +31,10 @@ smoothscroll.polyfill()
 //   ...config.md 
 // }
 
+
+// Network monitoring
+
+network.init()
 
 // Registering extensions and mounting app.
 

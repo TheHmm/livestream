@@ -1,7 +1,6 @@
 <script>
 
 import { useMeta } from 'vue-meta'
-import { network } from './utils'
 import   Header    from './components/Header/index.vue'
 
 export default {
@@ -22,7 +21,6 @@ export default {
 
   data() {
     return {
-      observer: null,
     }
   },
 
@@ -37,7 +35,6 @@ export default {
 
   created() {
 
-    network.head_assets()
 
   },
 

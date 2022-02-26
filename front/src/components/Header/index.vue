@@ -15,7 +15,7 @@ export default {
   },
 
   methods: {
-    format_bytes: network.format_bytes
+    format_bytes: network.tools.format_bytes
   }
 
 }

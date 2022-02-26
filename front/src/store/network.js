@@ -1,5 +1,3 @@
-import { logger } from "../utils"
-
 
 // Network store module: These fuctions are used
 // to keep track of the network activity (such as 
@@ -115,7 +113,6 @@ export default {
       if ( to == 'assets' ) {
         commit( 'REGISTER_ASSET', url )
       }
-      logger.info( 'STORE', `Sent ${ bytes } bytes to ${ to }.` )
     },
 
     add_bytes_received( { commit }, { url, from, bytes } ) {
@@ -123,7 +120,6 @@ export default {
       if ( from == 'assets' ) {
         commit( 'REGISTER_ASSET', url )
       }
-      logger.info( 'STORE', `Received ${ bytes } bytes from ${ from }.` )
     }
 
   }
