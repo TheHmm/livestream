@@ -6,4 +6,4 @@
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
-module.exports = createCoreController('api::livestream.livestream');
+module.exports = createCoreController('api::livestream.livestream')

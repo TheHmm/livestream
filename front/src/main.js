@@ -6,6 +6,7 @@ import { logger, $id }       from './utils'
 
 import { createMetaManager } from 'vue-meta'
 // import VueMarkdownIt         from 'vue3-markdown-it'
+// import marked from 'marked'
 import smoothscroll          from 'smoothscroll-polyfill'
 
 import { io }                from 'socket.io-client'

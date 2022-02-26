@@ -1,9 +1,14 @@
 <script>
 import { mapGetters } from 'vuex'
+import Event from './Event.vue'
 
 export default {
-
+  
   name: 'EventList',
+
+  components: { 
+    Event,
+  },
 
   computed: {
     ...mapGetters('events', [
@@ -21,17 +26,11 @@ export default {
   <main>
     <h2>Livestreams</h2>
     <ul>
-      <li
+      <Event
         v-for="event in events"
         :key="event.slug"
-      >
-        <router-link 
-          :to="event.slug"
-        >
-          {{ event.title }}
-        </router-link>
-        <pre>{{ event }}</pre>
-      </li>
+        :event="event"
+      />
     </ul>
   </main>
 </template>

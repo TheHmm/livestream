@@ -6,7 +6,7 @@ const
   // (1) privateData: the full livestream object
   // (2) publicData: it's poblically-safe counterpart
 
-  sanitizeLivestream = ( event, strapi ) => {
+  sanitize_livestream = ( event, strapi ) => {
     
 
     // we get the event payload
@@ -24,7 +24,8 @@ const
       ... data,
       ... {
         privateData : livestream,
-        publicData  : strapi.mux.getPublicStreamDetails(livestream)
+        publicData  : strapi.mux.getPublicStreamDetails(livestream),
+        stream_key  : livestream.stream_key
       }
     }
 
@@ -59,8 +60,8 @@ const
 module.exports = {
 
 
-  beforeCreate(event) { sanitizeLivestream( event, strapi ) },
-  beforeUpdate(event) { sanitizeLivestream( event, strapi ) },
+  beforeCreate(event) { sanitize_livestream( event, strapi ) },
+  beforeUpdate(event) { sanitize_livestream( event, strapi ) },
 
   async afterUpdate(event) { await afterUpdateHandler( event, strapi ) }
 

@@ -1,4 +1,5 @@
 import api from "../api"
+import { logger } from "../utils"
 
 export default {
 
@@ -56,7 +57,7 @@ export default {
 
     socket_streamUpdate( { commit }, data ) {
       commit( 'SET_LIVESTREAM', data )
-      logger.info( `SOCK`, `got livestream update: ${ data.status }` )
+      logger.info( `SOCKET`, `Got livestream update: ${ data.status }` )
     },
 
   }

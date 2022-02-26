@@ -1,6 +1,7 @@
 import axios      from 'axios'
 import config     from '../config'
-import { logger } from '../utils'
+import store from '../store'
+import { logger, time } from '../utils'
 
 const
 
@@ -11,7 +12,7 @@ const
     
     // Fetch website meta-data.
 
-    get: () => { 
+    get() { 
       return new Promise( async resolve => 
         axios
         .get( `${ api_url }/meta` )
@@ -29,7 +30,7 @@ const
     // once only, all other updates to the livestream
     // will be received from the socket server.
 
-    get: () => { 
+    get() { 
       logger.info( `API`, `Fetching livestream.` )
       return new Promise( resolve => 
         axios
@@ -44,10 +45,35 @@ const
   events = {
 
 
+    // 
+    
+    sanitize( event ) {
+      event = { 
+        ...event, 
+        ...event.attributes 
+      }
+      delete event.attributes
+      event.is = {
+        in_past   : time.is_in_past( event.starts ),
+        in_future : time.is_in_future( event.starts ),
+        soon      : time.is_soon( event.starts )
+      }
+      event.livestream = () => (
+        event.is.soon ? 
+          store.getters[ 'livestream/get_livestream' ] :
+        event.is.in_past ? {
+          url: event.recordingURL,
+          status: 'active'
+        } : null 
+      )
+      return event
+    },
+
+    
     // This method counts our events before fetching them
     // See: back/src/api/event/controllers/event.js
       
-    count: () => { 
+    count() { 
       logger.info( `API`, `Counting events.` )
       return new Promise( resolve => {
         axios
@@ -61,7 +87,7 @@ const
     // Fetch all events; sort in reverse chronological 
     // order (i.e. most recent event first).
 
-    getAll: () => { 
+    getAll() { 
       logger.info( `API`, `Fetching events.` )
       return new Promise( resolve => {
         axios
@@ -82,11 +108,7 @@ const
         .then( result => {
           const events = result.data.data
           for ( let e = 0; e < events.length; e ++ ) {
-            events[e] = { 
-              ...events[e], 
-              ...events[e].attributes 
-            }
-            delete events[e].attributes
+            events[ e ] = this.sanitize( events[ e ] )
           }
           resolve( events )
         } )
@@ -98,7 +120,7 @@ const
     // Fetch event by slug. Non-standard implementation
     // See: back/src/api/event/controllers/event.js
 
-    get: slug => { 
+    get( slug ) { 
       logger.info( `API`, `Fetching event ${ slug }.` )
       return new Promise( resolve => {
         axios
@@ -113,11 +135,8 @@ const
               'emoji_groups',
             ]
           } } )
-        .then( result => {
-          const 
-            data  = result.data.data,
-            event = { ...data, ...data.attributes }
-          delete event.attributes
+        .then( result => {    
+            const event = this.sanitize( result.data.data )
           resolve( event )
         } )
         .catch( error => logger.error( 'API', error ) )
@@ -127,7 +146,7 @@ const
   
   viewers = { 
 
-    get: uuid => { 
+    get( uuid ) { 
       return new Promise( resolve => 
         axios 
         .get( `${ api_url }/viewers`, { params: { uuid } } )
@@ -144,7 +163,7 @@ const
 
   assets = {
 
-    head: asset => {
+    head( asset ) {
       logger.info( `API`, `Heading asset ${ asset }.` )
       return new Promise( resolve => 
         axios
