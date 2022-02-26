@@ -7,6 +7,16 @@ export default {
 
   state: {
 
+
+    // Livestream object. This is the publicData
+    // property of the full livestream single type 
+    // in Strapi:
+
+    // livestream: {
+    //   playbackID: string (used to fetch from mux)
+    //   status: string ("active" or "idle")
+    // }
+
     livestream: null
 
   },

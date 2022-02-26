@@ -45,28 +45,46 @@ const
   events = {
 
 
-    // 
+    // Sanitizing 'events' type received from Strapi.
+    // Note that for each of these events, we add a 
+    // 'livestream' property that returns a different
+    // object based on when the event is happening.
     
     sanitize( event ) {
+
+
+      // hygiene!
+
       event = { 
         ...event, 
         ...event.attributes 
       }
       delete event.attributes
+
+
+      // When is it ?
+
       event.is = {
         in_past   : time.is_in_past( event.starts ),
         in_future : time.is_in_future( event.starts ),
         soon      : time.is_soon( event.starts )
       }
-      event.livestream = () => (
+
+
+      // (1) soon: map to current livestream in store
+      // (2) past: return recording of old stream
+      // (3) else: return null; stream doesn't exist
+
+      event.livestream = () => ( // <== this is a function!
         event.is.soon ? 
           store.getters[ 'livestream/get_livestream' ] :
         event.is.in_past ? {
           url: event.recordingURL,
-          status: 'active'
+          status: event.recordingURL && 'active' || 'idle'
         } : null 
       )
       return event
+      
     },
 
     

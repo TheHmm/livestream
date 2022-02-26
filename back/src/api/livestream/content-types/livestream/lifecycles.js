@@ -40,11 +40,11 @@ const
 
 
 
-  // In this fuction we handle updates to the 'livestream'.
+  // In this function we handle updates to the 'livestream'.
   // We inform all connected socket clients of this new info.
   // the frontend of this project hanndles the rest.
 
-  afterUpdateHandler = async ( event, strapi ) => {
+  after_update_handler = ( event, strapi ) => {
     
     strapi.io
     .emit(
@@ -52,6 +52,39 @@ const
       event.result.publicData
     )
   
+  },
+
+
+  // After delete handler: we'll use Strapi's own delete
+  // button to request a new livestream from MUX, this way
+  // we can create a new livestream without needing to re-
+  // boot the server
+  
+  after_delete_handler = async ( event, strapi ) => {
+
+    strapi.log.info( 'Requesting new livestream.', event )
+      
+    try { 
+      const livestream = await 
+        strapi
+        .mux
+        .createLiveStream()
+      
+      try {
+        await strapi
+        .service( 'api::livestream.livestream' )
+        .createOrUpdate({
+          data: { livestream }
+        })
+        
+      } catch ( error ) {
+        return strapi.log.fatal( 'strapi err', error )
+      }
+    
+    } catch ( error ) {
+      return strapi.log.fatal( 'mux err', error )
+    }
+
   }
 
 
@@ -63,6 +96,8 @@ module.exports = {
   beforeCreate(event) { sanitize_livestream( event, strapi ) },
   beforeUpdate(event) { sanitize_livestream( event, strapi ) },
 
-  async afterUpdate(event) { await afterUpdateHandler( event, strapi ) }
+  afterUpdate(event) { after_update_handler( event, strapi ) },
+
+  async afterDelete(event) { await after_delete_handler( event, strapi ) }
 
 }
