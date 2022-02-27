@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 import api from '../api'
 import livestream from './livestream'
 import events from './events'
-import network from './network'
+import networking from './networking'
 import { logger } from '../utils'
 
 
@@ -49,7 +49,7 @@ export default createStore({
   modules: {
     livestream,
     events,
-    network
+    networking
   },
 
   mutations: {

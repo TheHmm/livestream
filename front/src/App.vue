@@ -1,17 +1,8 @@
 <script>
 
-import { useMeta } from 'vue-meta'
 import   Header    from './components/Header/index.vue'
 
 export default {
-
-  setup() {
-    useMeta({
-      base: { href: '/vue-router', target: '_blank' },
-      charset: 'utf8',
-      title: 'My Title',
-    })
-  },
 
   name: 'App',
 

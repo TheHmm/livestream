@@ -1,5 +1,5 @@
 <script>
-import { network } from '../../utils'
+import networking  from '@/networking'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -7,7 +7,7 @@ export default {
   name: 'Header',
 
   computed: {
-     ...mapGetters( 'network', [
+     ...mapGetters( 'networking', [
       'total_bytes_sent',
       'total_bytes_received',
       'total_bytes_transferred',
@@ -15,7 +15,7 @@ export default {
   },
 
   methods: {
-    format_bytes: network.tools.format_bytes
+    format_bytes: networking.tools.format_bytes
   }
 
 }

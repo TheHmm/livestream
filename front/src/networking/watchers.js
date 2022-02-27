@@ -1,0 +1,141 @@
+import { Service } from 'axios-middleware'
+import config      from "@/config"
+import store       from '@/store'
+import { logger }  from '@/utils' 
+import tools       from "./tools"
+
+const api_url = config.apiURL
+
+
+
+export default { 
+
+  
+  // Here, we inject two middleware functions into 
+  // axios so that we can monitor our network activity
+  // and report to the vuex store.
+
+  strapi_monitor : {
+
+    hooks : {
+
+      on_request : request => {
+        const 
+          url   = request.url,
+          to    = url.includes(api_url) ? 'api' : 'assets',
+          bytes = tools.get_bytes_sent( request )
+        store.dispatch( 'networking/add_bytes_sent', { url, to, bytes } )
+        logger.info( 'NETWORK', `${ bytes } bytes sent to ${ to }.` )
+        return request
+      },
+  
+      on_response : response => {
+        const 
+          url   = response.request.responseURL,
+          from  = url.includes(api_url) ? 'api' : 'assets',
+          bytes = tools.get_bytes_received( response )
+        store.dispatch( 'networking/add_bytes_received', { url, from, bytes } )
+        logger.info( 'NETWORK', `${ bytes } bytes received from ${ from }.` )
+        return response
+      },
+  
+    },
+    
+    create( axios ) {
+      return new Service( axios )
+    },
+
+    register( monitor ) {
+      monitor.register( {
+        onRequest  : request  => this.hooks.on_request( request ),  
+        onResponse : response => this.hooks.on_response( response )
+      } )
+    },
+
+    init( axios ) {
+      const monitor = this.create( axios )
+      this.register( monitor )
+    }
+
+  },
+
+
+
+  // We inject two middleware functions into our socket
+  // client so that we can monitor our network activity
+  // and report to the vuex store.
+
+  socket_monitor : {
+
+    hooks: {
+
+      on_send: ( event, data ) => {
+        const 
+          url   = event,
+          to    = 'sockets',
+          bytes = tools.json_size( data )
+        store.dispatch( 'networking/add_bytes_sent', { url, to, bytes } )
+        logger.info( 'NETWORK', `${ bytes } bytes sent to ${ to }.` )
+      },
+
+      on_receive: ( event, data ) => {
+        const 
+          url = event,
+          from = 'sockets',
+          bytes = tools.json_size( data )
+        store.dispatch( 'networking/add_bytes_received', { url, from, bytes } )
+        logger.info( 'NETWORK', `${ bytes } bytes received from ${ from }.` )
+      },
+      
+    },
+    
+    create( ) {
+      return this.hooks   
+    },
+
+    register( io, monitor ) {
+      const old_emit = io.emit.bind(io)
+      io.emit = ( ev, data ) => {
+        monitor.on_send( ev, data )
+        old_emit( ev, data )
+      }
+      io.onAny( monitor.on_receive )
+    },
+
+    init( io ) {
+      const monitor = this.create( io )
+      this.register( io, monitor )
+    }
+
+  },
+
+  
+  // We inject a mutation observer to check for newly 
+  // added <script> and <style> tags ¯\_ (ツ)_/¯ 
+
+  asset_observer: {
+
+    create() { 
+      return new MutationObserver( mutations => {
+        for ( const mutation of mutations ) {
+          for ( const node of mutation.addedNodes ) {
+            if ( node.href || node.src ) {
+              methods.head_asset( node.href || node.src )
+            }
+          }
+        } 
+      } )
+    },
+
+    register( observer ) {
+      observer.observe( document.head, { childList: true } )
+    },
+
+    init() {
+      const observer = this.create()
+      this.register( observer )
+    }
+
+  }
+  
+}
