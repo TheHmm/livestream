@@ -3,6 +3,7 @@ import config      from "@/config"
 import store       from '@/store'
 import { logger }  from '@/utils' 
 import tools       from "./tools"
+import methods     from './methods'
 
 const api_url = config.apiURL
 
