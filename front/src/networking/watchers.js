@@ -5,7 +5,7 @@ import { logger }  from '@/utils'
 import tools       from "./tools"
 import methods     from './methods'
 
-const api_url = config.apiURL
+const api_url = config.api_url
 
 
 
@@ -46,16 +46,18 @@ export default {
       return new Service( axios )
     },
 
-    register( monitor ) {
+    register( monitor, hooks ) {
       monitor.register( {
-        onRequest  : this.hooks.on_request,  
-        onResponse : this.hooks.on_response
+        onRequest  : hooks.on_request,  
+        onResponse : hooks.on_response
       } )
     },
 
     init( axios ) {
-      const monitor = this.create( axios )
-      this.register( monitor )
+      const 
+        monitor = this.create( axios ),
+        hooks   = this.hooks
+      this.register( monitor, hooks )
     }
 
   },
