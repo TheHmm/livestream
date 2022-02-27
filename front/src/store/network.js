@@ -27,7 +27,7 @@ export default {
         bytes_received: 0,
       },
   
-      socket: {
+      sockets: {
         bytes_sent: 0,
         bytes_received: 0,
       },

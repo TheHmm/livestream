@@ -51,5 +51,3 @@ app
 .use( router )
 .use( createMetaManager() )
 .mount( '#app' )
-
-console.log(app.config.globalProperties.$socket.client.emit)

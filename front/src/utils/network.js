@@ -1,4 +1,4 @@
-import jsonSize    from 'json-size'
+import json_size   from 'json-size'
 import { Service } from 'axios-middleware'
 
 import config      from '../config'
@@ -52,7 +52,7 @@ const
         // their size calculated by json size. 
         
         HEADER_GAP = 84,
-        bytes_sent = jsonSize( request ) + HEADER_GAP
+        bytes_sent = json_size( request ) + HEADER_GAP
 
       return bytes_sent
 
@@ -75,41 +75,11 @@ const
         headers        = response.headers,
 
         data_size      = +headers[ 'content-length' ] || data.length,
-        header_size    = jsonSize( headers ) - HEADER_GAP,
+        header_size    = json_size( headers ) - HEADER_GAP,
         bytes_received = data_size + header_size
 
       return bytes_received
 
-    },
-
-  },
-
-  hooks = {
-
-
-  // Reporting data sent to store.
-
-    on_request : request => {
-      const 
-        url   = request.url,
-        to    = url.includes(api_url) ? 'api' : 'assets',
-        bytes = tools.get_bytes_sent( request )
-      store.dispatch( 'network/add_bytes_sent', { url, to, bytes } )
-      logger.info( 'NETWORK', `${ bytes } bytes sent to ${ to }.` )
-      return request
-    },
-
-
-    // Reporting data received to store.
-
-    on_response : response => {
-      const 
-        url = response.request.responseURL,
-        from = url.includes(api_url) ? 'api' : 'assets',
-        bytes = tools.get_bytes_received( response )
-      store.dispatch( 'network/add_bytes_received', { url, from, bytes } )
-      logger.info( 'NETWORK', `${ bytes } bytes received from ${ from }.` )
-      return response
     },
 
   },
@@ -174,6 +144,30 @@ const
     // and report to the vuex store.
 
     strapi_monitor : {
+
+      hooks : {
+
+        on_request : request => {
+          const 
+            url   = request.url,
+            to    = url.includes(api_url) ? 'api' : 'assets',
+            bytes = tools.get_bytes_sent( request )
+          store.dispatch( 'network/add_bytes_sent', { url, to, bytes } )
+          logger.info( 'NETWORK', `${ bytes } bytes sent to ${ to }.` )
+          return request
+        },
+    
+        on_response : response => {
+          const 
+            url   = response.request.responseURL,
+            from  = url.includes(api_url) ? 'api' : 'assets',
+            bytes = tools.get_bytes_received( response )
+          store.dispatch( 'network/add_bytes_received', { url, from, bytes } )
+          logger.info( 'NETWORK', `${ bytes } bytes received from ${ from }.` )
+          return response
+        },
+    
+      },
       
       create( axios ) {
         return new Service( axios )
@@ -181,8 +175,8 @@ const
 
       register( monitor ) {
         monitor.register( {
-          onRequest  : request  => hooks.on_request( request ),  
-          onResponse : response => hooks.on_response( response )
+          onRequest  : request  => this.hooks.on_request( request ),  
+          onResponse : response => this.hooks.on_response( response )
         } )
       },
 
@@ -199,30 +193,37 @@ const
     // 
 
     socket_monitor : {
+
+      hooks: {
+        on_send: ( event, data ) => {
+          const 
+            url   = event,
+            to    = 'sockets',
+            bytes = json_size( data )
+          store.dispatch( 'network/add_bytes_sent', { url, to, bytes } )
+          logger.info( 'NETWORK', `${ bytes } bytes sent to ${ to }.` )
+        },
+        on_receive: ( event, data ) => {
+          const 
+            url = event,
+            from = 'sockets',
+            bytes = json_size( data )
+          store.dispatch( 'network/add_bytes_received', { url, from, bytes } )
+          logger.info( 'NETWORK', `${ bytes } bytes received from ${ from }.` )
+        },
+      },
       
       create( ) {
-        return ( ( event, ...args ) => {
-          console.log( event, args )
-        } )
-        
+        return this.hooks   
       },
 
       register( io, monitor ) {
-        io.onAny( monitor )
-
-        console.log(io.emit)
-
-        const oldEmit = io.emit.bind(io)
-
-        console.log(oldEmit)
-        io.emit = function ( ev, args ) {
-          console.log(ev)
-          oldEmit( ev, args )
+        const old_emit = io.emit.bind(io)
+        io.emit = ( ev, data ) => {
+          monitor.on_send( ev, data )
+          old_emit( ev, data )
         }
-        io.emit('hello')
-
-        // io.customEmit('hello')
-
+        io.onAny( monitor.on_receive )
       },
 
       init( io ) {
@@ -285,7 +286,6 @@ const
 
 export default {
   tools,
-  hooks,
   methods,
   watchers,
   init
