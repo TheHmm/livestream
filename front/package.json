@@ -10,6 +10,7 @@
     "axios-middleware": "^0.3.1",
     "json-size": "^1.0.0",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.34",
     "qs": "^6.10.3",
     "smoothscroll-polyfill": "^0.4.4",
     "socket.io-client": "^4.4.1",

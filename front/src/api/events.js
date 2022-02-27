@@ -1,5 +1,6 @@
 import axios      from 'axios'
 import config     from '@/config'
+import store      from '@/store'
 import { logger } from '@/utils'
 import { time }   from '@/utils'
 
@@ -26,7 +27,7 @@ export default {
     // When is it ?
 
     event.is = {
-      in_past   : time.is_in_past( event.starts ),
+      in_past   : time.is_in_past( event.ends ),
       in_future : time.is_in_future( event.starts ),
       soon      : time.is_soon( event.starts )
     }
@@ -40,8 +41,8 @@ export default {
       event.is.soon ? 
         store.getters[ 'livestream/get_livestream' ] :
       event.is.in_past ? {
-        url: event.recordingURL,
-        status: event.recordingURL && 'active' || 'idle'
+        url    : event.recordingURL,
+        status : event.recordingURL && 'active' || 'idle'
       } : null 
     )
     return event

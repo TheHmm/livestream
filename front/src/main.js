@@ -15,16 +15,16 @@ import { logger, $id } from './utils'
 const
 
   // Log default config to console
-  intro    = logger.intro( config ),
+  intro = logger.intro( config ),
 
   // Instantiate socket cient
-  io       = socket.io( config.socket_url ),
+  io    = socket.io( config.socket_url ),
 
   // Instantiate networking scripts
-  monitors = networking.init( axios, io ),
+  net   = networking.init( axios, io ),
 
   // Create vue app
-  app      = createApp( App )
+  app   = createApp( App )
 
 
 // Registering extensions and mounting app.
@@ -43,7 +43,7 @@ app
 .mount( '#app' )
 
 
-// import VueMarkdownIt         from 'vue3-markdown-it'
+// import VueMarkdownIt from 'vue3-markdown-it'
 // import marked from 'marked'
 
 // Set default options of markdown parser.

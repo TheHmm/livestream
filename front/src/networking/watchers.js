@@ -48,8 +48,8 @@ export default {
 
     register( monitor ) {
       monitor.register( {
-        onRequest  : request  => this.hooks.on_request( request ),  
-        onResponse : response => this.hooks.on_response( response )
+        onRequest  : this.hooks.on_request,  
+        onResponse : this.hooks.on_response
       } )
     },
 
@@ -87,7 +87,7 @@ export default {
           from : 'sockets', 
           bytes 
         } )
-        logger.info( 'NETWORK', `${ bytes } bytes received from  sockets.` )
+        logger.info( 'NETWORK', `${ bytes } bytes received from sockets.` )
       },
       
     },

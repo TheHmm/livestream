@@ -9,6 +9,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      moment: 'moment/src/moment',
+      'moment-timezone': 'moment-timezone/builds/moment-timezone-with-data-2012-2022.min.js'
     }
   }
 })
