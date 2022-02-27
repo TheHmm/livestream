@@ -11,7 +11,7 @@ import { createMetaManager } from 'vue-meta'
 import smoothscroll          from 'smoothscroll-polyfill'
 
 import axios from 'axios'
-import { io }                from 'socket.io-client'
+import socket                from 'socket.io-client'
 import VueSocketIOExt        from 'vue-socket.io-extended'
 
 import App                   from './App.vue'
@@ -34,10 +34,11 @@ smoothscroll.polyfill()
 
 // Network monitoring
 
-const socket = io( config.socketURL )
+const io = socket.io( config.socketURL )
 
 
-network.init( axios, socket )
+
+network.init( axios, io )
 
 // Registering extensions and mounting app.
 
@@ -45,8 +46,10 @@ app.config.globalProperties = { logger, $id }
 
 app
 // .use( VueMarkdownIt )
-.use( VueSocketIOExt, io( config.socketURL ), { store } )
+.use( VueSocketIOExt, io, { store } )
 .use( store )
 .use( router )
 .use( createMetaManager() )
 .mount( '#app' )
+
+console.log(app.config.globalProperties.$socket.client.emit)

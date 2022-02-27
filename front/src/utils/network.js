@@ -173,7 +173,7 @@ const
     // axios so that we can monitor our network activity
     // and report to the vuex store.
 
-    api_monitor : {
+    strapi_monitor : {
       
       create( axios ) {
         return new Service( axios )
@@ -201,21 +201,33 @@ const
     socket_monitor : {
       
       create( ) {
-        return ( ( eventName, ...args ) => {
-          console.log( eventName, args )
-          // ...
-        });
+        return ( ( event, ...args ) => {
+          console.log( event, args )
+        } )
         
       },
 
-      register( socket, monitor ) {
-        socket.onAny( monitor )
+      register( io, monitor ) {
+        io.onAny( monitor )
+
+        console.log(io.emit)
+
+        const oldEmit = io.emit.bind(io)
+
+        console.log(oldEmit)
+        io.emit = function ( ev, args ) {
+          console.log(ev)
+          oldEmit( ev, args )
+        }
+        io.emit('hello')
+
+        // io.customEmit('hello')
 
       },
 
-      init( socket ) {
-        const monitor = this.create( socket )
-        this.register( socket, monitor )
+      init( io ) {
+        const monitor = this.create( io )
+        this.register( io, monitor )
       }
 
     },
@@ -252,11 +264,11 @@ const
   },
 
 
-  init = ( axios, socket, loglevel) => {
+  init = ( axios, io ) => {
 
 
-    watchers.api_monitor.init( axios )
-    watchers.socket_monitor.init( socket )
+    watchers.strapi_monitor.init( axios )
+    watchers.socket_monitor.init( io )
     watchers.asset_observer.init()
 
     methods.head_assets()

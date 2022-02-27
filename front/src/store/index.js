@@ -3,6 +3,7 @@ import api from '../api'
 import livestream from './livestream'
 import events from './events'
 import network from './network'
+import { logger } from '../utils'
 
 
 const DEFAULT_STATE = () => ({
@@ -179,8 +180,12 @@ export default createStore({
         }))
       )
     }, 
-    
-  
+
+
+
+    socket_connect({strapi}) {
+      logger.info('STORE', 'connect')
+    },
     
     
     socket_user({ state, commit }, user) {

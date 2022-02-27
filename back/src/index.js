@@ -156,6 +156,10 @@ module.exports = {
 
     io.on('connection', socket => {
 
+      socket.on('hello', data => {
+        console.log('hello', data)
+      })
+
       const
         userCount = () => socket.client.conn.server.clientsCount,
         ip = io.getIP(socket)
