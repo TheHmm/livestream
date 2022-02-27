@@ -1,4 +1,5 @@
 import json_size from 'json-size'
+import config from '@/config'
 
 export default {
 
@@ -24,13 +25,9 @@ export default {
 
   get_bytes_sent : request => {
 
-    const 
-
-      // Small difference calculated by subracting size of
-      // request headers in browser network monitor from 
-      // their size calculated by json size. 
-      
-      HEADER_GAP = 84,
+    const  
+    
+      HEADER_GAP = config.networking.header_gaps.requests,
       bytes_sent = json_size( request ) + HEADER_GAP
 
     return bytes_sent
@@ -42,13 +39,9 @@ export default {
 
   get_bytes_received : response => {
 
-    const 
+    const
 
-      // Small difference calculated by subracting size of 
-      // response headers in browser network monitor from 
-      // their size calculated by json size. 
-
-      HEADER_GAP     = 54,
+      HEADER_GAP     = config.networking.header_gaps.responses,
     
       data           = response.data,
       headers        = response.headers,

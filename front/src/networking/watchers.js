@@ -69,22 +69,24 @@ export default {
 
     hooks: {
 
-      on_send: ( event, data ) => {
-        const 
-          url   = event,
-          to    = 'sockets',
-          bytes = tools.json_size( data )
-        store.dispatch( 'networking/add_bytes_sent', { url, to, bytes } )
-        logger.info( 'NETWORK', `${ bytes } bytes sent to ${ to }.` )
+      on_send: ( event, data, bytes ) => {
+        bytes = bytes || tools.json_size( data )
+        store.dispatch( 'networking/add_bytes_sent', { 
+          url : event, 
+          to  : 'sockets', 
+          bytes 
+        } )
+        logger.info( 'NETWORK', `${ bytes } bytes sent to sockets.` )
       },
 
-      on_receive: ( event, data ) => {
-        const 
-          url = event,
-          from = 'sockets',
-          bytes = tools.json_size( data )
-        store.dispatch( 'networking/add_bytes_received', { url, from, bytes } )
-        logger.info( 'NETWORK', `${ bytes } bytes received from ${ from }.` )
+      on_receive: ( event, data, bytes ) => {
+        bytes = bytes || tools.json_size( data )
+        store.dispatch( 'networking/add_bytes_received', { 
+          url  : event, 
+          from : 'sockets', 
+          bytes 
+        } )
+        logger.info( 'NETWORK', `${ bytes } bytes received from  sockets.` )
       },
       
     },
@@ -103,8 +105,13 @@ export default {
     },
 
     init( io ) {
+
+      const HANDSHAKE_BYTES = config.networking.socket.handshake_bytes
+      this.hooks.on_receive( 'handshake', null, HANDSHAKE_BYTES )  
+
       const monitor = this.create( io )
       this.register( io, monitor )
+
     }
 
   },

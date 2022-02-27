@@ -1,3 +1,5 @@
+import networking from "./networking"
+
 const 
 
 
@@ -36,6 +38,7 @@ export default {
   url,
   api_url,
   socket_url,
+  networking,
   md,
   events
 }
