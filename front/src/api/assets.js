@@ -9,11 +9,14 @@ export default {
 
   head( asset ) {
     logger.info( `API`, `Heading asset ${ asset }.` )
-    return new Promise( resolve => 
+    return new Promise( ( resolve, reject ) => 
       axios
       .head( asset )
       .then( result => resolve( result ) )
-      .catch( error => logger.error( 'API', error ) )
+      .catch( error => {
+        logger.error( 'API', error ) 
+        reject( error )
+      } )
     ) 
   }
 

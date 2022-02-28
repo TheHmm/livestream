@@ -147,7 +147,7 @@ export default createStore({
 
     // App meta-data such as titles and meta descriptions
 
-    fetchMeta({ commit }) { return new Promise( ( resolve, reject ) => 
+    fetch_meta({ commit }) { return new Promise( ( resolve, reject ) => 
       api
       .meta
       .get()
@@ -158,8 +158,8 @@ export default createStore({
       .catch( error => reject( error ) )
     ) },
 
-    async getMeta({ getters, dispatch }) {
-      return getters.meta || await dispatch( 'fetchMeta' )
+    async get_meta({ getters, dispatch }) {
+      return getters.meta || await dispatch( 'fetch_meta' )
     },
 
 

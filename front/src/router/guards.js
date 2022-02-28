@@ -1,5 +1,4 @@
 import store      from '../store'
-import { logger } from '../utils'
 
 const 
 
@@ -8,6 +7,11 @@ const
   // have the livestream object
 
   before_each = async () => {
+    try {
+      await store.dispatch( 'get_meta' )
+    } catch ( error ) {
+      return '404'
+    }
     try {
       await store.dispatch( 'livestream/get_livestream' )
     } catch ( error ) {
@@ -37,7 +41,6 @@ const
     try {
       await store.dispatch( 'events/get_event', slug )
     } catch ( error ) {
-      logger.error( `ROUTER`, `Event page ${ slug } not found.`, error )
       return '404'
     }
   }

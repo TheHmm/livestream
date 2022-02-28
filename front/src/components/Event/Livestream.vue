@@ -1,7 +1,6 @@
 <script>
 
-// import BodyText from '../components/BodyText'
-// import Video from '../components/Video'
+import Video from './Video.vue'
 // import Chat from '../components/Chat'
 // import Announcements from '../components/Announcements'
 
@@ -16,18 +15,13 @@ export default {
   },
 
   components: {
-    // BodyText,
-    // Video,
+    Video,
     // Chat,
     // Announcements,
   },
 
   data() {
     return {
-      muted        : true,
-      playing      : true,
-      elapsed_time : null,
-      desires_time : null,
     }
   },
 
@@ -47,6 +41,7 @@ export default {
     // Please refer to: @/api/events/sanitize
 
     livestream()  { return this.event.livestream() },
+    active()      { return this.livestream.status == 'active' }
     
   },
 
@@ -59,29 +54,24 @@ export default {
 
     <pre> {{ livestream }} </pre>
 
-      <!-- <body-text v-if="!active && !recording">
-        <section>
-          <h2>This event starts at..</h2>
-        </section>
-      </body-text>
+      <section v-if="!active">
+        <h2 v-if="event.is.soon()">The livestream starts {{ starts }}.</h2>
+        <h2 v-else>The livestream is over. The recording will be available here shortly.</h2>
+      </section>
 
-      <main v-else>
+      <main >
 
         <div id="videoContainer">
           <Video 
             :livestream="livestream"
-            :desires_time="desires_time"
-            :muted="muted"
-            :playing="playing"
-            @elapsed_time="elapsed_time = $event"
           />
         </div>
 
-        <Announcements />
+        <!-- <Announcements /> -->
 
-        <Chat />
+        <!-- <Chat /> -->
 
-      </main> -->
+      </main>
 
   </div>
 </template>
@@ -112,7 +102,7 @@ main {
 }
 
 #videoContainer {
-  position: absolute;
+  /* position: absolute; */
   width: 100%; height: 100%;
   top: 0;
   min-height: 0;

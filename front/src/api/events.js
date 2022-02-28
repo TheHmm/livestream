@@ -52,11 +52,14 @@ export default {
     
   count() { 
     logger.info( `API`, `Counting events.` )
-    return new Promise( resolve => {
+    return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/events/count` )
       .then( result => resolve( result.data ) )
-      .catch( error => logger.error( 'API', error ) )
+      .catch( error => {
+        logger.error( 'API', error ) 
+        reject( error )
+      } )
     } ) 
   },
 
@@ -66,7 +69,7 @@ export default {
 
   getAll() { 
     logger.info( `API`, `Fetching events.` )
-    return new Promise( resolve => {
+    return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/events`, { params: { 
         sort: 'starts:desc',
@@ -89,7 +92,10 @@ export default {
         }
         resolve( events )
       } )
-      .catch( error => logger.error( 'API', error ) )
+      .catch( error => {
+        logger.error( 'API', error ) 
+        reject( error )
+      } )
     } ) 
   },
 
@@ -99,7 +105,7 @@ export default {
 
   get( slug ) { 
     logger.info( `API`, `Fetching event ${ slug }.` )
-    return new Promise( resolve => {
+    return new Promise( ( resolve, reject ) => {
       axios
       .get( 
         `${ config.api_url }/events/${ slug }`, { params: { 
@@ -116,7 +122,10 @@ export default {
           const event = sanitize( result.data.data )
         resolve( event )
       } )
-      .catch( error => logger.error( 'API', error ) )
+      .catch( error => {
+        logger.error( 'API', error ) 
+        reject( error )
+      } )
     } ) 
   }
 

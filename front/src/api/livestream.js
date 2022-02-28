@@ -11,11 +11,14 @@ export default {
 
   get() { 
     logger.info( `API`, `Fetching livestream.` )
-    return new Promise( resolve => 
+    return new Promise( ( resolve, reject ) => 
       axios
       .get( `${ config.api_url }/livestream` )
       .then( result => resolve( result.data.data.attributes.publicData ) )
-      .catch( error => logger.error( 'API', error ) )
+      .catch( error => {
+        logger.error( 'API', error ) 
+        reject( error )
+      } )
     ) 
   } 
 

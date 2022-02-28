@@ -9,11 +9,14 @@ export default {
 
   get() { 
     logger.info( `API`, `Fetching meta.` )
-    return new Promise( async resolve => 
+    return new Promise( ( resolve, reject ) => 
       axios
       .get( `${ config.api_url }/meta` )
       .then( result => resolve( result.data.data.attributes ) )
-      .catch( error => logger.error( 'API', error ) )
+      .catch( error => {
+        logger.error( 'API', error ) 
+        reject( error )
+      } )
     ) 
   } 
 
