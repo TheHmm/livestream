@@ -94,6 +94,11 @@
       "relation": "manyToMany",
       "target": "api::emoji-group.emoji-group",
       "inversedBy": "events"
+    },
+    "recording": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::mux-video-uploader.mux-asset"
     }
   }
 }

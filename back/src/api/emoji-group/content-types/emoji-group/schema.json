@@ -29,7 +29,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::event.event",
-      "inversedBy": "emoji_groups"
+      "mappedBy": "emoji_groups"
     }
   }
 }
