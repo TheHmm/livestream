@@ -59,7 +59,7 @@ export default {
         <h2 v-else>The livestream is over. The recording will be available here shortly.</h2>
       </section>
 
-      <main >
+      <main v-else>
 
         <div id="videoContainer">
           <Video 
