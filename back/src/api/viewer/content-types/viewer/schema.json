@@ -38,6 +38,9 @@
       "relation": "manyToMany",
       "target": "api::event.event",
       "mappedBy": "viewers"
+    },
+    "ip": {
+      "type": "string"
     }
   }
 }

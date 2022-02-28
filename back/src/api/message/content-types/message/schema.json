@@ -12,9 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "body": {
-      "type": "richtext"
-    },
     "censored": {
       "type": "boolean",
       "default": false
@@ -30,6 +27,9 @@
       "relation": "manyToOne",
       "target": "api::event.event",
       "inversedBy": "messages"
+    },
+    "body": {
+      "type": "text"
     }
   }
 }

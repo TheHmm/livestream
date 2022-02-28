@@ -16,9 +16,9 @@ export default {
     event() { return this.get_event(this.$route.params.slug ) },
     title() { return this.event.title },
     slug()  { return this.event.slug },
-    in_past() { return this.event.is.in_past },
-    in_future() { return this.event.is.in_future },
-    soon() { return this.event.is.soon }
+    in_past() { return this.event.is.in_past() },
+    in_future() { return this.event.is.in_future() },
+    soon() { return this.event.is.soon() }
     
   },
 
