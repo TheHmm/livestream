@@ -10,11 +10,11 @@ export default {
   },
 
   computed: {
-    title() { return this.event.title },
-    slug()  { return this.event.slug },
-    in_past() { return this.event.is.in_past },
-    in_future() { return this.event.is.in_future },
-    soon() { return this.event.is.soon }
+    title()     { return this.event.title },
+    slug()      { return this.event.slug },
+    in_past()   { return this.event.is.in_past() },
+    in_future() { return this.event.is.in_future() },
+    soon()      { return this.event.is.soon() }
   },
 
 }

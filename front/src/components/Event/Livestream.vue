@@ -1,7 +1,5 @@
 <script>
 
-import { time } from '@/utils'
-
 // import BodyText from '../components/BodyText'
 // import Video from '../components/Video'
 // import Chat from '../components/Chat'
@@ -40,14 +38,13 @@ export default {
     title()       { return this.event.title },
     starts()      { return this.event.starts },
     ends()        { return this.event.ends },
-    human_start() { return time.human_format( this.starts ) },
     recording()   { return this.event.recordingURL },
 
     // Most important property is the livestream.
     // The livestream object is attached to the event
     // in the api scripts. It can return a static object
     // or refer to the livestream entry in the store.
-    // Please refer to: @/api/events/sanitize_event
+    // Please refer to: @/api/events/sanitize
 
     livestream()  { return this.event.livestream() },
     
@@ -64,7 +61,7 @@ export default {
 
       <!-- <body-text v-if="!active && !recording">
         <section>
-          <h2>This event starts {{ human_start }}.</h2>
+          <h2>This event starts at..</h2>
         </section>
       </body-text>
 

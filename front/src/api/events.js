@@ -4,16 +4,13 @@ import store      from '@/store'
 import { logger } from '@/utils'
 import { time }   from '@/utils'
 
-export default {
 
+// Sanitizing 'events' type received from Strapi.
+// Note that for each of these events, we add a 
+// 'livestream' property that returns a different
+// object based on when the event is happening.
 
-  // Sanitizing 'events' type received from Strapi.
-  // Note that for each of these events, we add a 
-  // 'livestream' property that returns a different
-  // object based on when the event is happening.
-  
-  sanitize( event ) {
-
+const sanitize = event => {
 
     // hygiene!
 
@@ -23,31 +20,31 @@ export default {
     }
     delete event.attributes
 
-
     // When is it ?
 
     event.is = {
-      in_past   : time.is_in_past( event.ends ),
-      in_future : time.is_in_future( event.starts ),
-      soon      : time.is_soon( event.starts )
+      in_past   : () => time.is_in_past( event.ends ),
+      in_future : () => time.is_in_future( event.starts ),
+      soon      : () => time.is_soon( event.starts ),
     }
-
 
     // (1) soon: map to current livestream in store
     // (2) past: return recording of old stream
     // (3) else: return null; stream doesn't exist
 
     event.livestream = () => ( // <== this is a function!
-      event.is.soon ? 
+      event.is.soon() ? 
         store.getters[ 'livestream/get_livestream' ] :
-      event.is.in_past ? {
+      event.is.in_past() ? {
         url    : event.recordingURL,
         status : event.recordingURL && 'active' || 'idle'
       } : null 
     )
     return event
     
-  },
+}
+
+export default {
 
   
   // This method counts our events before fetching them
@@ -88,7 +85,7 @@ export default {
       .then( result => {
         const events = result.data.data
         for ( let e = 0; e < events.length; e ++ ) {
-          events[ e ] = this.sanitize( events[ e ] )
+          events[ e ] = sanitize( events[ e ] )
         }
         resolve( events )
       } )
@@ -116,7 +113,7 @@ export default {
           ]
         } } )
       .then( result => {    
-          const event = this.sanitize( result.data.data )
+          const event = sanitize( result.data.data )
         resolve( event )
       } )
       .catch( error => logger.error( 'API', error ) )
