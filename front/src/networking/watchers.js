@@ -102,18 +102,19 @@ export default {
       const old_emit = io.emit.bind(io)
       io.emit = ( ev, data ) => {
         monitor.on_send( ev, data )
-        old_emit( ev, data )
+        io.emit.bind(io)
       }
+      io.emit('hello', { name: 'karl' })
       io.onAny( monitor.on_receive )
     },
 
     init( io ) {
 
-      const HANDSHAKE_BYTES = config.networking.socket.handshake_bytes
-      this.hooks.on_receive( 'handshake', null, HANDSHAKE_BYTES )  
-
       const monitor = this.create( io )
       this.register( io, monitor )
+
+      const HANDSHAKE_BYTES = config.networking.socket.handshake_bytes
+      this.hooks.on_receive( 'handshake', null, HANDSHAKE_BYTES )  
 
     }
 

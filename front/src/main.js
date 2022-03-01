@@ -18,7 +18,7 @@ const
   intro = logger.intro( config ),
 
   // Instantiate socket cient
-  io    = socket.io( config.socket_url ),
+  io    = socket.io( config.socket_url, { autoConnect: false } ),
 
   // Instantiate networking scripts
   net   = networking.init( axios, io ),
@@ -54,3 +54,5 @@ app
 // }
 
 // .use( VueMarkdownIt )
+
+export default app

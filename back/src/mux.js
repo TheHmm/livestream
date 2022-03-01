@@ -16,7 +16,13 @@ module.exports = MUX_TOKEN => {
       reconnect_window   : 10,
       new_asset_settings : { 
         playback_policy  : 'public' 
-      }
+      },
+      embedded_subtitles : [{
+        name             : "English CC",
+        passthrough      : "English closed captions",
+        language_code    : "en-US",
+        language_channel : "cc1"
+      }],
     },
 
     // method for creating a livestream with MUX api

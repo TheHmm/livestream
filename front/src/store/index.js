@@ -186,6 +186,10 @@ export default createStore({
     socket_connect({strapi}) {
       logger.info('STORE', 'connect')
     },
+
+    socket_hello({strapi}, data) {
+      logger.info('STORE', 'hello', data)
+    },
     
     
     socket_user({ state, commit }, user) {

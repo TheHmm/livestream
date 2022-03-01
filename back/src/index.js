@@ -158,6 +158,7 @@ module.exports = {
 
       socket.on('hello', data => {
         console.log('hello', data)
+        io.sockets.emit('hello', data)
       })
 
       const

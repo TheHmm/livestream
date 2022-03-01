@@ -1,4 +1,5 @@
-import store      from '../store'
+import store from '@/store'
+import app from '@/main'
 
 const 
 
@@ -43,6 +44,8 @@ const
     } catch ( error ) {
       return '404'
     }
+    const socket = app.config.globalProperties.$socket.client
+    socket.connect()
   }
 
 

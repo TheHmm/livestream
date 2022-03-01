@@ -29,9 +29,9 @@ export default {
   },
   methods: {
 
-    src: playbackId => `https://stream.mux.com/${playbackId}.m3u8`,
+    src: playbackId => `https://stream.mux.com/${playbackId}.m3u8?add_audio_only=true`,
     poster: playbackId => `https://image.mux.com/${playbackId}/thumbnail.jpg?time=15`,
-
+// https://stream.mux.com/{PLAYBACK_ID}.m3u8?add_audio_only=true
 
     update_video() {
 
@@ -84,12 +84,13 @@ export default {
 </script>
 
 <template>
-  <video
+  <audio
     muted
     controls
     autoplay
   >
-  </video>
+    <!-- <source /> -->
+  </audio>
 </template>
 
 <style>
