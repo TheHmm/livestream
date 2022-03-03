@@ -71,6 +71,8 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       // We update the 'livestream' entry in Strapi with this 
       // new information.
 
+      console.log(data)
+
       await strapi
       .service('api::livestream.livestream')
       .createOrUpdate({
