@@ -16,6 +16,7 @@ const
       livestream = data.livestream,
       status     = data.livestream.status
 
+    console.log(data)
 
     // we merge the old "data" with the new saitzied one.
     // we conserve the old evet payload here because it 
