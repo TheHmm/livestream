@@ -34,14 +34,19 @@ const sanitize = event => {
 
     console.log(event)
 
-    event.livestream = () => ( // <== this is a function!
-      event.is.soon() ? 
-        store.getters[ 'livestream/get_livestream' ] :
-      event.is.in_past() ? {
-        playbackId : event.recordingURL,
-        status     : event.recordingURL && 'active' || 'idle'
-      } : null 
-    )
+    event.livestream = () => { 
+      // his is a functionreturning a value!
+      if ( event.is.soon() ) {
+        return  store.getters[ 'livestream/get_livestream' ] 
+      } else if ( event.is.in_past() ) {
+        const 
+          playbackId = event.recording?.data?.attributes?.playback_id,
+          status = playbackId && 'active' || 'idle'
+        return { playbackId, status }
+      } else {
+        return null
+      }
+    }
     return event
     
 }
@@ -81,7 +86,6 @@ export default {
           'starts',
           'ends',
           'info',
-          'recordingURL'
         ],
         populate: [
           'logo'
@@ -118,6 +122,7 @@ export default {
             'messages',
             'announcements',
             'emoji_groups',
+            'recording'
           ]
         } } )
       .then( result => {    

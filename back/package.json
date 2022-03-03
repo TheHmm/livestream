@@ -16,7 +16,8 @@
     "@strapi/strapi": "4.1.0",
     "react-color": "^2.19.3",
     "sqlite3": "5.0.2",
-    "strapi-plugin-mux-video-uploader": "^2.1.1"
+    "strapi-plugin-mux-video-uploader": "^2.1.1",
+    "strapi-plugin-transformer": "^1.0.3"
   },
   "author": {
     "name": "A Strapi developer"
