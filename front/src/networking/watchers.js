@@ -133,6 +133,8 @@ export default {
         })
       },
       frag_loaded: ( event, data ) => {
+        // EXT-X-PROGRAM-DATE-TIME
+        console.log(data.frag.start)
         methods.report.bytes_received({
           url   : data.frag.baseurl,
           from  : 'mux',

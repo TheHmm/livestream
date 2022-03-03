@@ -70,6 +70,18 @@ export default {
       logger.info( `SOCKET`, `Got livestream update: ${ data.status }` )
     },
 
+    socket_confirmJoinCc( { commit }) {
+      logger.info( 'SOCKET', `Subscribed to closed captions.`)
+    },
+
+    socket_confirmLeaveCc( { commit }) {
+      logger.info( 'SOCKET', `Unsubscribed from closed captions.`)
+    },
+
+    socket_time( { commit }, time ) {
+      logger.info( 'SOCKET', `Livestream is at ${ time } seconds.`)
+    },
+
   }
 
 

@@ -35,7 +35,7 @@ export default {
       }
     },
     level() {
-      logger.log('LIVESTREAM', this.level)
+      // logger.log('LIVESTREAM', this.level)
     }
   },
 
@@ -56,8 +56,11 @@ export default {
 
       logger.info( 'LIVESTREAM', `Updating stream: ${ this.level }` )
 
-      if ( this.level == 'only_cc' ) {
+      if ( this.hls ) {
+        this.hls.destroy()
+      }
 
+      if ( this.level == 'only_cc' ) {
 
         this.$socket.client.emit('join_CC_room')
 
@@ -74,7 +77,7 @@ export default {
         
         this.$socket.client.emit('leave_CC_room')
 
-         const
+        const
           player      = this.$el,
           playback_id = this.playback_id,
           source_url  = this.source_url( playback_id )
@@ -83,14 +86,12 @@ export default {
 
         if (  Hls.isSupported() ) {
 
-          if ( this.hls ) {
-            this.hls.destroy()
-          }
-
           this.hls = new Hls()
           this.init_stream_monitor( this.hls, Hls.Events )
           this.hls.loadSource( source_url, time )
           this.hls.attachMedia( player )
+          console.log(this.hls.currentLevel)
+
 
           this.hls.on(Hls.Events.MANIFEST_PARSED, event => {
             player.play()

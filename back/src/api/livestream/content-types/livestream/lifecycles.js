@@ -13,7 +13,8 @@ const
 
     const 
       data       = event.params.data,
-      livestream = data.livestream
+      livestream = data.livestream,
+      status     = data.livestream.status
 
 
     // we merge the old "data" with the new saitzied one.
@@ -34,6 +35,15 @@ const
 
     strapi.log.info(`[ * STREAM KEY: ${livestream.stream_key} ]`)
 
+
+    // custom timer to get the livestream's time
+
+    // strapi.timer.reset()
+
+    // if ( status == 'active' ) {
+    //   strapi.timer.start()
+    // }
+
   },
 
 
@@ -45,16 +55,11 @@ const
 
   after_update_handler = ( event, strapi ) => {
     
-    const
-      livestream = event.result.publicData,
-      time       = livestream.time
-
     strapi.io
-    .emit( 'stream_update', livestream )
-
-    strapi.io
-    .to( 'cc' )
-    .emit( 'time', time )
+    .emit( 
+      'stream_update', 
+      event.result.publicData 
+    )
   
   },
 

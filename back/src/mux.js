@@ -4,16 +4,23 @@ module.exports = MUX_TOKEN => {
 
   const
   
+
     // import mux-node
+
     MuxNode = require('@mux/mux-node'),
 
+
     // initialize mux Video object
+
     { Video } = new MuxNode(MUX_TOKEN.ID, MUX_TOKEN.SECRET),
 
+
     // our livestream options
+
     livestreamOptions  = {
       playback_policy    : 'public',
       reconnect_window   : 10,
+      latency_mode       : "low",
       new_asset_settings : { 
         playback_policy  : 'public' 
       },
@@ -25,27 +32,37 @@ module.exports = MUX_TOKEN => {
       }],
     },
 
+
     // method for creating a livestream with MUX api
+
     createLiveStream = async () => {
       return await Video.LiveStreams.create(livestreamOptions)
     },
     
+
     // function to get livestream with MUX api 
+
     getLiveStream = async id => {
       return await Video.LiveStreams.get(id)
     }
 
+
     // lazy way of getting a stream's playback id
+
     getPlaybackId = stream => stream['playback_ids'][0].id,
 
+
     // we reduce a stream object to it's publically safe information
+
     getPublicStreamDetails = stream => ({
       status       : stream.status,
       playbackId   : getPlaybackId(stream),
       recentAssets : stream.recent_asset_ids,
     })
 
+
   // we return the mux object for use in the bootstrap.js file
+  
   return {
     createLiveStream,
     getLiveStream,
