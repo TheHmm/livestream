@@ -11,7 +11,6 @@ import config          from './config'
 import networking      from './networking'
 import { logger, $id } from './utils'
 
-
 const
 
   // Log default config to console
@@ -33,7 +32,7 @@ app
 .config
 .globalProperties = { 
   logger, 
-  $id 
+  $id,
 }
 
 app

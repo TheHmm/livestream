@@ -187,6 +187,10 @@ export default createStore({
       logger.info('STORE', 'connect')
     },
 
+    socket_disconnect({strapi}) {
+      logger.info('STORE', 'disconnect')
+    },
+
     socket_hello({strapi}, data) {
       logger.info('STORE', 'hello', data)
     },

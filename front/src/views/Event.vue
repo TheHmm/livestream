@@ -10,15 +10,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters('events',[
-      'get_event'
-    ]),
-    event() { return this.get_event(this.$route.params.slug ) },
-    title() { return this.event.title },
-    slug()  { return this.event.slug },
-    in_past() { return this.event.is.in_past() },
+    ...mapGetters( 'events', [ 'get_event' ] ),
+    event()     { return this.get_event( this.$route.params.slug ) },
+    title()     { return this.event.title },
+    slug()      { return this.event.slug },
+    in_past()   { return this.event.is.in_past() },
     in_future() { return this.event.is.in_future() },
-    soon() { return this.event.is.soon() }
+    soon()      { return this.event.is.soon() }
     
   },
 

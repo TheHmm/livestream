@@ -65,9 +65,6 @@
       "type": "boolean",
       "default": false
     },
-    "recordingURL": {
-      "type": "string"
-    },
     "chatPlaybackDelay": {
       "type": "decimal"
     },

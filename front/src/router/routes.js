@@ -27,7 +27,7 @@ export default [
     path: '/:slug',
     name: 'event',
     component: () => import( '../views/Event.vue' ),
-    beforeEnter: guards.before_enter_event
+    beforeEnter: guards.before_enter_event,
   },
   {
     path: '/:pathMatch(.*)*',

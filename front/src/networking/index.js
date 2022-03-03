@@ -1,7 +1,6 @@
 import tools    from './tools'
 import methods  from './methods'
 import watchers from './watchers'
-import mux      from './mux'
 
 
 // Network utilities: These functions try to
@@ -16,10 +15,11 @@ import mux      from './mux'
 
 const 
 
-  init = ( axios, io ) => {
+  init = ( axios, io, hls ) => {
 
     watchers.strapi_monitor.init( axios )
     watchers.socket_monitor.init( io )
+    // watchers.stream_monitor.init( hls )
     watchers.asset_observer.init()
 
     methods.head_assets()
@@ -31,6 +31,5 @@ export default {
   tools,
   methods,
   watchers,
-  mux,
   init
 }

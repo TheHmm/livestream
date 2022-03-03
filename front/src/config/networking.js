@@ -26,7 +26,16 @@ export default {
     // be consistent across browsers so it's safer to 
     // account for it than not.
 
-    handshake_bytes: 1148
+    handshake_bytes: 1148,
+
+  },
+
+  mux: {
+
+
+    // request bytes
+
+    request_bytes: 291
 
   }
 

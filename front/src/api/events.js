@@ -32,12 +32,14 @@ const sanitize = event => {
     // (2) past: return recording of old stream
     // (3) else: return null; stream doesn't exist
 
+    console.log(event)
+
     event.livestream = () => ( // <== this is a function!
       event.is.soon() ? 
         store.getters[ 'livestream/get_livestream' ] :
       event.is.in_past() ? {
-        url    : event.recordingURL,
-        status : event.recordingURL && 'active' || 'idle'
+        playbackId : event.recordingURL,
+        status     : event.recordingURL && 'active' || 'idle'
       } : null 
     )
     return event

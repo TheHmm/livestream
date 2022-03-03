@@ -49,7 +49,6 @@ const
   }
 
 
-
 export default {
   before_each,
   before_enter_home,  

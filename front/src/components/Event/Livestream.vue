@@ -1,9 +1,8 @@
 <script>
 
-import Video from './Video.vue'
+import Player from './Player.vue'
 // import Chat from '../components/Chat'
 // import Announcements from '../components/Announcements'
-
 export default {
 
   name: 'Livestream',
@@ -15,13 +14,21 @@ export default {
   },
 
   components: {
-    Video,
+    Player,
     // Chat,
     // Announcements,
   },
 
   data() {
     return {
+      levels: [
+        'only_cc',
+        'only_audio',
+        'lq_video',
+        'hq_video',
+        'hd_video',
+      ],
+      selected_level: 'hq_video'
     }
   },
 
@@ -41,6 +48,7 @@ export default {
     // Please refer to: @/api/events/sanitize
 
     livestream()  { return this.event.livestream() },
+    playback_id() { return this.livestream.playbackId },
     active()      { return this.livestream.status == 'active' }
     
   },
@@ -59,11 +67,28 @@ export default {
         <h2 v-else>The livestream is over. The recording will be available here shortly.</h2>
       </section>
 
-      <main v-else>
+      <main v-if="playback_id && active" >
+
+        <div class="options">
+          <label for="modes">mode:</label>
+          <select 
+            name="modes"
+            v-model="selected_level"
+          >
+            <option 
+              v-for="level in levels"
+              :key="level"
+              :value="level"
+            >
+              {{ level }}
+            </option>
+          </select>
+        </div>
 
         <div id="videoContainer">
-          <Video 
+          <Player 
             :livestream="livestream"
+            :level="selected_level"
           />
         </div>
 
@@ -95,11 +120,12 @@ main {
   box-sizing: border-box;
   width: 100%; height: 100%;
   min-height: 0;
-  display: flex;
+  /* display: flex; */
   justify-content: stretch;
   align-items: stretch;
   overflow: hidden;
 }
+
 
 #videoContainer {
   /* position: absolute; */

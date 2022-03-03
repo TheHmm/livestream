@@ -1,7 +1,5 @@
 import { Service } from 'axios-middleware'
 import config      from "@/config"
-import store       from '@/store'
-import { logger }  from '@/utils' 
 import tools       from "./tools"
 import methods     from './methods'
 
@@ -21,22 +19,20 @@ export default {
     hooks : {
 
       on_request : request => {
-        const 
-          url   = request.url,
-          to    = url.includes(api_url) ? 'api' : 'assets',
-          bytes = tools.get_bytes_sent( request )
-        store.dispatch( 'networking/add_bytes_sent', { url, to, bytes } )
-        logger.info( 'NETWORK', `${ bytes } bytes sent to ${ to }.` )
+        methods.report.bytes_sent({
+          url   : request.url,
+          to    : request.url.includes(api_url) ? 'api' : 'assets',
+          bytes : tools.get_bytes_sent( request )
+        })
         return request
       },
   
       on_response : response => {
-        const 
-          url   = response.request.responseURL,
-          from  = url.includes(api_url) ? 'api' : 'assets',
-          bytes = tools.get_bytes_received( response )
-        store.dispatch( 'networking/add_bytes_received', { url, from, bytes } )
-        logger.info( 'NETWORK', `${ bytes } bytes received from ${ from }.` )
+        methods.report.bytes_received({
+          url   : response.request.responseURL,
+          from  : response.request.responseURL.includes(api_url) ? 'api' : 'assets',
+          bytes : tools.get_bytes_received( response )
+        })
         return response
       },
   
@@ -64,7 +60,7 @@ export default {
 
 
 
-  // We inject two middleware functions into our socket
+  // We inject middleware functions into our socket
   // client so that we can monitor our network activity
   // and report to the vuex store.
 
@@ -73,25 +69,29 @@ export default {
     hooks: {
 
       on_send: ( event, data, bytes ) => {
-        bytes = bytes || tools.json_size( data )
-        store.dispatch( 'networking/add_bytes_sent', { 
-          url : event, 
-          to  : 'sockets', 
-          bytes 
-        } )
-        logger.info( 'NETWORK', `${ bytes } bytes sent to sockets.` )
+        methods.report.bytes_sent({
+          url   : event,
+          to    : 'sockets',
+          bytes : bytes || tools.json_size( data )
+        })
       },
 
       on_receive: ( event, data, bytes ) => {
-        bytes = bytes || tools.json_size( data )
-        store.dispatch( 'networking/add_bytes_received', { 
-          url  : event, 
-          from : 'sockets', 
-          bytes 
-        } )
-        logger.info( 'NETWORK', `${ bytes } bytes received from sockets.` )
+        methods.report.bytes_received({
+          url   : event, 
+          from  : 'sockets', 
+          bytes : bytes || tools.json_size( data )
+        })
       },
-      
+
+      on_connect: () => { 
+        methods.report.bytes_received({
+          url   : 'handshake', 
+          from  : 'sockets', 
+          bytes : config.networking.socket.handshake_bytes
+        })
+      },
+
     },
     
     create( ) {
@@ -99,24 +99,63 @@ export default {
     },
 
     register( io, monitor ) {
+      io.onAny( monitor.on_receive )
+      io.on( 'connect', monitor.on_connect )
       const old_emit = io.emit.bind(io)
       io.emit = ( ev, data ) => {
         monitor.on_send( ev, data )
-        io.emit.bind(io)
+        old_emit(ev, data)
       }
-      io.emit('hello', { name: 'karl' })
-      io.onAny( monitor.on_receive )
     },
 
     init( io ) {
-
       const monitor = this.create( io )
       this.register( io, monitor )
-
-      const HANDSHAKE_BYTES = config.networking.socket.handshake_bytes
-      this.hooks.on_receive( 'handshake', null, HANDSHAKE_BYTES )  
-
     }
+
+  },
+
+
+  // We inject middleware functions into HLS ( livestream
+  // cosumer ) so that we can monitor its network activity
+  // and report to the vuex store.
+
+  stream_monitor : {
+
+
+    hooks: {
+
+      frag_loading: ( event, data ) => {
+        methods.report.bytes_sent({
+          url   : data.frag.baseurl,
+          to    : 'mux',
+          bytes : config.networking.mux.request_bytes + data.frag.baseurl.length
+        })
+      },
+      frag_loaded: ( event, data ) => {
+        methods.report.bytes_received({
+          url   : data.frag.baseurl,
+          from  : 'mux',
+          bytes : data.frag.stats.loaded
+        })   
+      }
+
+    },
+    
+    create( ) {
+      return this.hooks
+    },
+
+    register( hls, events, monitor ) {
+      hls.on( events.FRAG_LOADING, monitor.frag_loading )
+      hls.on( events.FRAG_LOADED, monitor.frag_loaded )
+    },
+
+    init( hls, events ) {
+      const monitor = this.create()
+      this.register( hls, events, monitor )
+    }
+
 
   },
 
