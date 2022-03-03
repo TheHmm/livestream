@@ -30,7 +30,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     
     if ( status !== 'idle' && status !== 'active' ) {
       strapi.log.warn(`[ REJECTING MUX HOOK: ${status} ]`)
-      return
+      return 'Thanks, MUX!'
     } 
 
 
