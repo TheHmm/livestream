@@ -90,7 +90,7 @@ export default {
           this.init_stream_monitor( this.hls, Hls.Events )
           this.hls.loadSource( source_url, time )
           this.hls.attachMedia( player )
-          console.log(this.hls.currentLevel)
+          console.log(source_url)
 
 
           this.hls.on(Hls.Events.MANIFEST_PARSED, event => {

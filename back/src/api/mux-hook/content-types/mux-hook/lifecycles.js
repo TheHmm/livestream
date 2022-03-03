@@ -40,9 +40,9 @@ const
       // event payload will additionally carry an array of recent
       // asset IDs, so we add this to our updated object.
 
-      // if (status == 'idle') {
+      if (status == 'idle') {
         livestream.recent_asset_ids = data.recent_asset_ids
-      // }
+      }
 
 
       // We update the 'livestream' entry in Strapi with this 
