@@ -41,22 +41,22 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
     // We get the exisitng livestream from strapi.
 
-    await strapi
-    .service('api::livestream.livestream')
-    .find()
-    .then( async response => {
+    // await strapi
+    // .service('api::livestream.livestream')
+    // .find()
+    // .then( async response => {
 
 
       // We set the livestream to the old, unsanitized, version
       // of itself that was stored on mux
 
-      const livestream = response?.privateData
+      // const livestream = response?.privateData
 
 
       // We update the status of the livestream object with the
       // new status received from the mux hook.
 
-      livestream.status = status
+      // livestream.status = status
 
 
       // If the livestream has arrived at an 'idle' state, the 
@@ -64,7 +64,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       // asset IDs, so we add this to our updated object.
 
       // if (status == 'idle') {
-        livestream.recent_asset_ids = data.recent_asset_ids
+        // livestream.recent_asset_ids = data.recent_asset_ids
       // }
 
 
@@ -74,11 +74,11 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       await strapi
       .service('api::livestream.livestream')
       .createOrUpdate({
-        data: { livestream }
+        data: { data }
       })
       
 
-    })
+    // })
 
     // We thank mux.
 
