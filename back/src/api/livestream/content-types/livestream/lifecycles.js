@@ -30,8 +30,6 @@ const
       }
     }
 
-    console.log(data)
-
 
     // we log the STREAM-KEY to be able to access it
 
