@@ -20,7 +20,7 @@ module.exports = MUX_TOKEN => {
     livestreamOptions  = {
       playback_policy    : 'public',
       reconnect_window   : 10,
-      latency_mode       : "low",
+      // latency_mode       : "low",
       new_asset_settings : { 
         playback_policy  : 'public' 
       },
