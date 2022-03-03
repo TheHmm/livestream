@@ -50,6 +50,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       // We set the livestream to the old, unsanitized, version
       // of itself that was stored on mux
 
+      const livestream = data
       // const livestream = response?.privateData
 
 
@@ -71,12 +72,12 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       // We update the 'livestream' entry in Strapi with this 
       // new information.
 
-      console.log(data)
+      // console.log(data)
 
       await strapi
       .service('api::livestream.livestream')
       .createOrUpdate({
-        data: { data }
+        data: { livestream }
       })
       
 
