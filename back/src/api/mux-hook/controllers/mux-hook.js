@@ -47,7 +47,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       status,
     }
 
-    // await super.create(ctx)
+    await super.create(ctx)
 
 
     // We thank mux.
