@@ -31,6 +31,9 @@ export default {
       if (this.active) {
         this.update_stream()
       } else {
+        if (this.hls) {
+          this.hls.destroy()
+        }
         this.$el.src = undefined
       }
     },

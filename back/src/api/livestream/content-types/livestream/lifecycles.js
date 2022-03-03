@@ -11,11 +11,12 @@ const
 
     // we get the event payload
 
-    console.log(event)
-
     const 
       data       = event.params.data,
-      livestream = data.livestream
+      livestream = data.livestream,
+      status     = data.livestream.status
+
+      console.log(status)
 
 
     // we merge the old "data" with the new saitzied one.

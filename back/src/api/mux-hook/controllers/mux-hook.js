@@ -39,49 +39,27 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     strapi.log.info(`[ PROCESSING MUX HOOK: ${status} ]`)
 
 
-    // We get the exisitng livestream from strapi.
 
-    // await strapi
-    // .service('api::livestream.livestream')
-    // .find()
-    // .then( async response => {
+    const livestream = data
 
+    // If the livestream has arrived at an 'idle' state, the 
+    // event payload will additionally carry an array of recent
+    // asset IDs, so we add this to our updated object.
 
-      // We set the livestream to the old, unsanitized, version
-      // of itself that was stored on mux
-
-      const livestream = data
-      // const livestream = response?.privateData
+    // if (status == 'idle') {
+      // livestream.recent_asset_ids = data.recent_asset_ids
+    // }
 
 
-      // We update the status of the livestream object with the
-      // new status received from the mux hook.
+    // We update the 'livestream' entry in Strapi with this 
+    // new information.
 
-      // livestream.status = status
-
-
-      // If the livestream has arrived at an 'idle' state, the 
-      // event payload will additionally carry an array of recent
-      // asset IDs, so we add this to our updated object.
-
-      // if (status == 'idle') {
-        // livestream.recent_asset_ids = data.recent_asset_ids
-      // }
-
-
-      // We update the 'livestream' entry in Strapi with this 
-      // new information.
-
-      // console.log(data)
-
-      await strapi
-      .service('api::livestream.livestream')
-      .createOrUpdate({
-        data: { livestream }
-      })
+    await strapi
+    .service('api::livestream.livestream')
+    .createOrUpdate({
+      data: { livestream }
+    })
       
-
-    // })
 
     // We thank mux.
 
