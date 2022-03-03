@@ -15,29 +15,118 @@ export default {
   },
   data() {
     return {
-      
+      hls: null
     }
   },
   computed: {
-    active() { return this.livestream.status === 'active' },
+    playback_id() { 
+      return this.livestream.playbackId 
+    },
+    active() { 
+      return this.livestream.status == 'active' 
+    },
   },
   watch: {
-    livestream(newState) {
-      if (newState.status === 'active') {
+    livestream() {
+      if (this.active) {
         this.update_stream()
       } else {
         this.$el.src = undefined
       }
     },
     level() {
-      logger.log(this.level)
+      logger.log('LIVESTREAM', this.level)
     }
-
   },
+
+  created() {
+  },
+
   mounted() {
     this.update_stream()
   },
+
+  updated() {
+    this.update_stream()
+  },
+
   methods: {
+
+    update_stream( time ) {
+
+      logger.info( 'LIVESTREAM', `Updating stream: ${ this.level }` )
+
+      if ( this.level == 'only_cc' ) {
+
+
+        this.$socket.client.emit('join_CC_room')
+
+        time = time || 15
+
+        const
+          player      = this.$refs.img,
+          playback_id = this.playback_id,
+          source_url  = this.source_url( playback_id, time )
+        
+        player.src = source_url
+
+      } else {
+        
+        this.$socket.client.emit('leave_CC_room')
+
+         const
+          player      = this.$el,
+          playback_id = this.playback_id,
+          source_url  = this.source_url( playback_id )
+
+        // If HLS.js is supported on this platform
+
+        if (  Hls.isSupported() ) {
+
+          if ( this.hls ) {
+            this.hls.destroy()
+          }
+
+          this.hls = new Hls()
+          this.init_stream_monitor( this.hls, Hls.Events )
+          this.hls.loadSource( source_url, time )
+          this.hls.attachMedia( player )
+
+          this.hls.on(Hls.Events.MANIFEST_PARSED, event => {
+            player.play()
+          })
+
+        // If the player can support HLS natively
+
+        } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
+          player.src = source_url
+          player.addEventListener('loadedmetadata', () => {
+            player.play()
+          })
+
+        } else {
+          logger.error('LIVESTREAM', `Can't play livestream!`)
+        }
+
+      }
+
+     
+
+    },
+
+    init_stream_monitor( hls, events ) {
+      networking.watchers.stream_monitor.init( hls, events )
+    },
+
+    source_url( playback_id, time ) {
+      if ( this.level == 'only_cc' ) {
+        return this.thumb_src( playback_id, time ) 
+      } else if ( this.level == 'only_audio' ) {
+        return this.audio_src( playback_id )
+      } else {
+        return this.video_src( playback_id )
+      }
+    },
 
     video_src( playback_id ) {
       return `https://stream.mux.com/${ playback_id }.m3u8`
@@ -49,47 +138,6 @@ export default {
       return `https://image.mux.com/${ playback_id }/thumbnail.jpg?time=${ time }`
     },
 
-    source_url( playback_id, time ) {
-      if ( this.selected_level == 'only_cc' ) {
-        return this.thumb_src( playback_id, time ) 
-      } else if ( this.selected_level == 'only_audio' ) {
-        return this.audio_src( playback_id )
-      } else {
-        return this.video_src( playback_id )
-      }
-    },
-
-    async update_stream() {
-
-      logger.info( 'LIVESTREAM', `Updating stream.` )
-
-      const
-        player      = this.$el,
-        playback_id = this.livestream.playbackId,
-        source_url  = this.source_url( playback_id )
-
-      // If HLS.js is supported on this platform
-
-      if (Hls.isSupported()) {
-
-        const hls = new Hls()
-        hls.loadSource( source_url )
-        hls.attachMedia( player )
-        networking.watchers.stream_monitor.init(hls, Hls.Events)
-        hls.on(Hls.Events.MANIFEST_PARSED, event => {
-          player.play()
-        })
-
-      // If the player can support HLS natively
-
-      } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
-        player.src = source_url
-        player.addEventListener('loadedmetadata', () => {
-          player.play()
-        })
-      }
-
-    }
   }
 }
 </script>
@@ -98,7 +146,10 @@ export default {
   <div
     v-if="level == 'only_cc'"
   > 
-    Closed Captions
+    <img
+      ref="img"
+    />
+    <caption>Closed Captions</caption>
   </div>
   <audio
     v-else-if="level == 'only_audio'"

@@ -12,7 +12,7 @@ export default {
     return new Promise( ( resolve, reject ) => 
       axios
       .get( `${ config.api_url }/meta` )
-      .then( result => resolve( result.data.data.attributes ) )
+      .then( result => resolve( result.data.data ) )
       .catch( error => {
         logger.error( 'API', error ) 
         reject( error )

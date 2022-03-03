@@ -161,6 +161,16 @@ module.exports = {
         io.sockets.emit('hello', data)
       })
 
+      socket.on('join_CC_room', data => {
+        socket.join('cc')
+        socket.emit('confirm_join_CC')
+      })
+
+      socket.on('leave_CC_room', data => {
+        socket.leave('cc')
+        socket.emit('confirm_leave_CC')
+      })
+
       const
         userCount = () => socket.client.conn.server.clientsCount,
         ip = io.getIP(socket)

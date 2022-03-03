@@ -14,7 +14,7 @@ export default {
     return new Promise( ( resolve, reject ) => 
       axios
       .get( `${ config.api_url }/livestream` )
-      .then( result => resolve( result.data.data.attributes.publicData ) )
+      .then( result => resolve( result.data.data.publicData ) )
       .catch( error => {
         logger.error( 'API', error ) 
         reject( error )

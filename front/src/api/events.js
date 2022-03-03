@@ -12,14 +12,6 @@ import { time }   from '@/utils'
 
 const sanitize = event => {
 
-    // hygiene!
-
-    event = { 
-      ...event, 
-      ...event.attributes 
-    }
-    delete event.attributes
-
     // When is it ?
 
     event.is = {
@@ -32,15 +24,13 @@ const sanitize = event => {
     // (2) past: return recording of old stream
     // (3) else: return null; stream doesn't exist
 
-    console.log(event)
-
     event.livestream = () => { 
       // his is a functionreturning a value!
       if ( event.is.soon() ) {
         return  store.getters[ 'livestream/get_livestream' ] 
       } else if ( event.is.in_past() ) {
         const 
-          playbackId = event.recording?.data?.attributes?.playback_id,
+          playbackId = event.recording?.data?.playback_id,
           status = playbackId && 'active' || 'idle'
         return { playbackId, status }
       } else {

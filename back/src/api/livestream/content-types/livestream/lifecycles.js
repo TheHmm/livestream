@@ -34,7 +34,6 @@ const
 
     strapi.log.info(`[ * STREAM KEY: ${livestream.stream_key} ]`)
 
-
   },
 
 
@@ -46,11 +45,16 @@ const
 
   after_update_handler = ( event, strapi ) => {
     
+    const
+      livestream = event.result.publicData,
+      time       = livestream.time
+
     strapi.io
-    .emit(
-      'stream_update', 
-      event.result.publicData
-    )
+    .emit( 'stream_update', livestream )
+
+    strapi.io
+    .to( 'cc' )
+    .emit( 'time', time )
   
   },
 
