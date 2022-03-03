@@ -39,15 +39,15 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     strapi.log.info(`[ PROCESSING MUX HOOK: ${status} ]`)
 
 
-    // // We add the new mux-hook entry to our database.
+    // We add the new mux-hook entry to our database.
 
-    // ctx.request.body.data = {
-    //   event: data,
-    //   streamID,
-    //   status,
-    // }
+    ctx.request.body.data = {
+      event: data,
+      streamID,
+      status,
+    }
 
-    // await super.create(ctx)
+    await super.create(ctx)
 
 
     // We thank mux.

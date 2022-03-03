@@ -39,7 +39,7 @@ module.exports = {
     // else, we stop here and ask for MUX_TOKEN_ details.
 
     if ( !MUX_TOKEN.ID || !MUX_TOKEN.SECRET ) {
-      return strapi.log.fatal( 'MUX API TOKEN NOT PROVIDED!' )
+      return strapi.log.error( 'MUX API TOKEN NOT PROVIDED!' )
     }
 
 
@@ -57,7 +57,7 @@ module.exports = {
     // we stop here and return an error 
 
     if ( !mux || !io ) {
-      strapi.log.fatal( 'The MUX object or IO server was not initialized properly.' )
+      strapi.log.error( 'The MUX object or IO server was not initialized properly.' )
       return
     }
 
@@ -104,7 +104,7 @@ module.exports = {
               .getLiveStream( found.privateData.id )
 
           } catch ( error ) { 
-            return strapi.log.fatal( 'mux err', error )
+            return strapi.log.error( 'mux err', error )
           }
         
         
@@ -121,7 +121,7 @@ module.exports = {
               .createLiveStream()
           
           } catch ( error ) {
-            return strapi.log.fatal( 'mux err', error )
+            return strapi.log.error( 'mux err', error )
           }
 
         }
@@ -140,13 +140,13 @@ module.exports = {
               } )
             
           } catch ( error ) {
-            return strapi.log.fatal( 'strapi err', error )
+            return strapi.log.error( 'strapi err', error )
           }
 
         }
 
       } catch ( error ) {
-        return strapi.log.fatal( 'strapi err', error )
+        return strapi.log.error( 'strapi err', error )
 
       }
 
