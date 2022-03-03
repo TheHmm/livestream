@@ -39,29 +39,57 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     strapi.log.info(`[ PROCESSING MUX HOOK: ${status} ]`)
 
 
-    // // We add the new mux-hook entry to our database.
+    // We get the exisitng livestream from strapi.
 
-    // ctx.request.body.data = {
-    //   event: data,
-    //   streamID,
-    //   status,
-    // }
+    await strapi
+    .service('api::livestream.livestream')
+    .find()
+    .then( async response => {
 
-    // await super.create(ctx)
 
+      // We set the livestream to the old, unsanitized, version
+      // of itself that was stored on mux
+
+      const livestream = response?.privateData
+
+
+      // We update the status of the livestream object with the
+      // new status received from the mux hook.
+
+      livestream.status = status
+
+
+      // If the livestream has arrived at an 'idle' state, the 
+      // event payload will additionally carry an array of recent
+      // asset IDs, so we add this to our updated object.
+
+      // if (status == 'idle') {
+        livestream.recent_asset_ids = data.recent_asset_ids
+      // }
+
+
+      // We update the 'livestream' entry in Strapi with this 
+      // new information.
+
+      await strapi
+      .service('api::livestream.livestream')
+      .createOrUpdate({
+        data: { livestream }
+      })
+      
+
+    })
 
     // We thank mux.
 
     return 'Thanks MUX!'
 
-
-    // There are still things to do with this event:
-    // (1) updating the livestream
-    // (2) informing the connected sockets
-
-    // We continue here: 
-    // back/src/api/mux-hook/content-types/mux-hook/lifecycles.js
-
   },
+
+    
+  // We still have to inform connected sockets of this change,
+  // so we continue in the appropriate place:
+  // back/src/api/livestream/content-types/livestream/lifecycles.js   
+
 
 }));
