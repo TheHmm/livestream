@@ -171,14 +171,12 @@ module.exports = {
         socket.emit('confirm_leave_CC')
       })
 
-      socket.on('final_CC', data => {
-        console.log(data)
-        io.to('CC').emit('final_CC')
+      socket.on('final', data => {
+        io.to('CC').emit('final')
       })
 
-      socket.on('interm_CC', data => {
-        console.log(data)
-        io.to('CC').emit('interm_CC')
+      socket.on('interm', data => {
+        io.to('CC').emit('interm')
       })
 
       const

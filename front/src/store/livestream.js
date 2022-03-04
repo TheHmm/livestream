@@ -78,9 +78,11 @@ export default {
       logger.info( 'SOCKET', `Unsubscribed from closed captions.`)
     },
 
-    socket_time( { commit }, time ) {
-      logger.info( 'SOCKET', `Livestream is at ${ time } seconds.`)
+    socket_final( { commit }, data ) {
+      console.log(data)
     },
+
+
 
   }
 
