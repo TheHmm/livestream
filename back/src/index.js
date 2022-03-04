@@ -165,10 +165,20 @@ module.exports = {
         socket.join('cc')
         socket.emit('confirm_join_CC')
       })
-
+      
       socket.on('leave_CC_room', data => {
         socket.leave('cc')
         socket.emit('confirm_leave_CC')
+      })
+
+      socket.on('final_CC', data => {
+        console.log(data)
+        io.to('CC').emit('final_CC')
+      })
+
+      socket.on('interm_CC', data => {
+        console.log(data)
+        io.to('CC').emit('interm_CC')
       })
 
       const

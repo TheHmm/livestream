@@ -1,21 +1,30 @@
 <script>
 import Hls        from 'hls.js'
 import { logger } from '@/utils'
+import { time }   from '@/utils'
 import networking from '@/networking'
 
 export default {
+
   name: 'Player',
+
   props: {
+
     livestream: {
       type: Object
     },
+
     level: {
       type: String
-    }
+    },
+
   },
   data() {
     return {
-      hls: null
+      hls: null,
+      img_interval : null,
+      reload_every : 15 * 1000,
+      default_time : 0.5,
     }
   },
   computed: {
@@ -27,13 +36,8 @@ export default {
     },
   },
   watch: {
-    livestream(new_stream, old_stream) {
-      console.log(new_stream.status, old_stream.status)
-      if (
-        new_stream.status == 'active' && 
-        new_stream.status != old_stream.status
-      ) {
-        console.log('got livestream watcher uoate')
+    livestream() {
+      if ( this.active ) {
         this.update_stream()
       } else {
         if (this.hls) {
@@ -64,29 +68,28 @@ export default {
 
   methods: {
 
-    update_stream( time ) {
+    update_stream() {
 
       logger.info( 'LIVESTREAM', `Updating stream: ${ this.level }` )
 
       if ( this.hls ) {
         this.hls.destroy()
       }
+      if ( this.img_interval ) {
+        clearInterval( this.img_interval )
+      }
 
       if ( this.level == 'only_cc' ) {
 
         this.$socket.client.emit('join_CC_room')
 
-        time = time || 15
-
-        const
-          player      = this.$refs.img,
-          playback_id = this.playback_id,
-          source_url  = this.source_url( playback_id, time )
-        
-        player.src = source_url
+        this.reload_img()
+        this.img_interval = setInterval(() => {
+          this.reload_img()
+        }, this.reload_every )
 
       } else {
-        
+
         this.$socket.client.emit('leave_CC_room')
 
         const
@@ -100,7 +103,7 @@ export default {
 
           this.hls = new Hls()
           this.init_stream_monitor( this.hls, Hls.Events )
-          this.hls.loadSource( source_url, time )
+          this.hls.loadSource( source_url )
           this.hls.attachMedia( player )
           console.log(source_url)
 
@@ -127,13 +130,27 @@ export default {
 
     },
 
-    init_stream_monitor( hls, events ) {
-      networking.watchers.stream_monitor.init( hls, events )
+    reload_img( ) {
+      const
+        player      = this.$refs.img,
+        playback_id = this.playback_id,
+        curr_time   = this.get_current_time( this.livestream ),
+        source_url  = this.source_url( playback_id, curr_time )
+      console.log(source_url)
+      player.src = source_url
     },
 
-    source_url( playback_id, time ) {
+    get_current_time( livestream ) {
+      if ( livestream.start_time ) {
+        return ( time.now() - livestream.start_time * 1000 ) / 1000
+      } else {
+        return this.default_time
+      }
+    },
+
+    source_url( playback_id, curr_time ) {
       if ( this.level == 'only_cc' ) {
-        return this.thumb_src( playback_id, time ) 
+        return this.thumb_src( playback_id, curr_time ) 
       } else if ( this.level == 'only_audio' ) {
         return this.audio_src( playback_id )
       } else {
@@ -147,8 +164,12 @@ export default {
     audio_src( playback_id ) {
       return `https://stream.mux.com/${ playback_id }.m3u8?add_audio_only=true`
     },
-    thumb_src( playback_id, time ) {
-      return `https://image.mux.com/${ playback_id }/thumbnail.jpg?time=${ time }`
+    thumb_src( playback_id, curr_time ) {
+      return `https://image.mux.com/${ playback_id }/thumbnail.jpg?&width=240&time=${ curr_time }`
+    },
+
+    init_stream_monitor( hls, events ) {
+      networking.watchers.stream_monitor.init( hls, events )
     },
 
   }

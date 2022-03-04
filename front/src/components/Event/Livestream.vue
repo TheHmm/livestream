@@ -28,7 +28,7 @@ export default {
         'hq_video',
         'hd_video',
       ],
-      selected_level: 'hd_video'
+      selected_level: 'only_cc'
     }
   },
 

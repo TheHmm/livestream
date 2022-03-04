@@ -26,6 +26,7 @@ const
 
 
 export default {
+  now,
   is_in_past,
   is_in_future,
   is_soon,
