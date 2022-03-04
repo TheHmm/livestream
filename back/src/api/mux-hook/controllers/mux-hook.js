@@ -62,8 +62,6 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
         .find()
       ).privateData
 
-      console.log(livestream)
-
 
       // We proess the event video.asset.ready, which contains
       // the start time of our livestream. Viewers would need 
@@ -71,7 +69,6 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
       if ( type == 'video.asset.ready' ) {
         livestream.start_time = strapi.mux.get_start_time( data )
-        console.log(livestream.start_time)
 
 
       // We proccess the livestream.active and livestream.idle
