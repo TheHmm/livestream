@@ -20,6 +20,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
     const
 
+      type     = ctx.request.body.type,
       data     = ctx.request.body.data,
       streamID = data.live_stream_id || data.id,
       status   = data.status
@@ -28,7 +29,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     // we are only interested in the 'idle' or 'active' events
     // so we stop here if it's another kind 
 
-    console.log(ctx)
+    console.log(type)
     
     if ( status !== 'idle' && status !== 'active' ) {
       strapi.log.warn(`[ REJECTING MUX HOOK: ${status} ]`)
