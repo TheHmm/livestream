@@ -25,10 +25,15 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       status     = livestream.status
 
 
-    // We are only interested in 'idle' or 'active' events of
-    // the livestream. Mux also emits other events for the stream
-    // as well as for other assets. We stop here if they are of
-    // that kind.
+
+    if ( type == 'video.live_stream.recording' ) {
+      console.log(livestream)
+    }
+
+    // From here on we are only interested in 'idle' or 'active' 
+    // events of the livestream. Mux also emits other events for
+    // the stream as well as for other assets. We stop here if 
+    // they are of that kind.
 
     if ( type !== 'video.live_stream.idle' && type !== 'video.live_stream.active' ) {
       strapi.log.warn(`[ REJECTING MUX HOOK: ${type} ]`)
