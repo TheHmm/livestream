@@ -51,15 +51,28 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     strapi.log.info(`[ PROCESSING MUX HOOK: ${ type } ]`)
 
 
-    // We get the exisitng livestream from strapi.
 
     try {
 
-      const livestream = await strapi
-        .service( 'api::livestream.livestream' )
-        .find()
+      const 
 
-      console.log(livestream)
+
+        // We get the current livestream from Strapi.
+
+        current_livestream_entry = (
+           await strapi
+           .service( 'api::livestream.livestream' )
+           .find()
+          ).privateData
+
+
+        // The current livestream is the pirvateData property
+        // of the livestream entry in Strapi.
+        
+        // current_livestream = current_livestream_entry.privateData
+        
+
+      console.log(current_livestream_entry)
 
 
     } catch ( error ) {
