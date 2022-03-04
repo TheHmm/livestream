@@ -28,10 +28,12 @@ export default {
   },
   watch: {
     livestream(new_stream, old_stream) {
+      console.log(new_stream.status, old_stream.status)
       if (
         new_stream.status == 'active' && 
         new_stream.status != old_stream.status
       ) {
+        console.log('got livestream watcher uoate')
         this.update_stream()
       } else {
         if (this.hls) {
@@ -42,6 +44,7 @@ export default {
     },
     level() {
       // logger.log('LIVESTREAM', this.level)
+      this.level_changed = true
     }
   },
 
@@ -53,7 +56,10 @@ export default {
   },
 
   updated() {
-    this.update_stream()
+    if (this.level_changed) {
+      this.update_stream()
+      this.level_changed = false
+    }
   },
 
   methods: {
