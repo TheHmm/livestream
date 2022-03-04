@@ -28,7 +28,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     // we are only interested in the 'idle' or 'active' events
     // so we stop here if it's another kind 
 
-    console.log(data)
+    console.log(ctx)
     
     if ( status !== 'idle' && status !== 'active' ) {
       strapi.log.warn(`[ REJECTING MUX HOOK: ${status} ]`)
