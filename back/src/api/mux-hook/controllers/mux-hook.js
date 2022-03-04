@@ -30,6 +30,11 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     // so we stop here if it's another kind 
 
     console.log(type)
+
+    if ( type !== 'video.live_stream.idle' && type !== 'video.live_stream.active' ) {
+      strapi.log.warn(`[ REJECTING MUX HOOK: ${type} ]`)
+      return 'Thanks, MUX!'
+    }
     
     if ( status !== 'idle' && status !== 'active' ) {
       strapi.log.warn(`[ REJECTING MUX HOOK: ${status} ]`)
