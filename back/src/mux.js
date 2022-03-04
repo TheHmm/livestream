@@ -54,7 +54,7 @@ module.exports = MUX_TOKEN => {
 
     // lazy way of getting an asset's start time
 
-    get_asset_start_time = asset =>  asset.recording_times[0]?.started_at?.seconds,
+    get_start_time = asset =>  asset.recording_times[0]?.started_at?.seconds,
 
 
     // we reduce a stream object to it's publically safe information
@@ -63,7 +63,8 @@ module.exports = MUX_TOKEN => {
       status          : stream.status,
       playbackId      : get_playback_id(stream),
       recentAssets    : stream.recent_asset_ids,
-      active_asset_id : stream.active_asset_id
+      active_asset_id : stream.active_asset_id,
+      start_time      : stream.start_time,
     })
 
 
@@ -72,7 +73,7 @@ module.exports = MUX_TOKEN => {
   return {
     create_livestream,
     get_livestream,
-    get_asset_start_time,
+    get_start_time,
     get_public_stream_details,
   }
 
