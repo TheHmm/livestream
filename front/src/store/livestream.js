@@ -17,13 +17,16 @@ export default {
     //   status: string ("active" or "idle")
     // }
 
-    livestream: null
+    livestream: null,
+
+    cc: {},
 
   },
 
   mutations: {
 
     SET_LIVESTREAM : ( state, livestream ) => state.livestream = livestream,
+    SET_CAPTION: ( state, caption ) => state.cc[caption.id] = caption.text  
 
   },
 
@@ -78,8 +81,12 @@ export default {
       logger.info( 'SOCKET', `Unsubscribed from closed captions.`)
     },
 
-    socket_interm( { commit }, data ) {
-      console.log(data)
+    socket_interm( { commit }, caption ) {
+      commit( 'SET_CAPTION', caption )  
+    },
+
+    socket_final( { commit }, caption ) {
+      // commit( 'SET_CAPTION', caption )  
     },
 
 

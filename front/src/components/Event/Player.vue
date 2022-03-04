@@ -3,6 +3,7 @@ import Hls        from 'hls.js'
 import { logger } from '@/utils'
 import { time }   from '@/utils'
 import networking from '@/networking'
+import { mapState } from 'vuex'
 
 export default {
 
@@ -34,6 +35,7 @@ export default {
     active() { 
       return this.livestream.status == 'active' 
     },
+    ...mapState('livestream', [ 'cc' ] )
   },
   watch: {
     livestream() {
@@ -183,7 +185,14 @@ export default {
     <img
       ref="img"
     />
-    <caption>Closed Captions</caption>
+    <div class="captions">
+      <p
+        v-for="(caption, id) of cc"
+        :key="id"
+      >
+      {{ caption }}
+      </p>
+    </div>
   </div>
   <audio
     v-else-if="level == 'only_audio'"

@@ -405,8 +405,8 @@
 					try {
 						//socket.send(JSON.stringify({"msg":true, "final":final_transcript, "id":counter}));
 						socket.emit('final', {
-               final : final_transcript_raw,
-               id    : counter
+               text : final_transcript_raw,
+               id   : counter
 						});
 						final_transcript="";
 						interim_transcript="";
@@ -426,8 +426,8 @@
 					try {
 						//	socket.send(JSON.stringify({"msg":true, "interm":interim_transcript, "id":counter}));
 						socket.emit('interm', {
-							interm : interim_transcript,
-							id     : counter
+							text : interim_transcript,
+							id   : counter
 						});
 					} catch(e){
 						console.error(e);
