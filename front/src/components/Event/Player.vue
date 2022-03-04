@@ -27,8 +27,11 @@ export default {
     },
   },
   watch: {
-    livestream() {
-      if (this.active) {
+    livestream(new_stream, old_stream) {
+      if (
+        new_stream.status == 'active' && 
+        new_stream.status != old_stream.status
+      ) {
         this.update_stream()
       } else {
         if (this.hls) {

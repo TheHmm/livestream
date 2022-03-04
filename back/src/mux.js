@@ -55,9 +55,10 @@ module.exports = MUX_TOKEN => {
     // we reduce a stream object to it's publically safe information
 
     getPublicStreamDetails = stream => ({
-      status       : stream.status,
-      playbackId   : getPlaybackId(stream),
-      recentAssets : stream.recent_asset_ids,
+      status          : stream.status,
+      playbackId      : getPlaybackId(stream),
+      recentAssets    : stream.recent_asset_ids,
+      active_asset_id : stream.active_asset_id
     })
 
 
