@@ -67,7 +67,7 @@ const
       const livestream = await 
         strapi
         .mux
-        .createLiveStream()
+        .create_livestream()
       
       try {
         await strapi
@@ -77,11 +77,11 @@ const
         })
         
       } catch ( error ) {
-        return strapi.log.fatal( 'strapi err', error )
+        return strapi.log.error( 'strapi err', error )
       }
     
     } catch ( error ) {
-      return strapi.log.fatal( 'mux err', error )
+      return strapi.log.error( 'mux err', error )
     }
 
   }
