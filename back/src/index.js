@@ -161,22 +161,22 @@ module.exports = {
         io.sockets.emit('hello', data)
       })
 
-      socket.on('join_CC_room', data => {
+      socket.on('join_CC_room', () => {
         socket.join('cc')
         socket.emit('confirm_join_CC')
       })
       
-      socket.on('leave_CC_room', data => {
-        socket.leave('cc')
-        socket.emit('confirm_leave_CC')
+      socket.on('leave_CC_room', () => {
+        socket.leave( 'cc' )
+        socket.emit( 'confirm_leave_CC' )
       })
 
-      socket.on('final', data => {
-        io.to('cc').emit('final')
+      socket.on('final', caption => {
+        io.to( 'cc' ).emit( 'final', caption )
       })
 
-      socket.on('interm', data => {
-        io.to('cc').emit('interm')
+      socket.on('interm', caption => {
+        io.to( 'cc' ).emit('interm', caption )
       })
 
       const
