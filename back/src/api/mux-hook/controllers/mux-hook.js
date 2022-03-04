@@ -10,7 +10,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
 
   // in this script we handle messages received from mux  
-  // about the state of our livestream.
+  // about the state of our livestream and assets.
 
   async create(ctx) {
 
@@ -19,47 +19,57 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     // status ( 'idle' or 'active' ), its ID, and a payload.
 
     const
-
-      type       = ctx.request.body.type,
-      livestream = ctx.request.body.data,
-      status     = livestream.status
-
+      event = ctx.request.body,
+      type  = event.type,
+      data  = event.data
 
 
-    if ( type == 'video.live_stream.recording' ) {
-      console.log(livestream)
+    // Order of MUX events from the moment Marco starts streaming:
+    // 1. video.live_stream.connected
+    // 2. video.asset.created
+    // 3. video.live_stream.recording  
+    // 4. video.asset.ready                    => we process this
+    // 5. video.live_stream.active             => we process this
+
+    // Then, Marco click 'Stop Streaming', the ensuing events are:
+    // 7. video.live_stream.disconnected       
+    // 8. video.live_stream.idle               => we process this
+    // 9. video.asset.live_stream_completed
+
+    // The event video.asset.ready, contains the start time of our
+    // livestream. Viewers would need this timestamp to sync up 
+    // some of their UI activities with the livestream.
+
+    if ( type == 'video.asset.ready' ) {
+      // console.log(data)
+      const start_time = data?.recording_times[0]?.started_at?.seconds
+      console.log(start_time)
     }
 
-    // From here on we are only interested in 'idle' or 'active' 
-    // events of the livestream. Mux also emits other events for
-    // the stream as well as for other assets. We stop here if 
-    // they are of that kind.
 
-    if ( type !== 'video.live_stream.idle' && type !== 'video.live_stream.active' ) {
-      strapi.log.warn(`[ REJECTING MUX HOOK: ${type} ]`)
+    // From here on we are only interested in the livvestream's 
+    // 'idle' or 'active' events. We stop here if they are other.
+
+    if ( 
+      type !== 'video.live_stream.idle' && 
+      type !== 'video.live_stream.active' 
+    ) {
+      strapi.log.warn(`[ REJECTING MUX HOOK: ${ type } ]`)
       return 'Thanks, MUX!'
     }
 
-    // we are only interested in the 'idle' or 'active' events
-    // so we stop here if it's another kind 
+
+    // Now, it's safe to assume that the received data is our 
+    // livestream; we can update our database
     
-    // if ( status !== 'idle' && status !== 'active' ) {
-    //   strapi.log.warn(`[ REJECTING MUX HOOK: ${status} ]`)
-    //   return 'Thanks, MUX!'
-    // } 
+    const
+      livestream = data,
+      status     = data.status 
 
-
+      
     // We log the hook to our consolw.
 
     strapi.log.info(`[ PROCESSING MUX HOOK: ${status} ]`)
-
-    // If the livestream has arrived at an 'idle' state, the 
-    // event payload will additionally carry an array of recent
-    // asset IDs, so we add this to our updated object.
-
-    // if (status == 'idle') {
-      // livestream.recent_asset_ids = data.recent_asset_ids
-    // }
 
 
     // We update the 'livestream' entry in Strapi with this 
