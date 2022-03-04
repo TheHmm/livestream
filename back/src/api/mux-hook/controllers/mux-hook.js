@@ -42,10 +42,10 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
     if ( type == 'video.asset.ready' ) {
       strapi.log.info(`[ PROCESSING MUX HOOK: ${ type } ]`)
-      const start_time = data?.recording_times[0]?.started_at?.seconds
+      const start_time = strapi.mux.get_asset_start_time( data )
       console.log(start_time)
 
-      return 
+      return 'Thanks MUX!'
     }
 
 
@@ -57,7 +57,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       type !== 'video.live_stream.active' 
     ) {
       strapi.log.warn(`[ REJECTING MUX HOOK: ${ type } ]`)
-      return 
+      return 'Thanks MUX!'
     }
 
     strapi.log.info(`[ PROCESSING MUX HOOK: ${ type } ]`)

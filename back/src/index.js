@@ -101,7 +101,7 @@ module.exports = {
           try {
             livestream = await 
               mux
-              .getLiveStream( found.privateData.id )
+              .get_livestream( found.privateData.id )
 
           } catch ( error ) { 
             return strapi.log.error( 'mux err', error )
@@ -118,7 +118,7 @@ module.exports = {
           try { 
             livestream = await 
               mux
-              .createLiveStream()
+              .create_livestream()
           
           } catch ( error ) {
             return strapi.log.error( 'mux err', error )

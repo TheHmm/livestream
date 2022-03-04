@@ -24,7 +24,7 @@ const
       ... data,
       ... {
         privateData : livestream,
-        publicData  : strapi.mux.getPublicStreamDetails(livestream),
+        publicData  : strapi.mux.get_public_stream_details(livestream),
         stream_key  : livestream.stream_key
       }
     }
