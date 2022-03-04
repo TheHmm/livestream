@@ -78,7 +78,7 @@ export default {
       logger.info( 'SOCKET', `Unsubscribed from closed captions.`)
     },
 
-    socket_final( { commit }, data ) {
+    socket_interm( { commit }, data ) {
       console.log(data)
     },
 
