@@ -41,9 +41,11 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     // some of their UI activities with the livestream.
 
     if ( type == 'video.asset.ready' ) {
-      // console.log(data)
+      strapi.log.info(`[ PROCESSING MUX HOOK: ${ type } ]`)
       const start_time = data?.recording_times[0]?.started_at?.seconds
       console.log(start_time)
+
+      return 
     }
 
 
@@ -55,30 +57,20 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       type !== 'video.live_stream.active' 
     ) {
       strapi.log.warn(`[ REJECTING MUX HOOK: ${ type } ]`)
-      return 'Thanks, MUX!'
+      return 
     }
+
+    strapi.log.info(`[ PROCESSING MUX HOOK: ${ type } ]`)
 
 
     // Now, it's safe to assume that the received data is our 
-    // livestream; we can update our database
+    // livestream; we can update the 'livestream' entry in 
+    // Strapi with this new information.
     
-    const
-      livestream = data,
-      status     = data.status 
-
-      
-    // We log the hook to our consolw.
-
-    strapi.log.info(`[ PROCESSING MUX HOOK: ${status} ]`)
-
-
-    // We update the 'livestream' entry in Strapi with this 
-    // new information.
-
     await strapi
     .service('api::livestream.livestream')
     .createOrUpdate({
-      data: { livestream }
+      data: { livestream: data }
     })
       
 

@@ -13,10 +13,7 @@ const
 
     const 
       data       = event.params.data,
-      livestream = data.livestream,
-      status     = data.livestream.status
-
-      console.log(status)
+      livestream = data.livestream
 
 
     // we merge the old "data" with the new saitzied one.
@@ -36,15 +33,6 @@ const
     // we log the STREAM-KEY to be able to access it
 
     strapi.log.info(`[ * STREAM KEY: ${livestream.stream_key} ]`)
-
-
-    // custom timer to get the livestream's time
-
-    // strapi.timer.reset()
-
-    // if ( status == 'active' ) {
-    //   strapi.timer.start()
-    // }
 
   },
 
