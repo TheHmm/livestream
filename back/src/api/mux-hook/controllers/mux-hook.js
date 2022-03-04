@@ -20,35 +20,33 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
     const
 
-      type     = ctx.request.body.type,
-      data     = ctx.request.body.data,
-      streamID = data.live_stream_id || data.id,
-      status   = data.status
+      type       = ctx.request.body.type,
+      livestream = ctx.request.body.data,
+      status     = livestream.status
 
 
-    // we are only interested in the 'idle' or 'active' events
-    // so we stop here if it's another kind 
-
-    console.log(type)
+    // We are only interested in 'idle' or 'active' events of
+    // the livestream. Mux also emits other events for the stream
+    // as well as for other assets. We stop here if they are of
+    // that kind.
 
     if ( type !== 'video.live_stream.idle' && type !== 'video.live_stream.active' ) {
       strapi.log.warn(`[ REJECTING MUX HOOK: ${type} ]`)
       return 'Thanks, MUX!'
     }
+
+    // we are only interested in the 'idle' or 'active' events
+    // so we stop here if it's another kind 
     
-    if ( status !== 'idle' && status !== 'active' ) {
-      strapi.log.warn(`[ REJECTING MUX HOOK: ${status} ]`)
-      return 'Thanks, MUX!'
-    } 
+    // if ( status !== 'idle' && status !== 'active' ) {
+    //   strapi.log.warn(`[ REJECTING MUX HOOK: ${status} ]`)
+    //   return 'Thanks, MUX!'
+    // } 
 
 
     // We log the hook to our consolw.
 
     strapi.log.info(`[ PROCESSING MUX HOOK: ${status} ]`)
-
-
-
-    const livestream = data
 
     // If the livestream has arrived at an 'idle' state, the 
     // event payload will additionally carry an array of recent
