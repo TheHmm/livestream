@@ -172,11 +172,11 @@ module.exports = {
       })
 
       socket.on('final', data => {
-        io.to('CC').emit('final')
+        io.to('cc').emit('final')
       })
 
       socket.on('interm', data => {
-        io.to('CC').emit('interm')
+        io.to('cc').emit('interm')
       })
 
       const
