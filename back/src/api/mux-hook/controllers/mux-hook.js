@@ -28,33 +28,21 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     // 1. video.live_stream.connected
     // 2. video.asset.created
     // 3. video.live_stream.recording  
-    // 4. video.asset.ready                    => we process this
-    // 5. video.live_stream.active             => we process this
+    // 4. video.asset.ready                   => we process this
+    // 5. video.live_stream.active            => we process this
 
     // Then, Marco click 'Stop Streaming', the ensuing events are:
     // 7. video.live_stream.disconnected       
-    // 8. video.live_stream.idle               => we process this
+    // 8. video.live_stream.idle              => we process this
     // 9. video.asset.live_stream_completed
 
-    // The event video.asset.ready, contains the start time of our
-    // livestream. Viewers would need this timestamp to sync up 
-    // some of their UI activities with the livestream.
-
-    if ( type == 'video.asset.ready' ) {
-      strapi.log.info(`[ PROCESSING MUX HOOK: ${ type } ]`)
-      const start_time = strapi.mux.get_asset_start_time( data )
-      console.log(start_time)
-
-      return 'Thanks MUX!'
-    }
-
-
-    // From here on we are only interested in the livvestream's 
-    // 'idle' or 'active' events. We stop here if they are other.
+    // From here on we are only interested in events 4, 5, and 8.
+    // We stop here if the event is of any other type are other.
 
     if ( 
-      type !== 'video.live_stream.idle' && 
-      type !== 'video.live_stream.active' 
+      type !== 'video.asset.ready' &&
+      type !== 'video.live_stream.active' &&
+      type !== 'video.live_stream.idle'
     ) {
       strapi.log.warn(`[ REJECTING MUX HOOK: ${ type } ]`)
       return 'Thanks MUX!'
@@ -63,15 +51,80 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     strapi.log.info(`[ PROCESSING MUX HOOK: ${ type } ]`)
 
 
+    // We get the exisitng livestream from strapi.
+
+    try {
+
+      const livestream = await strapi
+        .service( 'api::livestream.livestream' )
+        .find()
+
+      console.log(livestream)
+
+
+    } catch ( error ) {
+      return strapi.log.error( error )
+
+    }
+
+    // strapi
+    // .service('api::livestream.livestream')
+    // .find( )
+    // .then( async response => {
+
+    //   // We set the livestream to the old, unsanitized, version
+    //   // of itself that was stored on mux
+
+    //   livestream = response.privateData
+
+
+    //   // We update the status of the livestream object with the
+    //   // new status received from the mux hook.
+
+    //   livestream.status = status
+
+
+    //   // If the livestream has arrived at an 'idle' state, the 
+    //   // event payload will additionally carry an array of recent
+    //   // asset IDs, so we add this to our updated object.
+
+    //   // if (status == 'idle') {
+    //     livestream.recent_asset_ids = data.recent_asset_ids
+    //   // }
+
+
+    //   // We update the 'livestream' entry in Strapi with this 
+    //   // new information.
+
+    //   return 'Thanks MUX!'
+    // })
+    // .catch( error => {
+    //   return strapi.log.error( error )
+    // })
+
+
+    // The event video.asset.ready, contains the start time of our
+    // livestream. Viewers would need this timestamp to sync up 
+    // some of their UI activities with the livestream.
+
+    // if ( type == 'video.asset.ready' ) {
+    //   start_time = strapi.mux.get_asset_start_time( data )
+    //   console.log(start_time)
+    // }
+
+
+    
+
+
     // Now, it's safe to assume that the received data is our 
     // livestream; we can update the 'livestream' entry in 
     // Strapi with this new information.
     
-    await strapi
-    .service('api::livestream.livestream')
-    .createOrUpdate({
-      data: { livestream: data }
-    })
+    // await strapi
+    // .service('api::livestream.livestream')
+    // .createOrUpdate({
+    //   data: { livestream: data }
+    // })
       
 
     // We thank mux.
