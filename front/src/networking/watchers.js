@@ -181,11 +181,21 @@ export default {
         for ( const entry of entries.getEntriesByType("resource") ) {
           if ( entry.transferSize ) {
             console.log(entry.transferSize, entry.name)
+            const keys = [
+              'transferSize',
+              'encodedBodySize',
+              'decodedBodySize'
+            ]
+            for ( const key of keys ) {
+              if ( 'transferSize' in entry ) {
+                console.log( key, ':', entry[ key ] )
+              }
+            }
             // methods.report.bytes_sent
             methods.report.bytes_received({
               url   : entry.name,
               from  : 'assets',
-              bytes : entry.transferSize
+              bytes : entry.encodedBodySize
             })
           }
         }

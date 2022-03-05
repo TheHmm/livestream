@@ -22,7 +22,7 @@ const
     // watchers.stream_monitor.init( hls )
     watchers.asset_observer.init()
 
-    // methods.head_assets()
+    methods.head_assets()
 
   }
 
