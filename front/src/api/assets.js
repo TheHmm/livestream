@@ -18,6 +18,19 @@ export default {
         reject( error )
       } )
     ) 
+  },
+
+  get( asset ) {
+    logger.info( `API`, `Getting asset ${ asset }.` )
+    return new Promise( ( resolve, reject ) => 
+      axios
+      .get( asset )
+      .then( result => resolve( result ) )
+      .catch( error => {
+        logger.error( 'API', error ) 
+        reject( error )
+      } )
+    ) 
   }
 
 }

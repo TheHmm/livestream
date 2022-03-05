@@ -186,6 +186,18 @@ export default {
     init() {
       const observer = this.create()
       this.register( observer )
+    },
+
+    run() {
+      const observer2 = new PerformanceObserver( entries => {
+        for ( const entry in entries.getEntries() ) {
+          // console.log(entries)
+          entries.getEntriesByType("resource")
+          .forEach(res => console.log(res.transferSize, res.name))
+        }
+      });
+      console.log(PerformanceObserver.supportedEntryTypes)
+      observer2.observe({ entryTypes: ["resource"] });      
     }
 
   }

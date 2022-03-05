@@ -4,6 +4,7 @@ import { logger } from '@/utils'
 import { time }   from '@/utils'
 import networking from '@/networking'
 import { mapState } from 'vuex'
+import api from '@/api'
 
 export default {
 
@@ -24,7 +25,7 @@ export default {
     return {
       hls: null,
       img_interval : null,
-      reload_every : 15 * 1000,
+      reload_every : 5 * 1000,
       default_time : 0.5,
     }
   },
@@ -45,7 +46,12 @@ export default {
         if (this.hls) {
           this.hls.destroy()
         }
-        this.$el.src = undefined
+        if ( this.$el.src ) {
+          this.$el.src = undefined
+        }
+        if ( this.img_interval ) {
+          clearInterval( this.img_interval )
+        }
       }
     },
     level() {
@@ -139,6 +145,11 @@ export default {
         curr_time   = this.get_current_time( this.livestream ),
         source_url  = this.source_url( playback_id, curr_time )
       console.log(source_url)
+      // api.assets.get(source_url)
+      // .then(response => { 
+      //   console.log(response) 
+      //   player.src = 'data:image/jpeg;base64,' + btoa(response.data)
+      // })
       player.src = source_url
     },
 

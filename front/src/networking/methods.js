@@ -54,11 +54,11 @@ export default  {
 
     bytes_sent: ( { url, to, bytes } ) => {
       store.dispatch( 'networking/add_bytes_sent', { url, to, bytes } )
-      // logger.info( 'NETWORK', `${ bytes } bytes sent to ${ to }.` )
+      logger.info( 'NETWORK', `${ bytes } bytes sent to ${ to }.` )
     },
     bytes_received: ( { url, from, bytes } ) => {
       store.dispatch( 'networking/add_bytes_received', { url, from, bytes } )
-      // logger.info( 'NETWORK', `${ bytes } bytes received from ${ from }.` )
+      logger.info( 'NETWORK', `${ bytes } bytes received from ${ from }.` )
     }
 
   }

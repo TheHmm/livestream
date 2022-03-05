@@ -20,9 +20,10 @@ const
     watchers.strapi_monitor.init( axios )
     watchers.socket_monitor.init( io )
     // watchers.stream_monitor.init( hls )
-    watchers.asset_observer.init()
+    // watchers.asset_observer.init()
+    watchers.asset_observer.run()
 
-    methods.head_assets()
+    // methods.head_assets()
 
   }
 
