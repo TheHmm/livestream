@@ -54,4 +54,10 @@ export default {
 
   },
 
+  which_server_is_it : ( url ) => (
+    url.includes( config.url )        ? 'assets'  : 
+    url.includes( config.api_url )    ? 'api'     :
+    url.includes( config.socket_url ) ? 'sockets' : 'mux'
+  )
+
 }

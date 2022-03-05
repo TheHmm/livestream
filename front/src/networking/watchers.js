@@ -3,10 +3,6 @@ import config      from "@/config"
 import tools       from "./tools"
 import methods     from './methods'
 
-const api_url = config.api_url
-
-
-
 export default { 
 
   
@@ -21,7 +17,7 @@ export default {
       on_request : request => {
         methods.report.bytes_sent({
           url   : request.url,
-          to    : request.url.includes(api_url) ? 'api' : 'assets',
+          to    : tools.which_server_is_it( request.url),
           bytes : tools.get_bytes_sent( request )
         })
         return request
@@ -30,7 +26,7 @@ export default {
       on_response : response => {
         methods.report.bytes_received({
           url   : response.request.responseURL,
-          from  : response.request.responseURL.includes(api_url) ? 'api' : 'assets',
+          from  : tools.which_server_is_it( response.request.responseURL ),
           bytes : tools.get_bytes_received( response )
         })
         return response
@@ -173,7 +169,7 @@ export default {
         for ( const entry of entries.getEntriesByType("resource") ) {
           if ( entry.transferSize ) {
             methods.report.bytes_sent({
-              url   : entry.url,
+              url   : entry.name,
               to    : 'assets',
               bytes : config.networking.assets.request_bytes
             })
@@ -189,7 +185,7 @@ export default {
             }, entry.duration )
           } else {
             console.log(entry.transferSize, entry.encodedBodySize, entry.name)
-            methods.head_asset( entry.name )
+            // methods.head_asset( entry.name )
           }
         }
       } )

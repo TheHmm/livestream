@@ -43,15 +43,15 @@ const
 
   intro = config => {
     console.log ( )
-    console.info( `* * * * * * * * * * * * * * * * * * * * * * * * * * *` )
-    console.info( `* * * * * * * * * * * The Hmm * * * * * * * * * * * *` )
-    console.info( `* * * * * * * * * * * * * * * * * * * * * * * * * * *` )
-    console.log ( )
+    console.info( `* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *` )
+    console.info( `* * * * * * * * * * * * * The Hmm * * * * * * * * * * * * *` )
+    console.info( `* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *` )
+    // console.log ( )
     console.info( `* STATIC URL => ${ config.url }` ) 
     console.info( `* STRAPI URL => ${ config.api_url }` ) 
     console.info( `* SOCKET URL => ${ config.socket_url }` ) 
-    console.log ( )
-    console.info( `* * * * * * * * * * * * * * * * * * * * * * * * * * *` )
+    // console.log ( )
+    console.info( `* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *` )
     console.log ( )
   }
 

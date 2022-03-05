@@ -10,10 +10,6 @@ export default  {
   // in static assets.
 
   head_asset : async asset => {
-    if ( store.getters['networking/is_registered_asset']( asset ) ) {
-      logger.warn( 'NETWORK', `HEAD-ing registered url ${ asset }` )
-      // return
-    }
     try {
       await api.assets.head( asset )
     } catch ( err ) {

@@ -25,7 +25,7 @@ export default {
     // headers. This number seems to be consistent across 
     // browsers so it's safer to account for it than not.
 
-    request_bytes: 645,
+    request_bytes: 545,
 
   },
 

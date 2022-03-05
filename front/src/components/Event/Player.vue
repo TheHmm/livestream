@@ -1,10 +1,10 @@
 <script>
 
 import Hls          from 'hls.js'
+import { mapState } from 'vuex'
 import { logger }   from '@/utils'
 import { mux }      from '@/utils'
 import networking   from '@/networking'
-import { mapState } from 'vuex'
 
 
 export default {
@@ -25,9 +25,8 @@ export default {
 
   data() {
     return {
-      hls_player : null,
-      img_player : null,
-      def_player : null
+      player : null,
+      should_update: false,
     }
   },
 
@@ -42,16 +41,13 @@ export default {
 
     livestream() {
       if ( this.active ) {
-        this.update_stream()
+        this.should_update = true
       } else {
-        this.destroy_player()
-       
+        this.destroy()
       }
     },
-
     level() {
-      // logger.log('LIVESTREAM', this.level)
-      this.level_changed = true
+      this.should_update = true
     }
 
   },
@@ -60,40 +56,76 @@ export default {
   },
 
   mounted() {
-    this.update_stream()
+    this.create()
+    this.init()
   },
 
   updated() {
-    if (this.level_changed) {
-      this.update_stream()
-      this.level_changed = false
+    if (this.should_update) {
+      this.update()
+      this.should_update = false
     }
+  },
+
+  beforeUnmount() {
+    this.destroy()
   },
 
   methods: {
 
-    update_stream() {
+    
+    // If we successfully created either of the 3 players,
+    // we can initialize it; else, ee throw an error.
+
+    init() {
+      if ( this.player ) {
+        logger.info( 'LIVESTREAM', `Initializing player.` )
+        this.player.init()
+      } else {
+        logger.error('LIVESTREAM', `Can't play livestream!`)
+      }
+    },
 
 
-      // First, we destroy this current player if there is one.
-      // Then we can set up the appropriate player.
+    // We destroy our player. When we want to create a new one
+    // or clean up before unmounting.
 
-      this.destroy_player()
-      
-      logger.info( 'LIVESTREAM', `Updating player: ${ this.level }` )
+    destroy() {
+      if ( this.player ) {
+        logger.info( 'LIVESTREAM', `Destroying player.` )
+        this.player.destroy()
+        this.player = null
+      }
+    },
 
+    
+    // When something changes in the livestream or level, we 
+    // destroy the old player, create a new one and initiate it,
+    
+    update() {
+      this.destroy()
+      this.create()
+      this.init()
+    },
+
+
+    // Create the appropriate player for the livestream type
+    // and level.
+
+    create() {
+
+      logger.info( 'LIVESTREAM', `Creating player for ${ this.level }.` )
 
       // The image player will load a thumbnail every X seconds
       // as well as subscribe to a subtitle stream from Marco.
 
       if ( this.level == 'only_cc' ) {
-        this.img_player = this.create_img_player(
+        this.player = this.create_img_player(
           this.$refs.img, 
           this.livestream,
           this.level,
           this.$socket
         )
-        this.img_player.init()
 
 
       // Else, we default to a <video> or <audio> tag (that is 
@@ -102,12 +134,11 @@ export default {
       // the <video> or <audio> element.
 
       } else if ( Hls.isSupported() ) {
-        this.hls_player = this.create_hls_player( 
+        this.player = this.create_hls_player( 
           this.$el,
           this.livestream,
           this.level
         )
-        this.hls_player.init()
 
 
       // If the <video> or <audio> tag supports HLS natively, 
@@ -115,34 +146,13 @@ export default {
       // elements source as we would with any non-m3u8 URL.
 
       } else if ( this.$el.canPlayType( 'application/vnd.apple.mpegurl' ) ) {
-        this.def_player = this.create_def_player(
+        this.player = this.create_def_player(
           this.$el,
           this.livestream,
           this.level
         )
-        this.def_player.init()
-
-
-      // If for some reason, none of the above cases are met,
-      // We throw an error.
-
-      } else {
-        logger.error('LIVESTREAM', `Can't play livestream!`)
       }
 
-    },
-
-
-    destroy_player() {
-      if ( this.img_player ) {
-        this.img_player.destroy()
-      }
-      if ( this.hls_player ) {
-        this.hls_player.destroy()
-      }
-      if ( this.def_player ) {
-        this.def_player.destroy()
-      }
     },
 
 
@@ -179,6 +189,7 @@ export default {
             curr_time  = mux.get_cur_time( livestream ),
             source_url = mux.source_url( this.playback_id, level, curr_time )
           element.src = source_url
+          networking.methods.head_asset( source_url )
         },
 
       }
@@ -251,7 +262,9 @@ export default {
 
     }
 
+
   }
+
 
 
 }
@@ -260,6 +273,7 @@ export default {
 
 <template>
   <div
+    id="img_player"
     v-if="level == 'only_cc'"
   > 
     <img
@@ -291,7 +305,10 @@ export default {
 </template>
 
 <style>
-video {
+video,
+audio,
+#img_player
+ {
   width: 100%;
   height: 100%;
   max-width: 100%;
