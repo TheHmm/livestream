@@ -162,51 +162,37 @@ export default {
   },
 
   
-  // We inject a mutation observer to check for newly 
-  // added <script> and <style> tags ¯\_ (ツ)_/¯ 
+  // We inject a network observer to monitor resources 
+  // such as scripts, css files, img sources, etc...
+  // This doesn't work in Safari. ¯\_ (ツ)_/¯ 
 
   asset_observer: {
 
     create() { 
-      // return new MutationObserver( mutations => {
-      //   for ( const mutation of mutations ) {
-      //     for ( const node of mutation.addedNodes ) {
-      //       if ( node.href || node.src ) {
-      //         methods.head_asset( node.href || node.src )
-      //       }
-      //     }
-      //   } 
-      // } )
       return new PerformanceObserver( entries => {
         for ( const entry of entries.getEntriesByType("resource") ) {
           if ( entry.transferSize ) {
-            console.log(entry.transferSize, entry.name)
-            const keys = [
-              'transferSize',
-              'encodedBodySize',
-              'decodedBodySize'
-            ]
-            for ( const key of keys ) {
-              if ( 'transferSize' in entry ) {
-                console.log( key, ':', entry[ key ] )
-              }
-            }
-            // methods.report.bytes_sent
-            methods.report.bytes_received({
-              url   : entry.name,
-              from  : 'assets',
-              bytes : entry.encodedBodySize
+            methods.report.bytes_sent({
+              url   : entry.url,
+              to    : 'assets',
+              bytes : config.networking.assets.request_bytes
             })
+            setTimeout( () => {
+              methods.report.bytes_received({
+                url   : entry.name,
+                from  : 'assets',
+                bytes : entry.transferSize
+              })
+            }, entry.duration )
           }
         }
       } )
     },
 
     register( observer ) {
-      // observer.observe( document.head, { childList: true } )
       observer.observe({ 
         type: "resource", 
-        // buffered: true
+        buffered: true
       })      
     },
 

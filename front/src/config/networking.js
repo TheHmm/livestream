@@ -18,6 +18,17 @@ export default {
 
   },
 
+  assets: {
+
+
+    // Average umber of bytes in the resources' request 
+    // headers. This number seems to be consistent across 
+    // browsers so it's safer to account for it than not.
+
+    request_bytes: 645,
+
+  },
+
   socket: {
     
 
