@@ -166,7 +166,7 @@ export default {
   // such as scripts, css files, img sources, etc...
   // This doesn't work in Safari. ¯\_ (ツ)_/¯ 
 
-  asset_observer: {
+  assets_monitor: {
 
     create() { 
       return new PerformanceObserver( entries => {
@@ -181,9 +181,15 @@ export default {
               methods.report.bytes_received({
                 url   : entry.name,
                 from  : 'assets',
-                bytes : entry.transferSize
+                bytes : entry.transferSize 
+                    //  >= entry.encodedBodySize 
+                    //  && entry.transferSize 
+                    //  || entry.encodedBodySize
               })
             }, entry.duration )
+          } else {
+            console.log(entry.transferSize, entry.encodedBodySize, entry.name)
+            methods.head_asset( entry.name )
           }
         }
       } )

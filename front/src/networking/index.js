@@ -15,11 +15,11 @@ import watchers from './watchers'
 
 const 
 
-  init = ( axios, io, hls ) => {
+  init = ( axios, io ) => {
 
     watchers.strapi_monitor.init( axios )
     watchers.socket_monitor.init( io )
-    watchers.asset_observer.init()
+    watchers.assets_monitor.init()
 
   }
 

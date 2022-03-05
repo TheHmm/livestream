@@ -1,10 +1,11 @@
 <script>
-import Hls        from 'hls.js'
-import { logger } from '@/utils'
-import { time }   from '@/utils'
-import networking from '@/networking'
+
+import Hls          from 'hls.js'
+import { logger }   from '@/utils'
+import { mux }      from '@/utils'
+import networking   from '@/networking'
 import { mapState } from 'vuex'
-import api from '@/api'
+
 
 export default {
 
@@ -21,43 +22,38 @@ export default {
     },
 
   },
+
   data() {
     return {
-      hls: null,
-      img_interval : null,
-      reload_every : 5 * 1000,
-      default_time : 0.5,
+      hls_player : null,
+      img_player : null,
+      def_player : null
     }
   },
+
   computed: {
-    playback_id() { 
-      return this.livestream.playbackId 
-    },
     active() { 
       return this.livestream.status == 'active' 
     },
     ...mapState('livestream', [ 'cc' ] )
   },
+
   watch: {
+
     livestream() {
       if ( this.active ) {
         this.update_stream()
       } else {
-        if (this.hls) {
-          this.hls.destroy()
-        }
-        if ( this.$el.src ) {
-          this.$el.src = undefined
-        }
-        if ( this.img_interval ) {
-          clearInterval( this.img_interval )
-        }
+        this.destroy_player()
+       
       }
     },
+
     level() {
       // logger.log('LIVESTREAM', this.level)
       this.level_changed = true
     }
+
   },
 
   created() {
@@ -78,115 +74,188 @@ export default {
 
     update_stream() {
 
-      logger.info( 'LIVESTREAM', `Updating stream: ${ this.level }` )
 
-      if ( this.hls ) {
-        this.hls.destroy()
-      }
-      if ( this.img_interval ) {
-        clearInterval( this.img_interval )
-      }
+      // First, we destroy this current player if there is one.
+      // Then we can set up the appropriate player.
+
+      this.destroy_player()
+      
+      logger.info( 'LIVESTREAM', `Updating player: ${ this.level }` )
+
+
+      // The image player will load a thumbnail every X seconds
+      // as well as subscribe to a subtitle stream from Marco.
 
       if ( this.level == 'only_cc' ) {
+        this.img_player = this.create_img_player(
+          this.$refs.img, 
+          this.livestream,
+          this.level,
+          this.$socket
+        )
+        this.img_player.init()
 
-        this.$socket.client.emit('join_CC_room')
 
-        this.reload_img()
-        this.img_interval = setInterval(() => {
-          this.reload_img()
-        }, this.reload_every )
+      // Else, we default to a <video> or <audio> tag (that is 
+      // conditionally created by vue in the template). If hls.js 
+      // is supported in the browser, we instantiate it with the
+      // the <video> or <audio> element.
+
+      } else if ( Hls.isSupported() ) {
+        this.hls_player = this.create_hls_player( 
+          this.$el,
+          this.livestream,
+          this.level
+        )
+        this.hls_player.init()
+
+
+      // If the <video> or <audio> tag supports HLS natively, 
+      // which is the case for some browser, we just set the
+      // elements source as we would with any non-m3u8 URL.
+
+      } else if ( this.$el.canPlayType( 'application/vnd.apple.mpegurl' ) ) {
+        this.def_player = this.create_def_player(
+          this.$el,
+          this.livestream,
+          this.level
+        )
+        this.def_player.init()
+
+
+      // If for some reason, none of the above cases are met,
+      // We throw an error.
 
       } else {
+        logger.error('LIVESTREAM', `Can't play livestream!`)
+      }
 
-        this.$socket.client.emit('leave_CC_room')
+    },
 
-        const
-          player      = this.$el,
-          playback_id = this.playback_id,
-          source_url  = this.source_url( playback_id )
 
-        // If HLS.js is supported on this platform
+    destroy_player() {
+      if ( this.img_player ) {
+        this.img_player.destroy()
+      }
+      if ( this.hls_player ) {
+        this.hls_player.destroy()
+      }
+      if ( this.def_player ) {
+        this.def_player.destroy()
+      }
+    },
 
-        if (  Hls.isSupported() ) {
 
-          this.hls = new Hls()
-          this.init_stream_monitor( this.hls, Hls.Events )
-          this.hls.loadSource( source_url )
-          this.hls.attachMedia( player )
+    // Creates the image player. This uses mux's handy API
+    // to get a thumbnail of the video at the current time
+    // of the livestream's active assset. See line 70 here:
+    // /back/src/api/mux-hook/controllers/mux-hook.js .
+
+    create_img_player( element, livestream, level, socket ) {
+     
+      return {
+
+        playback_id      : livestream.playbackId,
+        player           : null,
+        reload_every     : 5 * 1000,
+
+        init() {
+          socket.client.emit('join_CC_room')
+          this.reload_img()
+          this.player = setInterval(() => {
+            this.reload_img()
+          }, this.reload_every )
+        },
+
+        destroy() {
+          socket.client.emit('leave_CC_room')
+          if ( this.player ) {
+            clearInterval( this.player )
+          }
+        },
+
+        reload_img() {
+          const
+            curr_time  = mux.get_cur_time( livestream ),
+            source_url = mux.source_url( this.playback_id, level, curr_time )
+          element.src = source_url
+        },
+
+      }
+
+    },
+
+
+    // Creates the HLS player with a <video> or <audio>
+    // tag using hls.js and attaches the stream monitor to
+    // it. See: /front/src/networking/watchers.js:L120 .
+
+    create_hls_player( element, livestream, level ) {
+
+      return {
+        
+        playback_id : livestream.playbackId,
+        player      : null,
+ 
+        init() {
+          const source_url = mux.source_url( this.playback_id, level )
+          this.player = new Hls()
+          this.init_stream_monitor( this.player, Hls.Events )
+          this.player.loadSource( source_url )
+          this.player.attachMedia( element )
+          this.player.on(Hls.Events.MANIFEST_PARSED, event => {
+            element.play()
+          })
           console.log(source_url)
+        },
+
+        destroy() {
+          this.player.destroy()
+        },
+
+        init_stream_monitor( hls, events ) {
+          networking.watchers.stream_monitor.init( hls, events )
+        },
+
+      }
+
+    },
 
 
-          this.hls.on(Hls.Events.MANIFEST_PARSED, event => {
-            player.play()
+    // Creates the default player with a <video> or
+    // <audio> tag when the browser has support for 
+    // HLS natively.
+
+    create_def_player( element, livestream, level ) {
+
+      return {
+
+        playback_id : livestream.playbackId,
+        player      : null,   
+
+        init() {
+          const source_url = mux.source_url( this.playback_id, level )
+          this.player = element
+          this.player.src = source_url
+          this.player.addEventListener('loadedmetadata', () => {
+            this.player.play()
           })
+        },
 
-        // If the player can support HLS natively
-
-        } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
-          player.src = source_url
-          player.addEventListener('loadedmetadata', () => {
-            player.play()
-          })
-
-        } else {
-          logger.error('LIVESTREAM', `Can't play livestream!`)
+        destroy() {
+          this.player.src = undefined
+          this.player = null
         }
 
       }
 
-     
-
-    },
-
-    reload_img( ) {
-      const
-        player      = this.$refs.img,
-        playback_id = this.playback_id,
-        curr_time   = this.get_current_time( this.livestream ),
-        source_url  = this.source_url( playback_id, curr_time )
-      console.log(source_url)
-      // api.assets.get(source_url)
-      // .then(response => { 
-      //   console.log(response) 
-      //   player.src = 'data:image/jpeg;base64,' + btoa(response.data)
-      // })
-      player.src = source_url
-    },
-
-    get_current_time( livestream ) {
-      if ( livestream.start_time ) {
-        return ( time.now() - livestream.start_time * 1000 ) / 1000
-      } else {
-        return this.default_time
-      }
-    },
-
-    source_url( playback_id, curr_time ) {
-      if ( this.level == 'only_cc' ) {
-        return this.thumb_src( playback_id, curr_time ) 
-      } else if ( this.level == 'only_audio' ) {
-        return this.audio_src( playback_id )
-      } else {
-        return this.video_src( playback_id )
-      }
-    },
-
-    video_src( playback_id ) {
-      return `https://stream.mux.com/${ playback_id }.m3u8`
-    },
-    audio_src( playback_id ) {
-      return `https://stream.mux.com/${ playback_id }.m3u8?add_audio_only=true`
-    },
-    thumb_src( playback_id, curr_time ) {
-      return `https://image.mux.com/${ playback_id }/thumbnail.jpg?&width=240&time=${ curr_time }`
-    },
-
-    init_stream_monitor( hls, events ) {
-      networking.watchers.stream_monitor.init( hls, events )
-    },
+    }
 
   }
+
+
 }
+
 </script>
 
 <template>

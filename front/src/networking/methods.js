@@ -50,6 +50,20 @@ export default  {
 
   },
 
+  connection: {
+
+    get: ( ) => {
+      console.log(navigator.connection || navigator.mozConnection || navigator.webkitConnection)
+      return (
+        navigator.connection || 
+        navigator.mozConnection || 
+        navigator.webkitConnection
+      )
+    }
+
+
+  },
+
   report: {
 
     bytes_sent: ( { url, to, bytes } ) => {

@@ -1,5 +1,5 @@
 import api from "../api"
-import { logger } from "../utils"
+import { logger, mux } from "../utils"
 
 export default {
 
@@ -26,7 +26,7 @@ export default {
   mutations: {
 
     SET_LIVESTREAM : ( state, livestream ) => state.livestream = livestream,
-    SET_CAPTION: ( state, caption ) => state.cc[caption.id] = caption.text  
+    SET_CAPTION    : ( state, caption ) => state.cc[caption.id] = caption.text  
 
   },
 
