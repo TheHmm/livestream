@@ -168,19 +168,36 @@ export default {
   asset_observer: {
 
     create() { 
-      return new MutationObserver( mutations => {
-        for ( const mutation of mutations ) {
-          for ( const node of mutation.addedNodes ) {
-            if ( node.href || node.src ) {
-              methods.head_asset( node.href || node.src )
-            }
+      // return new MutationObserver( mutations => {
+      //   for ( const mutation of mutations ) {
+      //     for ( const node of mutation.addedNodes ) {
+      //       if ( node.href || node.src ) {
+      //         methods.head_asset( node.href || node.src )
+      //       }
+      //     }
+      //   } 
+      // } )
+      return new PerformanceObserver( entries => {
+        for ( const entry of entries.getEntriesByType("resource") ) {
+          if ( entry.transferSize ) {
+            console.log(entry.transferSize, entry.name)
+            // methods.report.bytes_sent
+            methods.report.bytes_received({
+              url   : entry.name,
+              from  : 'assets',
+              bytes : entry.transferSize
+            })
           }
-        } 
+        }
       } )
     },
 
     register( observer ) {
-      observer.observe( document.head, { childList: true } )
+      // observer.observe( document.head, { childList: true } )
+      observer.observe({ 
+        type: "resource", 
+        // buffered: true
+      })      
     },
 
     init() {
@@ -188,17 +205,6 @@ export default {
       this.register( observer )
     },
 
-    run() {
-      const observer2 = new PerformanceObserver( entries => {
-        for ( const entry in entries.getEntries() ) {
-          // console.log(entries)
-          entries.getEntriesByType("resource")
-          .forEach(res => console.log(res.transferSize, res.name))
-        }
-      });
-      console.log(PerformanceObserver.supportedEntryTypes)
-      observer2.observe({ entryTypes: ["resource"] });      
-    }
 
   }
   
