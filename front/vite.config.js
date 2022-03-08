@@ -6,11 +6,16 @@ import { visualizer } from "rollup-plugin-visualizer"
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({
+      ssr: true
+    }),
     visualizer( opts => ({
       open: true,
     })) 
   ],
+  build: {
+    polyfillModulePreload: false, 
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
