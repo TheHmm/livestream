@@ -1,6 +1,6 @@
 import logger from "./logger"
 import time from './time'
-import mux from './mux'
+import livestream from './livestream'
 
 function $id() {
   return this.$options?.name?.toLowerCase()
@@ -10,5 +10,5 @@ export {
   $id,
   logger,
   time,
-  mux
+  livestream
 }

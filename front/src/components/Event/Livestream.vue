@@ -1,8 +1,10 @@
 <script>
 
-import Player from './Player.vue'
+// import Player from './Player.vue'
 // import Chat from '../components/Chat'
 // import Announcements from '../components/Announcements'
+import { defineAsyncComponent } from "vue"
+
 export default {
 
   name: 'Livestream',
@@ -14,7 +16,7 @@ export default {
   },
 
   components: {
-    Player,
+    Player: defineAsyncComponent(() => import('./Player.vue')),
     // Chat,
     // Announcements,
   },

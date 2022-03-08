@@ -1,5 +1,5 @@
 import api from "../api"
-import { logger, mux } from "../utils"
+import { logger } from "../utils"
 
 export default {
 
