@@ -133,7 +133,7 @@ export default {
       // is supported in the browser, we instantiate it with the
       // the <video> or <audio> element.
 
-      } else if ( livestream.HlsIsSupported() ) {
+      } else if ( livestream.hlsIsSupported() ) {
         this.player = livestream.players.hls_player( 
           this.$el,
           this.livestream,
