@@ -15,6 +15,7 @@ export default defineConfig({
   ],
   build: {
     polyfillModulePreload: false, 
+    sourcemap: true,
   },
   resolve: {
     alias: {
