@@ -39,7 +39,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     // From here on we are only interested in events 4, 5, and 8.
     // We stop here if the event is of any other type are other.
 
-    console.log(type, data)
+    // console.log(type, data)
 
     if ( 
       type !== 'video.asset.ready' &&
@@ -65,6 +65,16 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       ).privateData
 
 
+      // We create a timeout that will be different for the 
+      // different event types. This is because the two events
+      // asset.ready and stream.active are sometimes being called
+      // a bit too close together and strapi doesn't have time
+      // to update twice the livestream entry twice, resulting in
+      // there not being a start_time.
+
+      let timeout = 0
+
+
       // We proess the event video.asset.ready, which contains
       // the start time of our livestream. Viewers would need 
       // this timestamp to sync up some of their UI activities.
@@ -81,8 +91,9 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
           return 'Thanks MUX!'
         }
         
-        livestream.status     = 'active'
+        // livestream.status     = 'active'
         livestream.start_time = strapi.mux.get_start_time( data )
+        timeout = 5 * 1000 
 
 
       // We proccess the livestream.active and livestream.idle
@@ -103,11 +114,13 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       // Finally, we update the 'livestream' entry in Strapi 
       // with this new information.
       
-      await strapi
-      .service( 'api::livestream.livestream' )
-      .createOrUpdate({
-        data: { livestream }
-      })
+      setTimeout( async () => {
+        await strapi
+        .service( 'api::livestream.livestream' )
+        .createOrUpdate({
+          data: { livestream }
+        })
+      }, timeout)
 
     } catch ( error ) {
       return strapi.log.error( error )
