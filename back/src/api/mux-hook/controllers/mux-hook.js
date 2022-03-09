@@ -85,10 +85,10 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
         type == 'video.live_stream.active' ||
         type == 'video.live_stream.idle'
       ) {
+        console.log(data)
         livestream.status           = data.status
         livestream.active_asset_id  = data.active_asset_id
         livestream.recent_asset_ids = data.recent_asset_ids
-        console.log(data)
       }
 
 
