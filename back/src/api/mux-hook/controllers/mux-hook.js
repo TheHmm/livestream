@@ -68,6 +68,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       // this timestamp to sync up some of their UI activities.
 
       if ( type == 'video.asset.ready' ) {
+        console.log(data)
         livestream.status     = 'active'
         livestream.start_time = strapi.mux.get_start_time( data )
 
