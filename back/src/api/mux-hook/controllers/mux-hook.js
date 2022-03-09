@@ -91,9 +91,9 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
           return 'Thanks MUX!'
         }
         
-        // livestream.status     = 'active'
+        livestream.status     = 'active'
         livestream.start_time = strapi.mux.get_start_time( data )
-        timeout = 5 * 1000 
+        // timeout = 5 * 1000 
 
 
       // We proccess the livestream.active and livestream.idle
@@ -114,7 +114,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       // Finally, we update the 'livestream' entry in Strapi 
       // with this new information.
       
-      setTimeout( async () => {
+      setTimeout( async  () => {
         await strapi
         .service( 'api::livestream.livestream' )
         .createOrUpdate({
