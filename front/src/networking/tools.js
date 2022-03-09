@@ -9,14 +9,14 @@ export default {
 
   format_bytes : ( bytes, decimals = 3 ) => {
     if ( bytes === 0 ) {
-      return '0 Bytes' 
+      return '0 B' 
     }
     const 
       k   = 1024,
-      dm  = decimals < 0 ? 0 : decimals,
-      szs = [ 'Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ],
+      szs = [ 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ],
       i   = Math.floor( Math.log(bytes) / Math.log(k) ),
-      res = parseFloat( (bytes / Math.pow(k, i)).toFixed(dm) ) + ' ' + szs[i]
+      dm  = i == 0 ? 0 : decimals,
+      res = parseFloat( (bytes / Math.pow(k, i))).toFixed(dm)  + ' ' + szs[i]
     return res
   },
 

@@ -16,8 +16,8 @@ export default {
       type: Object
     },
 
-    level: {
-      type: String
+    mode: {
+      type: Object
     },
 
   },
@@ -45,8 +45,15 @@ export default {
         this.destroy()
       }
     },
-    level() {
-      this.should_update = true
+    mode( new_mode, old_mode ) {
+      console.log(old_mode.name, new_mode.name)
+      if ( old_mode.hls && !new_mode.hls ) {
+        this.$store.commit('livestream/RESET_MODES')
+      } else if ( old_mode.hls && new_mode.hls ) { 
+        this.player.player.currentLevel = new_mode.id
+      } else {
+        this.should_update = true
+      }
     }
 
   },
@@ -98,7 +105,7 @@ export default {
     },
 
     
-    // When something changes in the livestream or level, we 
+    // When something changes in the livestream or mode, we 
     // destroy the old player, create a new one and initiate it,
     
     async update() {
@@ -109,21 +116,21 @@ export default {
 
 
     // Create the appropriate player for the livestream type
-    // and level.
+    // and mode.
 
     create() {
 
-      logger.info( 'LIVESTREAM', `Creating player for ${ this.level }.` )
+      logger.info( 'LIVESTREAM', `Creating player for ${ this.mode.name }.` )
 
 
       // The image player will load a thumbnail every X seconds
       // as well as subscribe to a subtitle stream from Marco.
 
-      if ( this.level == 'only_cc' ) {
+      if ( this.mode.name == 'thumbs' ) {
         this.player = livestream.players.img_player(
           this.$refs.img, 
           this.livestream,
-          this.level,
+          this.mode.name,
           this.$socket
         )
 
@@ -137,7 +144,7 @@ export default {
         this.player = livestream.players.hls_player( 
           this.$el,
           this.livestream,
-          this.level
+          this.mode.name
         )
 
 
@@ -149,7 +156,7 @@ export default {
         this.player = livestream.players.def_player(
           this.$el,
           this.livestream,
-          this.level
+          this.mode.name
         )
       }
 
@@ -167,7 +174,7 @@ export default {
 <template>
   <div
     id="img_player"
-    v-if="level == 'only_cc'"
+    v-if="mode.name == 'thumbs'"
   > 
     <img
       ref="img"
@@ -182,7 +189,7 @@ export default {
     </div>
   </div>
   <audio
-    v-else-if="level == 'only_audio'"
+    v-else-if="mode.name == 'audio'"
     muted
     controls
     autoplay

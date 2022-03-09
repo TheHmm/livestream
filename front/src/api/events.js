@@ -25,7 +25,7 @@ const sanitize = event => {
     // (3) else: return null; stream doesn't exist
 
     event.livestream = () => { 
-      // his is a functionreturning a value!
+      // his is a function returning a value!
       if ( event.is.soon() ) {
         return  store.getters[ 'livestream/get_livestream' ] 
       } else if ( event.is.in_past() ) {

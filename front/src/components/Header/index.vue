@@ -1,21 +1,11 @@
 <script>
-import networking  from '@/networking'
-import { mapGetters } from 'vuex'
+import Network from './Network.vue'
 
 export default {
 
   name: 'Header',
-
-  computed: {
-     ...mapGetters( 'networking', [
-      'total_bytes_sent',
-      'total_bytes_received',
-      'total_bytes_transferred',
-    ] )
-  },
-
-  methods: {
-    format_bytes: networking.tools.format_bytes
+  components: {
+    Network
   }
 
 }
@@ -31,20 +21,7 @@ export default {
       <RouterLink to="/about">About</RouterLink>
     </nav>
     <br>
-    <table id="network">
-      <tr>
-        <td>total bytes sent</td>
-        <td>{{ format_bytes( total_bytes_sent ) }}</td>
-      </tr>
-      <tr>
-        <td>total bytes received</td>
-        <td>{{ format_bytes( total_bytes_received ) }}</td>
-      </tr>
-      <tr>
-        <td>total bytes transferred</td>
-        <td>{{ format_bytes( total_bytes_transferred ) }}</td>
-      </tr>
-    </table>
+    <Network />
 
   </header>  
 </template>

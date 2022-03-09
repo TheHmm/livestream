@@ -1,5 +1,6 @@
 import networking   from '@/networking'
 import api          from '@/api'
+import store        from '@/store'
 import time         from './time'
 
 const 
@@ -11,7 +12,7 @@ const
     // of the livestream's active assset. See line 70 here:
     // /back/src/api/mux-hook/controllers/mux-hook.js .
 
-    img_player( element, livestream, level, socket ) {
+    img_player( element, livestream, mode, socket ) {
      
       return {
 
@@ -37,7 +38,7 @@ const
         reload_img() {
           const
             curr_time  = mux.get_cur_time( livestream ),
-            source_url = mux.source_url( this.playback_id, level, curr_time )
+            source_url = mux.source_url( this.playback_id, mode, curr_time )
           element.src = source_url
           api.head( source_url )
         },
@@ -51,7 +52,7 @@ const
     // tag using hls.js and attaches the stream monitor to
     // it. See: /front/src/networking/watchers.js:L120 .
 
-    hls_player( element, livestream, level ) {
+    hls_player( element, livestream, mode ) {
 
       return {
         
@@ -59,15 +60,21 @@ const
         player      : null,
  
         async init() {
-          const source_url = mux.source_url( this.playback_id, level )
+          const source_url = mux.source_url( this.playback_id, mode )
           const { default: Hls } = await import( 'hls.js' )
           this.player = new Hls()
           this.init_stream_monitor( this.player, Hls.Events )
           this.player.loadSource( source_url )
           this.player.attachMedia( element )
           this.player.on(Hls.Events.MANIFEST_PARSED, ( event, data ) => {
-            // set available levels
-            console.log(data.levels)
+            if (mode == 'video') {
+              for ( let l = 0; l < data.levels.length; l ++ ) {
+                store.dispatch('livestream/create_mode_from_hls_level', {
+                  ...data.levels[l], 
+                  ...{ id: l }
+                })
+              }
+            }
             element.play()
           })
           console.log(source_url)
@@ -90,7 +97,7 @@ const
     // <audio> tag when the browser has support for 
     // HLS natively.
 
-    def_player( element, livestream, level ) {
+    def_player( element, livestream, mode ) {
 
       return {
 
@@ -98,7 +105,7 @@ const
         player      : null,   
 
         init() {
-          const source_url = mux.source_url( this.playback_id, level )
+          const source_url = mux.source_url( this.playback_id, mode )
           this.player = element
           this.player.src = source_url
           this.player.addEventListener('loadedmetadata', () => {
@@ -132,10 +139,10 @@ const
       }
     },
   
-    source_url( playback_id, level, curr_time ) {
-      if ( level == 'only_cc' ) {
+    source_url( playback_id, mode, curr_time ) {
+      if ( mode == 'thumbs' ) {
         return this.thumb_src( playback_id, curr_time ) 
-      } else if ( level == 'only_audio' ) {
+      } else if ( mode == 'audio' ) {
         return this.audio_src( playback_id )
       } else {
         return this.video_src( playback_id )

@@ -14,29 +14,9 @@ export default {
     // data transfer to and from, each has it's own logic.
     // refer to utils/networking for more details.
 
-    transfers: {
-      
-      assets: {
-        bytes_sent: 0,
-        bytes_received: 0,
-        registered: []
-      },
-  
-      api: {
-        bytes_sent: 0,
-        bytes_received: 0,
-      },
-  
-      sockets: {
-        bytes_sent: 0,
-        bytes_received: 0,
-      },
-  
-      mux: {
-        bytes_sent: 0,
-        bytes_received: 0,
-      },
-
+    transfers : {
+      bytes_sent     : [],
+      bytes_received : []
     }
 
   },
@@ -47,47 +27,45 @@ export default {
     // We update the appropriate category of networking
     // payloads with bytes sent and received.
 
-    ADD_BYTES_SENT : ( state, { to, bytes } ) => {
-      state
-      .transfers[ to ]
-      .bytes_sent += bytes
-    },
-
-    ADD_BYTES_RECEIVED : ( state, { from, bytes } ) => {
-      state
-      .transfers[ from ]
-      .bytes_received += bytes
-    },
-
-
-    // We store the URLs of our assets in an array so
-    // that we know not to HEAD them again.
-
-    REGISTER_ASSET : ( state, url ) => {
+    ADD_BYTES_SENT : ( state, transfer ) => {
       state
       .transfers
-      .assets
-      .registered
-      .push( url )
-    }
+      .bytes_sent
+      .push( transfer )
+    },
+
+    ADD_BYTES_RECEIVED : ( state, transfer ) => {
+      state
+      .transfers
+      .bytes_received
+      .push( transfer ) 
+    },
+
 
   },
 
   getters: {
 
-
-    
-
-    total_bytes_sent : state => Object
-      .values( state.transfers )
-      .map( t => t.bytes_sent )
+    total_bytes_sent : state => state
+      .transfers
+      .bytes_sent
+      .length
+      && state
+      .transfers
+      .bytes_sent
+      .map( t => t.bytes )
       .reduce( ( a, b ) => a + b )
     ,
 
-    total_bytes_received : state => Object
-      .values( state.transfers )
-      .map( t => t.bytes_received )
-      .reduce( ( a, b ) => a + b )
+    total_bytes_received : state => state
+    .transfers
+    .bytes_received
+    .length
+    && state
+    .transfers
+    .bytes_received
+    .map( t => t.bytes )
+    .reduce( ( a, b ) => a + b )
     ,
 
     total_bytes_transferred : ( state, getters ) => 
@@ -95,31 +73,37 @@ export default {
       getters.total_bytes_received
     ,
 
-    is_registered_asset : state => path =>
-      state
+    last_bytes_sent : state => state
       .transfers
-      .assets
-      .registered
-      .find( url => url.includes( path ) )
+      .bytes_sent[
+        state
+        .transfers
+        .bytes_sent
+        .length - 1
+      ]
     ,
-      
+
+    last_bytes_received : state => state
+      .transfers
+      .bytes_received[
+        state
+        .transfers
+        .bytes_received
+        .length - 1
+      ]
+    ,
+
 
   },
 
   actions: {
 
     add_bytes_sent( { commit }, { url, to, bytes } ) {
-      commit( 'ADD_BYTES_SENT', { to, bytes } )
-      if ( to == 'assets' ) {
-        commit( 'REGISTER_ASSET', url )
-      }
+      commit( 'ADD_BYTES_SENT', { url, to, bytes } )
     },
 
     add_bytes_received( { commit }, { url, from, bytes } ) {
-      commit( 'ADD_BYTES_RECEIVED', { from, bytes } )
-      if ( from == 'assets' ) {
-        commit( 'REGISTER_ASSET', url )
-      }
+      commit( 'ADD_BYTES_RECEIVED', { url, from, bytes } )
     }
 
   }

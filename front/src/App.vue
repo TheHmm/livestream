@@ -66,15 +66,4 @@ nav a {
   margin-right: 1em;
 }
 
-table {
-  border-collapse: collapse;
-}
-table tr td {
-  border: 1px solid black;
-  padding: 0.1em 0.4em;
-}
-table tr td:nth-of-type(2) {
-  text-align: right;
-}
-
 </style>

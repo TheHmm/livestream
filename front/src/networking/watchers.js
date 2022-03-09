@@ -95,8 +95,8 @@ export default {
     },
 
     register( io, monitor ) {
-      io.onAny( monitor.on_receive )
       io.on( 'connect', monitor.on_connect )
+      io.onAny( monitor.on_receive )
       const old_emit = io.emit.bind(io)
       io.emit = ( ev, data ) => {
         monitor.on_send( ev, data )
@@ -142,14 +142,14 @@ export default {
       return this.hooks
     },
 
-    register( hls, events, monitor ) {
-      hls.on( events.FRAG_LOADING, monitor.frag_loading )
-      hls.on( events.FRAG_LOADED, monitor.frag_loaded )
+    register( hls, Events, monitor ) {
+      hls.on( Events.FRAG_LOADING, monitor.frag_loading )
+      hls.on( Events.FRAG_LOADED, monitor.frag_loaded )
     },
 
-    init( hls, events ) {
+    init( hls, Events ) {
       const monitor = this.create()
-      this.register( hls, events, monitor )
+      this.register( hls, Events, monitor )
     }
 
 
@@ -166,11 +166,6 @@ export default {
       return new PerformanceObserver( entries => {
         for ( const entry of entries.getEntriesByType("resource") ) {
           if ( entry.transferSize ) {
-            methods.report.bytes_sent({
-              url   : entry.name,
-              to    : 'assets',
-              bytes : config.networking.assets.request_bytes
-            })
             setTimeout( () => {
               methods.report.bytes_received({
                 url   : entry.name,
