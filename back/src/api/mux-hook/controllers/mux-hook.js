@@ -91,8 +91,6 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
           return 'Thanks MUX!'
         }
 
-        console.log(data)
-        
         livestream.status     = 'active'
         livestream.start_time = strapi.mux.get_start_time( data )
         // timeout = 5 * 1000 
