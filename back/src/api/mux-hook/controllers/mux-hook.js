@@ -42,7 +42,8 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     if ( 
       type !== 'video.asset.ready' &&
       type !== 'video.live_stream.active' &&
-      type !== 'video.live_stream.idle'
+      type !== 'video.live_stream.idle' ||
+      data.upload_id 
     ) {
       strapi.log.warn(`[ REJECTING MUX HOOK: ${ type } ]`)
       return 'Thanks MUX!'
@@ -68,7 +69,9 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       // this timestamp to sync up some of their UI activities.
 
       if ( type == 'video.asset.ready' ) {
+
         console.log(data)
+        
         livestream.status     = 'active'
         livestream.start_time = strapi.mux.get_start_time( data )
 
