@@ -106,8 +106,7 @@ const process_hook = async ( ctx, strapi ) => {
     })
 
   } catch ( error ) {
-    return strapi.log.error( error )
-
+    strapi.log.error( error )
   }
 
   // We thank mux.
