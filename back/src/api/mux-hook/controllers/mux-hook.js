@@ -39,6 +39,8 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     // From here on we are only interested in events 4, 5, and 8.
     // We stop here if the event is of any other type are other.
 
+    console.log(data)
+
     if ( 
       type !== 'video.asset.ready' &&
       type !== 'video.live_stream.active' &&
@@ -95,7 +97,6 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
         livestream.status           = data.status
         livestream.active_asset_id  = data.active_asset_id
         livestream.recent_asset_ids = data.recent_asset_ids
-        console.log(data)
       }
 
 
