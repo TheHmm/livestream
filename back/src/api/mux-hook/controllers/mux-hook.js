@@ -42,8 +42,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     if ( 
       type !== 'video.asset.ready' &&
       type !== 'video.live_stream.active' &&
-      type !== 'video.live_stream.idle' 
-      // !data.live_stream_id 
+      type !== 'video.live_stream.idle'
     ) {
       strapi.log.warn(`[ REJECTING MUX HOOK: ${ type } ]`)
       return 'Thanks MUX!'
@@ -70,7 +69,15 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
       if ( type == 'video.asset.ready' ) {
 
-        console.log(data)
+
+        // We make sure that the video asset refers to the one
+        // that is currently being livestreamed. Mux emit's this
+        // event for other kinds of video assets as well.
+
+        if ( !data.is_live ) {
+          strapi.log.warn(`[ REJECTING MUX HOOK: ${ type } / wrong asset. ]`)
+          return 'Thanks MUX!'
+        }
         
         livestream.status     = 'active'
         livestream.start_time = strapi.mux.get_start_time( data )
@@ -85,7 +92,6 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
         type == 'video.live_stream.active' ||
         type == 'video.live_stream.idle'
       ) {
-        console.log(type, data)
         livestream.status           = data.status
         livestream.active_asset_id  = data.active_asset_id
         livestream.recent_asset_ids = data.recent_asset_ids
