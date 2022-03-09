@@ -92,11 +92,11 @@ const
 module.exports = {
 
 
-  beforeCreate(event) { sanitize_livestream( event, strapi ) },
-  beforeUpdate(event) { sanitize_livestream( event, strapi ) },
+  beforeCreate( event ) { sanitize_livestream( event, strapi ) },
+  beforeUpdate( event ) { sanitize_livestream( event, strapi ) },
 
-  afterUpdate(event) { after_update_handler( event, strapi ) },
+  afterUpdate( event ) { after_update_handler( event, strapi ) },
 
-  async afterDelete(event) { await after_delete_handler( event, strapi ) }
+  async afterDelete( event ) { await after_delete_handler( event, strapi ) }
 
 }
