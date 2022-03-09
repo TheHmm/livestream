@@ -27,10 +27,12 @@ const process_hook = async ( ctx, strapi ) => {
   // 4. video.asset.ready                   => we process this
   // 5. video.live_stream.active            => we process this
 
+
   // Then, Marco click 'Stop Streaming', the ensuing events are:
   // 7. video.live_stream.disconnected       
   // 8. video.live_stream.idle              => we process this
   // 9. video.asset.live_stream_completed
+
 
   // From here on we are only interested in events 4, 5, and 8.
   // We stop here if the event is of any other type are other.
@@ -123,6 +125,6 @@ const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) =>  ({
 
-  async create( ctx ) { await process_hook( ctx, strapi ) }
+  async create( ctx ) {  process_hook( ctx, strapi ) }
 
 }))
