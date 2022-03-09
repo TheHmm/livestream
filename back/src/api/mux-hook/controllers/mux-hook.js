@@ -90,6 +90,8 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
           strapi.log.warn(`[ REJECTING MUX HOOK: ${ type } / wrong asset. ]`)
           return 'Thanks MUX!'
         }
+
+        console.log(data)
         
         livestream.status     = 'active'
         livestream.start_time = strapi.mux.get_start_time( data )
