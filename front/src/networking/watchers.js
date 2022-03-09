@@ -134,7 +134,6 @@ export default {
           from  : 'mux',
           bytes : data.frag.stats.loaded
         })
-        console.log(data.frag.programDateTime)   
       }
 
     },
