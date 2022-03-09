@@ -39,7 +39,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     // From here on we are only interested in events 4, 5, and 8.
     // We stop here if the event is of any other type are other.
 
-    console.log(data)
+    console.log(type, data)
 
     if ( 
       type !== 'video.asset.ready' &&
