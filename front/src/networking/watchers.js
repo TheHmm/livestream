@@ -133,7 +133,8 @@ export default {
           url   : data.frag.baseurl,
           from  : 'mux',
           bytes : data.frag.stats.loaded
-        })   
+        })
+        console.log(data.frag.programDateTime)   
       }
 
     },
@@ -190,8 +191,8 @@ export default {
 
     register( observer ) {
       observer.observe({ 
-        type: "resource", 
-        buffered: true
+        type     : "resource",
+        buffered : true
       })      
     },
 

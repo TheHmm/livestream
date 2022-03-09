@@ -1,7 +1,7 @@
 
 // Network store module: These fuctions are used
 // to keep track of the network activity (such as 
-// data transfer size) of this website.
+// data transfer sizes) of this website.
 
 export default {
 

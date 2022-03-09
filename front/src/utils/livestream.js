@@ -65,7 +65,9 @@ const
           this.init_stream_monitor( this.player, Hls.Events )
           this.player.loadSource( source_url )
           this.player.attachMedia( element )
-          this.player.on(Hls.Events.MANIFEST_PARSED, event => {
+          this.player.on(Hls.Events.MANIFEST_PARSED, ( event, data ) => {
+            // set available levels
+            console.log(data.levels)
             element.play()
           })
           console.log(source_url)
