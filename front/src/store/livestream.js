@@ -160,10 +160,11 @@ export default {
     socket_final( { commit }, caption ) {
       commit( 'SET_CC_INTERIM', null )  
       commit( 'ADD_CAPTION', caption ) 
-
+      console.log(caption)
     },
 
     socket_srt( { commit }, srt ) {
+      console.log('srt')
       commit( 'SET_TRACK', captions.srt_to_vtt( srt ) )
     }
 

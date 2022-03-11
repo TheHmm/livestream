@@ -231,7 +231,7 @@ module.exports = {
         cc.push( result.caption )
         io.to( 'cc' ).emit( 'final', result.caption )
         srt = result.srt
-        // io.to( 'srt' ).emit( 'srt' , srt)
+        io.to( 'srt' ).emit( 'srt' , srt)
       })
 
 

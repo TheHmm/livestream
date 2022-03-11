@@ -9,7 +9,7 @@ ${start} --\> ${stop}
   },
 
   srt_to_vtt: content => {
-    console.log(content.replace(/(\d+:\d+:\d+)+,(\d+)/g, '$1.$2'))
+    // console.log(content.replace(/(\d+:\d+:\d+)+,(\d+)/g, '$1.$2'))
     return(
 
     window.URL.createObjectURL(

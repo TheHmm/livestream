@@ -85,6 +85,12 @@ export default {
     this.destroy()
   },
 
+  sockets: {
+    srt(srt) {
+      console.log(srt)
+    }
+  },
+
   methods: {
 
     
@@ -223,7 +229,6 @@ export default {
       srclang="en" 
       kind="captions" 
       label="English" 
-      ref="track"
       :src="track_src"
     />
   </video>
