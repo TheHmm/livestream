@@ -317,8 +317,19 @@
 			recognition.interimResults = true;
 			
 			
-			recognition.onstart = function(){
+			recognition.onstart = async function() {
 				console.log("started transcription");
+
+				try {
+					const 
+						response = await fetch('https://api.live.thehmm.karls.computer/api/livestream'),
+						livestream = await response.json()
+					timestamp_start = (new Date(livestream.data.publicData.start_time)).getTime()
+					console.log(timestamp_start)
+					console.log(Date.now())
+				} catch (err) {
+					console.error('strapi error', err)
+				}
 				
 			};
 			recognition.onerror = function(event){
