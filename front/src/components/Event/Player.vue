@@ -40,6 +40,9 @@ export default {
     ] ),
     track_src() {
       console.log(this.track)
+      const tracks = this.player.player.subtitleTracks
+      // tracks[0] = this.track
+      console.log(tracks)
       return this.track
     }
   },
@@ -85,11 +88,6 @@ export default {
     this.destroy()
   },
 
-  sockets: {
-    srt(srt) {
-      console.log(srt)
-    }
-  },
 
   methods: {
 

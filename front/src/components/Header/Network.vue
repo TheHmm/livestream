@@ -17,6 +17,7 @@ export default {
   },
 
   watch: {
+
     last_bytes_sent() {
       this.sent_has_changed = true
       setTimeout(() => {
@@ -24,6 +25,7 @@ export default {
       }, 2000)
         
     },
+
     last_bytes_received() {
       this.received_has_changed = true
       setTimeout(() => {
