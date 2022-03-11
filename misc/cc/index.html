@@ -234,6 +234,7 @@
 	var timestamp_start = null
 	var timestamp_stop = null
 	var timestamp_intern  = null;
+	var caption_start = null
 	var logcounter=0;
 				
 	var counter=0;
@@ -325,8 +326,8 @@
 						response = await fetch('https://api.live.thehmm.karls.computer/api/livestream'),
 						livestream = await response.json()
 					timestamp_start = (new Date(livestream.data.publicData.start_time)).getTime()
-					console.log(timestamp_start)
-					console.log(Date.now())
+					console.log(timestamp_start, 'livestream start time:')
+					console.log(Date.now(), 'current time:')
 				} catch (err) {
 					console.error('strapi error', err)
 				}
@@ -377,11 +378,14 @@
 						timestamp_stop = Date.now();
 						timestamp_stop = Date.now() - timestamp_start;
 						
+						
 						var date = new Date(0);
 						date.setSeconds(timestamp_stop/1000);
 						timestamp_stop = date.toISOString().replace(".",",").replace("1970-01-01T","");
 						timestamp_stop = timestamp_stop.substring(0, timestamp_stop.length - 1);
 						
+						caption_start = timestamp_intern
+
 						timestamp_intern -= timestamp_start;
 						var date = new Date(0);
 						date.setSeconds(timestamp_intern/1000);
@@ -417,11 +421,16 @@
 					try {
 						//socket.send(JSON.stringify({"msg":true, "final":final_transcript, "id":counter}));
 						console.log(srtFile)
+						//console.log(new Date())
+						//console.log(timestamp_intern)
+						// console.log(new Date(new Date().getTime() - timestamp_start))
 						socket.emit('final', {
 							caption : { 
-								id   : counter,
-								time : new Date().getTime(),
-								text : final_transcript_raw,
+								id    : counter,
+								// time  : new Date().getTime(),
+								start : caption_start,
+								stop  : new Date().getTime(),
+								text  : final_transcript_raw,
 							},
 							srt : srtFile,
 						});

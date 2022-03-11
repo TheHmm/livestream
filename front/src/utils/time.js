@@ -22,7 +22,16 @@ const
   is_soon      = timestring => ( 
     time( timestring ) > now() &&
     time( timestring ) < now() + BUFFER 
-  )
+  ),
+
+  time_to_srt_stamp = time => {
+    const date = new Date( 0 )
+		date.setSeconds( time/1000 )
+		let stamp = date.toISOString().replace(".",",").replace("1970-01-01T","")
+		stamp = stamp.substring(0, stamp.length - 1)
+    console.log(stamp)
+    return stamp
+  }
 
 
 export default {
@@ -31,5 +40,6 @@ export default {
   is_in_future,
   is_soon,
   to_hours,
+  time_to_srt_stamp
   // human_format,
 }

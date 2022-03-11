@@ -54,7 +54,7 @@ export default {
 
     track      : null,
     cc_interim : null,
-    cc         : {},
+    cc         : [],
 
   },
 
@@ -65,8 +65,9 @@ export default {
     SET_TRACK      : ( state, track )   => state.track = track,
     CLEAR_TRACK    : state => state.track = null,
     SET_CC_INTERIM : ( state, caption ) => state.cc_interim = caption,
-    SET_CC         : ( state, caption ) => state.cc[caption.id] = caption,
-    CLEAR_CC       : state => state.cc = {},
+    SET_CC         : ( state, cc ) => state.cc = cc,
+    ADD_CAPTION    : ( state, caption ) => state.cc.push ( caption ),
+    CLEAR_CC       : state => state.cc = [],
 
     SET_MODE       : ( state, mode ) => state.modes[mode.name] = mode,
 
@@ -143,9 +144,7 @@ export default {
 
     socket_confirmJoinCc( { commit }, cc ) {
       logger.info( 'SOCKET', `Subscribed to closed captions.`)
-      for ( const caption of cc ) {
-        commit( 'SET_CC', caption ) 
-      }
+      commit( 'SET_CC', cc ) 
     },
 
     socket_confirmLeaveCc( { commit }) {
@@ -160,7 +159,7 @@ export default {
 
     socket_final( { commit }, caption ) {
       commit( 'SET_CC_INTERIM', null )  
-      commit( 'SET_CC', caption ) 
+      commit( 'ADD_CAPTION', caption ) 
 
     },
 
