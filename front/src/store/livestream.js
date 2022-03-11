@@ -1,8 +1,14 @@
 import api from "../api"
 import { logger } from "../utils"
+import { captions } from "../utils"
 
 const DEFAULT_MODES = () => ({
 
+  captions: {
+    id: -2,
+    name: 'captions',
+    label: 'captions'
+  },
   thumbs: {
     id: -2,
     name: 'thumbs',
@@ -46,7 +52,9 @@ export default {
 
     modes: DEFAULT_MODES(),
 
-    cc: {},
+    cc_interim : null,
+    cc         : {},
+    track      : null,
 
   },
 
@@ -54,9 +62,11 @@ export default {
 
     SET_LIVESTREAM : ( state, livestream ) => state.livestream = livestream,
 
-    SET_CAPTION    : ( state, caption ) => state.cc[caption.id] = caption.text,
+    SET_CC_INTERIM : ( state, caption ) => state.cc_interim = caption,
+    SET_CC         : ( state, caption ) => state.cc[caption.id] = caption,
+    SET_TRACK      : ( state, track ) => state.track = track,
 
-    SET_MODE      : ( state, mode ) => state.modes[mode.name] = mode,
+    SET_MODE       : ( state, mode ) => state.modes[mode.name] = mode,
 
     RESET_MODES    : state => state.modes = DEFAULT_MODES()
 
@@ -65,8 +75,10 @@ export default {
   getters: {
 
     get_livestream : state => state.livestream,
-    modes : state => state.modes,
-    default_mode: state => state.modes['video'],
+
+    modes          : state => state.modes,
+
+    default_mode   : state => state.modes['video'],
 
   },
 
@@ -126,11 +138,16 @@ export default {
     },
 
     socket_interm( { commit }, caption ) {
-      commit( 'SET_CAPTION', caption )  
+      commit( 'SET_CC_INTERIM', caption )  
     },
 
     socket_final( { commit }, caption ) {
-      // commit( 'SET_CAPTION', caption )  
+      commit( 'SET_CC_INTERIM', null )  
+      console.log(captions.srt_to_vtt( caption.srt ))
+      commit( 'SET_TRACK', captions.srt_to_vtt( caption.srt ) )
+      delete caption.srt
+      commit( 'SET_CC', caption ) 
+
     },
 
 

@@ -76,6 +76,7 @@ export default {
 
 table {
   border-collapse: collapse;
+  font-family: monospace;
 }
 table tr td {
   border: 1px solid black;
@@ -85,6 +86,7 @@ table tr td:nth-of-type(2) {
   text-align: right;
 }
 table tr td:nth-of-type(3) {
+  padding-left: 0.75rem;
   border: none;
   opacity: 0;
   transition: opacity 0.5s ease-out;

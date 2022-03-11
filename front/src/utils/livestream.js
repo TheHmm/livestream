@@ -36,13 +36,23 @@ const
         },
 
         reload_img() {
-          const
-            curr_time  = mux.get_cur_time( livestream ),
-            source_url = mux.source_url( this.playback_id, mode, curr_time )
-          element.src = source_url
-          api.head( source_url )
+          api
+          .get( 
+            this.source_url(), 
+            { responseType: 'blob' } 
+          )
+          .then( res => {
+            element.src = window.URL.createObjectURL(res.data)
+          })
         },
 
+        source_url() {
+          return mux.source_url( this.playback_id, mode, this.curr_time() )
+        },
+        
+        curr_time() {
+          return mux.get_cur_time( livestream )
+        },
       }
 
     },
@@ -52,7 +62,7 @@ const
     // tag using hls.js and attaches the stream monitor to
     // it. See: /front/src/networking/watchers.js:L120 .
 
-    hls_player( element, livestream, mode ) {
+    hls_player( element, livestream, mode, socket ) {
 
       return {
         
@@ -60,6 +70,7 @@ const
         player      : null,
  
         async init() {
+          socket.client.emit('join_CC_room')
           const source_url = mux.source_url( this.playback_id, mode )
           const { default: Hls } = await import( 'hls.js' )
           this.player = new Hls()
@@ -81,6 +92,7 @@ const
         },
 
         destroy() {
+          socket.client.emit('leave_CC_room')
           this.player.destroy()
         },
 

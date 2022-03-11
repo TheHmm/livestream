@@ -20,11 +20,11 @@ const
     ) 
   },
 
-  get = url => {
+  get = (url, opts) => {
     logger.info( `API`, `Gettig ${ url }.` )
     return new Promise( ( resolve, reject ) => 
       axios
-      .get( url )
+      .get( url, opts)
       .then( result => resolve( result ) )
       .catch( error => {
         logger.error( 'API', error ) 

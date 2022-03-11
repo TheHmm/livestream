@@ -62,9 +62,9 @@ module.exports = MUX_TOKEN => {
     get_public_stream_details = stream => ({
       status          : stream.status,
       playbackId      : get_playback_id(stream),
-      recentAssets    : stream.recent_asset_ids,
       active_asset_id : stream.active_asset_id,
       start_time      : stream.start_time,
+      recentAssets    : stream.recent_asset_ids,
     })
 
 

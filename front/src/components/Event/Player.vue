@@ -33,7 +33,15 @@ export default {
     active() { 
       return this.livestream.status == 'active' 
     },
-    ...mapState('livestream', [ 'cc' ] )
+    ...mapState('livestream', [ 
+      'cc_interim',
+      'cc',
+      'track',
+    ] ),
+    track_src() {
+      console.log(this.track)
+      return this.track
+    }
   },
 
   watch: {
@@ -46,7 +54,7 @@ export default {
       }
     },
     mode( new_mode, old_mode ) {
-      console.log(old_mode.name, new_mode.name)
+      // console.log(old_mode.name, new_mode.name)
       if ( old_mode.hls && !new_mode.hls ) {
         this.$store.commit('livestream/RESET_MODES')
       } else if ( old_mode.hls && new_mode.hls ) { 
@@ -144,7 +152,8 @@ export default {
         this.player = livestream.players.hls_player( 
           this.$el,
           this.livestream,
-          this.mode.name
+          this.mode.name,
+          this.$socket
         )
 
 
@@ -183,8 +192,15 @@ export default {
       <p
         v-for="(caption, id) of cc"
         :key="id"
+        class="caption"
       >
-      {{ caption }}
+      {{ caption.text }}
+      </p>
+      <p
+        v-if="cc_interim"
+        class="caption"
+      >
+        {{ cc_interim.text }}
       </p>
     </div>
   </div>
@@ -201,6 +217,15 @@ export default {
     controls
     autoplay
   >
+    <track
+      v-if="track"
+      default 
+      srclang="en" 
+      kind="captions" 
+      label="English" 
+      ref="track"
+      :src="track_src"
+    />
   </video>
 </template>
 

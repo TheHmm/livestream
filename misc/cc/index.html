@@ -230,6 +230,7 @@
 	console.log("Language: "+myLang);
 	
 	var srtFile = "";
+	var srt_name = null
 	var timestamp_start = null
 	var timestamp_stop = null
 	var timestamp_intern  = null;
@@ -324,7 +325,7 @@
 				console.log(event);
 			};
 			recognition.onend = function(e){
-				console.log(e);
+				// console.log(e);
 				console.log("Stopped transcription");
 				setup();
 			};
@@ -335,7 +336,6 @@
 					//console.log("ended");
 					//recognition.onend = null;
 					//recognition.stop();
-					console.log(event);
 					return;
 				}
 				
@@ -384,7 +384,8 @@
 						srtFile += timestamp_intern + " --\> " + timestamp_stop + "\n";
 						timestamp_intern=null;
 						srtFile += ">> " + final_transcript_raw + "\n\n";
-						setStorage("transcription_"+roomID+"_"+timestamp_start, srtFile, 1);
+						srt_name = "transcription_"+roomID+"_"+timestamp_start
+						setStorage(srt_name, srtFile, 1);
 						
 						if (logcounter===1){
 							var button = document.createElement("button");
@@ -405,8 +406,10 @@
 					try {
 						//socket.send(JSON.stringify({"msg":true, "final":final_transcript, "id":counter}));
 						socket.emit('final', {
-               text : final_transcript_raw,
-               id   : counter
+							id   : counter,
+							time : new Date().getTime(),
+							text : final_transcript_raw,
+							srt  : srtFile,
 						});
 						final_transcript="";
 						interim_transcript="";
@@ -426,8 +429,9 @@
 					try {
 						//	socket.send(JSON.stringify({"msg":true, "interm":interim_transcript, "id":counter}));
 						socket.emit('interm', {
+							id   : counter,
+							time : new Date().getTime(),
 							text : interim_transcript,
-							id   : counter
 						});
 					} catch(e){
 						console.error(e);
