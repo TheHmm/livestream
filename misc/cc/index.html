@@ -405,13 +405,14 @@
 					
 					try {
 						//socket.send(JSON.stringify({"msg":true, "final":final_transcript, "id":counter}));
+						console.log(srtFile)
 						socket.emit('final', {
 							caption : { 
 								id   : counter,
 								time : new Date().getTime(),
 								text : final_transcript_raw,
 							},
-							srt  : srtFile,
+							srt : srtFile,
 						});
 						final_transcript="";
 						interim_transcript="";

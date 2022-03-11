@@ -70,7 +70,7 @@ const
         player      : null,
  
         async init() {
-          socket.client.emit('join_CC_room')
+          socket.client.emit('join_SRT_room')
           const source_url = mux.source_url( this.playback_id, mode )
           const { default: Hls } = await import( 'hls.js' )
           this.player = new Hls()
@@ -92,7 +92,7 @@ const
         },
 
         destroy() {
-          socket.client.emit('leave_CC_room')
+          socket.client.emit('leave_SRT_room')
           this.player.destroy()
         },
 

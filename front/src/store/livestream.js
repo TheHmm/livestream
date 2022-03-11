@@ -52,19 +52,21 @@ export default {
 
     modes: DEFAULT_MODES(),
 
+    track      : null,
     cc_interim : null,
     cc         : {},
-    track      : null,
 
   },
 
   mutations: {
 
     SET_LIVESTREAM : ( state, livestream ) => state.livestream = livestream,
-
+    
+    SET_TRACK      : ( state, track )   => state.track = track,
+    CLEAR_TRACK    : state => state.track = null,
     SET_CC_INTERIM : ( state, caption ) => state.cc_interim = caption,
     SET_CC         : ( state, caption ) => state.cc[caption.id] = caption,
-    SET_TRACK      : ( state, track ) => state.track = track,
+    CLEAR_CC       : state => state.cc = {},
 
     SET_MODE       : ( state, mode ) => state.modes[mode.name] = mode,
 
@@ -129,12 +131,27 @@ export default {
       logger.info( `SOCKET`, `Got livestream update: ${ data.status }` )
     },
 
-    socket_confirmJoinCc( { commit }) {
+    socket_confirmJoinSrt( { commit }, srt ) {
+      commit( 'SET_TRACK', captions.srt_to_vtt( srt ) )
+      logger.info( 'SOCKET', `Subscribed to subtitle track.`)
+    },
+
+    socket_confirmLeaveSrt( { commit }) {
+      commit( 'CLEAR_TRACK' )
+      logger.info( 'SOCKET', `Unsubscribed from subtitle track.`)
+    },
+
+    socket_confirmJoinCc( { commit }, cc ) {
       logger.info( 'SOCKET', `Subscribed to closed captions.`)
+      for ( const caption of cc ) {
+        commit( 'SET_CC', caption ) 
+      }
     },
 
     socket_confirmLeaveCc( { commit }) {
+      commit( 'CLEAR_CC' )
       logger.info( 'SOCKET', `Unsubscribed from closed captions.`)
+
     },
 
     socket_interm( { commit }, caption ) {
@@ -143,12 +160,13 @@ export default {
 
     socket_final( { commit }, caption ) {
       commit( 'SET_CC_INTERIM', null )  
-      console.log(captions.srt_to_vtt( caption.srt ))
-      commit( 'SET_TRACK', captions.srt_to_vtt( caption.srt ) )
-      delete caption.srt
       commit( 'SET_CC', caption ) 
 
     },
+
+    socket_srt( { commit }, srt ) {
+      commit( 'SET_TRACK', captions.srt_to_vtt( srt ) )
+    }
 
 
 
