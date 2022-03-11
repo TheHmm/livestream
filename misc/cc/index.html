@@ -406,9 +406,11 @@
 					try {
 						//socket.send(JSON.stringify({"msg":true, "final":final_transcript, "id":counter}));
 						socket.emit('final', {
-							id   : counter,
-							time : new Date().getTime(),
-							text : final_transcript_raw,
+							caption : { 
+								id   : counter,
+								time : new Date().getTime(),
+								text : final_transcript_raw,
+							},
 							srt  : srtFile,
 						});
 						final_transcript="";
