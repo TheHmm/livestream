@@ -145,7 +145,7 @@ const
     
     get_cur_time( livestream ) {
       if ( livestream.start_time ) {
-        return ( time.now() - livestream.start_time * 1000 ) / 1000
+        return ( time.now() - livestream.start_time ) / 1000
       } else {
         return 0.5
       }

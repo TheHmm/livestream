@@ -59,9 +59,7 @@ module.exports = MUX_TOKEN => {
         seconds = asset?.recording_times[0]?.started_at?.seconds,
         nanos   = asset?.recording_times[0]?.started_at?.nanos,
         milli   = seconds * 1000 + nanos / 1000000
-
-      console.log(seconds, nanos, milli)
-      return asset?.recording_times[0]?.started_at?.seconds
+      return milli
     },
 
 
