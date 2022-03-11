@@ -55,7 +55,12 @@ module.exports = MUX_TOKEN => {
     // lazy way of getting an asset's start time
 
     get_start_time = asset => {
-      console.log(asset?.recording_times[0]?.started_at)
+      const 
+        seconds = asset?.recording_times[0]?.started_at?.seconds,
+        nanos   = asset?.recording_times[0]?.started_at?.nanos,
+        milli   = seconds * 1000 + nanos / 1000000
+
+      console.log(seconds, nanos, milli)
       return asset?.recording_times[0]?.started_at?.seconds
     },
 
