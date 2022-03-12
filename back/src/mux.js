@@ -20,16 +20,16 @@ module.exports = MUX_TOKEN => {
     livestream_options  = {
       playback_policy    : 'public',
       reconnect_window   : 10,
-      // latency_mode       : "low",
       new_asset_settings : { 
         playback_policy  : 'public' 
       },
-      embedded_subtitles : [{
-        name             : "English CC",
-        passthrough      : "English closed captions",
-        language_code    : "en-US",
-        language_channel : "cc1"
-      }],
+      // latency_mode       : "low",
+      // embedded_subtitles : [{
+      //   name             : "English CC",
+      //   passthrough      : "English closed captions",
+      //   language_code    : "en-US",
+      //   language_channel : "cc1"
+      // }],
     },
 
 
@@ -71,7 +71,7 @@ module.exports = MUX_TOKEN => {
       playbackId      : get_playback_id(stream),
       active_asset_id : stream.active_asset_id,
       start_time      : stream.start_time,
-      recentAssets    : stream.recent_asset_ids,
+      // recentAssets    : stream.recent_asset_ids,
     })
 
 
