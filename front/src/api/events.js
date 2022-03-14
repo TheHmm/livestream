@@ -3,6 +3,7 @@ import config     from '@/config'
 import store      from '@/store'
 import { logger } from '@/utils'
 import { time }   from '@/utils'
+import { livestream } from '../utils'
 
 
 // Sanitizing 'events' type received from Strapi.
@@ -37,8 +38,16 @@ const sanitize = event => {
         return null
       }
     }
-    return event
     
+    event.cover = 
+      event.recording && 
+      livestream.mux.thumb_src( 
+        event.recording?.data?.playback_id,
+        10
+      )
+    console.log(event.cover, event.recording)
+    
+    return event
 }
 
 export default {
@@ -78,7 +87,7 @@ export default {
           'info',
         ],
         populate: [
-          'logo'
+          'recording'
         ]
       } } )
       .then( result => {

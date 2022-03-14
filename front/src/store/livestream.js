@@ -4,10 +4,10 @@ import { captions } from "../utils"
 
 const DEFAULT_MODES = () => ({
 
-  captions: {
-    id: -2,
-    name: 'captions',
-    label: 'captions'
+  transcript: {
+    id: -3,
+    name: 'transcript',
+    label: 'transcript'
   },
   thumbs: {
     id: -2,
