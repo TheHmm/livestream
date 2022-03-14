@@ -21,23 +21,47 @@ export default {
 </script>
 
 <template>
+
   <li 
     v-if="event" 
     :class="[
+      'event',
       $id(),
       { in_past, in_future, soon }
     ]"
   >
+
     <router-link 
       :to="slug"
     >
       {{ title }}
     </router-link>
-    <pre>{{ event }}</pre>
+
+    <!-- <pre>{{ event }}</pre> -->
+    <p 
+      aria-label="event start time"
+    >
+      <time>{{ event.starts }}</time>
+    </p>
+    <p
+      aria-label="event summary"
+    >
+      {{ event.info }}
+    </p>
   </li>
 </template>
 
 <style scoped >
+
+li {
+  border: 1px solid;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+li p {
+  margin: 0;
+}
 
 .in_past {
   opacity: 0.5;

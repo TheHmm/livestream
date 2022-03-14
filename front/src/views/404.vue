@@ -11,8 +11,11 @@ export default {
 </script>
 
 <template>
-  <main>
-    <h2>404 Error</h2>
-    <h3> {{ meta.pageNotFoundText }} </h3>
+  <main
+    :class="$id()"
+    aria-labelledby="error_label"
+  >
+    <h2 id="error_label">404 Error</h2>
+    <p> {{ meta.pageNotFoundText }} </p>
   </main>
 </template>

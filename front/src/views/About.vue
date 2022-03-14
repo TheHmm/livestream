@@ -15,10 +15,13 @@ export default {
 
 
 <template>
-  <div class="about">
-    <h2>About</h2>
-    <h3> {{ meta.about }} </h3>
-  </div>
+  <main 
+    :id="$id()"
+    aria-labelledby="about_label"
+  >
+    <h2 id="about_label">About</h2>
+    <p> {{ meta.about }} </p>
+  </main>
 </template>
 
 <style>

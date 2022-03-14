@@ -1,8 +1,5 @@
 <script>
 
-// import Player from './Player.vue'
-// import Chat from '../components/Chat'
-// import Announcements from '../components/Announcements'
 import { defineAsyncComponent } from "vue"
 import { mapGetters } from 'vuex'
 
@@ -11,15 +8,15 @@ export default {
   name: 'Livestream',
 
   props: {
-    event: {
+    livestream: {
       type: Object
     }
   },
 
   components: {
-    Player: defineAsyncComponent(() => import('./Player.vue')),
-    // Chat,
-    // Announcements,
+    Player        : defineAsyncComponent(() => import('./Player.vue')),
+    // Chat          : defineAsyncComponent(() => import('./Chat.vue')),
+    // Announcements : defineAsyncComponent(() => import('./Announcements.vue')),
   },
 
   data() {
@@ -28,22 +25,6 @@ export default {
   },
 
   computed: {
-
-    // Basic event properties.
-
-    title()       { return this.event.title },
-    starts()      { return this.event.starts },
-    ends()        { return this.event.ends },
-    recording()   { return this.event.recordingURL },
-
-    // Most important property is the livestream. The livestream 
-    // object is attached to the event in the api scripts. It can 
-    // return a static object or refer to the livestream entry in 
-    // the store. Please refer to: @/api/events/sanitize
-
-    livestream()  { return this.event.livestream() },
-    playback_id() { return this.livestream.playbackId },
-    active()      { return this.livestream.status == 'active' },
 
     // We get the list of available streaming modes from the store
     // this list can be updated by HLS.js at any moment.
@@ -68,51 +49,51 @@ export default {
   
 <template>
 
-  <div :id="$id()">
+  <section 
+    :id="$id()"
+    aria-label="livestream"
+  >
 
-    <pre> {{ livestream }} </pre>
 
-      <section v-if="!active">
-        <h2 v-if="event.is.soon()">The livestream starts {{ starts }}.</h2>
-        <h2 v-else>The livestream is over. The recording will be available here shortly.</h2>
-      </section>
-
-      <main v-if="playback_id && active" >
-
-        <div id="options">
-          <span> modes: </span>
-          <ul id="modes">
-            <li 
-              v-for="mode in modes"
-              :key="mode.name"
-              :value="mode.label"
+      <div 
+        id="options"
+        aria-label="livestream options"
+      >
+        <span> modes: </span>
+        <ul id="modes">
+          <li 
+            v-for="mode in modes"
+            :key="mode.name"
+            :value="mode.label"
+          >
+            <router-link 
+              :to="{
+                name: $route.name,
+                query: { mode: mode.name }
+              }"
             >
-              <router-link 
-                :to="{
-                  name: $route.name,
-                  query: { mode: mode.name }
-                }"
-              >
-                {{ mode.label }}
-              </router-link>
-            </li>
-          </ul>
-        </div>
+              {{ mode.label }}
+            </router-link>
+          </li>
+        </ul>
+      </div>
 
-        <div id="videoContainer">
-          <Player 
-            :livestream="livestream"
-            :mode="current_mode"
-          />
-        </div>
+      <div 
+        id="videoContainer"
+        aria-label="livestream player"
+      >
+        <Player 
+          :livestream="livestream"
+          :mode="current_mode"
+        />
+      </div>
 
-        <!-- <Announcements /> -->
+      <!-- <Announcements /> -->
 
-        <!-- <Chat /> -->
+      <!-- <Chat /> -->
 
-      </main>
+  </section>
 
-  </div>
 </template>
 
 <script>

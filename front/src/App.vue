@@ -1,13 +1,15 @@
 <script>
 
-import   Header    from './components/Header/index.vue'
+import Header from './components/Header/index.vue'
+import Footer from './components/Footer/index.vue'
 
 export default {
 
   name: 'App',
 
   components: { 
-    Header
+    Header,
+    Footer
   },
 
   data() {
@@ -44,6 +46,7 @@ export default {
   
   <Header />
   <RouterView />
+  <Footer />
 
 </template>
 
@@ -56,14 +59,6 @@ export default {
   padding: 2rem;
 
   font-weight: normal;
-}
-
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-nav a {
-  margin-right: 1em;
 }
 
 </style>

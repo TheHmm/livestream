@@ -13,19 +13,35 @@ export default {
 </script>
 
 <template>
-  <header>
+  <header
+    aria-label="header"
+    role="banner"
+  >
 
-    <h1>The Hmm Livestream</h1>
-    <nav>
+    <h1 id="title">The Hmm Livestream</h1>
+    <nav
+      role="navigation"
+      aria-label="main navigation"
+    >
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/about">About</RouterLink>
     </nav>
-    <br>
     <Network />
 
   </header>  
 </template>
 
-<style>
+<style scoped>
+
+header {
+  padding-bottom: 3em;
+}
+
+nav {
+  margin-bottom: 1rem;
+}
+nav a {
+  margin-right: 1rem;
+}
 
 </style>

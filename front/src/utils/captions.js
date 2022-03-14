@@ -12,7 +12,7 @@ ${start} --\> ${stop}
     // console.log(content.replace(/(\d+:\d+:\d+)+,(\d+)/g, '$1.$2'))
     return(
 
-    window.URL.createObjectURL(
+   content && window.URL.createObjectURL(
       new Blob([
         "WEBVTT - Generated using SRT2VTT\r\n\r\n" + 
         content.replace(/(\d+:\d+:\d+)+,(\d+)/g, '$1.$2')

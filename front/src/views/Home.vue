@@ -1,5 +1,4 @@
 <script>
-import { mapGetters } from 'vuex'
 import EventList from '../components/Event/List.vue'
 
 export default {
@@ -8,9 +7,6 @@ export default {
 
   components: {
     EventList
-  },
-
-  computed: {
   },
 
 }

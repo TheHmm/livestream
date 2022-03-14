@@ -51,25 +51,70 @@ export default {
 </script>
 
 <template>
-  <table id="network">
-    <tr>
-      <td>total bytes sent</td>
-      <td>{{ format_bytes( total_bytes_sent ) }}</td>
-      <td :class="{ has_changed: sent_has_changed }">
+  <table 
+    id="network"
+    aria-label="network monitor"
+  >
+
+    <tr
+      aria-label="bytes sent"
+    >
+      <td 
+        id="total_bytes_sent_label"
+      >
+        total bytes sent
+      </td>
+      <td
+        aria-labelledby="total_bytes_sent_label"
+      >
+        {{ format_bytes( total_bytes_sent ) }}
+      </td>
+      <td 
+        :class="{ has_changed: sent_has_changed }"
+        role="status"
+        aria-label="last bytes sent"
+      >
         {{ `↑ sent ${ format_bytes(last_bytes_sent?.bytes) } to ${ last_bytes_sent?.to }` }}
       </td>
     </tr>
-    <tr>
-      <td>total bytes received</td>
-      <td>{{ format_bytes( total_bytes_received ) }}</td>
-      <td :class="{ has_changed: received_has_changed }">
+
+    <tr
+      aria-label="bytes received"
+    >
+      <td
+        id="total_bytes_received_label"
+      >
+        total bytes received
+      </td>
+      <td
+        aria-labelledby="total_bytes_received_label"
+      >
+        {{ format_bytes( total_bytes_received ) }}
+      </td>
+      <td 
+        :class="{ has_changed: received_has_changed }"
+        role="status"
+        aria-label="last bytes received"
+      > 
         {{ `↓ received ${ format_bytes(last_bytes_received?.bytes) } from ${ last_bytes_received?.from }` }}
       </td>
     </tr>
-    <tr>
-      <td>total bytes transferred</td>
-      <td>{{ format_bytes( total_bytes_transferred ) }}</td>
+
+    <tr
+      aria-label="bytes trasferred"
+    >
+      <td
+        id="total_bytes_transferred_label"
+      >
+        total bytes transferred
+      </td>
+      <td
+        aria-labelledby="total_bytes_transferred_label"
+      >
+        {{ format_bytes( total_bytes_transferred ) }}
+      </td>
     </tr>
+
   </table>
 </template>
 

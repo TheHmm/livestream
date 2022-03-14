@@ -42,7 +42,7 @@ export default {
       console.log(this.track)
       const tracks = this.player.player.subtitleTracks
       // tracks[0] = this.track
-      console.log(tracks)
+      // console.log(tracks)
       return this.track
     }
   },
@@ -185,9 +185,11 @@ export default {
 </script>
 
 <template>
+
   <div
     id="img_player"
     v-if="mode.name == 'thumbs'"
+    aria-label="thumbnail player"
   > 
     <img
       ref="img"
@@ -208,18 +210,22 @@ export default {
       </p>
     </div>
   </div>
+
   <audio
     v-else-if="mode.name == 'audio'"
     muted
     controls
     autoplay
+    aria-label="audio player"
   >
   </audio>
+
   <video
     v-else
     muted
     controls
     autoplay
+    aria-label="video player"
   >
     <track
       v-if="track"
