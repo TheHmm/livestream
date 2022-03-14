@@ -43,6 +43,7 @@ export default {
 ul {
   list-style: none;
   padding: 0;
+  max-width: 40rem;
   /* display: flex; */
   /* flex-wrap: wrap; */
 }
