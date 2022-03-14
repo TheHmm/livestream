@@ -38,13 +38,13 @@ export default {
       'cc',
       'track',
     ] ),
-    track_src() {
-      console.log(this.track)
-      const tracks = this.player.player.subtitleTracks
+    // track_src() {
+      // console.log(this.track)
+      // const tracks = this.player.player.subtitleTracks
       // tracks[0] = this.track
       // console.log(tracks)
-      return this.track
-    }
+      // return this.track
+    // }
   },
 
   watch: {
@@ -227,14 +227,14 @@ export default {
     autoplay
     aria-label="video player"
   >
-    <track
+    <!-- <track
       v-if="track"
       default 
       srclang="en" 
       kind="captions" 
       label="English" 
       :src="track_src"
-    />
+    /> -->
   </video>
 </template>
 
