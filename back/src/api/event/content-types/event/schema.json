@@ -95,8 +95,7 @@
     "recording": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "plugin::mux-video-uploader.mux-asset",
-      "inversedBy": "event"
+      "target": "plugin::mux-video-uploader.mux-asset"
     }
   }
 }

@@ -52,12 +52,6 @@
       "type": "boolean",
       "default": false,
       "required": false
-    },
-    "event": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::event.event",
-      "inversedBy": "recording"
     }
   }
 }
