@@ -4,6 +4,21 @@ import events     from './events'
 import viewers    from './viewers'
 import { logger } from '@/utils'
 import axios      from 'axios'
+import qs         from 'qs'
+
+axios
+.interceptors
+.request
+.use( config => {
+  config.paramsSerializer = params => {
+    return qs.stringify( params, {
+      encode: false,
+      // encodeValuesOnly: true,
+    } )
+  }
+  return config 
+} )
+
 
 const 
 
@@ -21,7 +36,7 @@ const
   },
 
   get = (url, opts) => {
-    logger.info( `API`, `Gettig ${ url }.` )
+    logger.info( `API`, `Getting ${ url }.` )
     return new Promise( ( resolve, reject ) => 
       axios
       .get( url, opts)

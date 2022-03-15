@@ -11,6 +11,7 @@
     "hls.js": "^1.1.5",
     "json-size": "^1.0.0",
     "moment-timezone": "^0.5.34",
+    "qs": "^6.10.3",
     "socket.io-client": "^4.4.1",
     "vue": "^3.2.29",
     "vue-meta": "^3.0.0-alpha.7",

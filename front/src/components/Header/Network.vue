@@ -100,7 +100,7 @@ export default {
       </td>
     </tr>
 
-    <tr
+    <!-- <tr
       aria-label="bytes trasferred"
     >
       <td
@@ -113,7 +113,7 @@ export default {
       >
         {{ format_bytes( total_bytes_transferred ) }}
       </td>
-    </tr>
+    </tr> -->
 
   </table>
 </template>

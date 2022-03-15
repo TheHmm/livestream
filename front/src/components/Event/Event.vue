@@ -37,7 +37,7 @@ export default {
       {{ title }}
     </router-link>
 
-    <!-- <pre>{{ event }}</pre> -->
+    <pre>{{ event }}</pre>
     <p 
       aria-label="event start time"
     >

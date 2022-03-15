@@ -11,7 +11,7 @@ export default {
     logger.info( `API`, `Fetching meta.` )
     return new Promise( ( resolve, reject ) => 
       axios
-      .get( `${ config.api_url }/meta` )
+      .get( `${ config.api_url }/meta`, {})
       .then( result => resolve( result.data.data ) )
       .catch( error => {
         logger.error( 'API', error ) 

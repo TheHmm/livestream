@@ -28,7 +28,7 @@ const sanitize = event => {
     event.livestream = () => { 
       // his is a function returning a value!
       if ( event.is.soon() ) {
-        return  store.getters[ 'livestream/get_livestream' ] 
+        return store.getters[ 'livestream/get_livestream' ] 
       } else if ( event.is.in_past() ) {
         const 
           playbackId = event.recording?.data?.playback_id,
@@ -38,14 +38,22 @@ const sanitize = event => {
         return null
       }
     }
+
+
+    // If the event is having a livestream then it
+    // should also have a cover.
     
-    event.cover = 
-      event.recording && 
-      livestream.mux.thumb_src( 
-        event.recording?.data?.playback_id,
-        10
-      )
-    console.log(event.cover, event.recording)
+    event.cover = () => {
+      if ( event.livestream().playbackId ) {
+        return livestream.mux.thumb_src( 
+          event.livestream().playbackId, 
+          10 
+        )
+      } else {
+        return null
+      }
+    }
+    console.log(event.slug, event.recording, event.livestream(), event.cover() )
     
     return event
 }
@@ -79,6 +87,11 @@ export default {
       axios
       .get( `${ config.api_url }/events`, { params: { 
         sort: 'starts:desc',
+        filters: {
+          ends: {
+            $lt: time.now()
+          },
+        },
         fields: [ 
           'title',
           'slug',
@@ -86,15 +99,26 @@ export default {
           'ends',
           'info',
         ],
-        populate: [
-          'recording'
-        ]
+        populate: {
+          recording: {
+            fields: 'playback_id'
+          }
+        }
+        // fields: '*',
+        // populate: [
+        //   'logo',
+        //   'viewers',
+        //   'messages',
+        //   'announcements',
+        //   'emoji_groups',
+        //   'recording'
+        // ]
       } } )
       .then( result => {
         const events = result.data.data
         for ( let e = 0; e < events.length; e ++ ) {
           events[ e ] = sanitize( events[ e ] )
-        }
+        }     
         resolve( events )
       } )
       .catch( error => {
