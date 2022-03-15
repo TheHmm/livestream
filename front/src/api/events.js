@@ -99,11 +99,9 @@ export default {
           'ends',
           'info',
         ],
-        populate: {
-          recording: {
-            fields: 'playback_id'
-          }
-        }
+        populate: [
+          'recording'
+        ]
         // fields: '*',
         // populate: [
         //   'logo',
