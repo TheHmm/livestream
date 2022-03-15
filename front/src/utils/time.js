@@ -15,6 +15,19 @@ const
   //   .tz( time, 'Europe/Amsterdam' )
   //   .format( 'dddd DD MMMM [at] HH:mm z' ),
 
+  human_format = starts => (
+    new Date( starts )
+    .toLocaleString( 'en-GB', { 
+      year         : 'numeric',
+      month        : 'long',
+      day          : 'numeric',
+      hour         : 'numeric',
+      minute       : 'numeric',
+      timeZoneName : 'short'
+      // timeZone  : 'CET',
+    } ) 
+  ),
+
   is_in_past   = timestring => time( timestring ) < now(),
 
   is_in_future = timestring => time( timestring ) > now(),
@@ -40,6 +53,6 @@ export default {
   is_in_future,
   is_soon,
   to_hours,
-  time_to_srt_stamp
-  // human_format,
+  time_to_srt_stamp,
+  human_format,
 }

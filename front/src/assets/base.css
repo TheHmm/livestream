@@ -1,7 +1,85 @@
 :root {
+
+  --black: rgb(0,0,0);
+  --white: rgb(255,255,255);
+  --yellow: rgb(255,255,0);
+  --blue: rgb(0, 0, 255);
+  --dark-grey: rgb(50,50,50);
+
+  --shadow-color: rgba(0, 0, 0, 0.288);
+  --shadow-size: 1rem;
+  --shadow-offset: 0.5rem;
+  --shadow-up: 
+    0 
+    calc(-1 * var(--shadow-offset))
+    var(--shadow-size) 
+    0 
+    var(--shadow-color)
+  ;
+  --shadow-down: 
+    0 
+    calc(1 * var(--shadow-offset))
+    var(--shadow-size) 
+    0 
+    var(--shadow-color)
+  ;
+
+  --fore: var(--black);
+  --back: var(--white);
+  --accent: var(--blue);
+
+
   
 }
 
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
 
 body {
+   /* max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem; */
+  font-family: sans-serif;
+}
+
+body :is(
+  h1, h2, h3, h4, h5, h6, 
+  p, a, span,
+  code, pre, time
+) {
+  color: var(--fore);
+}
+
+/* any text node that is selected get inverted */
+
+body :is(
+  h1, h2, h3, h4, h5, h6, 
+  p, a, span,
+  code, pre, time
+)::selection {
+  background-color: var(--fore);
+  color: var(--back);
+}
+
+/* overriding anchors with TRUE blue */
+
+a,
+a:active,
+a:visited {
+  --fore: var(--blue);
+  color: var(--fore);
+}
+
+
+/* all elements with role=status */
+
+*[role="status"] {
+  /* --fore: var(--dark-grey); */
+  /* color: var(--fore); */
+  font-family: monospace;
 }

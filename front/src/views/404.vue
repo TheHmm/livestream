@@ -1,7 +1,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  name: 'NotFound',
+  name: 'NotFoundPage',
   computed: {
     ...mapState([
       'meta'

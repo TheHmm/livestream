@@ -44,21 +44,32 @@ export default {
 
 <template>
   
-  <Header />
+  <!-- <Header /> -->
   <RouterView />
-  <Footer />
+  <!-- <Footer /> -->
 
 </template>
 
 <style>
+
+
+/* Base styles for the whole app */
+
 @import '@/assets/base.css';
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
 
-  font-weight: normal;
+/*
+ * For accessibily reasons, I removed vue's default root
+ * <div> and instead gave the document's <body> tag the
+ * #app id. This doesn't seem to create any problems yet.
+ * See file: @/front/index.html
+ */
+
+body {    
+  /* box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column; */
 }
 
 </style>

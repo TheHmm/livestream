@@ -45,7 +45,7 @@
         "images"
       ]
     },
-    "backgroundColor": {
+    "accent": {
       "type": "string",
       "default": "rgb(255,255,255)"
     },

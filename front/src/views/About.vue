@@ -3,7 +3,7 @@ import { mapState } from 'vuex'
 
 export default {
 
-  name: 'About',
+  name: 'AboutPage',
   computed: {
     ...mapState([
       'meta'

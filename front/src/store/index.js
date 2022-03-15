@@ -88,6 +88,8 @@ export default createStore({
   
     
     meta: state => state.meta,
+
+    default_marquee: state => state.meta.defaultMarquee,
     
 
     isActive: state => status => [
