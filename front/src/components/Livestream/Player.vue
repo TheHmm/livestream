@@ -3,6 +3,8 @@
 import { mapState }   from 'vuex'
 import { logger }     from '@/utils'
 import { livestream } from '@/utils'
+import { captions }   from "@/utils"
+import { time }       from "@/utils"
 
 
 
@@ -26,6 +28,7 @@ export default {
     return {
       player : null,
       should_update: false,
+      track: 'WEBVTT - Generated using SRT2VTT \r\n\r\n'
     }
   },
 
@@ -36,15 +39,10 @@ export default {
     ...mapState('livestream', [ 
       'cc_interim',
       'cc',
-      'track',
     ] ),
-    // track_src() {
-      // console.log(this.track)
-      // const tracks = this.player.player.subtitleTracks
-      // tracks[0] = this.track
-      // console.log(tracks)
-      // return this.track
-    // }
+    track_src() {
+      return captions.vtt_to_blob(this.track)
+    }
   },
 
   watch: {
@@ -65,6 +63,43 @@ export default {
       } else {
         this.should_update = true
       }
+    },
+    'cc':{
+      deep: true,
+      handler() {
+      console.log(this.cc)
+      if (this.player?.player) {
+        const
+          now                     = time.now(),
+          stream_start            = this.livestream.start_time,
+          current_livestream_time = ( now - stream_start ) / 1000,
+          live_sync_position      = this.player.player.liveSyncPosition,
+          _latency                = this.player.player.latencyController._latency 
+
+        console.log(
+          this.cc[this.cc.length - 1].text,
+          current_livestream_time,
+          live_sync_position,
+          _latency,
+          current_livestream_time - live_sync_position - _latency
+        )
+        // console.log(
+        //   captions.caption_to_srt( 
+        //     this.cc[this.cc.length-1], 
+        //     stream_start, 
+        //     ( current_livestream_time - live_sync_position - _latency ) * 1000
+        //   ) )
+        this.track += captions.srt_to_vtt(
+            captions.caption_to_srt( 
+              this.cc[this.cc.length-1], 
+              stream_start, 
+            ( current_livestream_time - live_sync_position - _latency ) * 1000
+          )
+        ) 
+        // console.log(this.track)
+
+      }
+    }
     }
 
   },
@@ -154,7 +189,7 @@ export default {
 
       } else if ( livestream.hlsIsSupported() ) {
         this.player = livestream.players.hls_player( 
-          this.$el,
+          this.$refs.media, 
           this.livestream,
           this.mode.name,
           this.$socket
@@ -167,7 +202,7 @@ export default {
 
       } else if ( this.$el.canPlayType( 'application/vnd.apple.mpegurl' ) ) {
         this.player = livestream.players.def_player(
-          this.$el,
+          this.$refs.media, 
           this.livestream,
           this.mode.name
         )
@@ -187,68 +222,104 @@ export default {
 <template>
 
   <div
-    id="img_player"
-    v-if="mode.name == 'thumbs'"
-    aria-label="thumbnail player"
-  > 
-    <img
-      ref="img"
-    />
-    <div class="captions">
-      <p
-        v-for="(caption, id) of cc"
-        :key="id"
-        class="caption"
-      >
-      {{ caption.text }}
-      </p>
-      <p
-        v-if="cc_interim"
-        class="caption"
-      >
-        {{ cc_interim.text }}
-      </p>
+    :id="$id()"
+    aria-label="livestream player"
+  >
+    <div
+      id="img_player"
+      v-if="mode.name == 'thumbs'"
+      aria-label="thumbnail player"
+    > 
+      <img
+        ref="img"
+      />
+      <div class="captions">
+        <p
+          v-for="(caption, id) of cc"
+          :key="id"
+          class="caption"
+        >
+        {{ caption.text }}
+        </p>
+        <p
+          v-if="cc_interim"
+          class="caption"
+        >
+          {{ cc_interim.text }}
+        </p>
+      </div>
+      
     </div>
+
+    <audio
+      v-else-if="mode.name == 'audio'"
+      muted
+      controls
+      autoplay
+      aria-label="audio player"
+      ref="media"
+    >
+      <track
+        v-if="track_src"
+        default 
+        srclang="en" 
+        kind="captions" 
+        label="English" 
+        :src="track_src"
+      />
+    </audio>
+
+    <video
+      v-else
+      muted
+      controls
+      autoplay
+      aria-label="video player"
+      ref="media"
+    >
+      <track
+        v-if="track_src"
+        default 
+        srclang="en" 
+        kind="captions" 
+        label="English" 
+        :src="track_src"
+      />
+    </video>
+    
+    
+
   </div>
 
-  <audio
-    v-else-if="mode.name == 'audio'"
-    muted
-    controls
-    autoplay
-    aria-label="audio player"
-  >
-  </audio>
-
-  <video
-    v-else
-    muted
-    controls
-    autoplay
-    aria-label="video player"
-  >
-    <!-- <track
-      v-if="track"
-      default 
-      srclang="en" 
-      kind="captions" 
-      label="English" 
-      :src="track_src"
-    /> -->
-  </video>
 </template>
 
 <style>
+
+#player {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem;
+  display: flex;
+}
+
 video,
 audio,
 #img_player
  {
+  box-sizing: border-box;
+  /* background: black; */
   width: 100%;
   height: 100%;
   max-width: 100%;
   max-height: 100%;
   object-fit: cover;
 }
+
+.captions {
+  max-height: 300px;
+  overflow: scroll;
+}
+
 .mobile video {
   object-fit:unset;
   height: unset;

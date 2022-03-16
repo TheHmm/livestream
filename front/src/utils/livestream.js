@@ -70,13 +70,17 @@ const
         player      : null,
  
         async init() {
-          socket.client.emit('join_SRT_room')
+          socket.client.emit('join_CC_room')
           const source_url = mux.source_url( this.playback_id, mode )
           const { default: Hls } = await import( 'hls.js' )
           this.player = new Hls()
           this.init_stream_monitor( this.player, Hls.Events )
           this.player.loadSource( source_url )
           this.player.attachMedia( element )
+          this.player.on(Hls.Events.INIT_PTS_FOUND, ( event, data) => {
+            console.log(event, data, livestream.start_time )
+            
+          })
           this.player.on(Hls.Events.MANIFEST_PARSED, ( event, data ) => {
             if (mode == 'video') {
               for ( let l = 0; l < data.levels.length; l ++ ) {
@@ -92,7 +96,7 @@ const
         },
 
         destroy() {
-          socket.client.emit('leave_SRT_room')
+          socket.client.emit('leave_CC_room')
           this.player.destroy()
         },
 

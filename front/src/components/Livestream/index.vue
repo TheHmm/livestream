@@ -32,7 +32,9 @@ export default {
 
   computed: {
 
-    // marquee text
+    
+
+    // Event-specific marquee
 
     marquee() { return this.event.marquee },
 
@@ -72,95 +74,111 @@ export default {
 
   <!-- <pre> {{ livestream }} </pre> --> 
   
-  <main 
-    :id="$id()"
-    aria-labelledby="event_title"
+  
+
+  <Marquee 
+    :animate="!active"
+    :marquee="marquee"
+  />
+
+  <header 
+    aria-label="banner & announcements"
   >
+    <Banner />
+    <!-- <Dots /> -->
+    <!-- <Announcements /> -->
+  </header>
 
+  <section 
+    id="middle"
+    aria-label="event information & livestream player"
+  >
+    <Info
+      :event="event"
+      :status="status"
+    />
+    <Player
+      v-if="playback_id && active"
+      :livestream="livestream"
+      :mode="current_mode"
+    />
+    <div 
+      v-else
+      id="status"
+      aria-label="livestream status"
+    >
+      <p role="status">{{ status }}</p>
+    </div>
+  </section>
 
-      <header 
-        aria-label="banner & announcements"
-      >
-        <Marquee 
-          :animate="!active"
-          :marquee="marquee"
-        />
-        <Banner />
-        <!-- <Dots /> -->
-        <!-- <Announcements /> -->
-      </header>
-
-      <section 
-        id="middle"
-        aria-label="event information & livestream player"
-      >
-        <Info
-          :event="event"
-          :status="status"
-        />
-        <Player
-          v-if="playback_id && active"
-          :livestream="livestream"
-          :mode="current_mode"
-        />
-      </section>
-
-     
-      <footer 
-        aria-label="options & chat"
-      >
-        <!-- <Donate /> -->
-         <Options 
-          :modes="modes"
-        />
-        <!-- <Chat /> -->
-      </footer>
-
-  </main>
-
+  
+  <footer 
+    aria-label="options & chat"
+  >
+    <!-- <Donate /> -->
+      <Options 
+      :modes="modes"
+    />
+    <!-- <Chat /> -->
+  </footer>
 
 </template>   
 
 <style scoped>
 
-main {
-  --side-width: 25%;
-  box-sizing: border-box;
-  height: 100%; width: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
 
-main header {
+header {
   position: relative;
   max-height: 20%;
+  min-height: 10%;
+  /* flex-grow: 1; */
   overflow: hidden;
 }
 
-main #middle {
+#middle {
+  box-sizing: border-box;
   --back: var(--accent);
   --fore: var(--white);
+  width: 100%;
   background: var(--back);
   box-shadow: var(--shadow-up);
   flex-grow: 1;
   display: flex;
   flex-direction: row-reverse;
-  overflow: hidden;
+  align-items: flex-start;
+  /* justify-content: flex-start; */
+  padding-bottom: 4rem;
 }
 
-.mobile main {
-  justify-content: flex-start;
-  position: relative;
-  min-width: 100%;
-  flex-direction: column;
+#middle #status {
+  box-sizing: border-box;
+  width: 100%;
+  /* height: 100%; */
+  text-align: center;
+  display: flex;
+  margin: 1rem;
+  border: 1px dashed var(--fore);
 }
-.mobile #middlse {
-  position: relative;
+#middle #status p {
+  margin: 30% auto;
+}
+
+
+footer {
+  --back: var(--accent);
+  background-color: var(--back);
+  flex-grow: 0;
+  max-height: 3rem;
+  overflow: visible;
+}
+
+.mobile #middle {
+  flex-direction: column-reverse;
+  /* position: relative;
   min-width: 100%;
   
   height: auto;
   min-height: unset;
-  overflow: visible;
+  overflow: visible; */
 }
 </style>

@@ -11,7 +11,7 @@ const DEFAULT_STATE = () => ({
 
   meta          : null,
 
-  isMobile      : false,
+  mobile        : false,
 
   colorPalette  : [
     'background', 
@@ -56,7 +56,7 @@ export default createStore({
 
 
     SET_META       : ( state, meta )   => state.meta = meta,
-    SET_MOBILE     : ( state, mobile ) => state.isMobile = mobile,
+    SET_MOBILE     : ( state, mobile ) => state.mobile = mobile,
     
     setUsers:         (state, users) => state.users = users,
     setUser:          (state, user) => state.users[user.uid] = user,

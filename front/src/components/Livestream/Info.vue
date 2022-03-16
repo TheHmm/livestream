@@ -1,15 +1,19 @@
 <script>
 
 import { time } from '@/utils'
+import Network from '@/components/Header/Network.vue'
 
 export default {
-
+  
   name: 'Info',
+
+  components: { 
+    Network 
+  },
   
   props: {
     
     event: { type: Object },
-    status: { type: String }
 
   },
 
@@ -53,9 +57,7 @@ export default {
       <p>{{ event.info }}</p>
     </div>
 
-    <div aria-label="livestream status">
-      <p role="status">status: {{ status }}</p>
-    </div>
+    <!-- <Network /> -->
 
   </div>
 </template>
@@ -63,8 +65,11 @@ export default {
 <style scoped>
 #info {
   box-sizing: border-box;
+  width: 25rem;
   max-width: var(--side-width);
-  padding: 0 0.5rem;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  height: 100%;
   text-align: center;
 }
 </style>

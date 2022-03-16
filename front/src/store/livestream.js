@@ -164,8 +164,7 @@ export default {
     },
 
     socket_srt( { commit }, srt ) {
-      console.log('srt')
-      commit( 'SET_TRACK', captions.srt_to_vtt( srt ) )
+      commit( 'SET_TRACK', srt )
     }
 
 

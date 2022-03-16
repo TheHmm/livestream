@@ -1,6 +1,5 @@
 <script>
 
-import { mapGetters } from 'vuex'
 import Livestream from '@/components/Livestream/index.vue'
 
 export default {
@@ -13,10 +12,23 @@ export default {
 
   computed: {
 
+    // mobile or not
+
+    mobile() { 
+      return this.$store.state.mobile 
+    },
+
     // Getting the event from the route slug
 
-    ...mapGetters( 'events', [ 'get_event' ] ),
-    event() { return this.get_event( this.$route.params.slug ) },
+    event() { 
+      return this.$store.getters['events/get_event']( 
+        this.$route.params.slug 
+      ) 
+    },
+
+    // event-specific marquee
+
+    accent()  { return this.event.accent },  
     
   },
 
@@ -28,11 +40,35 @@ export default {
 
 <template>
 
-  <Livestream 
-    :event="event"
-  />
+  <main 
+    :id="$id()"
+    :class="{ mobile }"
+    :style="{ '--accent': accent }"
+    aria-labelledby="event_title"
+  >
+
+    <Livestream 
+      :event="event"
+    />
+
+  </main>
 
 </template>
 
 <style scoped>
+
+main {
+  --side-width: 25%;
+  box-sizing: border-box;
+  height: 100%; width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+main.mobile {
+  --side-width: 100%;
+}
+
 </style>

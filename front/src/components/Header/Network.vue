@@ -124,9 +124,10 @@ export default {
 table {
   border-collapse: collapse;
   font-family: monospace;
+  font-size: 10pt;
 }
 table tr td {
-  border: 1px solid black;
+  border: 1px solid var(--fore);
   padding: 0.1em 0.4em;
 }
 table tr td:nth-of-type(2) {

@@ -10,6 +10,7 @@ export default {
     xmlns="http://www.w3.org/2000/svg" 
     viewBox="0 -100 5098.47 915.91"
     preserveAspectRatio="xMinYMin slice"
+    aria-label="The Hmm"
   >
     <g 
       id="letter-t"
@@ -62,9 +63,11 @@ export default {
 svg {
   display: block;
   margin: auto;
-  margin-top: -0.5rem;
+  /* margin-top: -0.5rem; */
+  overflow: visible;
   width: 95%;
-  max-width: 1280px;
+  max-width: 100%;
+  /* min-height: 100%; */
   fill: none;
   stroke: var(--accent);
   stroke-width: 0.75rem;

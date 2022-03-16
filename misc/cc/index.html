@@ -385,13 +385,15 @@
 						timestamp_stop = timestamp_stop.substring(0, timestamp_stop.length - 1);
 						
 						caption_start = timestamp_intern
-
 						timestamp_intern -= timestamp_start;
+
 						var date = new Date(0);
 						date.setSeconds(timestamp_intern/1000);
 						timestamp_intern = date.toISOString().replace(".",",").replace("1970-01-01T","");
 						timestamp_intern = timestamp_intern.substring(0, timestamp_intern.length - 1);
+						
 					} catch(e){console.error(e);}
+				
 					
 					try {
 						logcounter+=1;

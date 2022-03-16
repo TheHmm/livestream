@@ -20,7 +20,7 @@ export default {
         this.marquee || 
         this.default_marquee 
       )
-      .repeat(7)
+      .repeat(10)
     }
   }
 }
@@ -30,6 +30,7 @@ export default {
   <div
     :class="[ $id(), { animate } ]"
     role="marquee"
+    aria-label="marquee with event title"
   >
     <p> {{ text }} </p>
     <p> {{ text }} </p>
@@ -42,6 +43,8 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   --back: var(--yellow);
+  z-index: 3;
+  flex-shrink: 0;
 }
 .marquee p {
   background-color: var(--back);
@@ -50,7 +53,7 @@ export default {
   padding: 0.3rem 0;
 }
 .marquee.animate p {
-  /* animation: marquee 45s linear infinite; */
+  animation: marquee 60s linear infinite;
 }
 @keyframes marquee {
   0%   { transform: translate(0, 0); }

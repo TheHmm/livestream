@@ -29,13 +29,14 @@ const sanitize = event => {
       // his is a function returning a value!
       if ( event.is.soon() ) {
         return store.getters[ 'livestream/get_livestream' ] 
-      } else if ( event.is.in_past() ) {
+      // } else if ( event.is.in_past() ) {
+      } else {
         const 
           playbackId = event.recording?.data?.playback_id,
           status = playbackId && 'active' || 'idle'
         return { playbackId, status }
-      } else {
-        return null
+      // } else {
+        // return null
       }
     }
 
@@ -44,7 +45,7 @@ const sanitize = event => {
     // should also have a cover.
     
     event.cover = () => {
-      if ( event.livestream().playbackId ) {
+      if ( event.livestream()?.playbackId ) {
         return livestream.mux.thumb_src( 
           event.livestream().playbackId, 
           10 

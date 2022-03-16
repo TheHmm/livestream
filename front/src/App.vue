@@ -2,6 +2,7 @@
 
 import Header from './components/Header/index.vue'
 import Footer from './components/Footer/index.vue'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
 
@@ -18,16 +19,31 @@ export default {
   },
 
   computed: {
+    
+    
    
   },
 
   methods: {
+
+    ...mapMutations([
+      'SET_MOBILE'
+    ]),
+
+    check_if_mobile() {
+      return window.innerWidth < 700
+    },   
 
 
   },
 
   created() {
 
+    this.SET_MOBILE( this.check_if_mobile() )
+
+    window.onresize = () => {
+      this.SET_MOBILE( this.check_if_mobile() )
+    }
 
   },
 

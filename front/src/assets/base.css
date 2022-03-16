@@ -28,6 +28,8 @@
   --back: var(--white);
   --accent: var(--blue);
 
+  --fast: 0.2s;
+
 
   
 }
@@ -45,26 +47,28 @@ body {
   margin: 0 auto;
   padding: 2rem; */
   font-family: sans-serif;
+  font-size: 13pt;
 }
 
 body :is(
   h1, h2, h3, h4, h5, h6, 
   p, a, span,
-  code, pre, time
+  code, pre, time,
+  table, tr, td
 ) {
   color: var(--fore);
 }
 
 /* any text node that is selected get inverted */
 
-body :is(
+/* body :is(
   h1, h2, h3, h4, h5, h6, 
   p, a, span,
   code, pre, time
 )::selection {
   background-color: var(--fore);
   color: var(--back);
-}
+} */
 
 /* overriding anchors with TRUE blue */
 
