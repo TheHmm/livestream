@@ -37,6 +37,8 @@ module.exports = {
     delete diff.publishedAt
     delete diff.createdBy
     delete diff.updatedBy
+
+    diff.slug = event.params.slug
       
     
     // move /front/src/api/events/sanitize to here
