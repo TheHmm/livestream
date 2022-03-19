@@ -7,7 +7,7 @@
 // https://stackoverflow.com/questions/65715215/how-do-i-reach-request-body-in-strapi-middleware
 
 const get_body = async req => {
-  return new Promise((resolve, reject) => {
+  return new Promise(( resolve, reject ) => {
     let body = ''
     req.on('data', data => { body += data } )
     req.on('end', () => { resolve(JSON.parse( body ) ) } )
@@ -21,6 +21,7 @@ module.exports = createCoreController('api::meta.meta', ({ strapi }) => ({
 
   async donate( ctx ) {
 
+    console.log(ctx.request.body)
     const body = await get_body( ctx.req )
     console.log(body)
 
