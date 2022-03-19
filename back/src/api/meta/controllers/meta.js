@@ -9,9 +9,9 @@
 const get_body = async req => {
   return new Promise((resolve, reject) => {
     let body = ''
-    rawrequest.on('data', data => { body += data } )
-    rawrequest.on('end', () => { resolve(JSON.parse( body ) ) } )
-    rawrequest.on('error', () => { reject("Error") } )
+    req.on('data', data => { body += data } )
+    req.on('end', () => { resolve(JSON.parse( body ) ) } )
+    req.on('error', () => { reject("Error") } )
   })
 }
 
