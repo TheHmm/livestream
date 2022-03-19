@@ -22,6 +22,10 @@
     "stream_key": {
       "type": "string",
       "private": true
+    },
+    "requestNewLivestream": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

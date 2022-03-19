@@ -1,9 +1,11 @@
 import { createStore } from 'vuex'
+import { logger } from '../utils'
 import api from '../api'
+
+import ui from './ui'
 import livestream from './livestream'
 import events from './events'
 import networking from './networking'
-import { logger } from '../utils'
 
 
 const DEFAULT_STATE = () => ({
@@ -11,21 +13,8 @@ const DEFAULT_STATE = () => ({
 
   meta          : null,
 
-  mobile        : false,
-
-  colorPalette  : [
-    'background', 
-    'background2', 
-    'body', 
-    'highlight',
-    'controls', 
-    'chat' 
-  ],
-
-  activeClasses : [ 'active' ],
-  
   users         : {},
-  chat          : {},
+  messages      : {},
   announcements : {},
   
   uid           : localStorage.uid ? localStorage.uid : null,
@@ -47,17 +36,24 @@ export default createStore({
   state: DEFAULT_STATE(),
 
   modules: {
+    ui,
     livestream,
     events,
-    networking
+    networking,
   },
 
   mutations: {
 
 
     SET_META       : ( state, meta )   => state.meta = meta,
-    SET_MOBILE     : ( state, mobile ) => state.mobile = mobile,
     
+    RESET: state => {
+      const newState = DEFAULT_STATE()
+      Object
+      .keys( newState )
+      .forEach( key => state[ key ] = newState[ key ] )
+    },
+
     setUsers:         (state, users) => state.users = users,
     setUser:          (state, user) => state.users[user.uid] = user,
     
@@ -71,15 +67,8 @@ export default createStore({
     setBlock:         (state, block) => state.blocked = block,
     setCount:         (state, count) => state.count = count,
 
-    setMobile:        (state, isMobile) => state.isMobile = isMobile,
     adminify:         state => state.isAdmin = true,
     
-    RESET: state => {
-      const newState = DEFAULT_STATE()
-      Object
-      .keys( newState )
-      .forEach( key => state[ key ] = newState[ key ] )
-    },
 
   },
 
@@ -92,12 +81,6 @@ export default createStore({
     default_marquee: state => state.meta.defaultMarquee,
     
 
-    isActive: state => status => [
-      ...state.activeClasses,
-      state.metainfo.buttonWhenStreamIsActive,
-      state.metainfo.buttonWhenStreamIsRewatchable,
-    ].includes(status),
-    
     chatArray: state => (
       Object.values(state.chat)
     ),
@@ -171,29 +154,15 @@ export default createStore({
       commit('RESET')
     },
   
-    registerBroadcasts({ state, commit }, broadcasts ) {
-      commit(
-        'setBroadcasts', broadcasts
-        .map(b => ({ 
-          ...b,
-          theme      : state.colorPalette.map(s => ({ [`--${s}`]: b[s] }) ),
-          isInPast   : new Date() > new Date(b.FilmEndsOn),
-          isInFuture : new Date() < new Date(b.LiveStartsOn)
-        }))
-      )
-    }, 
-
-
-
-    socket_connect({strapi}) {
+    socket_connect( ) {
       logger.info('STORE', 'connect')
     },
 
-    socket_disconnect({strapi}) {
+    socket_disconnect( ) {
       logger.info('STORE', 'disconnect')
     },
 
-    socket_hello({strapi}, data) {
+    socket_hello({ state }, data) {
       logger.info('STORE', 'hello', data)
     },
     

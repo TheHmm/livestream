@@ -12,11 +12,7 @@ export default {
 
   computed: {
 
-    // mobile or not
-
-    mobile() { 
-      return this.$store.state.mobile 
-    },
+    
 
     // Getting the event from the route slug
 
@@ -42,7 +38,6 @@ export default {
 
   <main 
     :id="$id()"
-    :class="{ mobile }"
     :style="{ '--accent': accent }"
     aria-labelledby="event_title"
   >

@@ -19,6 +19,13 @@ export default {
   },
 
   computed: {
+
+    // mobile and accessibility classes
+
+    ...mapState( 'ui', [
+      'mobile',
+      'options'
+    ]),
     
     
    
@@ -26,7 +33,7 @@ export default {
 
   methods: {
 
-    ...mapMutations([
+    ...mapMutations( 'ui', [
       'SET_MOBILE'
     ]),
 
@@ -61,7 +68,12 @@ export default {
 <template>
   
   <!-- <Header /> -->
-  <RouterView />
+  <RouterView 
+    :class="{ 
+      mobile: mobile,
+      reduce_motion: options.reduce_motion.value
+    }"
+  />
   <!-- <Footer /> -->
 
 </template>

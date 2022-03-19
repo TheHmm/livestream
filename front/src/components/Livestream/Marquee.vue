@@ -59,4 +59,9 @@ export default {
   0%   { transform: translate(0, 0); }
   100% { transform: translate(-100%, 0); }
 }
+
+
+.reduce_motion .marquee p {
+  animation: none;
+}
 </style>

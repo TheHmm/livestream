@@ -5,7 +5,7 @@ import { defineAsyncComponent } from "vue"
 import Banner from '../Header/Banner.vue'
 import Marquee from './Marquee.vue'
 import Info from './Info.vue'
-import Options from './Options.vue'
+import Options from './Options/index.vue'
 
 export default {
 
@@ -47,23 +47,6 @@ export default {
     playback_id() { return this.livestream.playbackId },
     status()      { return this.livestream.status },
     active()      { return this.status == 'active' },
-
-
-    // We get the list of available streaming modes from the store
-    // this list can be updated by HLS.js at any moment.
-
-    ...mapGetters( 'livestream', [ 
-      'modes' ,
-      'default_mode',
-    ]),
-
-    current_mode() {
-      return (
-        this.$route.query?.mode && 
-        this.modes[this.$route.query.mode] || 
-        this.default_mode
-      )
-    }
     
   },
 
@@ -115,9 +98,7 @@ export default {
   <footer 
     aria-label="options & chat"
   >
-    <!-- <Donate /> -->
       <Options 
-      :modes="modes"
     />
     <!-- <Chat /> -->
   </footer>
@@ -140,7 +121,7 @@ header {
   --back: var(--accent);
   --fore: var(--white);
   width: 100%;
-  background: var(--back);
+  background-color: var(--back);
   box-shadow: var(--shadow-up);
   flex-grow: 1;
   display: flex;
@@ -148,6 +129,7 @@ header {
   align-items: flex-start;
   /* justify-content: flex-start; */
   padding-bottom: 4rem;
+  transition: background-color var(--very-slow) ease;
 }
 
 #middle #status {

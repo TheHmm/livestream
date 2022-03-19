@@ -7,17 +7,17 @@ export default [
   // it is meant to route to events based on their slug,
   // which are created in and fetched from Strapi.
 
-  {
-    path: '/',
-    name: 'home',
-    component: () => import( '../views/Home.vue' ),
-    beforeEnter: guards.before_enter_home
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import( '../views/About.vue' )
-  },
+  // {
+  //   path: '/',
+  //   name: 'home',
+  //   component: () => import( '../views/Home.vue' ),
+  //   beforeEnter: guards.before_enter_home
+  // },
+  // {
+  //   path: '/about',
+  //   name: 'about',
+  //   component: () => import( '../views/About.vue' )
+  // },
   {
     path: '/404',
     name: 'Page Not Found',

@@ -28,7 +28,10 @@
   --back: var(--white);
   --accent: var(--blue);
 
-  --fast: 0.2s;
+  --very-fast: 0.125s;
+  --fast: 0.25s;
+  --slow: 0.5s;
+  --very-slow: 1s;
 
 
   
@@ -86,4 +89,12 @@ a:visited {
   /* --fore: var(--dark-grey); */
   /* color: var(--fore); */
   font-family: monospace;
+}
+
+
+.reduce_motion {
+  --very-fast: 0s;
+  --fast: 0s;
+  --slow: 0s;
+  --very-slow: 0s;
 }

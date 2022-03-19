@@ -1,20 +1,38 @@
 <script>
-import AccessibilityIcon from '../Utils/AccessibilityIcon.vue'
+import Access from './Access.vue'
+import Donate from './Donate.vue'
+import Modes  from './Modes.vue'
 
 export default {
 
   name: 'Options',
-  
-  props: {
-    
-    modes: {
-      type: Object
-    }
-
-  },
 
   components: {
-    AccessibilityIcon
+    Access,
+    Donate, 
+    Modes
+  },
+
+  data() {
+    return {
+      tabs: {
+        'access': {
+          comp: 'Access',
+          label: 'Accessibility',
+          aria_label: 'Accessibility options',
+        },
+        'donate': {
+          comp: 'Donate',
+          label: 'Donate',
+          aria_label: 'Donate to the Hmm'
+        },
+        'modes': {
+          label: 'View modes',
+          aria_label: 'View modes',
+          comp: 'Modes'
+        }
+      }
+    }
   }
   
 }
@@ -25,53 +43,22 @@ export default {
     :id="$id()"
     aria-label="livestream options"
   >
+
+    <div 
+      v-for="( tab, key ) in tabs"
+      class="tab"
+      tabindex="0"
+      :id="key"
+      :aria-label="tab.aria_label"
+    >
+      <label :for="key"> {{ tab.label }} </label>
+      <hr>
+      <ul>
+        <Component :is="tab.comp" />
+      </ul>
+    </div>
     
-    <div
-      id="access"
-      class="tab"
-    >
-      <label for="access"> <AccessibilityIcon /> </label>
-      <hr>
-      <ul>
-      </ul>
-    </div>
-
-    <div
-      id="donate"
-      class="tab"
-    >
-      <label for="donate"> Donate </label>
-      <hr>
-      <ul>
-      </ul>
-    </div>
-
-
-    <div
-      id="modes"
-      class="tab"
-    >
-      <label for="modes"> View modes </label>
-      <hr>
-      <ul>
-        <li 
-          v-for="mode in modes"
-          :key="mode.name"
-          :value="mode.label"
-        >
-          <router-link 
-            :to="{
-              name: $route.name,
-              query: { mode: mode.name }
-            }"
-          >
-            {{ mode.label }}
-          </router-link>
-        </li>
-      </ul>
-    </div>
-
-    <div
+<!--    <div
       id="emoji"
       class="tab"
     >
@@ -79,13 +66,13 @@ export default {
       <hr>
       <ul>
       </ul>
-    </div>
+    </div> -->
 
   </div>
   
 </template>
 
-<style scoped>
+<style >
 
 #options {
   display: flex;
@@ -121,7 +108,6 @@ export default {
 
 #options .tab ul {
   box-sizing: border-box;
-  border-top: 0.1rem solid var(--fore);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -132,6 +118,7 @@ export default {
   padding: 0 0.5rem;
 }
 #options .tab ul li:first-of-type {
+  border-top: 0.1rem solid var(--fore);
   padding-top: 0.5rem;
 }
 #options .tab ul li:last-of-type {

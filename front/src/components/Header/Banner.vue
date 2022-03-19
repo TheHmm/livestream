@@ -71,6 +71,7 @@ svg {
   fill: none;
   stroke: var(--accent);
   stroke-width: 0.75rem;
+  transition: stroke var(--very-slow) ease;
 }
 
 </style>

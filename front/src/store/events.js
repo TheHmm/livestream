@@ -137,6 +137,14 @@ export default {
     },
 
 
+    // Handle updates from strapi created in real
+    // time during the event.
+
+    socket_eventUpdate( { commit }, event ) {
+      commit( 'SET_EVENT', event )
+    }
+
+
   }
 
 

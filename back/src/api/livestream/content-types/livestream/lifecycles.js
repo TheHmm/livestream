@@ -6,27 +6,50 @@ const
   // (1) privateData: the full livestream object
   // (2) publicData: it's poblically-safe counterpart
 
-  sanitize_livestream = ( event, strapi ) => {
-    
+  sanitize_livestream = livestream => {
+    return {
+      privateData : livestream,
+      publicData  : strapi.mux.get_public_stream_details(livestream),
+      stream_key  : livestream.stream_key
+    }
+  },
+
+
+  // 
+
+  before_create_or_update = async ( event, strapi ) => {
 
     // we get the event payload
 
-    const 
-      data       = event.params.data,
-      livestream = data.livestream
+    const data = event.params.data
+
+    let livestream 
+    
+
+    // We use the requestNewLivestream property to make a
+    // request for a new livestream from MUX, this way we
+    // can create a new livestream without needing to re-
+    // boot the server
+  
+    if ( data.requestNewLivestream === true ) {
+      livestream = await strapi.mux.create_livestream()
+      data.requestNewLivestream = false
 
 
-    // we merge the old "data" with the new saitzied one.
-    // we conserve the old evet payload here because it 
+    // Else, we keep the event payload as the livestream
+
+    } else {
+      livestream = data.livestream || data.privateData
+    }
+
+
+    // we merge the old "data" with the new sanitized one.
+    // we conserve the old event payload here because it 
     // contains strapi-generated metadata like "dateCreated"
 
     event.params.data = {
       ... data,
-      ... {
-        privateData : livestream,
-        publicData  : strapi.mux.get_public_stream_details(livestream),
-        stream_key  : livestream.stream_key
-      }
+      ... sanitize_livestream( livestream )
     }
 
 
@@ -37,53 +60,12 @@ const
   },
 
 
-
-
   // In this function we handle updates to the 'livestream'.
   // We inform all connected socket clients of this new info.
   // the frontend of this project hanndles the rest.
 
   after_update_handler = ( event, strapi ) => {
-    
-    strapi.io
-    .emit( 
-      'stream_update', 
-      event.result.publicData 
-    )
-  
-  },
-
-
-  // After delete handler: we'll use Strapi's own delete
-  // button to request a new livestream from MUX, this way
-  // we can create a new livestream without needing to re-
-  // boot the server
-  
-  after_delete_handler = async ( event, strapi ) => {
-
-    strapi.log.info( 'Requesting new livestream.', event )
-      
-    try { 
-      const livestream = await 
-        strapi
-        .mux
-        .create_livestream()
-      
-      try {
-        await strapi
-        .service( 'api::livestream.livestream' )
-        .createOrUpdate({
-          data: { livestream }
-        })
-        
-      } catch ( error ) {
-        return strapi.log.error( 'strapi err', error )
-      }
-    
-    } catch ( error ) {
-      return strapi.log.error( 'mux err', error )
-    }
-
+    strapi.io.emit( 'stream_update', event.result.publicData )
   }
 
 
@@ -91,12 +73,9 @@ const
 
 module.exports = {
 
-
-  beforeCreate( event ) { sanitize_livestream( event, strapi ) },
-  beforeUpdate( event ) { sanitize_livestream( event, strapi ) },
+  async beforeCreate( event ) { await before_create_or_update( event, strapi ) },
+  async beforeUpdate( event ) { await before_create_or_update( event, strapi ) },
 
   afterUpdate( event ) { after_update_handler( event, strapi ) },
-
-  async afterDelete( event ) { await after_delete_handler( event, strapi ) }
 
 }
