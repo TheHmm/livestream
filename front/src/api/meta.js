@@ -18,6 +18,22 @@ export default {
         reject( error )
       } )
     ) 
-  } 
+  },
+
+  donate( amount ) {
+    logger.info( `API`, `Donating ${ amount } euros.` )
+    return new Promise( ( resolve, reject ) => 
+      axios
+      .post( `${ config.api_url }/meta/donate`, { amount })
+      .then( result => {
+        console.log(result)
+        resolve( result.data.data ) 
+      })
+      .catch( error => {
+        logger.error( 'API', error ) 
+        reject( error )
+      } )
+    ) 
+  }
 
 }

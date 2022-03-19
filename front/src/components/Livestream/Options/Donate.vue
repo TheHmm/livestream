@@ -1,5 +1,6 @@
 <script>
 import config from '@/config'
+import api from '@/api'
 
 export default {
 
@@ -17,8 +18,9 @@ export default {
   },
 
   methods: {
-    label : a => `${ a } euros`,
-    href  : a => `${ config.api_url }/${ a }`
+    label  : a => `${ a } euros`,
+    href   : a => `${ config.api_url }/${ a }`,
+    donate : a => api.meta.donate(a)
   }
 
 }
@@ -30,8 +32,8 @@ export default {
     :key="amount"
   >
     <a
-      :href="href( amount )"
       :title="`Donate ${ label( amount ) } to The Hmm`"
+      @click="donate(a)"
     >
       {{ label( amount ) }}
     </a>

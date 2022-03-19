@@ -10,7 +10,7 @@ module.exports = createCoreController('api::meta.meta', ({ strapi }) => ({
 
   async donate( ctx ) {
 
-    console.log(ctx)
+    console.log(ctx.request)
 
     // let data = req.body
     // console.log('data =>', data)
