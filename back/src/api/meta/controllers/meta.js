@@ -4,13 +4,25 @@
  *  meta controller
  */
 
+// https://stackoverflow.com/questions/65715215/how-do-i-reach-request-body-in-strapi-middleware
+
+const get_body = async req => {
+  return new Promise((resolve, reject) => {
+    let body = ''
+    rawrequest.on('data', data => { body += data } )
+    rawrequest.on('end', () => { resolve(JSON.parse( body ) ) } )
+    rawrequest.on('error', () => { reject("Error") } )
+  })
+}
+
 const { createCoreController } = require('@strapi/strapi').factories
 
 module.exports = createCoreController('api::meta.meta', ({ strapi }) => ({
 
   async donate( ctx ) {
 
-    console.log(ctx.request.body)
+    const body = await get_body( ctx.request )
+    console.log(body)
 
     // let data = req.body
     // console.log('data =>', data)
