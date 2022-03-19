@@ -33,7 +33,7 @@ export default {
   >
     <a
       :title="`Donate ${ label( amount ) } to The Hmm`"
-      @click="donate(a)"
+      @click="donate( amount )"
     >
       {{ label( amount ) }}
     </a>
