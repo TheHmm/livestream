@@ -26,6 +26,10 @@ export default {
       'mobile',
       'options'
     ]),
+
+    reduce_motion() {
+      return this.options.reduce_motion.value
+    }
     
     
    
@@ -70,8 +74,8 @@ export default {
   <!-- <Header /> -->
   <RouterView 
     :class="{ 
-      mobile: mobile,
-      reduce_motion: options.reduce_motion.value
+      mobile,
+      reduce_motion
     }"
   />
   <!-- <Footer /> -->
