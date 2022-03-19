@@ -21,7 +21,7 @@ module.exports = createCoreController('api::meta.meta', ({ strapi }) => ({
 
   async donate( ctx ) {
 
-    const body = await get_body( ctx.request )
+    const body = await get_body( ctx.req )
     console.log(body)
 
     // let data = req.body
