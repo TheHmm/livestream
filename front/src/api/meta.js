@@ -20,15 +20,12 @@ export default {
     ) 
   },
 
-  donate( amount ) {
+  donate({ amount, description }) {
     logger.info( `API`, `Donating ${ amount } euros.` )
     return new Promise( ( resolve, reject ) => 
       axios
-      .post( `${ config.api_url }/meta/donate`, { amount })
-      .then( result => {
-        console.log(result)
-        resolve( result.data.data ) 
-      })
+      .post( `${ config.api_url }/meta/donate`, { amount, description } )
+      .then( result => resolve( result.statusText ) )
       .catch( error => {
         logger.error( 'API', error ) 
         reject( error )

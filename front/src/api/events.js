@@ -103,15 +103,6 @@ export default {
         populate: [
           'recording'
         ]
-        // fields: '*',
-        // populate: [
-        //   'logo',
-        //   'viewers',
-        //   'messages',
-        //   'announcements',
-        //   'emoji_groups',
-        //   'recording'
-        // ]
       } } )
       .then( result => {
         const events = result.data.data
@@ -140,9 +131,9 @@ export default {
           fields: '*',
           populate: [
             'logo',
-            'viewers',
-            'messages',
-            'announcements',
+            // 'viewers',
+            // 'messages',
+            // 'announcements',
             'emoji_groups',
             'recording'
           ]

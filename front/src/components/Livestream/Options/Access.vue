@@ -16,24 +16,27 @@ export default {
 </script>
 
 <template>
-  <li 
-    v-for="( option, key ) in options"
-    :key="key"
-  >
-    <label
-      :title="option.label"
+  <ul>
+    <li 
+      v-for="( option, key ) in options"
+      :key="key"
     >
-      <input 
-        type="checkbox"
-        v-bind="option.value"
-        @change="set_option({ 
-          key: key, 
-          value: !option.value 
-        })"
-      />
-      {{ option.label }}
-    </label> 
-  </li>
+      <label
+        :title="option.label"
+        tabindex="0"
+      >
+        <input 
+          type="checkbox"
+          v-bind="option.value"
+          @change="set_option({ 
+            key: key, 
+            value: !option.value 
+          })"
+        />
+        {{ option.label }}
+      </label> 
+    </li>
+  </ul>
 </template>
 
 <style scoped>

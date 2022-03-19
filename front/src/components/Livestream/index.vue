@@ -6,6 +6,8 @@ import Banner from '../Header/Banner.vue'
 import Marquee from './Marquee.vue'
 import Info from './Info.vue'
 import Options from './Options/index.vue'
+import Viewers from './Viewers/index.vue'
+import Chat from './Chat/index.vue'
 
 export default {
 
@@ -16,13 +18,14 @@ export default {
   },
 
   components: {
+    Player: defineAsyncComponent(() => import('./Player.vue')),
     Marquee,
     Banner,
-    // Announcements,
     Info,
-    Player: defineAsyncComponent(() => import('./Player.vue')),
     Options,
-    // Chat,
+    Viewers,
+    Chat,
+    // Announcements,
   },
 
   data() {
@@ -68,7 +71,7 @@ export default {
     aria-label="banner & announcements"
   >
     <Banner />
-    <!-- <Dots /> -->
+    <Viewers />
     <!-- <Announcements /> -->
   </header>
 
@@ -98,9 +101,8 @@ export default {
   <footer 
     aria-label="options & chat"
   >
-      <Options 
-    />
-    <!-- <Chat /> -->
+    <Options />
+    <Chat />
   </footer>
 
 </template>   
@@ -111,8 +113,8 @@ export default {
 header {
   position: relative;
   max-height: 20%;
-  min-height: 10%;
-  /* flex-grow: 1; */
+  min-height: 20%;
+  /* flex-grow: 2; */
   overflow: hidden;
 }
 
@@ -124,34 +126,36 @@ header {
   background-color: var(--back);
   box-shadow: var(--shadow-up);
   flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 30%;
   display: flex;
   flex-direction: row-reverse;
   align-items: flex-start;
-  /* justify-content: flex-start; */
-  padding-bottom: 4rem;
+  justify-content: stretch;
+  padding-bottom: 4.5rem;
   transition: background-color var(--very-slow) ease;
 }
 
 #middle #status {
   box-sizing: border-box;
   width: 100%;
-  /* height: 100%; */
+  height: 100%;
   text-align: center;
   display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 1rem;
   border: 1px dashed var(--fore);
 }
-#middle #status p {
-  margin: 30% auto;
-}
-
 
 footer {
   --back: var(--accent);
+  position: fixed;
+  bottom: 0;
   background-color: var(--back);
   flex-grow: 0;
   max-height: 3rem;
-  overflow: visible;
+  /* overflow: hidden; */
 }
 
 .mobile #middle {

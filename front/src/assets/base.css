@@ -4,11 +4,14 @@
   --white: rgb(255,255,255);
   --yellow: rgb(255,255,0);
   --blue: rgb(0, 0, 255);
+  --light-grey: rgb(225,225,225);
+  --mid-grey: rgb(100,100,100);
   --dark-grey: rgb(50,50,50);
 
   --shadow-color: rgba(0, 0, 0, 0.288);
   --shadow-size: 1rem;
-  --shadow-offset: 0.5rem;
+  --shadow-offset: 0rem;
+  --shadow: 0 0 var(--shadow-size) 0 var(--shadow-color);
   --shadow-up: 
     0 
     calc(-1 * var(--shadow-offset))
@@ -55,7 +58,7 @@ body {
 
 body :is(
   h1, h2, h3, h4, h5, h6, 
-  p, a, span,
+  p, a, span, label,
   code, pre, time,
   table, tr, td
 ) {
@@ -91,10 +94,21 @@ a:visited {
   font-family: monospace;
 }
 
+.comment {
+  --fore: var(--mid-grey);
+  font-style: italic;
+  font-size: 0.8rem;
+  line-height: 0.5;
+}   
+
 
 .reduce_motion {
   --very-fast: 0s;
   --fast: 0s;
   --slow: 0s;
   --very-slow: 0s;
+}
+
+.reduce_motion * {
+  animation: none !important;
 }

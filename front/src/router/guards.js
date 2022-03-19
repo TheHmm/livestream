@@ -9,7 +9,7 @@ const
 
   before_each = async () => {
     try {
-      await store.dispatch( 'get_meta' )
+      await store.dispatch( 'meta/get_meta' )
     } catch ( error ) {
       return '404'
     }
@@ -40,7 +40,9 @@ const
   before_enter_event = async to => {
     const slug = to.params.slug 
     try {
-      await store.dispatch( 'events/get_event', slug )
+      const event = await store.dispatch( 'events/get_event', slug )
+      const vieweers = await store.dispatch( 'viewers/get_viewers', event.id )
+      const messages = await store.dispatch( 'messages/get_messages', event.id )
     } catch ( error ) {
       return '404'
     }

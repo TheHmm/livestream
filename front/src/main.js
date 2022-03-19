@@ -13,20 +13,19 @@ import { logger, $id } from './utils'
 
 const
 
-  // Log default config to console
+
+  // We log default config to console
+  // & instantiate socket cient
+  // & instantiate networking scripts
+  // & create vue app
+
   intro = logger.intro( config ),
-
-  // Instantiate socket cient
   io    = socket.io( config.socket_url, { autoConnect: false } ),
-
-  // Instantiate networking scripts
   net   = networking.init( axios, io ),
-
-  // Create vue app
   app   = createApp( App )
 
 
-// Registering extensions and mounting app.
+// We register extensions and mounting app.
 
 app
 .config
@@ -35,23 +34,21 @@ app
   $id,
 }
 
-app
-.use( VueSocketIOExt, io, { store } )
-.use( store )
-.use( router )
-.mount( '#app' )
+// router.isReady().then( () => {
+  app
+  .use( VueSocketIOExt, io, { store } )
+  .use( store )
+  .use( router )
+  .mount( '#app' )
+// })
 
-
-// import VueMarkdownIt from 'vue3-markdown-it'
 // import marked from 'marked'
 
 // Set default options of markdown parser.
 
 // VueMarkdownIt.props = { 
-//   ...VueMarkdownIt.props, 
-//   ...config.md 
+//   config.md 
 // }
 
-// .use( VueMarkdownIt )
 
 export default app

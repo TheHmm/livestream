@@ -29,20 +29,23 @@ export default {
 </script>
 
 <template>
-  <li 
-    v-for="mode in modes"
-    :key="mode.name"
-  >
-    <router-link 
-      :title="`Switch to ${ mode.label } streaming mode`"
-      :to="{
-        name: $route.name,
-        query: { mode: mode.name }
-      }"
+  <ul>
+    <li 
+      v-for="mode in modes"
+      :key="mode.name"
+      tabindex="0"
     >
-      {{ mode.label }}
-    </router-link>
-  </li>
+      <router-link 
+        :title="`Switch to ${ mode.label } streaming mode`"
+        :to="{
+          name: $route.name,
+          query: { mode: mode.name }
+        }"
+      >
+        {{ mode.label }}
+      </router-link>
+    </li>
+  </ul>
 </template>
 
 <style scoped>

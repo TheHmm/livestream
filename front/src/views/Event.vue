@@ -55,11 +55,11 @@ export default {
 main {
   --side-width: 25%;
   box-sizing: border-box;
-  height: 100%; width: 100%;
+  height: 100vh; width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  overflow: hidden;
+  justify-content: stretch;
+  /* overflow: hidden; */
 }
 
 main.mobile {

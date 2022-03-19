@@ -5,11 +5,11 @@ import { logger } from '@/utils'
 export default {
 
 
-  get( uuid ) { 
-    logger.info( `API`, `Fetching viewer ${ uuid }.` )
+  get( time ) { 
+    logger.info( `API`, `Fetching message ${ time }.` )
     return new Promise( ( resolve, reject ) => 
       axios 
-      .get( `${ config.api_url }/viewers`, { params: { uuid } } )
+      .get( `${ config.api_url }/messages`, { params: { time } } )
       .then( result => resolve( result.data ) )
       .catch( error => {
         logger.error( 'API', error ) 
@@ -19,10 +19,11 @@ export default {
   },
 
   get_by_event( event_id ) { 
-    logger.info( `API`, `Fetching viewers.` )
+    logger.info( `API`, `Fetching messages.` )
     return new Promise( ( resolve, reject ) => {
       axios
-      .get( `${ config.api_url }/viewers`, { params: { 
+      .get( `${ config.api_url }/messages`, { params: { 
+        sort: 'time:asc',
         filters: {
           events: {
             id: {
@@ -33,8 +34,9 @@ export default {
         fields: '*',
       } } )
       .then( result => {
-        const viewers = result.data.data
-        resolve( viewers )
+        const messages = result.data.data
+        console.log(messages)
+        resolve( messages )
       } )
       .catch( error => {
         logger.error( 'API', error ) 

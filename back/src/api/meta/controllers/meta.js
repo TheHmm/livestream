@@ -9,14 +9,14 @@ const { createCoreController } = require('@strapi/strapi').factories
 
 module.exports = createCoreController('api::meta.meta', ({ strapi }) => ({
 
+  // https://github.com/hackersanddesigners/the-hmm-livestream/blob/master/public/server.js#L227
+
   async donate( ctx ) {
 
-    console.log(ctx.request.body)
-
-    // let data = req.body
-    // console.log('data =>', data)
+    const data = ctx.request.body
+    console.log(data)
     // try {
-    //   const payment = await mollieClient.payments.create({
+    //   const payment = await strapi.mollie.payments.create({
     //     amount: {
     //       currency: 'EUR',
     //       value: data.amount,

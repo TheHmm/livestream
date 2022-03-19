@@ -61,7 +61,7 @@ export default {
 }
 
 
-.reduce_motion .marquee p {
+/* .reduce_motion .marquee p {
   animation: none;
-}
+} */
 </style>

@@ -2,6 +2,7 @@ import meta       from './meta'
 import livestream from './livestream'
 import events     from './events'
 import viewers    from './viewers'
+import messages   from './messages'
 import { logger } from '@/utils'
 import axios      from 'axios'
 import qs         from 'qs'
@@ -59,4 +60,5 @@ export default {
   livestream,
   events,   
   viewers,
+  messages
 }

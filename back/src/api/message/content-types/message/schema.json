@@ -30,6 +30,9 @@
     },
     "body": {
       "type": "text"
+    },
+    "time": {
+      "type": "datetime"
     }
   }
 }
