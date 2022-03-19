@@ -17,6 +17,7 @@ module.exports = {
       params    = event.params,
       id        = params.where.id,
       new_event = params.data,
+      slug      = params.data.slug,      
       api       = strapi.service( 'api::event.event' ),
       old_event = await api.findOne( id, params ),
 
@@ -38,7 +39,7 @@ module.exports = {
     delete diff.createdBy
     delete diff.updatedBy
 
-    diff.slug = event.params.slug
+    diff.slug = slug
       
     
     // move /front/src/api/events/sanitize to here
