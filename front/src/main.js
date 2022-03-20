@@ -9,7 +9,9 @@ import router          from './router'
 import store           from './store'
 import config          from './config'
 import networking      from './networking'
-import { logger, $id } from './utils'
+import { logger }      from './utils'
+import { $id }         from './utils'
+import { $md, $mdi }  from './utils'
 
 const
 
@@ -18,7 +20,7 @@ const
   // & instantiate socket cient
   // & instantiate networking scripts
   // & create vue app
-
+  
   intro = logger.intro( config ),
   io    = socket.io( config.socket_url, { autoConnect: false } ),
   net   = networking.init( axios, io ),
@@ -27,11 +29,11 @@ const
 
 // We register extensions and mounting app.
 
-app
-.config
-.globalProperties = { 
+app.config.globalProperties = { 
   logger, 
   $id,
+  $md,
+  $mdi
 }
 
 // router.isReady().then( () => {
@@ -42,13 +44,7 @@ app
   .mount( '#app' )
 // })
 
-// import marked from 'marked'
 
-// Set default options of markdown parser.
-
-// VueMarkdownIt.props = { 
-//   config.md 
-// }
 
 
 export default app

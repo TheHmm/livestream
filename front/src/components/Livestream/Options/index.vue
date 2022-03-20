@@ -61,7 +61,6 @@ export default {
       > 
         {{ tab.label }} 
       </label>
-      <hr>
       <div class="contents">
         <Component :is="tab.comp" />
       </div>
@@ -75,42 +74,8 @@ export default {
   display: flex;
   align-items: flex-end;
   margin-left: 1rem;
-  max-height: 0;
+  flex-grow: 1;
   overflow: visible;
-}
-
-#options .tab {
-  box-sizing: border-box;
-  --back: var(--yellow);
-  background: var(--back);
-  box-shadow: var(--shadow-up);
-}
-
-#options .tab .title {
-  display: block;
-  box-sizing: border-box;
-  padding: 0.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-}
-/* #options .tab#access label svg {
-  height: 2rem;
-} */
-
-#options .tab hr {
-  border: unset;
-  display: none;
-}
-
-#options .tab .contents {
-  box-sizing: border-box;
-  max-height: 0;
-  max-width: 0;
-  transition: 
-    max-height var(--fast) ease-in-out,
-    max-width var(--fast) ease-in-out
-  ;
 }
 
 #options .tab .contents ul {
@@ -118,17 +83,16 @@ export default {
   list-style: none;
   padding: 0;
   margin: 0;
-  border-top: 0.1rem solid var(--fore);
 }
 
 #options .tab .contents ul li {
   padding: 0 0.5rem;
 }
 #options .tab .contents ul li:first-of-type {
-  padding-top: 0.5rem;
+  margin-top: 0.5rem;
 }
 #options .tab .contents ul li:last-of-type {
-  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 #options .tab .contents ul li label,
 #options .tab .contents ul li input {
@@ -136,11 +100,12 @@ export default {
   margin: 0;
 }
 
-#options .tab:hover .contents,
-#options .tab:focus-within .contents,
-#options .tab:focus .contents {
-  max-height: 20rem;
-  max-width: 12rem;
+.mobile #options {
+  margin: unset;
+  z-index: 1;
+  max-height: 2.5rem;
 }
+
+
 
 </style>

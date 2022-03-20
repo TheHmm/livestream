@@ -15,7 +15,7 @@ const
   //   .tz( time, 'Europe/Amsterdam' )
   //   .format( 'dddd DD MMMM [at] HH:mm z' ),
 
-  human_format = starts => (
+  date_format = starts => (
     new Date( starts )
     .toLocaleString( 'en-GB', { 
       year         : 'numeric',
@@ -25,6 +25,15 @@ const
       minute       : 'numeric',
       timeZoneName : 'short'
       // timeZone  : 'CET',
+    } ) 
+  ),
+
+  time_format = datetime => (
+    new Date( datetime )
+    .toLocaleString( 'en-GB', { 
+      hour         : 'numeric',
+      minute       : 'numeric',
+      second       : 'numeric',
     } ) 
   ),
 
@@ -54,5 +63,6 @@ export default {
   is_soon,
   to_hours,
   time_to_srt_stamp,
-  human_format,
+  date_format,
+  time_format
 }

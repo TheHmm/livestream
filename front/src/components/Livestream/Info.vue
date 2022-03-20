@@ -32,7 +32,7 @@ export default {
     soon()      { return this.event.is.soon() },
     starts()    { return this.event.starts },
     ends()      { return this.event.ends },
-    timestamp() { return time.human_format( this.starts ) }
+    timestamp() { return time.date_format( this.starts ) }
 
   }
   
@@ -65,8 +65,8 @@ export default {
 <style scoped>
 #info {
   box-sizing: border-box;
-  width: 25rem;
-  max-width: var(--side-width);
+  width: var(--side-width);
+  max-width: var(--side-max-width);
   padding: 0.5rem;
   margin-right: 0.5rem;
   height: 100%;

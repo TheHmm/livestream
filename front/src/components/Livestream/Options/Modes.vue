@@ -34,6 +34,7 @@ export default {
       v-for="mode in modes"
       :key="mode.name"
       tabindex="0"
+      class="mode"
     >
       <router-link 
         :title="`Switch to ${ mode.label } streaming mode`"
@@ -49,5 +50,7 @@ export default {
 </template>
 
 <style scoped>
-
+.mode {
+  padding: 0.2rem ;
+}
 </style>

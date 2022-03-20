@@ -1,14 +1,14 @@
 :root {
 
-  --black: rgb(0,0,0);
-  --white: rgb(255,255,255);
-  --yellow: rgb(255,255,0);
-  --blue: rgb(0, 0, 255);
-  --light-grey: rgb(225,225,225);
-  --mid-grey: rgb(100,100,100);
-  --dark-grey: rgb(50,50,50);
+  --black: hsl(0, 0%, 0%);
+  --white: hsl(0, 0%, 100%);
+  --yellow: hsl(60, 100%, 50%);
+  --blue: hsl(240, 100%, 50%);
+  --light-grey: hsl(0, 0%, 88%);
+  --mid-grey: hsl(0, 0%, 39%);
+  --dark-grey: hsl(0, 0%, 20%);
 
-  --shadow-color: rgba(0, 0, 0, 0.288);
+  --shadow-color: hsla(0, 0%, 0%, 0.288);
   --shadow-size: 1rem;
   --shadow-offset: 0rem;
   --shadow: 0 0 var(--shadow-size) 0 var(--shadow-color);
@@ -100,6 +100,73 @@ a:visited {
   font-size: 0.8rem;
   line-height: 0.5;
 }   
+
+
+.tab {
+  --back: var(--yellow);
+  box-sizing: border-box;
+  background: var(--back);
+  box-shadow: var(--shadow-up);
+}
+
+.tab .title {
+  display: block;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  white-space: pre;
+}
+.tab:focus .title {
+  outline: 0.2rem solid var(--blue);
+}
+
+.tab li label:focus,
+.tab li:focus {
+  outline: 0.2rem solid var(--blue);
+}
+/* #options .tab#access label svg {
+  height: 2rem;
+} */
+
+.tab hr {
+  border: unset;
+  display: none;
+}
+
+.tab .contents {
+  box-sizing: border-box;
+  max-height: 0;
+  min-width: 0;
+  transition: 
+    max-height var(--fast) ease-in-out,
+    max-width var(--fast) ease-in-out,
+    min-width var(--fast) ease-in-out
+  ;
+  border-top: 0.1rem solid var(--fore);
+}
+
+.tab .contents:first-child {
+}
+
+.tab:hover .contents,
+.tab:focus-within .contents,
+.tab:focus .contents {
+  max-height: 12rem;
+  max-width: 12rem;
+}
+
+
+.mobile {
+  font-size: 11pt;
+}
+
+.mobile #options .tab:hover .contents,
+.mobile #options .tab:focus-within .contents,
+.mobile #options .tab:focus .contents {
+  min-width: 10rem;
+}
 
 
 .reduce_motion {

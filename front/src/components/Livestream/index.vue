@@ -113,8 +113,6 @@ export default {
 header {
   position: relative;
   max-height: 20%;
-  min-height: 20%;
-  /* flex-grow: 2; */
   overflow: hidden;
 }
 
@@ -150,21 +148,34 @@ header {
 
 footer {
   --back: var(--accent);
+  background-color: var(--back);
   position: fixed;
   bottom: 0;
-  background-color: var(--back);
+  width: 100%;
   flex-grow: 0;
   max-height: 3rem;
-  /* overflow: hidden; */
+  display: flex;
 }
+
+
 
 .mobile #middle {
   flex-direction: column-reverse;
-  /* position: relative;
-  min-width: 100%;
-  
-  height: auto;
-  min-height: unset;
-  overflow: visible; */
+  align-items: stretch;
+  /* padding-bottom: unset; */
+}
+.mobile #middle #status {
+  width: unset;
+  max-height: 30%;
+}
+
+.mobile footer {
+  max-height: 6rem;
+  flex-direction: row-reverse;
+}
+
+.mobile footer {
+  /* flex-wrap: wrap; */
+  flex-direction: column-reverse;
 }
 </style>

@@ -53,7 +53,8 @@ export default {
 <style scoped>
 
 main {
-  --side-width: 25%;
+  --side-width: 25rem;
+  --side-max-width: 25%;
   box-sizing: border-box;
   height: 100vh; width: 100%;
   display: flex;
@@ -64,6 +65,7 @@ main {
 
 main.mobile {
   --side-width: 100%;
+  --side-max-width: 100%;
 }
 
 </style>

@@ -25,13 +25,16 @@ export default {
       .get( `${ config.api_url }/messages`, { params: { 
         sort: 'time:asc',
         filters: {
-          events: {
+          event: {
             id: {
               $eq: event_id
             }
           },
         },
         fields: '*',
+        populate: [
+          'sender'
+        ]
       } } )
       .then( result => {
         const messages = result.data.data
