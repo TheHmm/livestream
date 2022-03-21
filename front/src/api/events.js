@@ -30,17 +30,14 @@ const sanitize = event => {
     // (3) else: return null; stream doesn't exist
 
     event.livestream = () => { 
-      // his is a function returning a value!
-      if ( event.is.soon() ) {
-        return store.getters[ 'livestream/get_livestream' ] 
-      // } else if ( event.is.in_past() ) {
-      } else {
+      // this is a function returning a value!
+      if ( event.is.in_past() ) {
         const 
           playbackId = event.recording?.data?.playback_id,
           status = playbackId && 'active' || 'idle'
         return { playbackId, status }
-      // } else {
-        // return null
+      } else {
+        return store.getters[ 'livestream/get_livestream' ] 
       }
     }
 

@@ -1,17 +1,18 @@
 <script>
 
-import { mapState }   from 'vuex'
 import { logger }     from '@/utils'
 import { livestream } from '@/utils'
-import { captions }   from "@/utils"
-import { time }       from "@/utils"
+import Captions       from './Captions.vue'
+import Timer          from './Timer.vue'
 
 
 
 export default {
-
+  
   name: 'Player',
 
+  components: { Captions, Timer },
+  
   props: {
 
     livestream: {
@@ -28,7 +29,6 @@ export default {
     return {
       player : null,
       should_update: false,
-      track: 'WEBVTT - Generated using SRT2VTT \r\n\r\n'
     }
   },
 
@@ -36,13 +36,9 @@ export default {
     active() { 
       return this.livestream.status == 'active' 
     },
-    ...mapState('livestream', [ 
-      'cc_interim',
-      'cc',
-    ] ),
-    track_src() {
-      return captions.vtt_to_blob(this.track)
-    }
+    stream_start() {
+      return this.livestream.start_time
+    },
   },
 
   watch: {
@@ -64,43 +60,6 @@ export default {
         this.should_update = true
       }
     },
-    'cc':{
-      deep: true,
-      handler() {
-      console.log(this.cc)
-      if (this.player?.player) {
-        const
-          now                     = time.now(),
-          stream_start            = this.livestream.start_time,
-          current_livestream_time = ( now - stream_start ) / 1000,
-          live_sync_position      = this.player.player.liveSyncPosition,
-          _latency                = this.player.player.latencyController._latency 
-
-        console.log(
-          this.cc[this.cc.length - 1].text,
-          current_livestream_time,
-          live_sync_position,
-          _latency,
-          current_livestream_time - live_sync_position - _latency
-        )
-        // console.log(
-        //   captions.caption_to_srt( 
-        //     this.cc[this.cc.length-1], 
-        //     stream_start, 
-        //     ( current_livestream_time - live_sync_position - _latency ) * 1000
-        //   ) )
-        this.track += captions.srt_to_vtt(
-            captions.caption_to_srt( 
-              this.cc[this.cc.length-1], 
-              stream_start, 
-            ( current_livestream_time - live_sync_position - _latency ) * 1000
-          )
-        ) 
-        // console.log(this.track)
-
-      }
-    }
-    }
 
   },
 
@@ -147,8 +106,8 @@ export default {
       if ( this.player ) {
         logger.info( 'LIVESTREAM', `Destroying player.` )
         this.player.destroy()
-        this.player = null
       }
+      this.player = null
     },
 
     
@@ -170,10 +129,16 @@ export default {
       logger.info( 'LIVESTREAM', `Creating player for ${ this.mode.name }.` )
 
 
+      // We only load the captions player + the time display
+
+      if ( this.mode.name == 'transcript') {
+        
+      
+
       // The image player will load a thumbnail every X seconds
       // as well as subscribe to a subtitle stream from Marco.
 
-      if ( this.mode.name == 'thumbs' ) {
+      } else if ( this.mode.name == 'thumbs' ) {
         this.player = livestream.players.img_player(
           this.$refs.img, 
           this.livestream,
@@ -226,30 +191,21 @@ export default {
     aria-label="livestream player"
   >
     <div
-      id="img_player"
+      id="low_res_player"
       v-if="mode.name == 'thumbs' || mode.name == 'transcript'"
       aria-label="thumbnail player"
     > 
+      <Timer
+        :stream_start="stream_start"
+      />
       <img
         v-if="mode.name == 'thumbs'"
         ref="img"
+        :alt="`Thumbnail of live stream at `"
       />
-      <div class="captions">
-        <p
-          v-for="(caption, id) of cc"
-          :key="id"
-          class="caption"
-        >
-        {{ caption.text }}
-        </p>
-        <p
-          v-if="cc_interim"
-          class="caption"
-        >
-          {{ cc_interim.text }}
-        </p>
-      </div>
-      
+      <Captions 
+        :native="false"
+      />      
     </div>
 
     <audio
@@ -260,31 +216,20 @@ export default {
       aria-label="audio player"
       ref="media"
     >
-      <track
-        v-if="track_src"
-        default 
-        srclang="en" 
-        kind="captions" 
-        label="English" 
-        :src="track_src"
-      />
     </audio>
 
     <video
-      v-else
+      v-else-if="mode.name == 'video'"
       muted
       controls
       autoplay
       aria-label="video player"
       ref="media"
     >
-      <track
-        v-if="track_src"
-        default 
-        srclang="en" 
-        kind="captions" 
-        label="English" 
-        :src="track_src"
+      <Captions 
+        :player="player"
+        :stream_start="stream_start"
+        :native="true"
       />
     </video>
     
@@ -305,7 +250,7 @@ export default {
 
 video,
 audio,
-#img_player
+#low_res_player
  {
   box-sizing: border-box;
   /* background: black; */
@@ -314,6 +259,10 @@ audio,
   max-width: 100%;
   max-height: 100%;
   object-fit: cover;
+}
+
+#low_res_player {
+  display: flex;
 }
 
 .captions {

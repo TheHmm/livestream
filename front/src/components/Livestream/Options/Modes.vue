@@ -12,17 +12,7 @@ export default {
 
     ...mapGetters( 'livestream', [ 
       'modes' ,
-      'default_mode',
-    ]),
-
-    current_mode() {
-      return (
-        this.$route.query?.mode && 
-        this.modes[this.$route.query.mode] || 
-        this.default_mode
-      )
-    }
-
+    ])
   },
 
 }

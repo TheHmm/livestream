@@ -19,7 +19,7 @@ export default {
   },
 
   components: {
-    Player: defineAsyncComponent(() => import('./Player.vue')),
+    Player: defineAsyncComponent(() => import('./Player/index.vue')),
     Marquee,
     Banner,
     Info,
@@ -52,6 +52,23 @@ export default {
     playback_id() { return this.livestream.playbackId },
     status()      { return this.livestream.status },
     active()      { return this.status == 'active' },
+
+
+    // We get the list of available streaming modes from the store
+    // this list can be updated by HLS.js at any moment.
+
+    ...mapGetters( 'livestream', [ 
+      'modes' ,
+      'default_mode',
+    ]),
+
+    current_mode() {
+      return (
+        this.$route.query?.mode && 
+        this.modes[this.$route.query.mode] || 
+        this.default_mode
+      )
+    }
     
   },
 
@@ -60,7 +77,7 @@ export default {
   
 <template>
 
-  <!-- <pre> {{ livestream }} </pre> --> 
+  <!-- <pre> {{ livestream }} </pre>  -->
   
   
 
