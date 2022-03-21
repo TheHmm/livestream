@@ -27,14 +27,18 @@ export default {
     tabindex="0"
     :aria-label="`Message from ${ sender }`"
   >
-    <div class="header">
+    <div 
+      class="header"
+      aria-label="Message meta-data"
+    >
       <span class="sender">{{ sender }}</span>
       <span class="sep"> @ </span>
       <span class="time">{{ time }}</span>
     </div>
     <div 
-      class="body"
       v-html="body"
+      class="body"
+      aria-label="Message body"
     >
     </div>
   </div>

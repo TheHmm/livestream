@@ -62,6 +62,7 @@ body {
   padding: 2rem; */
   font-family: sans-serif;
   font-size: 13pt;
+  background-color: var(--back);
 }
 
 body :is(

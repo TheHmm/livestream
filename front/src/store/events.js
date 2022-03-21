@@ -1,4 +1,6 @@
 import api from "../api"
+import { color } from '@/utils'
+import { time } from '@/utils'
 
 export default {
 
@@ -51,6 +53,11 @@ export default {
   actions: {
 
 
+    set_event( { commit, rootGetters }, event ) {
+      commit( 'SET_EVENT', sanitize( event, rootGetters ) )
+    },
+
+
     // Fetch number of events
 
     fetch_events_count( ) { 
@@ -66,14 +73,14 @@ export default {
 
     // Fetch all events 
 
-    fetch_events( { commit } ) { 
+    fetch_events( { dispatch } ) { 
       return new Promise( ( resolve, reject ) => 
         api
         .events
         .getAll()
         .then( events => {
           for ( const event of events ) {
-            commit( 'SET_EVENT', event )
+            dispatch( 'set_event', event )
           }
           resolve( events ) 
         } )
@@ -84,13 +91,13 @@ export default {
 
     // Fetch single event
 
-    fetch_event( { commit }, slug ) { 
+    fetch_event( { dispatch }, slug ) { 
       return new Promise( ( resolve, reject ) => 
         api
         .events
         .get(slug)
         .then( event => {
-          commit( 'SET_EVENT', event )
+          dispatch( 'set_event', event )
           resolve( event ) 
         } )
         .catch( error => reject( error ) )
@@ -140,12 +147,66 @@ export default {
     // Handle updates from strapi created in real
     // time during the event.
 
-    socket_eventUpdate( { commit }, event ) {
-      commit( 'SET_EVENT', event )
+    socket_eventUpdate( { dispatch }, event ) {
+      dispatch( 'set_event', event )
     }
 
 
   }
 
 
+}
+
+
+
+// Sanitizing 'events' type received from Strapi.
+// Note that for each of these events, we add a 
+// 'livestream' property that returns a different
+// object based on when the event is happening.
+
+function sanitize ( event, rootGetters ) {
+
+  event.accent = color.hsl_to_css_vars(event.accent)
+
+  // When is it ?
+
+  event.is = {
+    in_past   : () => time.is_in_past( event.ends ),
+    in_future : () => time.is_in_future( event.starts ),
+    soon      : () => time.is_soon( event.starts ),
+  }
+
+  // (1) soon: map to current livestream in store
+  // (2) past: return recording of old stream
+  // (3) else: return null; stream doesn't exist
+
+  event.livestream = () => { 
+    // this is a function returning a value!
+    if ( event.is.in_past() ) {
+      const 
+        playbackId = event.recording?.data?.playback_id,
+        status = playbackId && 'active' || 'idle'
+      return { playbackId, status }
+    } else {
+      return rootGetters[ 'livestream/get_livestream' ] 
+    }
+  }
+
+
+  // If the event is having a livestream then it
+  // should also have a cover.
+  
+  // event.cover = () => {
+  //   if ( event.livestream()?.playbackId ) {
+  //     return livestream.mux.thumb_src( 
+  //       event.livestream().playbackId, 
+  //       10 
+  //     )
+  //   } else {
+  //     return null
+  //   }
+  // }
+  // console.log(event.slug, event.recording, event.livestream(), event.cover() )
+  
+  return event
 }

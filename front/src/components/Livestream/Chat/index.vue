@@ -12,7 +12,8 @@ export default {
 
   data() {
     return {
-      expanded: false
+      expanded: false,
+      message: null
     }
   },
 
@@ -24,18 +25,30 @@ export default {
 
   },
 
+  methods: {
+
+    send( e ) {
+      console.log(e)
+    }
+
+  }
+
 }
 </script>
 
 <template>
-  <div id="chat_container">
+  <div 
+    id="chat_container"
+    aria-label="chat"
+  >
+
     <div
       :id="$id()"
       :class="[ 'tab', { expanded } ]"
-      aria-label="chat"
       tabindex="0"
       @click="expanded = true"
     >
+
       <label 
         class="title"
         :for="$id()"
@@ -54,17 +67,39 @@ export default {
         </div>
         <span v-else>Chat</span>
       </label>
+
       <div class="contents">
+        
+        <form 
+          id="message_form"
+          aria-label="Message form"
+          :onsubmit="send"
+        >
+          <input 
+            type="text" 
+            name="message" 
+            id="message" 
+            placeholder ="type your message and hit enter" 
+            v-model="message"
+          />
+            <input 
+              type="submit" 
+              title="Send your message to all other viewers."
+              value="Send"
+            />
+        </form>
+
         <Message
           v-for="( message, index ) in messages_array"
           :key="index"
           :style="{ '--n': index }"
           :message="message"
         />
+
       </div>
     </div>
-  </div>
 
+  </div>
 </template>
 
 <style scoped>
@@ -93,6 +128,7 @@ export default {
 #chat.expanded .contents {
   max-width: 100%;
   max-height: 90rem;
+  padding: 0;
 }
 
 #chat .title {
@@ -105,6 +141,19 @@ export default {
   justify-content: flex-end;
   align-items: flex-start;
   overflow: hidden;
+}
+
+#chat .contents #message_form {
+  display: flex;
+}
+#chat .contents #message_form input[type="text"] {
+  flex-grow: 1;
+  min-width: 100%;
+  height: 2rem;
+}
+#chat .contents #message_form input[type="submit"] {
+  margin: 0 0.5rem;
+  height: 100%;
 }
 
 

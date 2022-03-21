@@ -6,7 +6,7 @@ export default {
 
 <template>
   <svg 
-    :id="$id()"
+    id="banner"
     xmlns="http://www.w3.org/2000/svg" 
     viewBox="0 -100 5098.47 915.91"
     preserveAspectRatio="xMinYMin slice"
@@ -71,7 +71,15 @@ svg {
   fill: none;
   stroke: var(--accent);
   stroke-width: 0.75rem;
+  opacity: 0;
   transition: stroke var(--very-slow) ease;
+  animation: enter var(--very-slow) ease forwards;
 }
+
+@keyframes enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 
 </style>

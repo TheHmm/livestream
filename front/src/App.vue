@@ -1,8 +1,10 @@
 <script>
 
+import { mapMutations, mapState } from 'vuex'
+
 import Header from './components/Header/index.vue'
 import Footer from './components/Footer/index.vue'
-import { mapMutations, mapState } from 'vuex'
+import Banner from './components/Header/Banner.vue'
 
 export default {
 
@@ -10,57 +12,50 @@ export default {
 
   components: { 
     Header,
-    Footer
+    Footer,
+    Banner
   },
 
   data() {
     return {
+      ready: false,
     }
   },
 
   computed: {
-
-    // mobile and accessibility classes
-
     ...mapState( 'ui', [
       'mobile',
       'options'
     ]),
-
     reduce_motion() {
       return this.options.reduce_motion.value
     }
-    
-    
-   
   },
 
   methods: {
-
-    ...mapMutations( 'ui', [
-      'SET_MOBILE'
-    ]),
-
+    ...mapMutations( 'ui', [ 'SET_MOBILE' ] ),
     check_if_mobile() {
       return window.innerWidth < 700
     },   
-
-
   },
 
   created() {
-
     this.SET_MOBILE( this.check_if_mobile() )
-
     window.onresize = () => {
       this.SET_MOBILE( this.check_if_mobile() )
     }
-
   },
 
 
-  mounted() {
-   
+  async mounted() {  
+    try {
+      await this.$store.dispatch( 'livestream/get_livestream' )
+      await this.$store.dispatch( 'meta/get_meta' )
+      this.ready = true
+    } catch ( error ) {
+      logger.error(error)
+      this.$router.push('404')
+    }
   },
 
 
@@ -70,17 +65,29 @@ export default {
 </script>
 
 <template>
-  
-  <!-- <Header /> -->
-  <RouterView 
-    :class="{ 
-      mobile,
-      reduce_motion
-    }"
-  />
-  <!-- <Footer /> -->
+  <transition 
+    name="fade"
+    mode="in-out"
+  >
 
+    <RouterView 
+      v-if="ready"
+      :class="{ 
+        mobile,
+        reduce_motion
+      }"
+    />
+
+    <main
+      v-else
+      class="placeholer"
+    >
+      <Banner />
+    </main>
+
+  </transition>
 </template>
+
 
 <style>
 
@@ -97,11 +104,13 @@ export default {
  * See file: @/front/index.html
  */
 
-body {    
-  /* box-sizing: border-box;
-  height: 100%;
-  display: flex;
-  flex-direction: column; */
+
+main.placeholer {
+  position: absolute;
+  width: 100%;
+}
+main.placeholer #banner {
+  margin: 2rem auto;
 }
 
 </style>

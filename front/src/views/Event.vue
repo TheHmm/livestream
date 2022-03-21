@@ -1,6 +1,8 @@
 <script>
 
 import Livestream from '@/components/Livestream/index.vue'
+import Banner from '../components/Header/Banner.vue'
+
 
 export default {
 
@@ -8,7 +10,12 @@ export default {
 
   components: {
     Livestream,
+    Banner
   },
+
+  // async setup() {
+    
+  // },
 
   computed: {
 
@@ -35,19 +42,15 @@ export default {
 </script>
 
 <template>
-
   <main 
     :id="$id()"
     :style="{ ...accent }"
     aria-labelledby="event_title"
   >
-
     <Livestream 
       :event="event"
     />
-
   </main>
-
 </template>
 
 <style scoped>
@@ -74,15 +77,19 @@ main {
 
   --back: var(--accent-light);
   
-  background: var(--back);
+  background-color: var(--white);
 
   box-sizing: border-box;
   height: 100vh; width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: stretch;
-  /* overflow: hidden; */
+  animation: enter var(--very-slow) ease forwards;
+}
 
+@keyframes enter {
+  from { background-color: var(--white) }
+  to { background-color: var(--back) }
 }
 
 main.mobile {

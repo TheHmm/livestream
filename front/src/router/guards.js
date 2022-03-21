@@ -4,23 +4,6 @@ import app from '@/main'
 const 
 
 
-  // Before accessing any page, we need to make sure we
-  // have the livestream object
-
-  before_each = async () => {
-    try {
-      await store.dispatch( 'meta/get_meta' )
-    } catch ( error ) {
-      return '404'
-    }
-    try {
-      await store.dispatch( 'livestream/get_livestream' )
-    } catch ( error ) {
-      return '404'
-    }
-  },
-
-
   // Before accessing the homepage, we make sure that 
   // we have all the events from Strapi, to list them.
 
@@ -52,7 +35,6 @@ const
 
 
 export default {
-  before_each,
   before_enter_home,  
   before_enter_event,
 }
