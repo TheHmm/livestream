@@ -18,7 +18,7 @@ export default {
 
   data() {
     return {
-      ready: false,
+      meta: null,
     }
   },
 
@@ -49,9 +49,7 @@ export default {
 
   async mounted() {  
     try {
-      await this.$store.dispatch( 'livestream/get_livestream' )
-      await this.$store.dispatch( 'meta/get_meta' )
-      this.ready = true
+      this.meta = await this.$store.dispatch( 'meta/get_meta' )
     } catch ( error ) {
       logger.error(error)
       this.$router.push('404')
@@ -71,7 +69,7 @@ export default {
   >
 
     <RouterView 
-      v-if="ready"
+      v-if="meta"
       :class="{ 
         mobile,
         reduce_motion
