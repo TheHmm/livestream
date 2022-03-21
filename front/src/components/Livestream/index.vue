@@ -3,7 +3,7 @@
 import { mapGetters } from 'vuex'
 import { defineAsyncComponent } from "vue"
 import Banner from '../Header/Banner.vue'
-import Marquee from './Marquee.vue'
+import Marquee from '../Header/Marquee.vue'
 import Info from './Info.vue'
 import Options from './Options/index.vue'
 import Viewers from './Viewers/index.vue'
@@ -81,12 +81,12 @@ export default {
   
   
 
-  <Marquee 
-    :animate="!active"
-    :marquee="marquee"
-  />
 
   <header aria-label="banner & announcements">
+    <Marquee 
+      :marquee="marquee"
+      :animate="!active"
+    />
     <Banner />
     <Viewers />
     <!-- <Announcements /> -->
@@ -113,7 +113,6 @@ export default {
       <p role="status">{{ status }}</p>
     </div>
   </section>
-
   
   <footer aria-label="options & chat">
     <Options />
@@ -127,11 +126,13 @@ export default {
 
 
 header {
-  --back: var(--accent-light);
-  background: var(--back);
   position: relative;
   max-height: 20%;
-  overflow: hidden;
+  /* overflow: visible; */
+}
+
+header .marquee {
+  height: 2rem;
 }
 
 #middle {
@@ -145,13 +146,20 @@ header {
   flex-shrink: 1;
   flex-basis: 30%;
   padding: 1rem;
-  margin-bottom: var(--footer-height);
+  padding-bottom: calc( var(--footer-height) + 1rem );
   display: flex;
   flex-direction: row-reverse;
   align-items: flex-start;
   justify-content: stretch;
   transition: background-color var(--very-slow) ease;
   z-index: 0;
+  transform: translateY(10rem);
+  animation: enter var(--enter) ease 0.1s forwards;
+}
+
+@keyframes enter {
+  from { transform: translateY(10rem) }
+  to { transform: translateY(0) }
 }
 
 #middle #status {
@@ -172,7 +180,7 @@ header {
 
 footer {
   --back: var(--accent);
-  background-color: var(--back);
+  /* background-color: var(--back); */
   position: fixed;
   box-sizing: border-box;
   bottom: 0;
@@ -189,9 +197,7 @@ footer #options {
 }
 
 footer #network {
-  /* margin-bottom: 1rem; */
-  /* align-self: stretch; */
-  margin: 0.5rem 1rem;
+  margin: 0.2rem 1rem;
   margin-right: auto; 
 }
 

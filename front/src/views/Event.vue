@@ -72,6 +72,10 @@ main {
   --footer-height: 4rem;
   --side-width: 20rem;
 
+  --back: var(--accent-light);
+  
+  background: var(--back);
+
   box-sizing: border-box;
   height: 100vh; width: 100%;
   display: flex;

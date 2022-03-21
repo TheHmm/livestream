@@ -62,52 +62,45 @@ export default {
       </li>
     </ul>
 
-    <div 
-      v-if="selected"
-      class="ready"
-    >
-      <div class="bt">
-        <label
-          for="website"
-          class="comment"
-        >
-          If you are not a bot, leave the below field empty.
-        </label>
-        <input 
-          type="text" 
-          name="website" 
-          id="website" 
-          placeholder ="http://example.com" 
-          v-model="website"
-        />
-      </div>
-      <label>
-        <input 
-          type="submit" 
-          :title="`Donate ${ selected } to The Hmm`"
-          value="Send"
-        />
+    <div class="bt">
+      <label
+        for="website"
+        class="comment"
+      >
+        If you are not a bot, leave the below field empty.
       </label>
+      <input 
+        type="text" 
+        name="website" 
+        id="website" 
+        placeholder ="http://example.com" 
+        v-model="website"
+      />
     </div>
+    
+    <label>
+      <input 
+        type="submit" 
+        :title="`Donate ${ selected } to The Hmm`"
+        value="Send"
+      />
+    </label>
 
   </form>
 </template>
 
 <style scoped>
 
-.ready {
-  max-width: 10rem;
-  padding: 0 0.5rem;
-}
-.ready input {
+input[type="submit"] {
   box-sizing: border-box;
-  width: 100%;
-  margin-bottom: 0.5rem;
+  width: calc(100% - 1rem);
+  margin: 0.5rem;
+  margin-bottom: 0rem;
 }
-.ready input[type="text"] {
-  margin-top: 0.5rem;
-}
-.ready input[type="submit"] {
+ .bt {
+  position: absolute;
+  left: -99999999rem;
+  top: -99999999rem;
 }
 
 </style>

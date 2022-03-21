@@ -70,6 +70,7 @@ export default {
 <style scoped>
 
 #chat_container {
+  --n: 10;
   box-sizing: border-box;
   overflow: visible;
   display: flex;

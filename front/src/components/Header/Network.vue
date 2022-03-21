@@ -108,12 +108,15 @@ export default {
 
 
 table {
-  box-sizing: border-box;
+  --n: 6;
   --fore: white;
   color: var(--fore);
+  box-sizing: border-box;
   border-collapse: collapse;
   font-family: monospace;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
+  opacity: 0;   
+  animation: fade_in var(--enter) ease calc( 0.4s + var(--n) * 0.1s ) forwards; 
 }
 table tr td {
   /* border: 1px dashed var(--fore); */
@@ -142,6 +145,11 @@ table tr td.last.has_changed {
   5% { opacity: 1; }
   90% { opacity: 1; }
   100% { opacity: 0; }
+}
+
+@keyframes fade_in {
+  from { opacity: 0; }
+  to { opacity: 1; }  
 }
 
 </style>

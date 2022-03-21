@@ -1,10 +1,8 @@
 <script>
-import Donate from './Donate.vue'
 
 export default {
-  name: 'Header',
+  name: 'Footer',
   components: { 
-    Donate 
   },
 }
 </script>
@@ -13,7 +11,6 @@ export default {
   <footer
     aria-label="footer"
   >
-    <Donate />
   </footer>
 </template>
 

@@ -1,16 +1,12 @@
 <script>
-import { time }       from "@/utils"
 
 export default {
 
-  name: 'Timer',
+  name: 'Video',
 
   props: {
-    stream_start: {
-      type: Number
+    
     },
-  },
-
   data() {
     return {
     }

@@ -44,24 +44,31 @@ export default {
   overflow: hidden;
   --back: var(--yellow);
   z-index: 3;
-  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  background-color: var(--back);
+  transform: translateY(-3rem);
+  animation: enter var(--enter) ease 0.1s forwards;
 }
 .marquee p {
-  background-color: var(--back);
   display: inline-block;
   margin: 0;
-  padding: 0.3rem 0;
+  padding: 0.4rem 0;
 }
 .marquee.animate p {
   animation: marquee 60s linear infinite;
 }
 @keyframes marquee {
-  0%   { transform: translate(0, 0); }
-  100% { transform: translate(-100%, 0); }
+  from { transform: translate(0, 0); }
+  to { transform: translate(-100%, 0); }
+}
+
+@keyframes enter {
+  from { transform: translateY(-3rem) }
+  to { transform: translateY(0) }
 }
 
 
-/* .reduce_motion .marquee p {
-  animation: none;
-} */
+
+
 </style>

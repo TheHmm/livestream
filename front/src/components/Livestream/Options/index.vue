@@ -15,28 +15,32 @@ export default {
 
   data() {
     return {
-      tabs: {
-        access: {
-          comp: 'Access',
+      tabs: [
+        {
+          name: 'access',
           label: 'Accessibility',
+          comp: 'Access',
           aria_label: 'Accessibility options',
         },
-        donate: {
-          comp: 'Donate',
+        {
+          name: 'donate',
           label: 'Donate',
+          comp: 'Donate',
           aria_label: 'Donate to the Hmm'
         },
-        modes: {
+        {
+          name:  'modes',
           label: 'View modes',
           comp: 'Modes',
           aria_label: 'View modes',
         },
-        emoji: {
-          comp: 'Emoji',
+        {
+          name: 'emoji',
           label: 'Emotes',
+          comp: 'Emoji',
           aria_label: 'Emoji reactions',
         }
-      }
+      ]
     }
   }
   
@@ -49,15 +53,16 @@ export default {
     aria-label="livestream options"
   >
     <div 
-      v-for="( tab, key ) in tabs"
+      v-for="( tab, index ) in tabs"
       class="tab"
       tabindex="0"
-      :id="key"
+      :id="tab.name"
       :aria-label="tab.aria_label"
+      :style="{ '--n': index }"
     >
       <label 
         class="title"
-        :for="key"
+        :for="tab.name"
       > 
         {{ tab.label }} 
       </label>
@@ -76,10 +81,6 @@ export default {
   overflow: visible;
 }
 
-#options .tab .contents {
-
-}
-
 #options .tab .contents ul {
   box-sizing: border-box;
   list-style: none;
@@ -94,6 +95,10 @@ export default {
   padding: 0;
   margin: 0;
 }
+
+/* #options .tab#access label svg {
+  height: 2rem;
+} */
 
 .mobile #options {
   margin: unset;

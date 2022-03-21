@@ -42,6 +42,8 @@
   --slow: 0.5s;
   --very-slow: 1s;
 
+  --enter: var(--slow)
+
 
   
 }
@@ -112,6 +114,13 @@ a:visited {
   --back: var(--yellow);
   box-sizing: border-box;
   filter: drop-shadow( var(--filter-shadow) );
+  animation: tab_enter var(--enter) ease calc( 0.4s + var(--n) *  0.1s) forwards;
+  transform: translateY(5rem);
+}
+
+@keyframes tab_enter {
+  from { transform: translateY(5rem); }
+  to { transform: translateY(0); }
 }
 
 .tab .title {
@@ -134,14 +143,6 @@ a:visited {
 .tab li label:focus,
 .tab li:focus {
   outline: 0.15rem solid var(--blue);
-}
-/* #options .tab#access label svg {
-  height: 2rem;
-} */
-
-.tab hr {
-  border: unset;
-  display: none;
 }
 
 .tab .contents {
@@ -191,4 +192,5 @@ a:visited {
 
 .reduce_motion * {
   animation: none !important;
+  transform: none !important;
 }
