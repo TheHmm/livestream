@@ -73,9 +73,11 @@ export default {
 #options {
   display: flex;
   align-items: flex-end;
-  margin-left: 1rem;
-  /* flex-grow: 1; */
   overflow: visible;
+}
+
+#options .tab .contents {
+
 }
 
 #options .tab .contents ul {
@@ -84,15 +86,8 @@ export default {
   padding: 0;
   margin: 0;
 }
-
 #options .tab .contents ul li {
-  padding: 0 0.5rem;
-}
-#options .tab .contents ul li:first-of-type {
-  margin-top: 0.5rem;
-}
-#options .tab .contents ul li:last-of-type {
-  margin-bottom: 0.5rem;
+  padding: 0 1rem;
 }
 #options .tab .contents ul li label,
 #options .tab .contents ul li input {

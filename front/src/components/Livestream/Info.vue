@@ -67,8 +67,6 @@ export default {
   box-sizing: border-box;
   width: var(--side-width);
   max-width: var(--side-width);
-  padding: 0.5rem;
-  margin-right: 0.5rem;
   height: 100%;
   text-align: center;
 }

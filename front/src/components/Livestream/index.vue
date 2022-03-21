@@ -86,9 +86,7 @@ export default {
     :marquee="marquee"
   />
 
-  <header 
-    aria-label="banner & announcements"
-  >
+  <header aria-label="banner & announcements">
     <Banner />
     <Viewers />
     <!-- <Announcements /> -->
@@ -117,9 +115,7 @@ export default {
   </section>
 
   
-  <footer 
-    aria-label="options & chat"
-  >
+  <footer aria-label="options & chat">
     <Options />
     <Network />
     <Chat />
@@ -139,20 +135,21 @@ header {
 }
 
 #middle {
-  box-sizing: border-box;
   --back: var(--accent);
   --fore: var(--white);
-  width: 100%;
   background-color: var(--back);
   box-shadow: var(--shadow-up);
+  box-sizing: border-box;
+  width: 100%;
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 30%;
+  padding: 1rem;
+  margin-bottom: var(--footer-height);
   display: flex;
   flex-direction: row-reverse;
   align-items: flex-start;
   justify-content: stretch;
-  padding-bottom: 4.5rem;
   transition: background-color var(--very-slow) ease;
   z-index: 0;
 }
@@ -165,21 +162,42 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 1rem;
   border: 1px dashed var(--fore);
+}
 
+#middle #info {
+  flex-shrink: 0;
+  margin-left: 1rem;
 }
 
 footer {
   --back: var(--accent);
   background-color: var(--back);
   position: fixed;
+  box-sizing: border-box;
   bottom: 0;
-  width: 100%;
   flex-grow: 0;
-  max-height: 3rem;
+  width: 100%;
+  height: 100%;
+  max-height: var(--footer-height);
+  padding: 0 1rem;
   display: flex;
   align-items: flex-end;
+}
+
+footer #options {
+}
+
+footer #network {
+  /* margin-bottom: 1rem; */
+  /* align-self: stretch; */
+  margin: 0.5rem 1rem;
+  margin-right: auto; 
+}
+
+footer #chat_container {
+  margin-left: 1rem;
+  width: calc(var(--side-width));
 }
 
 

@@ -33,6 +33,9 @@
     },
     "time": {
       "type": "datetime"
+    },
+    "links": {
+      "type": "json"
     }
   }
 }

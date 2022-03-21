@@ -45,6 +45,14 @@ export default {
       )
     }, 
 
+    messages_with_links : ( state, getters ) => {
+      return (
+        getters
+        .messages_array
+        .filter( m => m.links )
+      )
+    } 
+
   },
 
   actions: {

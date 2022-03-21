@@ -69,9 +69,9 @@ main {
   --accent-lighter : hsl( var(--h), var(--s), var(--lighter-l));
   --accent-light   : hsl( var(--h), var(--s), var(--light-l));
 
-  --side-width: 25rem;
-  --side-max-width: 25%;
-  
+  --footer-height: 4rem;
+  --side-width: 20rem;
+
   box-sizing: border-box;
   height: 100vh; width: 100%;
   display: flex;
@@ -83,7 +83,6 @@ main {
 
 main.mobile {
   --side-width: 100%;
-  --side-max-width: 100%;
 }
 
 </style>

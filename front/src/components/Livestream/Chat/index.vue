@@ -40,7 +40,6 @@ export default {
         class="title"
         :for="$id()"
       > 
-        <span>Chat</span>
         <div
           v-if="expanded"
           class="options"
@@ -53,6 +52,7 @@ export default {
             @click.stop="expanded = false"
           />
         </div>
+        <span v-else>Chat</span>
       </label>
       <div class="contents">
         <Message
@@ -71,28 +71,23 @@ export default {
 
 #chat_container {
   box-sizing: border-box;
+  overflow: visible;
   display: flex;
   align-items: flex-end;
-  overflow: visible;
-  padding-right:1rem;  
-  margin-left: auto;
-  flex-basis: calc(var(--side-width));
-  width: calc(var(--side-width));
-  max-width: calc(var(--side-width));
 }
 
 #chat {
   --back: var(--accent-light);
   box-sizing: border-box;
   width: 100%;
-  margin-left: 5rem;
 }
 
 #chat:not(.expanded):hover .contents,
 #chat:not(.expanded):focus-within .contents,
 #chat:not(.expanded):focus .contents {
-  max-height: 1rem;
+  max-height: 2rem;
   max-width: 100%;
+  padding: 0;
 }
 #chat.expanded .contents {
   max-width: 100%;
@@ -100,7 +95,6 @@ export default {
 }
 
 #chat .title {
-  justify-content: space-between;
 }
 
 #chat .contents {

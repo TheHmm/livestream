@@ -9,9 +9,8 @@ export default {
   computed: {
      ...mapGetters( 'networking', [
       'total_bytes_sent',
-      'total_bytes_received',
-      'total_bytes_transferred',
       'last_bytes_sent',
+      'total_bytes_received',
       'last_bytes_received'
     ]),
   },
@@ -52,27 +51,30 @@ export default {
 
 <template>
   <table 
-    id="network"
+    :id="$id()"
     aria-label="network monitor"
   >
 
     <tr
       aria-label="bytes sent"
     >
-      <td 
-        id="total_bytes_sent_label"
-      >total bytes sent</td>
       <td
+        class="value"
         aria-labelledby="total_bytes_sent_label"
       >
         {{ format_bytes( total_bytes_sent ) }}
       </td>
       <td 
-        :class="{ has_changed: sent_has_changed }"
+        id="total_bytes_sent_label"
+      >
+        sent
+      </td>
+      <td 
+        :class="[ 'last', { has_changed: sent_has_changed } ]"
         role="status"
         aria-label="last bytes sent"
       >
-        {{ `↑ sent ${ format_bytes(last_bytes_sent?.bytes) } to ${ last_bytes_sent?.to }` }}
+        {{ `↑ sent ${ format_bytes( last_bytes_sent?.bytes ) } to ${ last_bytes_sent?.to }` }}
       </td>
     </tr>
 
@@ -80,36 +82,24 @@ export default {
       aria-label="bytes received"
     >
       <td
-        id="total_bytes_received_label"
-      >total bytes received</td>
-      <td
+        class="value"
         aria-labelledby="total_bytes_received_label"
       >
         {{ format_bytes( total_bytes_received ) }}
       </td>
+      <td
+        id="total_bytes_received_label"
+      >
+        received
+      </td>
       <td 
-        :class="{ has_changed: received_has_changed }"
+        :class="[ 'last', { has_changed: sent_has_changed } ]"
         role="status"
         aria-label="last bytes received"
       > 
-        {{ `↓ received ${ format_bytes(last_bytes_received?.bytes) } from ${ last_bytes_received?.from }` }}
+        {{ `↓ received ${ format_bytes( last_bytes_received?.bytes ) } from ${ last_bytes_received?.from }` }}
       </td>
     </tr>
-
-    <!-- <tr
-      aria-label="bytes trasferred"
-    >
-      <td
-        id="total_bytes_transferred_label"
-      >
-        total bytes transferred
-      </td>
-      <td
-        aria-labelledby="total_bytes_transferred_label"
-      >
-        {{ format_bytes( total_bytes_transferred ) }}
-      </td>
-    </tr> -->
 
   </table>
 </template>
@@ -123,24 +113,26 @@ table {
   color: var(--fore);
   border-collapse: collapse;
   font-family: monospace;
-  font-size: 0.6rem;
-  margin: auto 1rem;
+  font-size: 0.8rem;
 }
 table tr td {
-  border: 1px solid var(--fore);
-  padding: 0.1rem 0.4rem;
+  /* border: 1px dashed var(--fore); */
+  padding: 0;
+  /* padding-right: 0.4rem; */
+  /* padding: 0.1rem 0.4rem; */
   white-space: pre;
 }
-table tr td:nth-of-type(2) {
+table tr td.value {
   text-align: right;
 }
-table tr td:nth-of-type(3) {
+table tr td.last {
   padding-left: 0.75rem;
   border: none;
   opacity: 0;
   transition: opacity 0.5s ease-out;
+  /* text-align: right; */
 }
-table tr td.has_changed {
+table tr td.last.has_changed {
   animation: fade 2s ease-out;
   transition: opacity 0.5s ease-out;
 }
