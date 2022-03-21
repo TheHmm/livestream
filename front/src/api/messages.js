@@ -38,7 +38,7 @@ export default {
       } } )
       .then( result => {
         const messages = result.data.data
-        console.log(messages)
+        // console.log(messages)
         resolve( messages )
       } )
       .catch( error => {

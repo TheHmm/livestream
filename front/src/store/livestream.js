@@ -97,7 +97,6 @@ export default {
         .get()
         .then( livestream => {
           commit( 'SET_LIVESTREAM', livestream )
-          console.log(livestream)
           resolve( livestream ) 
         } )
         .catch( error => reject( error ) )
