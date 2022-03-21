@@ -8,6 +8,7 @@ import Info from './Info.vue'
 import Options from './Options/index.vue'
 import Viewers from './Viewers/index.vue'
 import Chat from './Chat/index.vue'
+import Network from '../Header/Network.vue'
 
 export default {
 
@@ -25,6 +26,7 @@ export default {
     Options,
     Viewers,
     Chat,
+    Network,
     // Announcements,
   },
 
@@ -102,6 +104,7 @@ export default {
     aria-label="options & chat"
   >
     <Options />
+    <Network />
     <Chat />
   </footer>
 
@@ -111,6 +114,8 @@ export default {
 
 
 header {
+  --back: var(--accent-light);
+  background: var(--back);
   position: relative;
   max-height: 20%;
   overflow: hidden;
@@ -132,6 +137,7 @@ header {
   justify-content: stretch;
   padding-bottom: 4.5rem;
   transition: background-color var(--very-slow) ease;
+  z-index: 0;
 }
 
 #middle #status {
@@ -144,6 +150,7 @@ header {
   justify-content: center;
   margin: 1rem;
   border: 1px dashed var(--fore);
+
 }
 
 footer {
@@ -155,6 +162,7 @@ footer {
   flex-grow: 0;
   max-height: 3rem;
   display: flex;
+  align-items: flex-end;
 }
 
 

@@ -227,10 +227,11 @@ export default {
   >
     <div
       id="img_player"
-      v-if="mode.name == 'thumbs'"
+      v-if="mode.name == 'thumbs' || mode.name == 'transcript'"
       aria-label="thumbnail player"
     > 
       <img
+        v-if="mode.name == 'thumbs'"
         ref="img"
       />
       <div class="captions">

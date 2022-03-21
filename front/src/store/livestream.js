@@ -7,17 +7,17 @@ const DEFAULT_MODES = () => ({
   transcript: {
     id: -3,
     name: 'transcript',
-    label: 'transcript'
+    label: 'text-only'
   },
   thumbs: {
     id: -2,
     name: 'thumbs',
-    label: 'thumbnails'
+    label: 'low-res'
   },
   audio: {
     id: -1,
     name: 'audio',
-    label: 'audio'
+    label: 'audio-only'
   },
 
   // the mode 'video' will be overridden if HLS.js is used
@@ -25,7 +25,7 @@ const DEFAULT_MODES = () => ({
   video: {
     id: 0,
     name: 'video',
-    label: 'video',
+    label: 'high-res',
     hls: true,
   },
 

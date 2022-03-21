@@ -66,7 +66,7 @@ export default {
 #info {
   box-sizing: border-box;
   width: var(--side-width);
-  max-width: var(--side-max-width);
+  max-width: var(--side-width);
   padding: 0.5rem;
   margin-right: 0.5rem;
   height: 100%;

@@ -56,8 +56,9 @@ export default {
       </label>
       <div class="contents">
         <Message
-          v-for="message in messages_array"
-          :key="message.time"
+          v-for="( message, index ) in messages_array"
+          :key="index"
+          :style="{ '--n': index }"
           :message="message"
         />
       </div>
@@ -74,19 +75,22 @@ export default {
   align-items: flex-end;
   overflow: visible;
   padding-right:1rem;  
-  /* flex-basis: calc(var(--side-width)); */
+  margin-left: auto;
+  flex-basis: calc(var(--side-width));
   width: calc(var(--side-width));
-  max-width: calc(var(--side-max-width));
+  max-width: calc(var(--side-width));
 }
 
 #chat {
+  --back: var(--accent-light);
   box-sizing: border-box;
   width: 100%;
+  margin-left: 5rem;
 }
 
-#chat:hover .contents,
-#chat:focus-within .contents,
-#chat:focus .contents {
+#chat:not(.expanded):hover .contents,
+#chat:not(.expanded):focus-within .contents,
+#chat:not(.expanded):focus .contents {
   max-height: 1rem;
   max-width: 100%;
 }
@@ -102,7 +106,7 @@ export default {
 #chat .contents {
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: flex-end;
   align-items: flex-start;
   overflow: hidden;

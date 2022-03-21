@@ -38,7 +38,7 @@ export default {
 
   <main 
     :id="$id()"
-    :style="{ '--accent': accent }"
+    :style="{ ...accent }"
     aria-labelledby="event_title"
   >
 
@@ -53,14 +53,32 @@ export default {
 <style scoped>
 
 main {
+
+  --accent         : hsl( var(--h), var(--s), var(--l) );
+  --increment      : 9.6%;
+
+  --dark-l         : calc( var(--l) + 1 * var(--increment) );
+  --darker-l       : calc( var(--l) + 2 * var(--increment) );
+  --mid-l          : calc( var(--l) + 3 * var(--increment) );
+  --lighter-l      : calc( var(--l) + 4 * var(--increment) );
+  --light-l        : calc( var(--l) + 5 * var(--increment) );
+
+  --accent-dark    : hsl( var(--h), var(--s), var(--dark-l));
+  --accent-darker  : hsl( var(--h), var(--s), var(--darker-l));
+  --accent-mid     : hsl( var(--h), var(--s), var(--mid-l));
+  --accent-lighter : hsl( var(--h), var(--s), var(--lighter-l));
+  --accent-light   : hsl( var(--h), var(--s), var(--light-l));
+
   --side-width: 25rem;
   --side-max-width: 25%;
+  
   box-sizing: border-box;
   height: 100vh; width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: stretch;
   /* overflow: hidden; */
+
 }
 
 main.mobile {

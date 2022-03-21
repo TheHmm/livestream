@@ -7,6 +7,15 @@
   --light-grey: hsl(0, 0%, 88%);
   --mid-grey: hsl(0, 0%, 39%);
   --dark-grey: hsl(0, 0%, 20%);
+  
+  --fore: var(--black);
+  --back: var(--white);
+  
+  --h              : 240;
+  --s              : 100%;
+  --l              : 50%;
+  --accent         : hsl( var(--h), var(--s), var(--l) );
+  --increment      : 10%;
 
   --shadow-color: hsla(0, 0%, 0%, 0.288);
   --shadow-size: 1rem;
@@ -14,7 +23,7 @@
   --shadow: 0 0 var(--shadow-size) 0 var(--shadow-color);
   --shadow-up: 
     0 
-    calc(-1 * var(--shadow-offset))
+    0
     var(--shadow-size) 
     0 
     var(--shadow-color)
@@ -26,10 +35,6 @@
     0 
     var(--shadow-color)
   ;
-
-  --fore: var(--black);
-  --back: var(--white);
-  --accent: var(--blue);
 
   --very-fast: 0.125s;
   --fast: 0.25s;

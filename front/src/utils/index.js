@@ -1,6 +1,7 @@
 import config from "@/config"
 import logger from "./logger"
 import time from './time'
+import color from "./color"
 import livestream from './livestream'
 import captions from './captions'
 import { marked } from 'marked'
@@ -26,6 +27,7 @@ export {
   $md,
   $mdi,
   logger,
+  color,
   time,
   livestream,
   captions,

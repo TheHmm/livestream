@@ -3,7 +3,8 @@ import config     from '@/config'
 import store      from '@/store'
 import { logger } from '@/utils'
 import { time }   from '@/utils'
-import { livestream } from '../utils'
+import { color }   from '@/utils'
+import { livestream } from '@/utils'
 
 
 // Sanitizing 'events' type received from Strapi.
@@ -12,6 +13,9 @@ import { livestream } from '../utils'
 // object based on when the event is happening.
 
 const sanitize = event => {
+
+    event.accent = color.hsl_to_css_vars(event.accent)
+    console.log(event.accent)
 
     // When is it ?
 

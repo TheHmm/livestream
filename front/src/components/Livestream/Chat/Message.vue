@@ -42,13 +42,21 @@ export default {
 
 <style scoped>
 .message {
+  --accent: hsl( 
+      var(--h), 
+      var(--s),
+      calc( var(--l) + var(--n) * var(--increment) )
+    );
   --back: var(--accent);
+  background-color: var(--back);
   padding: 0 0.5rem;
   padding-block-start: 0.5rem;
   padding-block-end: 0.5rem;
   margin: 0.5rem;
   margin-bottom: 0;
-  background: var(--back);
+}
+.message:first-of-type {
+  margin-bottom: 0.5rem;
 }
 .message .header {
   font-family: monospace;

@@ -61,9 +61,7 @@ export default {
     >
       <td 
         id="total_bytes_sent_label"
-      >
-        total bytes sent
-      </td>
+      >total bytes sent</td>
       <td
         aria-labelledby="total_bytes_sent_label"
       >
@@ -83,9 +81,7 @@ export default {
     >
       <td
         id="total_bytes_received_label"
-      >
-        total bytes received
-      </td>
+      >total bytes received</td>
       <td
         aria-labelledby="total_bytes_received_label"
       >
@@ -122,13 +118,18 @@ export default {
 
 
 table {
+  box-sizing: border-box;
+  --fore: white;
+  color: var(--fore);
   border-collapse: collapse;
   font-family: monospace;
-  font-size: 10pt;
+  font-size: 0.6rem;
+  margin: auto 1rem;
 }
 table tr td {
   border: 1px solid var(--fore);
-  padding: 0.1em 0.4em;
+  padding: 0.1rem 0.4rem;
+  white-space: pre;
 }
 table tr td:nth-of-type(2) {
   text-align: right;

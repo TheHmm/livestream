@@ -74,7 +74,7 @@ export default {
   display: flex;
   align-items: flex-end;
   margin-left: 1rem;
-  flex-grow: 1;
+  /* flex-grow: 1; */
   overflow: visible;
 }
 
