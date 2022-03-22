@@ -5,51 +5,41 @@ export default {
 
   name: 'Register',
   
-  components: {
-  },
-
-  props: {
-    uuid: {
-      type: String
-    }
-  },
-
   data() {
     return {
       name: null,
       lifetime: null,
       agrees: false,
       sending: false,
+      error: null,
     }
   },
 
   computed: {
-
-    ...mapGetters( 'events', [ 'current_event' ] ),
-    event_id( ) { return this.current_event.id }
-
+    ...mapGetters( 'viewers' , [ 'uuid' ] )
   },
+
+  emits: [
+    'close'
+  ],
+
 
   methods: {
 
     async send( e ) {
       e.preventDefault()
-      const { name, event_id, agrees } = this
-      console.log(name, event_id, agrees)
-      if ( !name || !event_id || !agrees ) { 
+      if ( !this.name || !this.agrees ) { 
         return 
       }
       this.sending = true
       try {
-        const viewer = await this.$store.dispatch( 'viewers/create_viewer', {
-          name,
-          event_id
-        })
+        await this.$store.dispatch( 'viewers/create_viewer', this.name )
         this.sending = false
       } catch ( error ) {
-        console.error( error )
+        this.error = error
       }
-    }
+    },
+
   },
 
   mounted() {
@@ -67,19 +57,29 @@ export default {
   <dialog
     :id="$id()"
   >
-    <div v-if="uuid">
-      <p> Success! Your uuid is {{ uuid }}.</p>
+    <div v-if="error">
+      <p> An server error seemed to have occurred. Please contact us.</p>
       <input 
         class="close"
         type="reset" 
         title="close."
         value="Close"
-        @click="$el.close()"
+        @click="$emit('close')"
       />
     </div> 
     <div v-else-if="sending">
       <p> Creating viewer {{ name }}.</p>
     </div>
+    <div v-else-if="uuid">
+      <p> Success! Your uuid is <code>{{ uuid }}</code>.</p>
+      <input 
+        class="close"
+        type="reset" 
+        title="close."
+        value="Close"
+        @click="$emit('close')"
+      />
+    </div> 
     <form 
       v-else
       id="register_form"
@@ -134,7 +134,7 @@ export default {
           type="reset" 
           title="close."
           value="Close"
-          @click="$el.close()"
+          @click="$emit('close')"
         />
         <input 
           class="submit"

@@ -1,7 +1,7 @@
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
+import Input from './Input.vue'
 import Message from './Message.vue'
-import Register from './Register.vue'
 
 export default {
 
@@ -9,45 +9,26 @@ export default {
   
   components: {
     Message,
-    Register
+    Input
   },
 
   data() {
     return {
       expanded: false,
-      message: null,
-      request_registration: false,
     }
   },
 
   computed: {
-    ...mapState( 'viewers' , [
-       'uuid' 
-    ]),
     ...mapGetters( 'messages', [ 
       'messages_array',
     ]),
 
   },
 
+  created() {
+  },
+
   methods: {
-
-    send( e ) {
-      e.preventDefault()
-      console.log(this.request_registration)
-
-      if ( this.uid ) {
-        this.request_registration = false
-        console.log(this.message)
-        // api.messages.post
-        this.message = null
-      } else {
-        console.log(this.request_registration)
-        this.request_registration = true
-      }
-
-
-    }
 
   }
 
@@ -87,39 +68,13 @@ export default {
       </label>
 
       <div class="contents">
-
-        <Register
-          v-if="request_registration"
-          :uuid="uuid"
-        />
-        
-        <form 
-          id="message_form"
-          aria-label="Message form"
-          method="post"
-          :onsubmit="send"
-        >
-          <input 
-            type="text" 
-            name="message" 
-            id="message" 
-            placeholder ="type your message and hit enter" 
-            v-model="message"
-          />
-            <input 
-              type="submit" 
-              title="Send your message to all other viewers."
-              value="Send"
-            />
-        </form>
-
+        <Input />
         <Message
           v-for="( message, index ) in messages_array"
           :key="index"
           :style="{ '--n': index }"
           :message="message"
         />
-
       </div>
     </div>
 
@@ -135,32 +90,17 @@ export default {
   display: flex;
   align-items: flex-end;
 }
-
 #chat {
   --back: var(--accent-light);
   box-sizing: border-box;
   width: 100%;
 }
-
-#chat:not(.expanded):hover .contents,
-#chat:not(.expanded):focus-within .contents,
-#chat:not(.expanded):focus .contents {
-  max-height: 2rem;
-  max-width: 100%;
-  padding: 0;
-}
-#chat.expanded .contents {
-  max-width: 100%;
-  max-height: 90rem;
-  padding: 0;
-}
-
 #chat .title {
   border-radius: unset;
   text-align: unset;
   justify-content: flex-start;
+  align-items: center;
 }
-
 #chat .contents {
   width: 100%;
   display: flex;
@@ -169,19 +109,20 @@ export default {
   align-items: flex-start;
   overflow: hidden;
 }
+#chat.expanded .contents {
+  max-width: 100%;
+  max-height: 90rem;
+  padding: 0;
+}
+#chat:not(.expanded):hover .contents,
+#chat:not(.expanded):focus-within .contents,
+#chat:not(.expanded):focus .contents {
+  max-height: 2rem;
+  max-width: 100%;
+  padding: 0;
+}
 
-#chat .contents #message_form {
-  display: flex;
-}
-#chat .contents #message_form input[type="text"] {
-  flex-grow: 1;
-  min-width: 100%;
-  height: 2rem;
-}
-#chat .contents #message_form input[type="submit"] {
-  margin: 0.5rem;
-  height: 100%;
-}
+
 
 
 .mobile #chat_container {

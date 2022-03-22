@@ -9,10 +9,26 @@ export default {
     logger.info( `API`, `Fetching viewer ${ uuid }.` )
     return new Promise( ( resolve, reject ) => 
       axios 
-      .get( `${ config.api_url }/viewers`, { params: { uuid } } )
-      .then( result => resolve( result.data ) )
+      .get( `${ config.api_url }/viewers`, { params: {
+        filters: {
+          uuid: {
+            $eq: uuid
+          },
+        },
+        fields: '*', 
+        populate: [
+          'events'
+        ]
+      }})
+      .then( result => {
+        const viewer = result.data.data[0]
+        if ( viewer ) {
+          resolve( viewer) 
+        } else {
+          throw new Error( '404' ) 
+        }
+      })
       .catch( error => {
-        logger.error( 'API', error ) 
         reject( error )
       } )
     ) 
@@ -43,14 +59,11 @@ export default {
     } ) 
   },
 
-  post( { name, event_id } ) {
-    logger.info( `API`, `Posting viewer ${ name }.`)
+  post( data ) {
+    logger.info( `API`, `Posting viewer ${ data.name }.`)
     return new Promise( ( resolve, reject ) => {
       axios
-      .post( `${ config.api_url }/viewers`, { data: { 
-        name, 
-        events: [event_id]
-      }})
+      .post( `${ config.api_url }/viewers`, { data } )
       .then( result => {
         const viewer = result.data.data
         resolve( viewer )
@@ -62,8 +75,22 @@ export default {
     } ) 
   },
 
-  // put( {  } ) { }
 
+  put( id, data ) {
+    logger.info( `API`, `Posting viewer ${ id }.`)
+    return new Promise( ( resolve, reject ) => {
+      axios
+      .put( `${ config.api_url }/viewers/${ id }`, { data } )
+      .then( result => {
+        const viewer = result.data.data
+        resolve( viewer )
+      } )
+      .catch( error => {
+        logger.error( 'API', error ) 
+        reject( error )
+      } )
+    } ) 
+  },
 
 
 }

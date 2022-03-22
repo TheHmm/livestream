@@ -55,6 +55,12 @@ export default {
       )
     ,
 
+    current_event_id : ( state, getters ) =>
+      getters
+      .current_event
+      .id
+    ,
+
     get_event_slugs : state => state
       .events
       .map( e => e.slug )
