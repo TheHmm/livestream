@@ -12,7 +12,7 @@ const
       .services
       .uid
       .generateUIDField({
-        contentTypeUID: 'application::viewer.viewer',
+        contentTypeUID: 'api::viewer.viewer',
         field: 'uuid',
         data: viewer,
       })
