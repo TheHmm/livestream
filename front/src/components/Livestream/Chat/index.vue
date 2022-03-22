@@ -1,19 +1,22 @@
 <script>
 import { mapGetters } from 'vuex'
 import Message from './Message.vue'
+import Register from './Register.vue'
 
 export default {
 
   name: 'Chat',
   
   components: {
-    Message
+    Message,
+    Register
   },
 
   data() {
     return {
       expanded: false,
-      message: null
+      message: null,
+      request_registration: false,
     }
   },
 
@@ -28,7 +31,20 @@ export default {
   methods: {
 
     send( e ) {
-      console.log(e)
+      e.preventDefault()
+      console.log(this.message)
+      console.log(this.request_registration)
+
+      this.request_registration = false
+      if ( this.uid ) {
+        // api.messages.post
+        this.message = null
+      } else {
+        console.log(this.request_registration)
+        this.request_registration = true
+      }
+
+
     }
 
   }
@@ -48,7 +64,7 @@ export default {
       tabindex="0"
       @click="expanded = true"
     >
-
+      
       <label 
         class="title"
         :for="$id()"
@@ -69,10 +85,15 @@ export default {
       </label>
 
       <div class="contents">
+
+        <Register
+          v-if="request_registration"
+        />
         
         <form 
           id="message_form"
           aria-label="Message form"
+          method="post"
           :onsubmit="send"
         >
           <input 
@@ -152,7 +173,7 @@ export default {
   height: 2rem;
 }
 #chat .contents #message_form input[type="submit"] {
-  margin: 0 0.5rem;
+  margin: 0.5rem;
   height: 100%;
 }
 

@@ -119,21 +119,19 @@ table {
   animation: fade_in var(--enter) ease calc( 0.4s + var(--n) * 0.1s ) forwards; 
 }
 table tr td {
-  /* border: 1px dashed var(--fore); */
   padding: 0;
-  /* padding-right: 0.4rem; */
-  /* padding: 0.1rem 0.4rem; */
   white-space: pre;
 }
 table tr td.value {
   text-align: right;
 }
 table tr td.last {
-  padding-left: 0.75rem;
+  padding-left: 0.25rem;
   border: none;
+  max-width: 0;
+  overflow: visible;
   opacity: 0;
   transition: opacity 0.5s ease-out;
-  /* text-align: right; */
 }
 table tr td.last.has_changed {
   animation: fade 2s ease-out;

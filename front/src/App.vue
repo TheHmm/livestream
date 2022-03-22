@@ -78,9 +78,12 @@ export default {
 
     <main
       v-else
-      class="placeholer"
+      class="placeholder"
     >
       <Banner />
+      <div>
+        <span>loading...</span>
+      </div>
     </main>
 
   </transition>
@@ -103,12 +106,21 @@ export default {
  */
 
 
-main.placeholer {
+main.placeholder {
+  --accent: var(--light-grey);
   position: absolute;
   width: 100%;
 }
-main.placeholer #banner {
+main.placeholder #banner {
   margin: 2rem auto;
+}
+main.placeholder div {
+  width: 100%;
+  display: flex;
+}
+main.placeholder div span {
+  color: var(--accent);
+  margin: 10% auto;
 }
 
 </style>

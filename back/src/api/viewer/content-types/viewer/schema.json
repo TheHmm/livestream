@@ -41,6 +41,10 @@
     },
     "ip": {
       "type": "string"
+    },
+    "expires": {
+      "type": "date",
+      "private": true
     }
   }
 }

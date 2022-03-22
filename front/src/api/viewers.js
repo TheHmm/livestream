@@ -43,6 +43,28 @@ export default {
     } ) 
   },
 
+  post( { name, event_id } ) {
+    logger.info( `API`, `Posting viewer ${ name }.`)
+    return new Promise( ( resolve, reject ) => {
+      axios
+      .post( `${ config.api_url }/viewers`, { data: { 
+        name, 
+        events: [event_id]
+      }})
+      .then( result => {
+        console.log(result)
+        const viewer = result.data.data
+        resolve( viewer )
+      } )
+      .catch( error => {
+        logger.error( 'API', error ) 
+        reject( error )
+      } )
+    } ) 
+  },
+
+  // put( {  } ) { }
+
 
 
 }

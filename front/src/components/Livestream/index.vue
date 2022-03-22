@@ -153,12 +153,12 @@ header .marquee {
   justify-content: stretch;
   transition: background-color var(--very-slow) ease;
   z-index: 0;
-  transform: translateY(10rem);
+  transform: translateY(100%);
   animation: enter var(--enter) ease 0.1s forwards;
 }
 
 @keyframes enter {
-  from { transform: translateY(10rem) }
+  from { transform: translateY(100%) }
   to { transform: translateY(0) }
 }
 
