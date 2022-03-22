@@ -1,13 +1,9 @@
 const
 
-  before_create_or_update = async ( event, strapi ) => {
 
-    // we get the event payload
-
-    const viewer = event.params.data
-    
-    if ( viewer.name && !viewer.uuid ) {
-      event.params.data.uuid = await strapi
+  create_uuid = async ( viewer, strapi ) => {
+    try {
+      return await strapi
       .plugins['content-manager']
       .services
       .uid
@@ -16,6 +12,19 @@ const
         field: 'uuid',
         data: viewer,
       })
+    } catch ( error ) {
+      console.error( error )
+    }
+  }
+
+  before_create_or_update = async ( event, strapi ) => {
+
+    // we get the event payload
+
+    const viewer = event.params.data
+    
+    if ( viewer.name && !viewer.uuid ) {
+      event.params.data.uuid = await create_uuid( viewer, strapi )
     }
     console.log(event.params.data)
 
