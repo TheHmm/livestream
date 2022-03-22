@@ -7,8 +7,8 @@ const
 
     // we get the event payload
 
-    console.log(event, viewer)
     const viewer = event.params.data
+    console.log(event, viewer)
 
     
     // if (viewer.name) {
