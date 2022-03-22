@@ -1,6 +1,7 @@
 import api from "../api"
 import { color } from '@/utils'
 import { time } from '@/utils'
+import router from '@/router'
 
 export default {
 
@@ -41,6 +42,17 @@ export default {
     get_event : state => slug => state
       .events
       .find( e => e.slug === slug )
+    ,
+
+    current_event : ( state, getters ) => 
+      getters
+      .get_event( 
+        router
+        .currentRoute
+        ._value
+        .params
+        .slug 
+      )
     ,
 
     get_event_slugs : state => state

@@ -51,7 +51,7 @@ export default {
     try {
       this.meta = await this.$store.dispatch( 'meta/get_meta' )
     } catch ( error ) {
-      logger.error(error)
+      console.error(error)
       this.$router.push('404')
     }
   },

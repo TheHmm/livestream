@@ -52,7 +52,6 @@ export default {
         events: [event_id]
       }})
       .then( result => {
-        console.log(result)
         const viewer = result.data.data
         resolve( viewer )
       } )

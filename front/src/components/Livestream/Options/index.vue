@@ -2,6 +2,7 @@
 import Access from './Access.vue'
 import Donate from './Donate.vue'
 import Modes  from './Modes.vue'
+import Title from './Title.vue'
 
 export default {
 
@@ -10,7 +11,8 @@ export default {
   components: {
     Access,
     Donate, 
-    Modes
+    Modes,
+    Title,
   },
 
   data() {
@@ -60,12 +62,9 @@ export default {
       :aria-label="tab.aria_label"
       :style="{ '--n': index }"
     >
-      <label 
-        class="title"
-        :for="tab.name"
-      > 
-        {{ tab.label }} 
-      </label>
+      <Title
+        :tab="tab"
+      />
       <div class="contents">
         <Component :is="tab.comp" />
       </div>

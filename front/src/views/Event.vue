@@ -13,25 +13,10 @@ export default {
     Banner
   },
 
-  // async setup() {
-    
-  // },
-
   computed: {
 
-    
-
-    // Getting the event from the route slug
-
-    event() { 
-      return this.$store.getters['events/get_event']( 
-        this.$route.params.slug 
-      ) 
-    },
-
-    // event-specific marquee
-
-    accent()  { return this.event.accent },  
+    event() { return this.$store.getters['events/current_event'] },
+    accent() { return this.event.accent },  
     
   },
 

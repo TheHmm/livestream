@@ -22,7 +22,7 @@ export default {
       state.viewers[viewer.uuid] = viewer
     },
 
-    SET_UID : ( state, uuid ) => {
+    SET_UUID : ( state, uuid ) => {
       state.uuid = uuid
     },
 
@@ -85,44 +85,62 @@ export default {
 
     },
 
+    async create_viewer( { commit, dispatch }, { name, event_id } ) {
+      return new Promise( ( resolve, reject ) => 
+        api
+        .viewers
+        .post( { name, event_id } ) 
+        .then( viewer => {
+          dispatch( 'register', viewer )
+          resolve( viewer ) 
+        } )
+        .catch( error => reject( error ) )
+      ) 
+    },
+
+    register( { commit }, viewer ) {
+      commit( 'SET_UUID', viewer.uuid )
+      localStorage.uuid = viewer.uuid
+    },
+
     socket_connect( ) {
-      logger.info('SOCKET', 'connect')
+      logger.info( 'SOCKET', 'connect' )
     },
 
     socket_disconnect( ) {
-      logger.info('SOCKET', 'disconnect')
+      logger.info( 'SOCKET', 'disconnect' )
     },
 
     socket_viewer( { state, commit }, viewer ) {
-      commit('SET_VIEWER', viewer)
-      if (
-        state.uuid &&
-        viewer.uuid === state.uuid &&
-        !state.isAdmin
-        // user.uuid.includes(state.uuid.replace(user.name, '')) &&
-      ) {
-        if (viewer.blocked) {
-          logger.warn(`STORE`, 'blocked')
-          commit('setBlock', true)
-        } else {
-          logger.warn(`STORE`, 'unblocked')
-          commit('setBlock', false)
-        }
-      } 
+      logger.info( 'SOCKET', `viewer ${ viewer.name }` )
+      console.log(viewer)
+      // commit('SET_VIEWER', viewer)
+      // if (
+      //   state.uuid &&
+      //   viewer.uuid === state.uuid &&
+      //   !state.isAdmin
+      //   // user.uuid.includes(state.uuid.replace(user.name, '')) &&
+      // ) {
+      //   if (viewer.blocked) {
+      //     logger.warn(`STORE`, 'blocked')
+      //     commit('setBlock', true)
+      //   } else {
+      //     logger.warn(`STORE`, 'unblocked')
+      //     commit('setBlock', false)
+      //   }
+      // } 
     },
     
     socket_viewerConfirm( { commit }, uuid ) {
       logger.info('STORE', 'Your User ID:', uuid )
-      commit( 'SET_UID', uuid )
-      localStorage.uuid = uuid
     },
 
-    register( { state }, name ) {
-      this._vm.$socket.client.emit( 'viewer', { 
-        name,
-        blocked: false,
-      })
-    },
+    // register( { state }, name ) {
+    //   this._vm.$socket.client.emit( 'viewer', { 
+    //     name,
+    //     blocked: false,
+    //   })
+    // },
 
     // socket_count({ commit }, count) {
     //   commit('setCount', count)

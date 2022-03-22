@@ -1,6 +1,5 @@
 <script>
 import { mapGetters } from 'vuex'
-import api from '@/api'
 
 export default {
 
@@ -9,63 +8,49 @@ export default {
   components: {
   },
 
-  // props: {
-  //   request_registration: { type: Boolean }
-  // },
+  props: {
+    uuid: {
+      type: String
+    }
+  },
 
   data() {
     return {
       name: null,
       lifetime: null,
       agrees: false,
+      sending: false,
     }
   },
 
   computed: {
 
-    ...mapGetters( 'events', [ 
-      'get_event',
-    ]),
-    event_id( ) {
-      return this.get_event( 
-        this.$route.params.slug
-      ).id
-    }
+    ...mapGetters( 'events', [ 'current_event' ] ),
+    event_id( ) { return this.current_event.id }
 
   },
 
   methods: {
 
-    send( e ) {
+    async send( e ) {
       e.preventDefault()
       const { name, event_id, agrees } = this
       console.log(name, event_id, agrees)
       if ( !name || !event_id || !agrees ) { 
         return 
       }
+      this.sending = true
       try {
-        const user = api.viewers.post({ 
+        const viewer = await this.$store.dispatch( 'viewers/create_viewer', {
           name,
           event_id
         })
-        console.log( user )
+        this.sending = false
       } catch ( error ) {
         console.error( error )
       }
-
-
     }
   },
-
-  // watch: {
-  //   request_registration() {
-  //     if ( this.request_registration ) {
-  //       this.$el.showModal()
-  //     } else {
-  //       this.$el.close()
-  //     }
-  //   }
-  // },
 
   mounted() {
     this.$el.showModal()
@@ -79,11 +64,24 @@ export default {
 </script>
 
 <template>
-
   <dialog
     :id="$id()"
   >
+    <div v-if="uuid">
+      <p> Success! Your uuid is {{ uuid }}.</p>
+      <input 
+        class="close"
+        type="reset" 
+        title="close."
+        value="Close"
+        @click="$el.close()"
+      />
+    </div> 
+    <div v-else-if="sending">
+      <p> Creating viewer {{ name }}.</p>
+    </div>
     <form 
+      v-else
       id="register_form"
       aria-label="Registration form"
       method="post"

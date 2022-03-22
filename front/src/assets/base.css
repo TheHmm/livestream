@@ -119,12 +119,7 @@ a:visited {
   transform: translateY(5rem);
 }
 
-@keyframes tab_enter {
-  from { transform: translateY(5rem); }
-  to { transform: translateY(0); }
-}
-
-.tab .title {
+.tab label.title {
   box-sizing: border-box;
   padding: 0.7rem 1rem;
   height: 3rem;
@@ -137,8 +132,13 @@ a:visited {
   border-top-right-radius: 50%;
   text-align: center;
 }
-.tab:focus .title {
+.tab:focus label.title {
   outline: 0.15rem solid var(--blue);
+}
+
+@keyframes tab_enter {
+  from { transform: translateY(5rem); }
+  to { transform: translateY(0); }
 }
 
 .tab li label:focus,

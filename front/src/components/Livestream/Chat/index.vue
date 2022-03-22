@@ -1,5 +1,5 @@
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import Message from './Message.vue'
 import Register from './Register.vue'
 
@@ -21,7 +21,9 @@ export default {
   },
 
   computed: {
-
+    ...mapState( 'viewers' , [
+       'uuid' 
+    ]),
     ...mapGetters( 'messages', [ 
       'messages_array',
     ]),
@@ -32,11 +34,11 @@ export default {
 
     send( e ) {
       e.preventDefault()
-      console.log(this.message)
       console.log(this.request_registration)
 
-      this.request_registration = false
       if ( this.uid ) {
+        this.request_registration = false
+        console.log(this.message)
         // api.messages.post
         this.message = null
       } else {
@@ -88,6 +90,7 @@ export default {
 
         <Register
           v-if="request_registration"
+          :uuid="uuid"
         />
         
         <form 
@@ -153,6 +156,9 @@ export default {
 }
 
 #chat .title {
+  border-radius: unset;
+  text-align: unset;
+  justify-content: flex-start;
 }
 
 #chat .contents {
