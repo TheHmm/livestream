@@ -1,8 +1,5 @@
 const
 
-  slugify = require('slugify'),
-
-
   before_create_or_update = async ( event, strapi ) => {
 
     // we get the event payload
