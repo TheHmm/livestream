@@ -15,6 +15,7 @@
     "@strapi/plugin-users-permissions": "4.1.0",
     "@strapi/strapi": "4.1.0",
     "react-color": "^2.19.3",
+    "slugify": "^1.6.5",
     "sqlite3": "5.0.2",
     "strapi-helper-plugin": "^3.6.8",
     "strapi-plugin-mux-video-uploader": "^2.1.1",

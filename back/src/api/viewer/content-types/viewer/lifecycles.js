@@ -1,6 +1,6 @@
 const
 
-  // slugify = require('slugify'),
+  slugify = require('slugify'),
 
 
   before_create_or_update = async ( event, strapi ) => {
@@ -8,16 +8,17 @@ const
     // we get the event payload
 
     const viewer = event.params.data
-    console.log(event, viewer)
-
     
-    // if (viewer.name) {
-    //   viewer.uuid = slugify(data.title, { lower: true })
-    // }
+    
+    if ( viewer.name && !viewer.uuid ) {
+      event.params.uuid = slugify( viewer.name , { lower: true } )
+    }
+    console.log(event.params)
+
   },
 
   after_create_or_update = event => {
-    // strapi.io.emit( 'stream_update', event.result )
+    strapi.io.emit( 'viewer', event.result )
   }
 
 
