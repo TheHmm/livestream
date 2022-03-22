@@ -9,11 +9,10 @@ const
 
     const viewer = event.params.data
     
-    
     if ( viewer.name && !viewer.uuid ) {
-      event.params.uuid = slugify( viewer.name , { lower: true } )
+      event.params.data.uuid = slugify( viewer.name , { lower: true } )
     }
-    console.log(event.params)
+    console.log(event.params.data)
 
   },
 
