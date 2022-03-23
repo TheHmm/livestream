@@ -1,6 +1,6 @@
 const
 
-  get_links = event => {
+  get_links = body => {
     const links = body.match( /(((https?:\/\/)|(www\.))[^\s]+)/g)
     if ( !links ) {
       return null
