@@ -2,8 +2,6 @@ const
 
   get_links = ( event, strapi ) => {
 
-    console.log(event)
-
     const 
       message = event.params.data,
       body    = message.body,
@@ -18,8 +16,9 @@ const
   },
 
   after_create_or_update = event => {
-    console.log(event)
-    strapi.io.emit( 'message', event.result )
+    const message = { ...event.params.data, ...event.result }
+    console.log( message )
+    strapi.io.emit( 'message', message )
   }
 
 
