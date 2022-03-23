@@ -1,6 +1,6 @@
 const
 
-  get_links = ( event, strapi ) => {
+  get_links = event => {
 
     const 
       message = event.params.data,
@@ -39,7 +39,7 @@ module.exports = {
 
   afterCreate: after_create_or_update,
   afterUpdate: after_create_or_update,
-  
+
   afterDelete: after_delete,
 
 }
