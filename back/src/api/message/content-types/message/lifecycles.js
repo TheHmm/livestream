@@ -13,6 +13,10 @@ const
       event.params.data.links = null
     }
     
+  },
+
+  after_create_or_update = event => {
+    strapi.io.emit( 'message', event.result )
   }
 
 
@@ -22,5 +26,8 @@ module.exports = {
 
   async beforeCreate( event ) { get_links( event, strapi ) },
   async beforeUpdate( event ) { get_links( event, strapi ) },
+
+  afterCreate: after_create_or_update,
+  afterUpdate: after_create_or_update,
 
 }

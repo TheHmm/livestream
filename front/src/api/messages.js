@@ -48,6 +48,39 @@ export default {
     } ) 
   },
 
+  post( data ) {
+    logger.info( `API`, `Posting message ${ data.body }.`)
+    return new Promise( ( resolve, reject ) => {
+      axios
+      .post( `${ config.api_url }/messages`, { data } )
+      .then( result => {
+        const message = result.data.data
+        resolve( message )
+      } )
+      .catch( error => {
+        logger.error( 'API', error ) 
+        reject( error )
+      } )
+    } ) 
+  },
+
+
+  put( id, data ) {
+    logger.info( `API`, `Updating message ${ id }.`)
+    return new Promise( ( resolve, reject ) => {
+      axios
+      .put( `${ config.api_url }/messages/${ id }`, { data } )
+      .then( result => {
+        const message = result.data.data
+        resolve( message )
+      } )
+      .catch( error => {
+        logger.error( 'API', error ) 
+        reject( error )
+      } )
+    } ) 
+  },
+
 
 
 }

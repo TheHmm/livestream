@@ -35,12 +35,19 @@ export default {
     ...mapActions( 'viewers', [
       'authenticate'
     ]),
+    ...mapActions( 'messages', [
+      'create_message'
+    ]),
 
     async send( e ) {
       e.preventDefault()
       try {
         if ( await this.authenticate() ) {
-          console.log(this.message)
+          try {
+            await this.create_message( this.message )
+          } catch ( error ) {
+            console.error(error)
+          }
         } else {
           this.request_registration = true
         }

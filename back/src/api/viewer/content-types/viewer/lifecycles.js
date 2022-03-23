@@ -1,5 +1,19 @@
 const
 
+// 'use strict';
+
+// const { v4: uuid } = require('uuid');
+
+// module.exports = {
+//   lifecycles: {
+//     beforeCreate: async (data) => {
+//       if (!data.uuid) {
+//         data.uuid = uuid();
+//       }
+//     },
+//   }
+// };
+
 
   create_uuid = async ( viewer, strapi ) => {
     try {

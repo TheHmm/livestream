@@ -1,4 +1,5 @@
 import api from '../api'
+import { time } from '../utils'
 
 export default {
 
@@ -51,7 +52,16 @@ export default {
         .messages_array
         .filter( m => m.links )
       )
-    } 
+    },
+    
+    my_id : ( state, getters, rootState, rootGetters ) => {
+      return rootGetters['viewers/my_id']
+    },
+
+    current_event_id : ( state, getters, rootState, rootGetters ) => {
+      return rootGetters['events/current_event_id']
+    },
+
 
   },
 
@@ -83,6 +93,27 @@ export default {
         return getters.get_messages  
       }
 
+    },
+
+
+    // Create a message.
+
+    async create_message( { getters, dispatch }, body ) {
+      return new Promise( ( resolve, reject ) => 
+        api
+        .messages
+        .post({ 
+            body, 
+            time: time.now(),
+            sender: getters.my_id,
+            event: getters.current_event_id 
+        }) 
+        .then( message => {
+          // dispatch( 'register', viewer )
+          resolve( message ) 
+        } )
+        .catch( error => reject( error ) )
+      ) 
     },
 
     delete_message( state, message ) {

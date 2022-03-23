@@ -57,6 +57,10 @@ export default {
       return state.viewers[ state.uuid ]
     },
 
+    my_id : state => {
+      return state.viewers[ state.uuid ].id
+    },
+
     blocked : ( state, getters ) => {
       return getters.me.blocked
     },
