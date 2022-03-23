@@ -62,6 +62,10 @@ export default {
       return rootGetters['events/current_event_id']
     },
 
+    censor_message : ( state, getters, rootState, rootGetters ) => {
+      return rootGetters['meta/censor_message']
+    },
+
 
   },
 
@@ -72,7 +76,12 @@ export default {
 
     set_message( { commit, getters }, message ) {
       const sender = message.sender?.data?.id || message.sender
-      message.sender = getters.get_viewer_by_id( sender )
+      if ( message.sender ) {
+        message.sender = getters.get_viewer_by_id( sender )
+      }
+      if ( message.censored ) {
+        message.body = getters.censor_message
+      }
       commit( 'SET_MESSAGE', message )
     },
 
@@ -131,11 +140,22 @@ export default {
 
     // Censoring messages.
 
-    async censor( { getters }, message ) {
+    async censor_message( {}, message ) {
       try {
         await api.messages.put( message.id, {
           censored: !message.censored,
         })
+      } catch ( error ) {
+        throw error
+      }
+    },  
+
+
+    // Deleting messages.
+
+    async delete_message( {}, message ) {
+      try {
+        await api.messages.delete( message.id )
       } catch ( error ) {
         throw error
       }
@@ -152,12 +172,12 @@ export default {
     // },
 
 
-    delete_message( state, message ) {
-      this._vm.$socket.client.emit('message', {
-        time: message.time,
-        deleted: true 
-      })
-    },
+    // delete_message( state, message ) {
+    //   this._vm.$socket.client.emit('message', {
+    //     time: message.time,
+    //     deleted: true 
+    //   })
+    // },
 
 
 

@@ -1,45 +1,39 @@
 <script>
+
 import { time } from '@/utils'
 import { mapActions, mapGetters } from 'vuex'
+
 export default {
+
   name: 'Message',
+
   props: {
     message: {
       type: Object
     },
   },
+
   computed: {
-    id() { 
-      return this.message.id
-    },
-    time() { 
-      return time.time_format( this.message.time )
-    },
-    censored() {
-      return this.message.censored
-    },
-    body() { 
-      return this.$mdi( this.message.body ) 
-    },
-    sender() {
-      return this.message.sender
-    },
-    sender_id() {
-      return this.sender?.id
-    },
-    sender_name() {
-      return this.sender?.name
-    },
-    blocked() {
-      return this.sender?.blocked
-    },
+
+    id() { return this.message.id },
+    time() { return time.time_format( this.message.time ) },
+    body() { return this.$mdi( this.message.body ) },
+    censored() { return this.message.censored },
+    
+    sender() { return this.message.sender },
+    sender_id() { return this.sender?.id },
+    sender_name() { return this.sender?.name },
+    blocked() { return this.sender?.blocked },
+
     ...mapGetters( 'viewers', [
       'moderator'
     ] )
+
   },
   methods: {
     ...mapActions( 'messages', [
-      'censor'
+      'censor_message',
+      'delete_message'
     ])
   }
 }
@@ -47,7 +41,10 @@ export default {
 
 <template>
   <div 
-    :class="$id()"
+    :class="[ 
+      $id(), 
+      { censored } 
+    ]"
     tabindex="0"
     :aria-label="`Message from ${ sender }`"
   >
@@ -62,12 +59,12 @@ export default {
         v-if="moderator"
         class="moderation"
       >
-        <span 
-          @click="censor( message )"
-        > 
+        <span @click="censor_message( message )"> 
           {{ censored && 'uncensor' || 'censor' }} 
         </span>
-        <span> delete </span>
+        <span @click="delete_message( message )"> 
+          delete 
+        </span>
         <span> block </span>
       </span>
     </div>
@@ -116,11 +113,22 @@ export default {
 .message .header .moderation {
   display: flex;
   align-items: center;
+  margin-left: auto;
 }
 .message .header .moderation span {
   font-size: 0.6rem;
   text-decoration: underline;
   margin-left: 0.5rem;
   cursor: pointer;
+}
+
+.message .body {
+  margin-top: 0.5rem ;
+}
+
+.message.censored .body {
+  font-style: italic;
+  font-size: 0.8rem;
+  opacity: 0.6;
 }
 </style>

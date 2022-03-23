@@ -24,6 +24,10 @@ export default {
       return state.meta.defaultMarquee
     },
 
+    censor_message: state => {
+      return state.meta.censorMessage
+    }
+
   },
 
   actions: {

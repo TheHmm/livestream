@@ -81,5 +81,22 @@ export default {
   },
 
 
+  delete( id ) {
+    logger.info( `API`, `Deleting message ${ id }.`)
+    return new Promise( ( resolve, reject ) => {
+      axios
+      .delete( `${ config.api_url }/messages/${ id }` )
+      .then( result => {
+        const message = result.data.data
+        resolve( message )
+      } )
+      .catch( error => {
+        logger.error( 'API', error ) 
+        reject( error )
+      } )
+    } ) 
+  },
+
+
 
 }
