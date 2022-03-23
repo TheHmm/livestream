@@ -66,7 +66,7 @@ export default {
     },
 
     censor_message : ( state, getters, rootState, rootGetters ) => {
-      return rootGetters['meta/censor_message']
+      return rootGetters['ui/censor_message']
     },
 
 

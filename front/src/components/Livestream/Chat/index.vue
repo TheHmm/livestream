@@ -125,14 +125,12 @@ export default {
 
 #chat_container {
   --n: 10;
-  box-sizing: border-box;
   overflow: visible;
   display: flex;
   align-items: flex-end;
 }
 #chat {
   --back: var(--accent-light);
-  box-sizing: border-box;
   width: 100%;
 }
 #chat .title {
@@ -164,7 +162,6 @@ export default {
   /* overflow: scroll; */
 }
 #chat .contents .messages {
-  box-sizing: border-box;
   padding: 0.5rem 0;
   height: 100%;
   width: 100%;

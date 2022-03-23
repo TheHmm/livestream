@@ -1,5 +1,5 @@
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
 
@@ -9,7 +9,17 @@ export default {
     ...mapState( 'ui', [ 'options' ] )
   },
   methods: {
-    ...mapActions( 'ui', [ 'set_option' ] ),
+    get_option( key ) {
+      return this.$route.query[key]
+    },
+    toggle( key ) {
+      this.$router.push({
+        query: {
+          ...this.$route.query,
+          [ key ]: this.get_option( key ) ? undefined : true
+        }
+      })
+    }
   }
   
 }
@@ -18,23 +28,20 @@ export default {
 <template>
   <ul role="menu">
     <li 
-      v-for="( option, key ) in options"
+      v-for="( label, key ) in options"
       :key="key"
       role="menuitemcheckbox"
     >
       <label
-        :title="option.label"
+        :title="label"
         tabindex="0"
       >
         <input 
           type="checkbox"
-          :checked="option.value"
-          @change="set_option({ 
-            key: key, 
-            value: !option.value 
-          })"
+          :checked="get_option( key )"
+          @change="toggle( key )"
         />
-        {{ option.label }}
+        {{ label }}
       </label> 
     </li>
   </ul>

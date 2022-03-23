@@ -81,7 +81,6 @@ export default {
 }
 
 #options .tab .contents ul {
-  box-sizing: border-box;
   list-style: none;
   padding: 0;
   margin: 0;

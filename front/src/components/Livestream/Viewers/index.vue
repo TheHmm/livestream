@@ -34,7 +34,6 @@ export default {
 <style scoped>
 
 #viewers {
-  box-sizing: border-box;
   position: absolute;
   top: 2rem;
   width: 100%;

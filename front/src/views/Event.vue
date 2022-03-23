@@ -64,7 +64,6 @@ main {
   
   background-color: var(--white);
 
-  box-sizing: border-box;
   height: 100vh; width: 100%;
   display: flex;
   flex-direction: column;

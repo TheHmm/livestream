@@ -2,9 +2,9 @@
 
 import { mapMutations, mapState } from 'vuex'
 
-import Header from './components/Header/index.vue'
-import Footer from './components/Footer/index.vue'
-import Banner from './components/Header/Banner.vue'
+import Header  from './components/Header/index.vue'
+import Footer  from './components/Footer/index.vue'
+import Loading from './components/Utils/Loading.vue'
 
 export default {
 
@@ -13,7 +13,7 @@ export default {
   components: { 
     Header,
     Footer,
-    Banner
+    Loading
   },
 
   data() {
@@ -27,13 +27,14 @@ export default {
       'mobile',
       'options'
     ]),
-    reduce_motion() {
-      return this.options.reduce_motion.value
-    },
-    reduce_depth() {
-      return this.options.reduce_depth.value
+    access() {
+      return Object
+      .keys( this.options )
+      .reduce( ( acc, key ) => ( 
+        { ...acc, [key]: this.$route.query[key] } 
+      ), {} )
     }
-  },
+  }, 
 
   methods: {
     ...mapMutations( 'ui', [ 'SET_MOBILE' ] ),
@@ -52,79 +53,50 @@ export default {
 
   async mounted() {  
     try {
-      this.meta = await this.$store.dispatch( 'meta/get_meta' )
+      this.meta = await this.$store.dispatch( 'ui/get_meta' )
     } catch ( error ) {
       console.error(error)
       this.$router.push('404')
     }
   },
 
-
-
 }
 
 </script>
 
 <template>
-  <transition 
-    name="fade"
-    mode="in-out"
-  >
 
-    <RouterView 
-      v-if="meta"
-      :class="{ 
-        mobile,
-        reduce_motion,
-        reduce_depth
-      }"
-    />
+  <router-view v-slot="{ Component }">
+    <transition name="fade">
+      <component 
+        v-if="meta" 
+        :is="Component" 
+        :class="{ 
+          mobile, 
+          ...access
+        }"
+      />
+      <loading v-else />
+    </transition>
+  </router-view>
 
-    <main
-      v-else
-      class="placeholder"
-    >
-      <Banner />
-      <div>
-        <span>loading...</span>
-      </div>
-    </main>
-
-  </transition>
 </template>
 
 
 <style>
 
-
 /* Base styles for the whole app */
 
 @import '@/assets/base.css';
 
-
-/*
- * For accessibily reasons, I removed vue's default root
- * <div> and instead gave the document's <body> tag the
- * #app id. This doesn't seem to create any problems yet.
- * See file: @/front/index.html
- */
-
-
-main.placeholder {
-  --accent: var(--light-grey);
-  position: absolute;
-  width: 100%;
+.fade-leave-active {
+  opacity: 1;
+  animation: leave var(--enter) ease 3s forwards;
 }
-main.placeholder #banner {
-  margin: 2rem auto;
-}
-main.placeholder div {
-  width: 100%;
-  display: flex;
-}
-main.placeholder div span {
-  color: var(--accent);
-  margin: 10% auto;
+
+@keyframes leave {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 </style>

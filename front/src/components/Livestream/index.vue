@@ -1,6 +1,5 @@
 <script>
 
-import { mapGetters } from 'vuex'
 import { defineAsyncComponent } from "vue"
 import Banner from '../Header/Banner.vue'
 import Marquee from '../Header/Marquee.vue'
@@ -35,9 +34,7 @@ export default {
     }
   },
 
-  computed: {
-
-    
+  computed: {  
 
     // Event-specific marquee
 
@@ -52,23 +49,6 @@ export default {
     playback_id() { return this.livestream.playbackId },
     status()      { return this.livestream.status },
     active()      { return this.status == 'active' },
-
-
-    // We get the list of available streaming modes from the store
-    // this list can be updated by HLS.js at any moment.
-
-    ...mapGetters( 'livestream', [ 
-      'modes' ,
-      'default_mode',
-    ]),
-
-    current_mode() {
-      return (
-        this.$route.query?.mode && 
-        this.modes[this.$route.query.mode] || 
-        this.default_mode
-      )
-    }
     
   },
 
@@ -76,12 +56,7 @@ export default {
 </script>
   
 <template>
-
   <!-- <pre> {{ livestream }} </pre>  -->
-  
-  
-
-
   <header aria-label="banner & announcements">
     <Marquee 
       :marquee="marquee"
@@ -103,7 +78,6 @@ export default {
     <Player
       v-if="playback_id && active"
       :livestream="livestream"
-      :mode="current_mode"
     />
     <div 
       v-else
@@ -139,8 +113,7 @@ header .marquee {
   --back: var(--accent);
   --fore: var(--white);
   background-color: var(--back);
-  box-shadow: var(--shadow-up);
-  box-sizing: border-box;
+  box-shadow: var(--shadow);
   width: 100%;
   flex-grow: 1;
   flex-shrink: 1;
@@ -163,7 +136,6 @@ header .marquee {
 }
 
 #middle #status {
-  box-sizing: border-box;
   width: 100%;
   height: 100%;
   text-align: center;
@@ -182,7 +154,6 @@ footer {
   --back: var(--accent);
   /* background-color: var(--back); */
   position: fixed;
-  box-sizing: border-box;
   bottom: 0;
   flex-grow: 0;
   width: 100%;

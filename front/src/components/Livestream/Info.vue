@@ -64,7 +64,6 @@ export default {
 
 <style scoped>
 #info {
-  box-sizing: border-box;
   width: var(--side-width);
   max-width: var(--side-width);
   height: 100%;

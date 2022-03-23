@@ -111,7 +111,6 @@ table {
   --n: 6;
   --fore: white;
   color: var(--fore);
-  box-sizing: border-box;
   border-collapse: collapse;
   font-family: monospace;
   font-size: 0.7rem;

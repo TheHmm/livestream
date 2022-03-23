@@ -9,11 +9,11 @@ export default {
   },
 
   mutations: {
-    SET_ANNOUNCEMENTS : ( state, announcements ) => {
-      state.announcements = announcements
-    },
     SET_ANNOUNCEMENT : ( state, announcement ) => {
-      state.announcements[announcement.time] = announcement
+      state.announcements[announcement.id] = announcement
+    },
+    DELETE_ANNOUNCEMENT : ( state, announcement ) => {
+      delete state.announcements[announcement.id]
     },
   },
 

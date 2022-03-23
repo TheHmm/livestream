@@ -1,4 +1,5 @@
 import api from "../api"
+import router from '@/router'
 import { logger } from "../utils"
 import { captions } from "../utils"
 
@@ -70,6 +71,7 @@ export default {
     CLEAR_CC       : state => state.cc = [],
 
     SET_MODE       : ( state, mode ) => state.modes[mode.name] = mode,
+    DELETE_MODE    : ( state, name ) => delete state.modes[name],
 
     RESET_MODES    : state => state.modes = DEFAULT_MODES()
 
@@ -82,6 +84,12 @@ export default {
     modes          : state => state.modes,
 
     default_mode   : state => state.modes['video'],
+
+    current_mode   : ( state, getters ) => self => (
+      self.$route.query?.mode &&
+      state.modes[self.$route.query.mode] ||
+      getters.default_mode
+    )
 
   },
 

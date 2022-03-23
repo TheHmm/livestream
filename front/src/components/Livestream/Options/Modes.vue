@@ -7,12 +7,30 @@ export default {
   
   computed: {
 
+
     // We get the list of available streaming modes from the store
     // this list can be updated by HLS.js at any moment.
 
     ...mapGetters( 'livestream', [ 
-      'modes' ,
-    ])
+      'modes',
+    ]),
+
+
+    // Don't know how far this will go before breaking.
+
+    current_mode: {
+      get() {
+        return this.$store.getters['livestream/current_mode']( this )
+      },
+      set(mode) {
+        this.$router.push({
+          query: {
+            ...this.$route.query,
+            ...{ mode: mode.name }
+          }
+        })
+      }
+    }
   },
 
 }
@@ -27,27 +45,18 @@ export default {
       class="mode"
       role="menuitem"
     >
-      <router-link 
-        :title="`Switch to ${ mode.label } streaming mode`"
-        :to="{
-          name: $route.name,
-          query: { mode: mode.name }
-        }"
-      >
-        {{ mode.label }}
-      </router-link>
-      <!-- <label 
-        :title="label"
+      <label 
+        :title="`Switch to ${ mode.label } streaming mode`"  
         tabindex="0"
       >
         <input 
           type="radio"
-          :name="label" 
-          :value="amount"
-          v-model="selected"
+          :name="mode.label"
+          :value="mode" 
+          v-model="current_mode"
         />
-        {{ label }}
-      </label> -->
+        {{ mode.label }}
+      </label>
     </li>
   </ul>
 </template>

@@ -70,7 +70,8 @@ export default {
 
     update_track() {
       console.log(this.cc)
-      if (this.native && this.player?.player) {
+      const current_cc = this.cc[this.cc.length - 1]?.text
+      if (this.native && this.player?.player && current_cc) {
         const
           now                     = time.now(),
           stream_start            = this.stream_start,
@@ -79,7 +80,7 @@ export default {
           _latency                = this.player.player.latencyController._latency 
 
         console.log(
-          this.cc[this.cc.length - 1].text,
+          current_cc,
           current_livestream_time,
           live_sync_position,
           _latency,
@@ -93,7 +94,7 @@ export default {
         //   ) )
         this.track += captions.srt_to_vtt(
             captions.caption_to_srt( 
-              this.cc[this.cc.length-1], 
+              current_cc, 
               stream_start, 
             ( current_livestream_time - live_sync_position - _latency ) * 1000
           )

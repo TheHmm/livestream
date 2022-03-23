@@ -1,177 +1,230 @@
 :root {
 
-  --black: hsl(0, 0%, 0%);
-  --white: hsl(0, 0%, 100%);
-  --yellow: hsl(60, 100%, 50%);
-  --blue: hsl(240, 100%, 50%);
-  --light-grey: hsl(0, 0%, 88%);
-  --mid-grey: hsl(0, 0%, 39%);
-  --dark-grey: hsl(0, 0%, 20%);
+
+  /* Default The Hmm colors */
+
+  --black          : hsl(   0,   0%,   0% );
+  --white          : hsl(   0,   0%, 100% );
+  --yellow         : hsl(  60, 100%,  50% );
+  --blue           : hsl( 240, 100%,  50% );
+  --light-grey     : hsl(   0,   0%,  88% );
+  --mid-grey       : hsl(   0,   0%,  39% );
+  --dark-grey      : hsl(   0,   0%,  20% );
+
+
+  /* Foregrounds and backgrounds */
+  /* Changes with different elements */
   
-  --fore: var(--black);
-  --back: var(--white);
+  --fore           : var(--black);
+  --back           : var(--white);
   
+
+  /* Function to produce accent shades */
+  /* This is used to change colors per event */
+
   --h              : 240;
   --s              : 100%;
   --l              : 50%;
   --accent         : hsl( var(--h), var(--s), var(--l) );
   --increment      : 10%;
 
-  --shadow-color: hsla(0, 0%, 0%, 0.288);
-  --shadow-size: 1rem;
-  --shadow-offset: 0rem;
-  --shadow: 0 0 var(--shadow-size) 0 var(--shadow-color);
-  --shadow-up: 
-    0 
-    0
-    var(--shadow-size) 
-    0 
-    var(--shadow-color)
-  ;
-  --shadow-down: 
-    0 
-    calc(1 * var(--shadow-offset))
-    var(--shadow-size) 
-    0 
-    var(--shadow-color)
-  ;
-  --filter-shadow:  0 0 var(--shadow-size) var(--shadow-color);
 
-  --very-fast: 0.125s;
-  --fast: 0.25s;
-  --slow: 0.5s;
-  --very-slow: 1s;
+  /* Shadow parameters for box-shadows and drop-shadows */
 
-  --enter: var(--slow)
+  --shadow-color   : hsla(0, 0%, 0%, 0.288);
+  --shadow-size    : 1rem;
+  --shadow         : 0 0 var(--shadow-size) 0 var(--shadow-color);
+  --filter-shadow  : 0 0 var(--shadow-size) var(--shadow-color);
 
 
+  /* Transition and animation speeds */
+
+  --very-fast      : 0.125s;
+  --fast           : 0.25s;
+  --slow           : 0.5s;
+  --very-slow      : 1s;
+  --enter          : var(--slow);
   
 }
 
+
+/* Accessibility* classes attached to <main> */
+/* All speeds are set to 0 to reduce motion */
+
+.reduce_motion {
+  --very-fast      : 0s;
+  --fast           : 0s;
+  --slow           : 0s;
+  --very-slow      : 0s;
+}
+
+
+/* All nodes are stripped of their animations / transitions */
+
+.reduce_motion * {
+  animation        : none !important;
+  transform        : none !important;
+  opacity          : unset !important;
+}
+
+
+/* All shadow params are reduced to 0 to eliminate depth. */
+
+.reduce_depth {
+  --shadow-color   : hsla(0, 0%, 0%, 0);
+  --shadow-size    : 0;
+  --shadow         : none;
+  --filter-shadow  : 0 0 0 transparent;
+}
+
+
+/* All nodes are stripped of their box-shadows / drop-shadows */
+
+.reduce_depth * {
+  box-shadow       : none !important;
+  filter           : none !important;
+}
+
+
+/* Preventing headaches */
+
+*,
+*::before,
+*::after {
+  box-sizing       : border-box;
+}
+
+/* Stripping document of browser styles */
+
 html,
 body {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  width: 100%;
+  padding          : 0;
+  margin           : 0;
+  height           : 100%;
+  width            : 100%;
 }
+
+
+/* For accessibily reasons, I removed vue's default root */
+/* <div> and instead gave the document's <body> tag the */
+/* #app id. This doesn't seem to create any problems yet. */
+/* See file: @/front/index.html */
+
+/* Default font sizes from toni */
+/* => body copy  : 18px => 1.00rem */
+/* => interface  : 24px => 1.33rem */
+/* => buttons    : 42px => 2.33rem */
 
 body {
-   /* max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem; */
-  font-family: sans-serif;
-  font-size: 13pt;
-  background-color: var(--back);
+  font-family      : Arial;
+  font-size        : 18px;
+  background-color : var(--back);
 }
 
-body :is(
-  h1, h2, h3, h4, h5, h6, 
-  p, a, span, label,
-  code, pre, time,
-  table, tr, td
-) {
-  color: var(--fore);
+
+/* All text elements have their color set to --fore; */
+/* --fore is changed in the different children of body */
+
+body * {
+  color            : var(--fore);
 }
 
-/* any text node that is selected get inverted */
 
-/* body :is(
-  h1, h2, h3, h4, h5, h6, 
-  p, a, span,
-  code, pre, time
-)::selection {
-  background-color: var(--fore);
-  color: var(--back);
-} */
+/* any text element that is selected get inverted */
 
-/* overriding anchors with TRUE blue */
+body *::selection {
+  background-color : var(--fore);
+  color            : var(--back);
+} 
+
+
+/* overriding anchors with The Hmm blue */
 
 a,
 a:active,
 a:visited {
-  --fore: var(--blue);
-  color: var(--fore);
+  --fore           : var(--blue);
+  color            : var(--fore);
 }
 
 
 /* all elements with role=status */
 
 *[role="status"] {
-  /* --fore: var(--dark-grey); */
-  /* color: var(--fore); */
-  font-family: monospace;
+  font-family      : monospace;
 }
 
-.comment {
-  --fore: var(--mid-grey);
-  font-style: italic;
-  font-size: 0.8rem;
-  line-height: 0.5;
-}   
 
+/* Option tabs at the bottom :) */
 
 .tab {
-  --back: var(--yellow);
-  box-sizing: border-box;
-  filter: drop-shadow( var(--filter-shadow) );
-  animation: tab_enter var(--enter) ease calc( 0.4s + var(--n) *  0.1s) forwards;
-  transform: translateY(5rem);
+  --back           : var(--yellow);
+  filter           : drop-shadow( var(--filter-shadow) );
+  animation        : tab_enter var(--enter) ease calc( 0.4s + var(--n) *  0.1s) forwards;
+  transform        : translateY(5rem);
 }
 
 .tab label.title {
-  box-sizing: border-box;
-  padding: 0.7rem 1rem;
-  height: 3rem;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  white-space: pre;
-  background: var(--back);
-  border-top-left-radius: 50%;
-  border-top-right-radius: 50%;
-  text-align: center;
+  padding          : 0.7rem 1rem;
+  height           : 3rem;
+  display          : flex;
+  align-items      : flex-end;
+  justify-content  : center;
+  white-space      : pre;
+  text-align       : center;
+  border-top-left-radius  : 50%;
+  border-top-right-radius : 50%;
+  background-color : var(--back);
 }
+
 .tab:focus label.title {
-  outline: 0.15rem solid var(--blue);
+  outline          : 0.15rem solid var(--blue);
 }
 
 @keyframes tab_enter {
-  from { transform: translateY(5rem); }
-  to { transform: translateY(0); }
+  from { transform : translateY(5rem); }
+  to { transform   : translateY(0); }
 }
 
 .tab li label:focus,
 .tab li:focus {
-  outline: 0.15rem solid var(--blue);
+  outline          : 0.15rem solid var(--blue);
 }
 
 .tab .contents {
-  box-sizing: border-box;
-  background: var(--back);
-  max-height: 0;
-  min-width: 0;
-  padding: 0;
-  transition: 
-    padding var(--fast) ease-in-out,
+  background       : var(--back);
+  max-height       : 0;
+  min-width        : 0;
+  padding          : 0;
+  transition       : 
+    padding    var(--fast) ease-in-out,
     max-height var(--fast) ease-in-out,
-    max-width var(--fast) ease-in-out,
-    min-width var(--fast) ease-in-out
+    max-width  var(--fast) ease-in-out,
+    min-width  var(--fast) ease-in-out
   ;
-  border-top: 0.1rem solid var(--fore);
-}
-
-.tab .contents:first-child {
+  border-top       : 0.1rem solid var(--fore);
 }
 
 .tab:hover .contents,
 .tab:focus-within .contents,
 .tab:focus .contents {
-  max-height: 12rem;
-  max-width: 12rem;
-  padding: 0.5rem 0;
+  max-height       : 14rem;
+  max-width        : 12rem;
+  padding          : 0.5rem 0;
 }
 
+
+/* `Comment class looks like this. */
+
+.comment {
+  --fore           : var(--mid-grey);
+  font-style       : italic;
+  font-size        : 0.8rem;
+  line-height      : 0.5;
+}   
+
+
+/* Mpbile styles */
 
 .mobile {
   font-size: 11pt;
@@ -181,33 +234,4 @@ a:visited {
 .mobile #options .tab:focus-within .contents,
 .mobile #options .tab:focus .contents {
   min-width: 10rem;
-}
-
-
-.reduce_motion {
-  --very-fast: 0s;
-  --fast: 0s;
-  --slow: 0s;
-  --very-slow: 0s;
-}
-
-.reduce_motion * {
-  animation: none !important;
-  transform: none !important;
-  opacity: unset !important;
-}
-
-.reduce_depth {
-  --shadow-color: hsla(0, 0%, 0%, 0);
-  --shadow-size: 0;
-  --shadow-offset: 0;
-  --shadow: none;
-  --shadow-up: none;
-  --shadow-down: none;
-  --filter-shadow: 0 0 0 transparent;
-}
-
-.reduce_depth * {
-  box-shadow: none !important;
-  filter: none !important;
 }

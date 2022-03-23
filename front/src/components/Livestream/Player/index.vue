@@ -14,22 +14,7 @@ export default {
   components: { Captions, Timer },
   
   props: {
-
-    livestream: {
-      type: Object
-    },
-
-    mode: {
-      type: Object
-    },
-
-  },
-
-  data() {
-    return {
-      player : null,
-      should_update: false,
-    }
+    livestream: { type: Object },
   },
 
   computed: {
@@ -39,6 +24,16 @@ export default {
     stream_start() {
       return this.livestream.start_time
     },
+    mode() {
+      return this.$store.getters['livestream/current_mode']( this )
+    }
+  },
+
+  data() {
+    return {
+      player : null,
+      should_update: false,
+    }
   },
 
   watch: {
@@ -51,10 +46,11 @@ export default {
       }
     },
     mode( new_mode, old_mode ) {
-      // console.log(old_mode.name, new_mode.name)
+      // console.log(old_mode.id, new_mode.id)
       if ( old_mode.hls && !new_mode.hls ) {
         this.$store.commit('livestream/RESET_MODES')
       } else if ( old_mode.hls && new_mode.hls ) { 
+        this.$store.commit('livestream/DELETE_MODE', 'video')
         this.player.player.currentLevel = new_mode.id
       } else {
         this.should_update = true
@@ -103,8 +99,8 @@ export default {
     // or clean up before unmounting.
 
     destroy() {
+      logger.info( 'LIVESTREAM', `Destroying player.` )
       if ( this.player ) {
-        logger.info( 'LIVESTREAM', `Destroying player.` )
         this.player.destroy()
       }
       this.player = null
@@ -195,9 +191,9 @@ export default {
       v-if="mode.name == 'thumbs' || mode.name == 'transcript'"
       aria-label="thumbnail player"
     > 
-      <Timer
+      <!-- <Timer
         :stream_start="stream_start"
-      />
+      /> -->
       <img
         v-if="mode.name == 'thumbs'"
         ref="img"
@@ -219,7 +215,7 @@ export default {
     </audio>
 
     <video
-      v-else-if="mode.name == 'video'"
+      v-else
       muted
       controls
       autoplay
@@ -242,7 +238,6 @@ export default {
 <style>
 
 #player {
-  box-sizing: border-box;
   width: 100%;
   display: flex;
 }
@@ -251,8 +246,6 @@ video,
 audio,
 #low_res_player
  {
-  box-sizing: border-box;
-  /* background: black; */
   width: 100%;
   height: 100%;
   max-width: 100%;

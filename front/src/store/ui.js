@@ -1,60 +1,68 @@
+import api from '../api'
+
 export default {
 
   namespaced: true,
 
   state: {
 
+    meta : null,
+
     mobile: false,
     
     options: {
-
-      reduce_motion: { 
-        label: "Reduce motion", 
-        value: false,
-      },
-
-      reduce_depth: { 
-        label: "Reduce depth", 
-        value: false,
-      },
-
+      reduce_motion: "Reduce motion", 
+      reduce_depth: "Reduce depth", 
     },
   },
 
   mutations: {
 
+    SET_META : ( state, meta ) => {
+      state.meta = meta
+    },
+
     SET_MOBILE : ( state, mobile ) => {
       state.mobile = mobile
     },
     
-    SET_OPTION : (state, { key, value }) => {
-      state.options[key].value = value
+  },
+
+  getters: {
+
+    meta: state => {
+      return state.meta
     },
 
-    SET_OPTIONS : (state, options) => {
-      state.options = options
+    default_marquee: state => {
+      return state.meta.defaultMarquee
+    },
+
+    censor_message: state => {
+      return state.meta.censorMessage
     },
 
   },
 
   actions: {
 
-    set_option: ({ commit, dispatch }, { key, value }) => {
-      commit('SET_OPTION', { key, value })
-      dispatch('save_options_to_store')
-    },
-    
-    load_options_from_store: ({ commit }) => {
-      const found = localStorage.access_options && JSON.parse(localStorage.access_options)
-      if ( found ) {
-        commit('SET_OPTIONS', found)
-      }
-    },
 
-    save_options_to_store: ({ state }) => {
-      localStorage.access_options = JSON.stringify( state.options )
-    },
+    // App meta-data such as titles and meta descriptions
 
+    fetch_meta({ commit }) { return new Promise( ( resolve, reject ) => 
+      api
+      .meta
+      .get()
+      .then( meta => {
+        commit( 'SET_META', meta )
+        resolve( meta ) 
+      } )
+      .catch( error => reject( error ) )
+    ) },
+
+    async get_meta({ getters, dispatch }) {
+      return getters.meta || await dispatch( 'fetch_meta' )
+    },
 
   }
 

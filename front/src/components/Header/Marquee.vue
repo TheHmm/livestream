@@ -39,7 +39,7 @@ export default {
 
 <style scoped>
 .marquee {
-  box-shadow: var(--shadow-down);
+  box-shadow: var(--shadow);
   white-space: nowrap;
   overflow: hidden;
   --back: var(--yellow);
