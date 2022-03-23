@@ -194,4 +194,5 @@ a:visited {
 .reduce_motion * {
   animation: none !important;
   transform: none !important;
+  opacity: unset !important;
 }

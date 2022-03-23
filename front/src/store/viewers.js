@@ -49,6 +49,10 @@ export default {
       return state.viewers[ uuid ]
     },
 
+    get_viewer_by_id : ( state, getters ) => id => {
+      return getters.viewers_array.find( v => v.id == id )
+    },
+
     uuid : state => {
       return state.uuid
     },
@@ -62,15 +66,19 @@ export default {
     },
 
     blocked : ( state, getters ) => {
-      return getters.me.blocked
+      return getters.me?.blocked
     },
 
     moderator : ( state, getters ) => {
-      return getters.me.moderator
+      return getters.me?.moderator
     },
 
     my_events : ( state, getters ) => {
-      return getters.me.events.data.map( e => e.id )
+      return getters.me?.events
+    },
+
+    get_event_by_id : ( state, getters, rootState, rootGetters ) => id => {
+      return rootGetters['events/event_bv_id']( id )
     },
 
     current_event_id : ( state, getters, rootState, rootGetters ) => {
@@ -78,7 +86,7 @@ export default {
     },
 
     has_been_to_current_event : ( state, getters ) => {
-      return getters.my_events.includes( getters.current_event_id )
+      return getters.my_events?.includes( getters.current_event_id )
     }
 
 
@@ -87,16 +95,26 @@ export default {
   actions: {
 
 
+    // Process and set message
+
+    set_viewer( { commit, getters }, viewer ) {
+      const events = viewer.events?.data?.map( e => e.id ) || viewer.events
+      if ( events ) {
+        viewer.events = events.map ( id => getters.get_event_by_id( id ) )
+      }
+      commit( 'SET_VIEWER', viewer )
+    },
+
     // Fetch viewers by event id 
 
-    fetch_viewers( { commit }, event_id ) { 
+    fetch_viewers( { dispatch }, event_id ) { 
       return new Promise( ( resolve, reject ) => 
         api
         .viewers
         .get_by_event( event_id )
         .then( viewers => {
           for ( const viewer of viewers ) {
-            commit( 'SET_VIEWER', viewer )
+            dispatch( 'set_viewer', viewer )
           }
           resolve( viewers ) 
         } )
@@ -118,13 +136,13 @@ export default {
 
     // Fetch viewer by uuid 
 
-    fetch_viewer( { commit }, uuid ) { 
+    fetch_viewer( { dispatch }, uuid ) { 
       return new Promise( ( resolve, reject ) => 
         api
         .viewers
         .get( uuid )
         .then( viewer => {
-          commit( 'SET_VIEWER', viewer )
+          dispatch( 'set_viewer', viewer )
           resolve( viewer ) 
         } )
         .catch( error => reject( error ) )
@@ -148,8 +166,8 @@ export default {
         api
         .viewers
         .post({ 
-            name, 
-            events: [ getters.current_event_id ] 
+          name, 
+          events: [ getters.current_event_id ] 
         }) 
         .then( viewer => {
           dispatch( 'register', viewer )
@@ -247,9 +265,10 @@ export default {
       logger.info( 'SOCKET', 'disconnect' )
     },
 
-    socket_viewer( { state, commit }, viewer ) {
+    socket_viewer( { dispatch }, viewer ) {
       logger.info( 'SOCKET', `viewer ${ viewer.name }` )
       console.log(viewer)
+      dispatch( 'set_viewer', viewer )
       // commit('SET_VIEWER', viewer)
       // if (
       //   state.uuid &&

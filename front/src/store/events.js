@@ -44,6 +44,11 @@ export default {
       .find( e => e.slug === slug )
     ,
 
+    event_bv_id : state => id => state
+      .events
+      .find( e => e.id == id )
+    ,
+
     current_event : ( state, getters ) => 
       getters
       .get_event( 

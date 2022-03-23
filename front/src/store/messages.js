@@ -11,11 +11,6 @@ export default {
   },
 
   mutations: {
-
-    SET_MESSAGES : ( state, messages ) => {
-      state.messages = messages
-    },
-
     SET_MESSAGE : ( state, message ) => {
       state.messages[message.time] = message
     },
@@ -59,6 +54,10 @@ export default {
       return rootGetters['viewers/my_id']
     },
 
+    get_viewer_by_id : ( state, getters, rootState, rootGetters ) => id => {
+      return rootGetters['viewers/get_viewer_by_id']( id )
+    },
+
     current_event_id : ( state, getters, rootState, rootGetters ) => {
       return rootGetters['events/current_event_id']
     },
@@ -69,20 +68,30 @@ export default {
   actions: {
 
 
+    // Process and set message
+
+    set_message( { commit, getters }, message ) {
+      const sender = message.sender?.data?.id || message.sender
+      message.sender = getters.get_viewer_by_id( sender )
+      commit( 'SET_MESSAGE', message )
+    },
+
      // Fetch messages by event id 
 
-     fetch_messages( { commit }, event_id ) { 
+     fetch_messages( { dispatch }, event_id ) { 
       return new Promise( ( resolve, reject ) => 
         api
         .messages
         .get_by_event( event_id )
         .then( messages => { 
           for ( const message of messages ) {
-            commit( 'SET_MESSAGE', message )
+            dispatch( 'set_message', message )
           }
           resolve( messages ) 
         } )
-        .catch( error => reject( error ) )
+        .catch( error => 
+          reject( error ) 
+        )
       ) 
     },
 
@@ -120,9 +129,22 @@ export default {
     },
 
 
-    socket_message( { state, commit }, message ) {
+    // Censoring messages.
+
+    async censor( { getters }, message ) {
+      try {
+        await api.messages.put( message.id, {
+          censored: !message.censored,
+        })
+      } catch ( error ) {
+        throw error
+      }
+    },  
+
+
+    socket_message( { dispatch }, message ) {
       logger.info( 'SOCKET', `Message ${ message.body }` )
-      commit( 'SET_MESSAGE', message )
+      dispatch( 'set_message', message )
     },
     
     // socket_count({ commit }, count) {

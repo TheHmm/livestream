@@ -35,6 +35,7 @@ export default {
       try {
         await this.$store.dispatch( 'viewers/create_viewer', this.name )
         this.sending = false
+        this.$emit('close')
       } catch ( error ) {
         this.error = error
       }
@@ -70,7 +71,7 @@ export default {
     <div v-else-if="sending">
       <p> Creating viewer {{ name }}.</p>
     </div>
-    <div v-else-if="uuid">
+    <!-- <div v-else-if="uuid">
       <p> Success! Your uuid is <code>{{ uuid }}</code>.</p>
       <input 
         class="close"
@@ -79,7 +80,7 @@ export default {
         value="Close"
         @click="$emit('close')"
       />
-    </div> 
+    </div>  -->
     <form 
       v-else
       id="register_form"

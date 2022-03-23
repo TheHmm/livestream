@@ -23,7 +23,7 @@ export default {
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/messages`, { params: { 
-        sort: 'time:asc',
+        sort: 'time:desc',
         filters: {
           event: {
             id: {
@@ -38,7 +38,6 @@ export default {
       } } )
       .then( result => {
         const messages = result.data.data
-        // console.log(messages)
         resolve( messages )
       } )
       .catch( error => {

@@ -45,6 +45,7 @@ export default {
         if ( await this.authenticate() ) {
           try {
             await this.create_message( this.message )
+            this.message = null
           } catch ( error ) {
             console.error(error)
           }
@@ -99,7 +100,6 @@ export default {
 }
 #message_form input[type="text"] {
   flex-grow: 1;
-  min-width: 100%;
   height: 2rem;
 }
 #message_form input[type="submit"] {

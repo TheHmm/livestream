@@ -5,7 +5,7 @@ const
     const 
       message = event.params.data,
       body    = message.body,
-      links   = body.match( /(((https?:\/\/)|(www\.))[^\s]+)/g)
+      links   = body && body.match( /(((https?:\/\/)|(www\.))[^\s]+)/g)
 
     if ( links ) {
       event.params.data.links = [ ...new Set( links ) ]
