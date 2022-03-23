@@ -28,7 +28,7 @@ export default {
       >
         <input 
           type="checkbox"
-          v-bind="option.value"
+          :checked="option.value"
           @change="set_option({ 
             key: key, 
             value: !option.value 

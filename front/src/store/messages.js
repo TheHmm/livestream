@@ -86,6 +86,7 @@ export default {
       
       if ( message.censored ) {
         message.body = getters.censor_message
+        message.links = null
       }
 
       message.sender = message.sender?.data?.id || message.sender

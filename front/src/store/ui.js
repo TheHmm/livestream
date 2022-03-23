@@ -11,10 +11,11 @@ export default {
       reduce_motion: { 
         label: "Reduce motion", 
         value: false,
-        icons: {
-          true  : 'volume',
-          false : 'mute'
-        }
+      },
+
+      reduce_depth: { 
+        label: "Reduce depth", 
+        value: false,
       },
 
     },

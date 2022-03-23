@@ -91,6 +91,7 @@ export default {
           >
             Show only URLs
             <input 
+              class="links"
               name="links"
               type="checkbox"
               v-model="links_only"
@@ -140,6 +141,12 @@ export default {
   justify-content: flex-start;
   align-items: center;
 }
+#chat.expanded .title .options {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 #chat .contents {
   width: 100%;
   overflow: hidden;
@@ -150,8 +157,6 @@ export default {
   flex-direction: column;
   justify-content: flex-end;
   pointer-events: all;
-}
-#chat.expanded .contents {
   max-width: 100%;
   max-height: 100%;
   max-height: calc(100vh - 17rem);

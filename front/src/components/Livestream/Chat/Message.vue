@@ -1,33 +1,32 @@
 <script>
 
 import { time } from '@/utils'
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
+import Moderation from './Moderation.vue'
+import Links from './Links.vue'
 
 export default {
-
+  
   name: 'Message',
 
+  components: { 
+    Moderation, 
+    Links 
+  },
+
   props: {
-    links_only: {
-      type: Boolean
-    },
-    message: {
-      type: Object
-    },
+    message    : { type: Object },
+    links_only : { type: Boolean },
   },
 
   computed: {
 
-    id()       { return this.message.id },
-    time()     { return time.time_format( this.message.time ) },
-    body()     { return this.$mdi( this.message.body ) },
-    links()    { return this.message.links },
-    censored() { return this.message.censored },
-    
-    sender()      { return  this.get_viewer_by_id( this.message.sender ) },
-    sender_id()   { return this.sender?.id },
-    sender_name() { return this.sender?.name },
-    blocked()     { return this.sender?.blocked },
+    id()     { return this.message.id },
+    time()   { return time.time_format( this.message.time ) },
+    body()   { return this.$mdi( this.message.body ) },
+    links()  { return this.message.links },
+    sender() { return  this.get_viewer_by_id( this.message.sender ) },
+    name()   { return this.sender?.name },
 
     ...mapGetters( 'viewers', [
       'moderator',
@@ -35,15 +34,6 @@ export default {
     ] )
 
   },
-  methods: {
-    ...mapActions( 'messages', [
-      'censor_message',
-      'delete_message'
-    ]),
-    ...mapActions( 'viewers', [
-      'block_viewer'
-     ] )
-  }
 }
 </script>
 
@@ -51,34 +41,27 @@ export default {
   <article 
     :class="[ 
       $id(), 
-      { censored } 
+      { censored: message.censored } 
     ]"
     tabindex="0"
     :aria-label="`Message from ${ sender }`"
     v-if="links_only ? links : true"
   >
+
     <div 
       class="header"
       aria-label="Message meta-data"
     >
       <!-- <span class="sep"> @ </span> -->
       <span class="time">{{ time }}</span>
-      <span class="sender">{{ sender_name }}</span>
-      <span
+      <span class="sender">{{ name }}</span>
+      <Moderation
         v-if="moderator"
-        class="moderation"
-      >
-        <span @click="censor_message( message )"> 
-          {{ censored && 'uncensor' || 'censor' }} 
-        </span>
-        <span @click="block_viewer( sender )"> 
-          {{ blocked && 'unblock' ||  'block' }}
-        </span>
-        <span @click="delete_message( message )"> 
-          delete 
-        </span>
-      </span>
+        :message="message"
+        :sender="sender"
+      />
     </div>
+
     <div 
       v-if="!links_only"
       v-html="body"
@@ -86,26 +69,12 @@ export default {
       aria-label="Message body"
     >
     </div>
-    <div
+    <Links
       v-else
-      class="body"
-      aria-label="Message URLs"
-    >
-      <ul
-        :aria-label="`Links from ${ sender_name }`"
-      >
-        <li
-          v-for="(url, index) in links"
-          :key="index"
-        >
-          <a 
-            target="blank"
-            :href="url"
-            :title="url"
-          >{{ url }}</a>
-        </li>
-      </ul>
-    </div>
+      :links="links"
+      :name="name"
+    />
+
   </article>
 </template>
 
@@ -142,17 +111,6 @@ export default {
 .message .header .time {
   margin-right: auto;
   /* opacity: 0.5; */
-}
-.message .header .moderation {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-}
-.message .header .moderation span {
-  font-size: 0.6rem;
-  text-decoration: underline;
-  margin-left: 0.5rem;
-  cursor: pointer;
 }
 
 .message .body {

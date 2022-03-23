@@ -196,3 +196,18 @@ a:visited {
   transform: none !important;
   opacity: unset !important;
 }
+
+.reduce_depth {
+  --shadow-color: hsla(0, 0%, 0%, 0);
+  --shadow-size: 0;
+  --shadow-offset: 0;
+  --shadow: none;
+  --shadow-up: none;
+  --shadow-down: none;
+  --filter-shadow: 0 0 0 transparent;
+}
+
+.reduce_depth * {
+  box-shadow: none !important;
+  filter: none !important;
+}

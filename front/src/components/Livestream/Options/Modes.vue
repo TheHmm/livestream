@@ -36,6 +36,18 @@ export default {
       >
         {{ mode.label }}
       </router-link>
+      <!-- <label 
+        :title="label"
+        tabindex="0"
+      >
+        <input 
+          type="radio"
+          :name="label" 
+          :value="amount"
+          v-model="selected"
+        />
+        {{ label }}
+      </label> -->
     </li>
   </ul>
 </template>

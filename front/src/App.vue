@@ -29,6 +29,9 @@ export default {
     ]),
     reduce_motion() {
       return this.options.reduce_motion.value
+    },
+    reduce_depth() {
+      return this.options.reduce_depth.value
     }
   },
 
@@ -72,7 +75,8 @@ export default {
       v-if="meta"
       :class="{ 
         mobile,
-        reduce_motion
+        reduce_motion,
+        reduce_depth
       }"
     />
 

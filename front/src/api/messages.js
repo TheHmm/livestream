@@ -23,7 +23,7 @@ export default {
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/messages`, { params: { 
-        sort: 'time:desc',
+        sort: 'time:asc',
         filters: {
           event: {
             id: {
