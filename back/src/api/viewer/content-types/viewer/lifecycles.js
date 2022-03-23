@@ -15,7 +15,7 @@ const
 // };
 
 
-  create_uuid = async ( viewer, strapi ) => {
+  create_uuid = async viewer => {
     try {
       return await strapi
       .plugins['content-manager']
@@ -31,7 +31,7 @@ const
     }
   }
 
-  before_create_or_update = async ( event, strapi ) => {
+  before_create_or_update = async event => {
 
     // we get the event payload
 
@@ -53,8 +53,8 @@ const
 
 module.exports = {
 
-  async beforeCreate( event ) { await before_create_or_update( event, strapi ) },
-  async beforeUpdate( event ) { await before_create_or_update( event, strapi ) },
+  beforeCreate: before_create_or_update,
+  beforeUpdate: before_create_or_update,
 
   afterCreate: after_create_or_update,
   afterUpdate: after_create_or_update,
