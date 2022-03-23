@@ -1,5 +1,6 @@
-import api from '../api'
-import { time } from '../utils'
+import api from '@/api'
+import { time } from '@/utils'
+import { logger } from '@/utils'
 
 export default {
 
@@ -75,8 +76,10 @@ export default {
         api
         .messages
         .get_by_event( event_id )
-        .then( messages => {
-          commit( 'SET_MESSAGES', messages )
+        .then( messages => { 
+          for ( const message of messages ) {
+            commit( 'SET_MESSAGE', message )
+          }
           resolve( messages ) 
         } )
         .catch( error => reject( error ) )
@@ -116,12 +119,25 @@ export default {
       ) 
     },
 
+
+    socket_message( { state, commit }, message ) {
+      logger.info( 'SOCKET', `Message ${ message.body }` )
+      commit( 'SET_MESSAGE', message )
+    },
+    
+    // socket_count({ commit }, count) {
+    //   commit('setCount', count)
+    // },
+
+
     delete_message( state, message ) {
       this._vm.$socket.client.emit('message', {
         time: message.time,
         deleted: true 
       })
     },
+
+
 
   }
 
