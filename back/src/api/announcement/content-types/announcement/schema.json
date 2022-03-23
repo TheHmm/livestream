@@ -28,6 +28,10 @@
     "slug": {
       "type": "uid",
       "targetField": "title"
+    },
+    "expires": {
+      "type": "integer",
+      "default": 90
     }
   }
 }
