@@ -14,6 +14,9 @@ export default {
     SET_MESSAGE : ( state, message ) => {
       state.messages[message.time] = message
     },
+    DELETE_MESSAGE : ( state, message ) => {
+      delete state.messages[message.time]
+    }
   },
 
   getters: {
@@ -75,6 +78,10 @@ export default {
     // Process and set message
 
     set_message( { commit, getters }, message ) {
+      if ( message.deleted ) {
+        commit( 'DELETE_MESSAGE', message )
+        return
+      }
       const sender = message.sender?.data?.id || message.sender
       if ( message.sender ) {
         message.sender = getters.get_viewer_by_id( sender )
