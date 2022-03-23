@@ -1,18 +1,25 @@
 const
 
   get_links = event => {
+    const links = body.match( /(((https?:\/\/)|(www\.))[^\s]+)/g)
+    if ( !links ) {
+      return null
+    }
+    return [ ...new Set( links ) ]
+  },
 
+  before_create_or_update = event => {
     const 
       message = event.params.data,
-      body    = message.body,
-      links   = body && body.match( /(((https?:\/\/)|(www\.))[^\s]+)/g)
+      body    = message.body
 
-    if ( links ) {
-      event.params.data.links = [ ...new Set( links ) ]
-    } else {
-      event.params.data.links = null
+    if ( body ) {
+      event.params.data.links = get_links( body )
+      
     }
     
+    
+
   },
 
   after_create_or_update = event => {
@@ -34,8 +41,8 @@ const
 
 module.exports = {
 
-  beforeCreate: get_links,
-  beforeUpdate: get_links,
+  beforeCreate: before_create_or_update,
+  beforeUpdate: before_create_or_update,
 
   afterCreate: after_create_or_update,
   afterUpdate: after_create_or_update,

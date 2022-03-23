@@ -19,12 +19,13 @@ export default {
 </script>
 
 <template>
-  <ul>
+  <ul role="menu">
     <li 
       v-for="mode in modes"
       :key="mode.name"
       tabindex="0"
       class="mode"
+      role="menuitem"
     >
       <router-link 
         :title="`Switch to ${ mode.label } streaming mode`"

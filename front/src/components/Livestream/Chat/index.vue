@@ -9,12 +9,13 @@ export default {
   
   components: {
     Message,
-    Input
+    Input,
   },
 
   data() {
     return {
       expanded: false,
+      links_only: false,
     }
   },
 
@@ -26,7 +27,18 @@ export default {
 
   },
 
-  created() {
+  watch: {
+
+    messages_array:{
+      handler() { this.scrollToBottom() },
+      deep: true
+    },
+
+    expanded() {
+      if (this.expanded) {
+        this.scrollToBottom( true )
+      }
+    }
   },
 
   methods: {
@@ -37,24 +49,11 @@ export default {
           top: this.$refs.messages.scrollHeight,
           behavior: 'smooth'
         })
-      }, first ? 100 : 0)
+      }, first ? 100 : 50)
     }
 
   },
 
-  sockets: {
-    message() {
-      this.scrollToBottom()
-    }
-  },
-
-  watch: {
-    expanded() {
-      if (this.expanded) {
-        this.scrollToBottom( true )
-      }
-    }
-  }
 
 }
 </script>
@@ -87,6 +86,16 @@ export default {
             type="button"
             @click.stop="expanded = false"
           />
+          <label
+            title="Show only URLs"
+          >
+            Show only URLs
+            <input 
+              name="links"
+              type="checkbox"
+              v-model="links_only"
+            />
+          </label>
         </div>
         <span v-else>Chat</span>
       </label>
@@ -101,6 +110,7 @@ export default {
             :key="index"
             :style="{ '--n': count - index - 1 }"
             :message="message"
+            :links_only="links_only"
           />
         </div>
         <Input />
@@ -133,11 +143,13 @@ export default {
 #chat .contents {
   width: 100%;
   overflow: hidden;
+  pointer-events: none;
 }
 #chat.expanded .contents {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  pointer-events: all;
 }
 #chat.expanded .contents {
   max-width: 100%;

@@ -8,6 +8,9 @@ export default {
   name: 'Message',
 
   props: {
+    links_only: {
+      type: Boolean
+    },
     message: {
       type: Object
     },
@@ -15,18 +18,20 @@ export default {
 
   computed: {
 
-    id() { return this.message.id },
-    time() { return time.time_format( this.message.time ) },
-    body() { return this.$mdi( this.message.body ) },
+    id()       { return this.message.id },
+    time()     { return time.time_format( this.message.time ) },
+    body()     { return this.$mdi( this.message.body ) },
+    links()    { return this.message.links },
     censored() { return this.message.censored },
     
-    sender() { return this.message.sender },
-    sender_id() { return this.sender?.id },
+    sender()      { return  this.get_viewer_by_id( this.message.sender ) },
+    sender_id()   { return this.sender?.id },
     sender_name() { return this.sender?.name },
-    blocked() { return this.sender?.blocked },
+    blocked()     { return this.sender?.blocked },
 
     ...mapGetters( 'viewers', [
-      'moderator'
+      'moderator',
+      'get_viewer_by_id'
     ] )
 
   },
@@ -34,19 +39,23 @@ export default {
     ...mapActions( 'messages', [
       'censor_message',
       'delete_message'
-    ])
+    ]),
+    ...mapActions( 'viewers', [
+      'block_viewer'
+     ] )
   }
 }
 </script>
 
 <template>
-  <div 
+  <article 
     :class="[ 
       $id(), 
       { censored } 
     ]"
     tabindex="0"
     :aria-label="`Message from ${ sender }`"
+    v-if="links_only ? links : true"
   >
     <div 
       class="header"
@@ -62,22 +71,46 @@ export default {
         <span @click="censor_message( message )"> 
           {{ censored && 'uncensor' || 'censor' }} 
         </span>
+        <span @click="block_viewer( sender )"> 
+          {{ blocked && 'unblock' ||  'block' }}
+        </span>
         <span @click="delete_message( message )"> 
           delete 
         </span>
-        <span> block </span>
       </span>
     </div>
     <div 
+      v-if="!links_only"
       v-html="body"
       class="body"
       aria-label="Message body"
     >
     </div>
-  </div>
+    <div
+      v-else
+      class="body"
+      aria-label="Message URLs"
+    >
+      <ul
+        :aria-label="`Links from ${ sender_name }`"
+      >
+        <li
+          v-for="(url, index) in links"
+          :key="index"
+        >
+          <a 
+            target="blank"
+            :href="url"
+            :title="url"
+          >{{ url }}</a>
+        </li>
+      </ul>
+    </div>
+  </article>
 </template>
 
 <style scoped>
+
 .message {
   --accent: hsl( 
       var(--h), 

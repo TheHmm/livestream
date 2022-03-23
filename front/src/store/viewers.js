@@ -77,10 +77,6 @@ export default {
       return getters.me?.events
     },
 
-    get_event_by_id : ( state, getters, rootState, rootGetters ) => id => {
-      return rootGetters['events/event_bv_id']( id )
-    },
-
     current_event_id : ( state, getters, rootState, rootGetters ) => {
       return rootGetters['events/current_event_id']
     },
@@ -100,7 +96,7 @@ export default {
     set_viewer( { commit, getters }, viewer ) {
       const events = viewer.events?.data?.map( e => e.id ) || viewer.events
       if ( events ) {
-        viewer.events = events.map ( id => getters.get_event_by_id( id ) )
+        viewer.events = events
       }
       commit( 'SET_VIEWER', viewer )
     },
@@ -252,6 +248,21 @@ export default {
 
     },
 
+
+
+    // Blocking viewer
+
+    async block_viewer( {}, viewer ) {
+      try {
+        await api.viewers.put( viewer.id, {
+          blocked: !viewer.blocked,
+        })
+      } catch ( error ) {
+        throw error
+      }
+    },
+
+
     register( { commit }, viewer ) {
       commit( 'SET_UUID', viewer.uuid )
       localStorage.uuid = viewer.uuid
@@ -267,7 +278,6 @@ export default {
 
     socket_viewer( { dispatch }, viewer ) {
       logger.info( 'SOCKET', `viewer ${ viewer.name }` )
-      console.log(viewer)
       dispatch( 'set_viewer', viewer )
       // commit('SET_VIEWER', viewer)
       // if (

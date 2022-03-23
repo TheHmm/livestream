@@ -52,13 +52,13 @@ export default {
         .filter( m => m.links )
       )
     },
-    
+
     my_id : ( state, getters, rootState, rootGetters ) => {
       return rootGetters['viewers/my_id']
     },
 
-    get_viewer_by_id : ( state, getters, rootState, rootGetters ) => id => {
-      return rootGetters['viewers/get_viewer_by_id']( id )
+    blocked : ( state, getters, rootState, rootGetters ) => {
+      return rootGetters['viewers/blocked']
     },
 
     current_event_id : ( state, getters, rootState, rootGetters ) => {
@@ -78,17 +78,19 @@ export default {
     // Process and set message
 
     set_message( { commit, getters }, message ) {
+
       if ( message.deleted ) {
         commit( 'DELETE_MESSAGE', message )
         return
       }
-      const sender = message.sender?.data?.id || message.sender
-      if ( message.sender ) {
-        message.sender = getters.get_viewer_by_id( sender )
-      }
+      
       if ( message.censored ) {
         message.body = getters.censor_message
       }
+
+      message.sender = message.sender?.data?.id || message.sender
+
+      
       commit( 'SET_MESSAGE', message )
     },
 
@@ -127,17 +129,21 @@ export default {
     // Create a message.
 
     async create_message( { getters, dispatch }, body ) {
+      const message = { 
+        body, 
+        time: time.now(),
+        sender: getters.my_id,
+        event: getters.current_event_id 
+      }
+      if ( getters.blocked ) {
+        dispatch( 'set_message', message )
+        return message
+      }
       return new Promise( ( resolve, reject ) => 
         api
         .messages
-        .post({ 
-            body, 
-            time: time.now(),
-            sender: getters.my_id,
-            event: getters.current_event_id 
-        }) 
+        .post( message ) 
         .then( message => {
-          // dispatch( 'register', viewer )
           resolve( message ) 
         } )
         .catch( error => reject( error ) )
@@ -151,6 +157,7 @@ export default {
       try {
         await api.messages.put( message.id, {
           censored: !message.censored,
+          sender: message.sender,
         })
       } catch ( error ) {
         throw error
@@ -177,15 +184,6 @@ export default {
     // socket_count({ commit }, count) {
     //   commit('setCount', count)
     // },
-
-
-    // delete_message( state, message ) {
-    //   this._vm.$socket.client.emit('message', {
-    //     time: message.time,
-    //     deleted: true 
-    //   })
-    // },
-
 
 
   }

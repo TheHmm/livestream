@@ -42,10 +42,11 @@ export default {
     
   <form :onsubmit="donate">
 
-    <ul>
+    <ul role="menu">
       <li 
         v-for="( label, amount ) in donations"
         :key="amount"
+        role="menuitemradio"
       >
         <label 
           :title="label"

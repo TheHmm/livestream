@@ -5,18 +5,18 @@ import { logger } from '@/utils'
 export default {
 
 
-  get( time ) { 
-    logger.info( `API`, `Fetching message ${ time }.` )
-    return new Promise( ( resolve, reject ) => 
-      axios 
-      .get( `${ config.api_url }/messages`, { params: { time } } )
-      .then( result => resolve( result.data ) )
-      .catch( error => {
-        logger.error( 'API', error ) 
-        reject( error )
-      } )
-    ) 
-  },
+  // get( time ) { 
+  //   logger.info( `API`, `Fetching message ${ time }.` )
+  //   return new Promise( ( resolve, reject ) => 
+  //     axios 
+  //     .get( `${ config.api_url }/messages`, { params: { time } } )
+  //     .then( result => resolve( result.data ) )
+  //     .catch( error => {
+  //       logger.error( 'API', error ) 
+  //       reject( error )
+  //     } )
+  //   ) 
+  // },
 
   get_by_event( event_id ) { 
     logger.info( `API`, `Fetching messages.` )

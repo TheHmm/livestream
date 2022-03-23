@@ -16,10 +16,11 @@ export default {
 </script>
 
 <template>
-  <ul>
+  <ul role="menu">
     <li 
       v-for="( option, key ) in options"
       :key="key"
+      role="menuitemcheckbox"
     >
       <label
         :title="option.label"
