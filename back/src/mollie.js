@@ -10,6 +10,7 @@ module.exports = MOLLIE_CONFIG => {
     apiKey      = MOLLIE_CONFIG.KEY,
     redirectUrl = MOLLIE_CONFIG.REDIRECT_URL,
     webhookUrl  = MOLLIE_CONFIG.WEBHOOK_URL,
+    currency    = 'EUR',
 
 
     // We create the mollie client using our api key
@@ -24,20 +25,20 @@ module.exports = MOLLIE_CONFIG => {
       return Buffer.from(new Date(), 'utf8').toString('hex')
     },
 
-    
+
     // Function to make payments with mollie.
 
-    create_payment = async ({ amount, description, from }) => {
+    create_payment = async ({ amount: value, description, from }) => {
       return await mollie.payments.create({
         amount : {
-          currency : 'EUR',
-          value    : amount,
+          value,
+          currency,
         },
+        description,
         metadata : {
           order_id : order_id(),
         },
         redirectUrl: redirectUrl + `?from=${ from }`,
-        description,
         webhookUrl,
       })
     }
