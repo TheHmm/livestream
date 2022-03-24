@@ -90,14 +90,14 @@ export default {
       }
 
       message.sender = message.sender?.data?.id || message.sender
-
-      
+ 
       commit( 'SET_MESSAGE', message )
     },
 
-     // Fetch messages by event id 
 
-     fetch_messages( { dispatch }, event_id ) { 
+    // Fetch messages by event id 
+
+    fetch_messages( { dispatch }, event_id ) { 
       return new Promise( ( resolve, reject ) => 
         api
         .messages
@@ -176,6 +176,8 @@ export default {
       }
     },  
 
+
+    // Receive messages in real time
 
     socket_message( { dispatch }, message ) {
       logger.info( 'SOCKET', `Message ${ message.body }` )

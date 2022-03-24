@@ -1,11 +1,13 @@
-import meta       from './meta'
-import livestream from './livestream'
-import events     from './events'
-import viewers    from './viewers'
-import messages   from './messages'
-import { logger } from '@/utils'
-import axios      from 'axios'
-import qs         from 'qs'
+import { logger }    from '@/utils'
+import axios         from 'axios'
+import qs            from 'qs'
+
+import meta          from './meta'
+import livestream    from './livestream'
+import events        from './events'
+import viewers       from './viewers'
+import messages      from './messages'
+import announcements from './announcements'
 
 axios
 .interceptors
@@ -14,8 +16,7 @@ axios
   config.paramsSerializer = params => {
     return qs.stringify( params, {
       encode: false,
-      // encodeValuesOnly: true,
-    } )
+    })
   }
   return config 
 } )
@@ -60,5 +61,6 @@ export default {
   livestream,
   events,   
   viewers,
-  messages
+  messages,
+  announcements
 }

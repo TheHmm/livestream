@@ -212,20 +212,17 @@ export default {
         
         if ( !getters.has_been_to_current_event ) {
           logger.info('AUTH', 'You havent been to this event.')
-          const { me, my_events, current_event_id } = getters
-          try {
-            await api.viewers.put( me.id, {
-              events: [ ...my_events, current_event_id ],
-            })
-
-          
-          // This is probably a server error
-
-          } catch ( error ) {
-            throw error
-          }
+          await api.viewers.put( getters.me.id, {
+            events: [ 
+              ...getters.my_events, 
+              getters.current_event_id 
+            ],
+          })
         }
         
+
+        // We commit this to our state so we dont have to fetch
+        // everytime.
 
         commit( 'SET_AUTHENTICATED', true )
         logger.info( 'AUTH', `You're authenticated!` )

@@ -42,6 +42,10 @@ export default {
       return state.meta.censorMessage
     },
 
+    page_not_found_text: state => {
+      return state.meta.pageNotFoundText
+    }
+
   },
 
   actions: {

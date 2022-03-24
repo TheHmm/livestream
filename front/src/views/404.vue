@@ -1,10 +1,10 @@
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   name: 'NotFoundPage',
   computed: {
-    ...mapState([
-      'meta'
+    ...mapGetters( 'ui', [
+      'page_not_found_text'
     ])
   }
 }
@@ -16,6 +16,6 @@ export default {
     aria-labelledby="error_label"
   >
     <h2 id="error_label">404 Error</h2>
-    <p> {{ meta.pageNotFoundText }} </p>
+    <p> {{ page_not_found_text }} </p>
   </main>
 </template>

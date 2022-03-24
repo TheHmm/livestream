@@ -18,18 +18,6 @@ export default {
     }
   },
 
-  computed: {
-
-
-
-  },
-
-  async created() {
-    
-    
-
-  },
-
   methods: {
 
     ...mapActions( 'viewers', [
@@ -84,11 +72,11 @@ export default {
       placeholder ="type your message and hit enter" 
       v-model="message"
     />
-      <input 
-        type="submit" 
-        title="Send your message to all other viewers."
-        value="Send"
-      />
+    <input 
+      type="submit" 
+      title="Send your message to all other viewers."
+      value="Send"
+    />
   </form>
 
 </template>

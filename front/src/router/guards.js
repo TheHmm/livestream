@@ -23,10 +23,11 @@ const
   before_enter_event = async to => {
     const slug = to.params.slug 
     try {
-      const livestream = await store.dispatch( 'livestream/get_livestream' )
+      await store.dispatch( 'livestream/get_livestream' )
       const event = await store.dispatch( 'events/get_event', slug )
-      const vieweers = await store.dispatch( 'viewers/get_viewers', event.id )
-      const messages = await store.dispatch( 'messages/get_messages', event.id )
+      await store.dispatch( 'viewers/get_viewers', event.id )
+      await store.dispatch( 'messages/get_messages', event.id )
+      await store.dispatch( 'announcements/get_announcements', event.id )
     } catch ( error ) {
       return '404'
     }
