@@ -28,17 +28,22 @@ module.exports = MOLLIE_CONFIG => {
 
     // Function to make payments with mollie.
 
-    create_payment = async ({ amount: value, description, from }) => {
+    create_payment = async ({ amount, description, from }) => {
+      const 
+        value       = amount,
+        order_id    = order_id(),
+        redirectUrl = redirectUrl + `?from=${ from }`
+
       return await mollie.payments.create({
         amount : {
-          value,
-          currency,
+          value, 
+          currency 
         },
+        metadata : { 
+          order_id 
+        },
+        redirectUrl,
         description,
-        metadata : {
-          order_id : order_id(),
-        },
-        redirectUrl: redirectUrl + `?from=${ from }`,
         webhookUrl,
       })
     }
