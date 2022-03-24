@@ -1,13 +1,14 @@
 <script>
 
 import { defineAsyncComponent } from "vue"
-import Banner from '../Header/Banner.vue'
 import Marquee from '../Header/Marquee.vue'
+import Banner from '../Header/Banner.vue'
+import Viewers from './Viewers/index.vue'
+import Announcements from './Announcements/index.vue'
 import Info from './Info.vue'
 import Options from './Options/index.vue'
-import Viewers from './Viewers/index.vue'
-import Chat from './Chat/index.vue'
 import Network from '../Header/Network.vue'
+import Chat from './Chat/index.vue'
 
 export default {
 
@@ -21,12 +22,12 @@ export default {
     Player: defineAsyncComponent(() => import('./Player/index.vue')),
     Marquee,
     Banner,
+    Viewers,
+    Announcements,
     Info,
     Options,
-    Viewers,
-    Chat,
     Network,
-    // Announcements,
+    Chat,
   },
 
   data() {
@@ -64,7 +65,7 @@ export default {
     />
     <Banner />
     <Viewers />
-    <!-- <Announcements /> -->
+    <Announcements />
   </header>
 
   <section 

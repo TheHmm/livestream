@@ -1,4 +1,5 @@
-import api from '../api'
+import api from '@/api'
+import { logger } from '@/utils'
 
 export default {
 
@@ -30,7 +31,10 @@ export default {
 
     set_announcement( { commit, getters }, announcement ) {
 
-      if ( announcement.deleted ) {
+      if ( 
+          !announcement.publishedAt ||
+          announcement.deleted 
+        ) {
         commit( 'DELETE_ANNOUNCEMENT', announcement )
         return
       }
@@ -71,9 +75,9 @@ export default {
     
     // Receive announcements in real time
 
-    socket_message( { dispatch }, message ) {
-      logger.info( 'SOCKET', `Message ${ message.body }` )
-      dispatch( 'set_message', message )
+    socket_announcement( { dispatch }, announcement ) {
+      logger.info( 'SOCKET', `Announcement ${ announcement.title }` )
+      dispatch( 'set_announcement', announcement )
     },
 
 

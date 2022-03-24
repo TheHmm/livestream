@@ -15,7 +15,10 @@ const
     const announcement = { ...event.params.data, ...event.result }
     strapi.io.emit( 'announcement', announcement )
 
-    if ( announcement.publishedAt ) {
+    if ( 
+        announcement.publishedAt &&
+        announcement.expires 
+      ) {
       console.log('setting timeout', announcement.id)
       setTimeout( async () => {
         await unpublish( announcement.id )

@@ -9,7 +9,7 @@ export default {
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/announcements`, { params: { 
-        sort: 'time:asc',
+        sort: 'publishedAt:asc',
         filters: {
           events: {
             id: {
