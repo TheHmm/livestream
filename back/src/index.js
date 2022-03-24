@@ -27,22 +27,31 @@ module.exports = {
     require( 'dotenv' ).config()
 
 
-    // We get MUX_TOKEN_ details and the Mollie API key 
+    // We get MUX_TOKEN_ details and the MOLLIE_CONFIG 
     // from our .env file.
 
     const 
 
-      MUX_TOKEN  = {
-        ID     : process.env.MUX_TOKEN_ID,
-        SECRET : process.env.MUX_TOKEN_SECRET
+      MUX_CONFIG     = {
+        ID           : process.env.MUX_TOKEN_ID,
+        SECRET       : process.env.MUX_TOKEN_SECRET
       },
-      MOLLIE_KEY = process.env.MOLLIE_API_KEY
+
+      MOLLIE_CONFIG  = {
+        KEY          : process.env.MOLLIE_API_KEY,
+        REDIRECT_URL : process.env.MOLLIE_REDIRECT_URL,
+        WEBHOOK_URL  : process.env.MOLLIE_WEBHOOK_URL
+      }
+
 
 
     // We can only initialize MUX if MUX_TOKEN_ is provided;
     // else, we stop here and ask for MUX_TOKEN_ details.
 
-    if ( !MUX_TOKEN.ID || !MUX_TOKEN.SECRET ) {
+    if ( 
+        !MUX_CONFIG.ID || 
+        !MUX_CONFIG.SECRET 
+    ) {
       throw new Error( 'MUX API TOKEN NOT PROVIDED!' )
     }
 
@@ -50,8 +59,12 @@ module.exports = {
     // We can only initialize Mollie if the key is provided;
     // else, we stop here and ask for it.
 
-    if ( !MOLLIE_KEY ) {
-      throw new Error( 'MOLLIE API KEY NOT PROVIDED!' )
+    if ( 
+        !MOLLIE_CONFIG.KEY || 
+        !MOLLIE_CONFIG.REDIRECT_URL || 
+        !MOLLIE_CONFIG.WEBHOOK_URL 
+    ) {
+      throw new Error( 'MOLLIE API CONFIG NOT PROVIDED!' )
     }
 
 
@@ -61,8 +74,8 @@ module.exports = {
 
     const 
 
-      mux    = require( './mux' )( MUX_TOKEN ),
-      mollie = require( './mollie' )( MOLLIE_KEY ),
+      mux    = require( './mux' )( MUX_CONFIG ),
+      mollie = require( './mollie' )( MOLLIE_CONFIG ),
       io     = require( './io'  )( strapi.server.httpServer )
 
     
