@@ -25,11 +25,11 @@ export default {
     return new Promise( ( resolve, reject ) => 
       axios
       .post( `${ config.api_url }/meta/donate`, { amount, description } )
-      .then( result => resolve( result.statusText ) )
+      .then( result => resolve( result.data.data ) )
       .catch( error => {
         logger.error( 'API', error ) 
         reject( error )
-      } )
+      })
     ) 
   }
 

@@ -11,24 +11,29 @@ export default [
   // {
   //   path: '/',
   //   name: 'home',
-  //   component: () => import( '../views/Home.vue' ),
+  //   component: () => import( '@/views/Home.vue' ),
   //   beforeEnter: guards.before_enter_home
   // },
   // {
   //   path: '/about',
   //   name: 'about',
-  //   component: () => import( '../views/About.vue' )
+  //   component: () => import( '@/views/About.vue' )
   // },
   {
     path: '/error',
     name: 'Error',
-    component: () => import( '../views/Fallback.vue' )
+    component: () => import( '@/views/Fallback.vue' )
   },
   {
     path: '/:slug',
-    name: 'event',
-    component: () => import( '../views/Event.vue' ),
+    name: 'Event',
+    component: () => import( '@/views/Event.vue' ),
     beforeEnter: guards.before_enter_event,
+  },
+  {
+    path: '/donated',
+    name: 'Donated',
+    component: () => import( '@/views/Donated.vue' ),
   },
   {
     path: '/:pathMatch(.*)*',

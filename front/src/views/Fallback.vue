@@ -62,7 +62,7 @@ main section.loading {
 main >>> section {
   background: var(--white);
   max-width: min(70%, 50rem);
-  margin: 2rem auto;
+  margin: 5rem auto;
   overflow: scroll;
 }
 main >>> section,

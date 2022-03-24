@@ -75,7 +75,6 @@ section h3 {
   color: var(--accent);
   font-weight: normal;
   margin: auto;
-  margin-top: 10%;
   margin-bottom: 1rem;
   font-size: 1rem;
 }

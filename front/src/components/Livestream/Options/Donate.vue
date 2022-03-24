@@ -24,10 +24,14 @@ export default {
         return
       }
       try {
-        await api.meta.donate({
-          amount: this.selected,
-          description: this.donations[this.selected]
-        })
+        const 
+          payment = await api.meta.donate({
+            amount: this.selected,
+            description: this.donations[this.selected],
+            from: this.$route.query.slug
+          }),
+          checkout = payment._links?.checkout?.href
+        window.open( checkout, '_blank')
       } catch ( err ) {
         console.error(err)
       }
