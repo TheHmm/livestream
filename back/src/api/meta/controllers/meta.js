@@ -27,7 +27,7 @@ module.exports = createCoreController('api::meta.meta', ({ strapi }) => ({
 
       // console.log(this.transformResponse( payment ))
       console.log(ctx)
-      return payment
+      return { data: payment }
 
     } catch (error) {
       // console.warn('donate-err =>', error)
