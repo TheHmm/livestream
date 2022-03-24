@@ -29,7 +29,9 @@ module.exports = createCoreController('api::meta.meta', ({ strapi }) => ({
       // res.send(error)
     }
 
-    return ctx
+    console.log(this.transformResponse( payment ))
+
+    return payment
 
   },
 
