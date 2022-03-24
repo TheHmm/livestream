@@ -24,14 +24,15 @@ module.exports = createCoreController('api::meta.meta', ({ strapi }) => ({
       // res.send(payment)
       // // console.log('getPaymentUrl =>', payment._links.checkout)
       // // res.redirect(payment._links.checkout.url)
+      
+      console.log(this.transformResponse( payment ))
+      return payment
+
     } catch (error) {
       // console.warn('donate-err =>', error)
       // res.send(error)
     }
 
-    console.log(this.transformResponse( payment ))
-
-    return payment
 
   },
 

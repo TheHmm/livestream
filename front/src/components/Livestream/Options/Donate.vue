@@ -82,6 +82,7 @@ export default {
     <label>
       <input 
         type="submit" 
+        :disabled="!selected"
         :title="`Donate ${ selected } to The Hmm`"
         value="Send"
       />
