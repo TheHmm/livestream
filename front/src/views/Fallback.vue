@@ -6,21 +6,19 @@ export default {
 
   name:  "Fallback" ,
 
-  props: {
-    message: { type: String }
-  },
-
   components: { 
     Banner,
     Error
   },
 
-  computed: {
+  props: {
+    message: { type: String }
+  },
 
+  computed: {
     is_error() {
      return this.$route.name == 'Error'
     },
-
   }
 
 }
@@ -33,10 +31,11 @@ export default {
   >
     <Banner />
     <Error 
-      v-if="is_error"
+      v-if="is_error" 
     />
     <section
       v-else
+      class="loading"
       v-html="$md( message )"
     />
   </main>
@@ -53,11 +52,13 @@ main.error {
   --accent: hsl(352, 100%, 69%);
   font-family: monospace;
   font-size: 1rem;
-  white-space: pre;
 }
 main #banner {
   margin: 2rem auto;
 } 
+main section.loading {
+  text-align: center;
+}
 main >>> section {
   background: var(--white);
   max-width: min(70%, 50rem);

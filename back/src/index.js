@@ -24,50 +24,66 @@ module.exports = {
 
   async bootstrap(/*{ strapi }*/) {
 
-
-    // We get MUX_TOKEN_ details from root .env file.
-
     require( 'dotenv' ).config()
 
-    const MUX_TOKEN = {
-      ID     : process.env.MUX_TOKEN_ID,
-      SECRET : process.env.MUX_TOKEN_SECRET
-    }
+
+    // We get MUX_TOKEN_ details and the Mollie API key 
+    // from our .env file.
+
+    const 
+
+      MUX_TOKEN  = {
+        ID     : process.env.MUX_TOKEN_ID,
+        SECRET : process.env.MUX_TOKEN_SECRET
+      },
+      MOLLIE_KEY = process.env.MOLLIE_API_KEY
 
 
     // We can only initialize MUX if MUX_TOKEN_ is provided;
     // else, we stop here and ask for MUX_TOKEN_ details.
 
     if ( !MUX_TOKEN.ID || !MUX_TOKEN.SECRET ) {
-      return strapi.log.error( 'MUX API TOKEN NOT PROVIDED!' )
+      throw new Error( 'MUX API TOKEN NOT PROVIDED!' )
     }
 
 
-    // We import and initialize our MUX and IO objects. 
-    // These files contain the respecitve configurations 
-    // and methods of the two objects.
+    // We can only initialize Mollie if the key is provided;
+    // else, we stop here and ask for it.
+
+    if ( !MOLLIE_KEY ) {
+      throw new Error( 'MOLLIE API KEY NOT PROVIDED!' )
+    }
+
+
+    // We import and initialize our MUX, MOLLIE & IO modules. 
+    // These files contain the respecitve configurations and
+    // methods of these objects.
 
     const 
 
-      mux = require( './mux' )( MUX_TOKEN ),
-      io  = require( './io'  )( strapi.server.httpServer )
+      mux    = require( './mux' )( MUX_TOKEN ),
+      mollie = require( './mollie' )( MOLLIE_KEY ),
+      io     = require( './io'  )( strapi.server.httpServer )
 
     
-    // If either of the two were not initialized properly,
+    // If either of the three were not initialized properly,
     // we stop here and return an error 
 
-    if ( !mux || !io ) {
-      strapi.log.error( 'The MUX object or IO server was not initialized properly.' )
-      return
+    if ( !mux || !mollie || !io ) {
+      throw new Error( 
+        'MUX, MOLLIE or IO objects were not initialized.' 
+      )
     }
 
 
-    // We register these two objects onto our strapi 
-    // instance so that we can use them in other parts
-    // of our App.
+    // We "register" these three objects onto our strapi 
+    // instance so that we can use them in controllers &
+    // lifecycle hooks (eg. strapi.mux.get_start_time).
 
-    strapi.mux = mux
-    strapi.io  = io
+    strapi.mux    = mux
+    strapi.mollie = mollie
+    strapi.io     = io
+
 
 
     // Our main livestream initialization function. 
@@ -86,27 +102,21 @@ module.exports = {
       
       try { 
         found = await 
-          strapi
-          .service( 'api::livestream.livestream' )
-          .find()
-
+        strapi
+        .service( 'api::livestream.livestream' )
+        .find()
+        
         
         // If the entry has already been created before, then
         // pull the livestream ID and request from the MUX API
         // the latest information about the stream.
-
-        if ( found ?.privateData ?.id ) { 
-          strapi.log.info( 'Found existing livestream.' )
-          
-          try {
-            livestream = await 
-              mux
-              .get_livestream( found.privateData.id )
-
-          } catch ( error ) { 
-            return strapi.log.error( 'mux err', error )
-          }
         
+        const id = found ?.privateData ?.id
+        
+        if ( id ) { 
+          strapi.log.info( 'Found existing livestream.' )
+          livestream = await mux.get_livestream( id )
+
         
         // Else, we request from the MUX API to create a new
         // livestream, using the options that we defined in the
@@ -114,40 +124,26 @@ module.exports = {
 
         } else {
           strapi.log.info( 'Requesting new livestream.' )
-          
-          try { 
-            livestream = await 
-              mux
-              .create_livestream()
-          
-          } catch ( error ) {
-            return strapi.log.error( 'mux err', error )
-          }
-
+          livestream = await mux.create_livestream()
         }
 
-        if ( livestream ) {
 
-          // Then, we update the 'livestream' entry in Strapi
-          // with the new or updated livestream object.
+        // Then, we update the 'livestream' entry in Strapi
+        // with the new or updated livestream object.
 
-          try {
-            return await 
-              strapi
-              .service( 'api::livestream.livestream' )
-              .createOrUpdate( {
-                data: { livestream }
-              } )
+        return await 
+          strapi
+          .service( 'api::livestream.livestream' )
+          .createOrUpdate({
+            data: { livestream }
+          })
+
+
+      // It's possible something went wrong with MUX or
+      // Strapi. We return here.
             
-          } catch ( error ) {
-            return strapi.log.error( 'strapi err', error )
-          }
-
-        }
-
       } catch ( error ) {
-        return strapi.log.error( 'strapi err', error )
-
+        throw error
       }
 
     }
@@ -236,66 +232,16 @@ module.exports = {
 
 
       const
-        userCount = () => socket.client.conn.server.clientsCount,
-        ip = io.getIP(socket)
+        userCount = () => socket.client.conn.server.clientsCount
 
       strapi.log.info(`[ USER COUNT: ${userCount()} ]`)
       io.emit('count', userCount())
 
-      socket.on('user', user => {
-        user.ip  = ip
-        user.uid = ip.replace(/\./g, '') + user.name
-        io.sockets.emit('user', user)
-        // strapi.services.users.createOrUpdate(user)
-        socket.emit('userConfirm', user.uid)
-      })
-
-      socket.on('block', user => {
-        io.sockets.emit('user', user)
-        // strapi.services.users.createOrUpdate(user)
-      })
-
-      socket.on('message', message => {
-        io.sockets.emit('message', message)
-        // strapi.services.messages.createOrUpdate(message)
-      })
-
-      socket.on('announcement', ann => {
-        io.sockets.emit('announcement', ann)
-        // strapi.services.announcements.createOrUpdate(ann)
-      })
-
-      socket.on('clearusers', () => {
-        io.sockets.emit('clearusers')
-        // strapi.services.deletealluser
-      })
-
-      socket.on('clearchat', () => {
-        io.sockets.emit('clearchat')
-        // strapi.services.deleteallmessafgew
-      })
-
-      socket.on('geothenticate', () =>  {
-        const country = geoip.lookupCountry(ip)
-        socket.emit('geothenticated', {
-          ip, country, authenticated: geoAuth(country)
-        })
-      })
-
-      socket.on('smog', smog => {
-        io.sockets.emit('smog', smog)
-      })
-
-      socket.on('effect3D', effect3D => {
-        io.sockets.emit('effect3D', effect3D)
-      })
 
       socket.on('disconnect', () => {
         strapi.log.info(`[ USER COUNT: ${userCount()} ]`)
         io.emit('users', userCount() - 1)
       })
-
-
 
 
     })
@@ -304,10 +250,6 @@ module.exports = {
 
     await initialize()
 
-
-  
-  
-    // })
 
   },
 };

@@ -6,7 +6,7 @@ export default {
   name: 'Access',
   
   computed: {
-    ...mapState( 'ui', [ 'options' ] )
+    ...mapState( 'meta', [ 'ui' ] )
   },
   methods: {
     get_option( key ) {
@@ -28,7 +28,7 @@ export default {
 <template>
   <ul role="menu">
     <li 
-      v-for="( label, key ) in options"
+      v-for="( label, key ) in ui"
       :key="key"
       role="menuitemcheckbox"
     >

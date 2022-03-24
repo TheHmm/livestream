@@ -1,13 +1,11 @@
-// MUX-specific fuctions are here for better legibility
+// MOLLIE functions are here for better legibility
 
-module.exports = MOLLIE_API_KEY => {
+module.exports = MOLLIE_KEY => {
 
-  const { createMollieClient } = require('@mollie/api-client')
-  const mollie_client = createMollieClient({ apiKey: MOLLIE_API_KEY })
+  const { 
+    createMollieClient 
+  } = require( '@mollie/api-client' )
 
-  
-  return {
-    mollie_client,
-  }
+  return createMollieClient( { apiKey: MOLLIE_KEY  }) 
 
 }

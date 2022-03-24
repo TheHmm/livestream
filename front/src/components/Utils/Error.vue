@@ -5,18 +5,35 @@ export default {
 
   name:  "Error" ,
 
+  data() {
+    return {
+      messages: {
+        404: `The page you are looking for could not be found. Return [home](https://thehmm.nl/)`,
+        500: `Internal server error. Please contact [Karl](mailto:bonjour@moubarak.eu).`
+      }
+    }
+  },
+
   computed: {
 
-    ...mapState( 'ui', [ 'error' ]),
+    ...mapState( 'meta', [ 'error' ]),
 
     title() {
       return this.$route.query.type 
     },
 
     traces() {
-        return this.error?.traces
+      return this.error?.traces
+    },
+
+    message() {
+      return this.messages[ Object
+        .keys( this.messages )
+        .find( k => this.title.includes( k ) ) 
+      ]
     }
-  }
+
+  },
 
 }
 </script>
@@ -24,7 +41,8 @@ export default {
 <template>
 
   <section>
-    <h3>Error: {{ title }}</h3>
+    <h3>Error: {{ title }}.</h3>
+    <p v-html="$mdi( message )"></p>
     <table>
       <tr v-for="trace in traces">
         <td
@@ -56,10 +74,10 @@ export default {
 section h3 {
   color: var(--accent);
   font-weight: normal;
-  /* text-align: center; */
   margin: auto;
   margin-top: 10%;
   margin-bottom: 1rem;
+  font-size: 1rem;
 }
 section table td {
   color: var(--accent);

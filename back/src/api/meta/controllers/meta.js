@@ -15,6 +15,7 @@ module.exports = createCoreController('api::meta.meta', ({ strapi }) => ({
 
     const data = ctx.request.body
     console.log(data)
+    console.log( strapi.mollie )
     // try {
     //   const payment = await strapi.mollie.payments.create({
     //     amount: {

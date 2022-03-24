@@ -10,7 +10,7 @@ const
       .map( trace => trace.split('@') )
     }
     
-    store.commit( 'ui/SET_ERROR', error )
+    store.commit( 'meta/SET_ERROR', error )
     
     return {
       name: 'Error',

@@ -19,13 +19,13 @@ export default {
   },
 
   computed: {
-    ...mapState( 'ui', [
+    ...mapState( 'meta', [
       'mobile',
-      'options'
+      'ui'
     ]),
     access() {
       return Object
-      .keys( this.options )
+      .keys( this.ui )
       .reduce( ( acc, key ) => ( 
         { ...acc, [key]: this.$route.query[key] } 
       ), {} )
@@ -33,7 +33,7 @@ export default {
   }, 
 
   methods: {
-    ...mapMutations( 'ui', [ 'SET_MOBILE' ] ),
+    ...mapMutations( 'meta', [ 'SET_MOBILE' ] ),
     check_if_mobile() {
       return window.innerWidth < 700
     },   
@@ -49,7 +49,7 @@ export default {
 
   async mounted() {  
     try {
-      this.meta = await this.$store.dispatch( 'ui/get_meta' )
+      this.meta = await this.$store.dispatch( 'meta/get_meta' )
     } catch ( error ) {
       this.$router.push( 
         _throw( error ) 

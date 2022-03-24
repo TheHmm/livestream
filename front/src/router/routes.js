@@ -34,7 +34,7 @@ export default [
     path: '/:pathMatch(.*)*',
     redirect: {
       name: 'Error',
-      query: { type: '404' }
+      query: { type: 'Request failed with status code 404' }
     }
   }
 ]
