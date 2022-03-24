@@ -14,6 +14,8 @@ export default {
       reduce_motion: "Reduce motion", 
       reduce_depth: "Reduce depth", 
     },
+
+    error: null
   },
 
   mutations: {
@@ -25,6 +27,10 @@ export default {
     SET_MOBILE : ( state, mobile ) => {
       state.mobile = mobile
     },
+
+    SET_ERROR : ( state, error ) => {
+      state.error = error
+    }
     
   },
 

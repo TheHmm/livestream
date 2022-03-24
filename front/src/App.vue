@@ -1,19 +1,15 @@
 <script>
 
 import { mapMutations, mapState } from 'vuex'
-
-import Header  from './components/Header/index.vue'
-import Footer  from './components/Footer/index.vue'
-import Loading from './components/Utils/Loading.vue'
+import _throw from '@/router/throw'
+import Fallback from './views/Fallback.vue'
 
 export default {
 
   name: 'App',
 
   components: { 
-    Header,
-    Footer,
-    Loading
+    Fallback
   },
 
   data() {
@@ -55,8 +51,9 @@ export default {
     try {
       this.meta = await this.$store.dispatch( 'ui/get_meta' )
     } catch ( error ) {
-      console.error(error)
-      this.$router.push('404')
+      this.$router.push( 
+        _throw( error ) 
+      )
     }
   },
 
@@ -76,7 +73,10 @@ export default {
           ...access
         }"
       />
-      <loading v-else />
+      <Fallback 
+        v-else 
+        message="Loading..."
+      />
     </transition>
   </router-view>
 

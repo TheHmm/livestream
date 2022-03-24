@@ -1,4 +1,5 @@
 import guards from './guards'
+import _throw from './throw'
 
 export default [
 
@@ -19,9 +20,9 @@ export default [
   //   component: () => import( '../views/About.vue' )
   // },
   {
-    path: '/404',
-    name: 'Page Not Found',
-    component: () => import( '../views/404.vue' )
+    path: '/error',
+    name: 'Error',
+    component: () => import( '../views/Fallback.vue' )
   },
   {
     path: '/:slug',
@@ -32,7 +33,8 @@ export default [
   {
     path: '/:pathMatch(.*)*',
     redirect: {
-      name: 'Page Not Found'
+      name: 'Error',
+      query: { type: '404' }
     }
   }
 ]

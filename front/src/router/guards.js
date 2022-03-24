@@ -1,8 +1,8 @@
 import store from '@/store'
 import app from '@/main'
+import _throw from './throw'
 
 const 
-
 
   // Before accessing the homepage, we make sure that 
   // we have all the events from Strapi, to list them.
@@ -11,7 +11,7 @@ const
     try {
       await store.dispatch( 'events/get_events' )
     } catch ( error ) {
-      return '404'
+      return _throw( error )
     }
   },
 
@@ -28,11 +28,11 @@ const
       await store.dispatch( 'viewers/get_viewers', event.id )
       await store.dispatch( 'messages/get_messages', event.id )
       await store.dispatch( 'announcements/get_announcements', event.id )
+      const socket = app.config.globalProperties.$socket.client
+      socket.connect()
     } catch ( error ) {
-      return '404'
+      return _throw( error )
     }
-    const socket = app.config.globalProperties.$socket.client
-    socket.connect()
   }
 
 
