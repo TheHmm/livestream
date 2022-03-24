@@ -16,17 +16,13 @@ module.exports = createCoreController('api::meta.meta', ({ strapi }) => ({
     const data = ctx.request.body
 
     try {
-      const payment = await strapi
-        .mollie
-        .create_payment( data )
-
+      const payment = await strapi.mollie.create_payment( data )
       console.log( 'donate-payment =>', payment )
-      
       return { data: payment }
 
-    } catch (error) {
-      // console.warn('donate-err =>', error)
-      // res.send(error)
+    } catch ( error ) {
+      console.warn('donate-err =>', error)
+      return { data: error }
     }
 
 
@@ -34,7 +30,9 @@ module.exports = createCoreController('api::meta.meta', ({ strapi }) => ({
 
   webhook( ctx ) {
 
-    console.log( ctx )
+    // const payment = await mollieClient.payments.get(ctx.request.body.orderId)
+    // const data = await payment.json()
+    // console.log(data)
 
     return 'Thanks Mollie!'
 
