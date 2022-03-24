@@ -24,8 +24,8 @@ module.exports = createCoreController('api::meta.meta', ({ strapi }) => ({
       // res.send(payment)
       // // console.log('getPaymentUrl =>', payment._links.checkout)
       // // res.redirect(payment._links.checkout.url)
-      
-      console.log(this.transformResponse( payment ))
+
+      // console.log(this.transformResponse( payment ))
       return payment
 
     } catch (error) {
