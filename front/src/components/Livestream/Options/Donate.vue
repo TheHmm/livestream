@@ -28,7 +28,7 @@ export default {
           payment = await api.meta.donate({
             amount: this.selected,
             description: this.donations[this.selected],
-            from: this.$route.query.slug
+            from: this.$route.params.slug
           }),
           checkout = payment._links?.checkout?.href
         window.open( checkout, '_blank')
