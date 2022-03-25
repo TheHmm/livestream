@@ -239,20 +239,25 @@ module.exports = {
       })
 
 
-      const
-        userCount = () => socket.client.conn.server.clientsCount
+      const userCount = () => socket.client.conn.server.clientsCount
+
+      let uuid
 
       strapi.log.info(`[ USER COUNT: ${userCount()} ]`)
       io.emit('count', userCount())
 
       socket.on( 'viewer', viewer => {
+        uuid = viewer.uuid
         io.emit( 'viewer', viewer )
       })
 
 
       socket.on('disconnect', () => {
         strapi.log.info(`[ USER COUNT: ${userCount()} ]`)
-        // io.emit( 'viewer', 'disconnected' )
+        io.emit( 'viewer', {
+          uuid,
+          connected: false, 
+        })
         // io.emit('users', userCount() - 1)
       })
 
