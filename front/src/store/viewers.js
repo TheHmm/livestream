@@ -158,7 +158,7 @@ export default {
     // Create a viewer.
 
     async create_viewer( { getters, dispatch }, { name, lifetime } ) {
-      const expires = new Date( time.now() + lifetime * 24 * 60 * 60 * 1000 )
+      const expires = time.now() + lifetime * 24 * 60 * 60 * 1000
       return new Promise( ( resolve, reject ) => 
         api
         .viewers

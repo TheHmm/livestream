@@ -29,7 +29,7 @@ export default {
 
     id()     { return this.message.id },
     time()   { return time.time_format( this.message.time ) },
-    body()   { return this.$mdi( this.message.body ) },
+    body()   { return this.$mdi( this.message.body || '' ) },
     links()  { return this.message.links },
     sender() { return this.get_viewer_by_id( this.message.sender ) },
     name()   { return this.sender?.name },
@@ -103,7 +103,7 @@ export default {
   --accent: hsl( 
       var(--h), 
       var(--s),
-      calc( var(--l) + var(--n) * var(--increment) )
+      min( calc( var(--l) + var(--n) * var(--increment) ), 98% )
     );
   --back: var(--accent);
   background-color: var(--back);
