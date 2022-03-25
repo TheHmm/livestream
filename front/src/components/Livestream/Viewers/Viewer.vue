@@ -1,18 +1,23 @@
 <script>
+
 export default {
   name: 'Viewer',
   props: {
     viewer: {
       type: Object
     }
+  },
+  computed: {
+    name() { return this.viewer.name || 'uknown' }
   }
 }
+
 </script>
 
 <template>
   <div 
     :class="$id()"
-    :title="viewer.name"
+    :title="name"
     tabindex="-1"
   >
   </div>

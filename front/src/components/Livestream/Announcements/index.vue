@@ -37,6 +37,8 @@ export default {
   position: absolute;
   top: 2rem;
   width: 100%;
+  width: 0;
+  overflow: visible;
   height: 100%;
   padding: 0.5rem;
 }

@@ -162,11 +162,28 @@ module.exports = {
     }
 
 
+    const
+      uuids = [],
+
+      add_uuid = uuid => {
+        if ( uuids.indexOf( uuid ) < 0 ) {
+          uuids.push( uuid )
+        }
+      },
+
+      rm_uuid = uuid => {
+        if ( uuids.indexOf( uuid ) > -1 ) {
+          uuids.splice( uuids.indexOf( uuid ), 1 )
+        }
+      }
+
     let 
       srt = null,
       cc  = []
 
     io.on('connection', socket => {
+
+      socket.emit( 'viewers', uuids )
 
 
       // Closed Captions
@@ -247,13 +264,17 @@ module.exports = {
       io.emit('count', userCount())
 
       socket.on( 'viewer', viewer => {
-        uuid = viewer.uuid
-        io.emit( 'viewer', viewer )
+        if ( viewer.uuid ) {
+          uuid = viewer.uuid
+          add_uuid( uuid )
+          io.emit( 'viewer', viewer )
+        }
       })
 
 
       socket.on('disconnect', () => {
         strapi.log.info(`[ USER COUNT: ${userCount()} ]`)
+        rm_uuid( uuid )
         io.emit( 'viewer', {
           uuid,
           connected: false, 

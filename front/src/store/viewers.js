@@ -43,10 +43,18 @@ export default {
       return Object.values( state.viewers )
     },
 
+    connected_viewers : ( state, getters ) => {
+      return ( 
+        getters
+        .viewers_array
+        .filter( v => v.connected )
+      )
+    },
+ 
     count: ( state, getters ) => {
       return (
         getters
-        .viewers_array
+        .connected_viewers
         .length
       )
     },
@@ -100,15 +108,17 @@ export default {
     // Process and set message
 
     set_viewer( { commit, getters }, viewer ) {
-      const events = viewer.events?.data?.map( e => e.id ) || viewer.events
-      if ( events ) {
-        viewer.events = events
+      if ( viewer.uuid ) {
+        const events = viewer.events?.data?.map( e => e.id ) || viewer.events
+        if ( events ) {
+          viewer.events = events
+        }
+        const found = getters.get_viewer[viewer.uuid]
+        if ( found ) {
+          viewer = { ...found, ...viewer }
+        }
+        commit( 'SET_VIEWER', viewer )
       }
-      const found = getters.get_viewer[viewer.uuid]
-      if ( found ) {
-        viewer = { ...found, ...viewer }
-      }
-      commit( 'SET_VIEWER', viewer )
     },
 
 
@@ -276,23 +286,29 @@ export default {
     },
 
 
-    // Register viewers uuid to local storage
+    // Register viewer's uuid to local storage
 
     register( { commit }, viewer ) {
       commit( 'SET_UUID', viewer.uuid )
       localStorage.uuid = viewer.uuid
     },
+ 
 
-
-    // When receiving viewer event from strapi it means
-    // a viewer was created. They have a new 'official
-    // uuid' so we have to switch their temporary one for
-    // the official one.
 
     socket_viewer( { dispatch }, viewer ) {
       logger.info( 'SOCKET', `Viewer ${ viewer.name || 'anonymous' }` )
       dispatch( 'set_viewer', viewer )
-      // switch uuid
+    },
+
+
+    socket_viewers( { dispatch }, uuids ) {
+      logger.info( 'SOCKET', `Got connected viewers ${ viewers }` )
+      for ( const uuid of uuids ) {
+        dispatch( 'set_viewer',  {
+          uuid,
+          connected: true,
+        })
+      }
     },
 
 

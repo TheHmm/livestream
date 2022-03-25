@@ -20,6 +20,7 @@ export default {
 <style scoped>
 
 .announcement {
+  --side-width: 20vw;
   --n: 1;
   --back: var(--accent);
   background-color: var(--back);
@@ -27,6 +28,7 @@ export default {
   transition: 
     box-shadow var(--fast) ease
   ;
+  min-width: var(--side-width);
   max-width: var(--side-width);
   transform: translateX(calc(var(--side-width) * -2 ));
   animation: enter var(--enter) ease calc( var(--n) *  0.1s) forwards;

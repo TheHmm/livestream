@@ -24,6 +24,9 @@ export default {
       'mobile',
       'ui'
     ]),
+    ...mapState( 'viewers', [
+      'uuid',
+    ]),
     access() {
       return Object
       .keys( this.ui )
@@ -110,7 +113,7 @@ export default {
 
 .fade-leave-active {
   opacity: 1;
-  animation: leave var(--enter) ease 3s forwards;
+  animation: leave var(--enter) ease 2s forwards;
 }
 
 @keyframes leave {
