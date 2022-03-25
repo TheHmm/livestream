@@ -115,6 +115,7 @@ header .marquee {
   --fore: var(--white);
   background-color: var(--back);
   box-shadow: var(--shadow);
+  max-height: 80%;
   width: 100%;
   flex-grow: 1;
   flex-shrink: 1;
@@ -123,7 +124,7 @@ header .marquee {
   padding-bottom: calc( var(--footer-height) + 1rem );
   display: flex;
   flex-direction: row-reverse;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: stretch;
   transition: background-color var(--very-slow) ease;
   z-index: 0;

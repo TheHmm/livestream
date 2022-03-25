@@ -1,5 +1,7 @@
 <script>
 import { mux } from '@/utils/livestream'
+import Captions from './Captions.vue'
+
 
 // The default 'native' player with a <video> or
 // <audio> tag when the browser has support for 
@@ -9,9 +11,15 @@ export default {
 
   name: 'NativeMedia',
 
+  components:{
+    Captions
+  },
+
   props: {
-    livestream : { type: Object },
-    mode       : { type: Object }
+    livestream       : { type: Object },
+    mode             : { type: Object },
+    desires_captions : { type: Boolean }
+
   },
 
   computed: {
@@ -40,11 +48,11 @@ export default {
     aria-label="video player"
     :src="source_url"
   >
-    <!-- <Captions 
-      :player="player"
+     <Captions 
+      v-if="desires_captions"
+      :hls="hls"
       :stream_start="stream_start"
-      :native="true"
-    /> -->
+    />
   </video>
   <audio
     v-else
@@ -54,11 +62,6 @@ export default {
     aria-label="audio player"
     :src="source_url"
   >
-    <!-- <Captions 
-      :player="player"
-      :stream_start="stream_start"
-      :native="true"
-    /> -->
   </audio>
 </template>
 

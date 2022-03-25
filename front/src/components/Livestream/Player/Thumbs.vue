@@ -3,6 +3,7 @@ import { mux } from '@/utils/livestream'
 import { time } from '@/utils'
 import api from '@/api'
 import Captions from './Captions.vue'
+import Play from './Play.vue'
 
 
 // The image / thumb player. This uses mux's handy API
@@ -16,15 +17,18 @@ export default {
 
   components: {
     Captions,
+    Play,
   },
 
   props: {
-    livestream: { type: Object }
+    livestream: { type: Object },
+    desires_captions: { type: Boolean }
   },
 
   data() {
     return {
       curr_time    : 0,
+      url          : null,
       image_data   : null,
       interval     : null,
       reload_every : 5 * 1000,
@@ -37,31 +41,42 @@ export default {
     },
     time_format() {
       return time.time_format( this.curr_time * 1000  ) 
+    },
+    playing() {
+      return this.interval !== null
     }
     
   },  
 
   created() {
-    this.$socket.client.emit('join_CC_room')
-    this.reload_image()
-    this.interval = setInterval(() => {
-      this.reload_image()
-    }, this.reload_every )
+    this.play()
   },
 
   beforeUnmount() {
-    this.$socket.client.emit('leave_CC_room')
-    if ( this.interval ) {
-      clearInterval( this.interval )
-    }
+    this.pause()
   },
 
   methods: {
 
+    play() {
+      this.reload_image()
+      this.interval = setInterval(() => {
+        this.reload_image()
+      }, this.reload_every )
+    },
+
+    pause() {
+      if ( this.interval ) {
+        clearInterval( this.interval )
+        this.interval = null
+      }
+    },
+
     reload_image() {
       this.curr_time = this.get_cur_time()
+      this.url = this.source_url()
       api
-      .get( this.source_url(), { responseType: 'blob' } )
+      .get( this.url, { responseType: 'blob' } )
       .then( res => this.image_data = this.image_src( res.data ) )
     },
 
@@ -85,23 +100,48 @@ export default {
 
 <template>
   <div
-    id="low_res_player"
+    :id="$id()"
     aria-label="thumbnail player"
   > 
+    <section
+      v-if="image_data"
+    >
+      <div class="controls">
+        <Play
+          :playing="playing"
+          @click="playing ? pause() : play() "
+        />
+      </div>
+      <div class="image_contaier">
+        <img
+          ref="img"
+          :title="`Thumbnail of livestream at ${ time_format }`"
+          :alt="`Thumbnail of livestream at ${ time_format }`"
+          :src="image_data"
+        />
+        <div class="desc">
+          <p>
+            ↪ <a 
+                target="blank"
+                :title="`Thumbnail of livestream at ${ time_format }`"
+                :href="url"
+              >Thumbnail of livestream at <time>{{ time_format }}</time></a>
+            <br>(1 frame every {{ reload_every / 1000 }} seconds).
 
-    <img
-      ref="img"
-      :title="`Thumbnail of livestream at ${ time_format }`"
-      :alt="`Thumbnail of livestream at ${ time_format }`"
-      :src="image_data"
-    />
-    <div role="status">
-      <p>
-        Thumbnail of livestream at <time>{{ time_format }}</time>
-        (1 frame every {{ reload_every / 1000 }} seconds).
-      </p>
-    </div>
+          </p>
+        </div>
+      </div>
+      <div class="controls">
+      </div>
+    </section>
+    <section
+      v-else
+    >
+      <span>Loading...</span>
+    </section>
     <Captions 
+      v-if="desires_captions"
+      :playing="playing"
       :native="false"
     />      
   </div>
@@ -110,5 +150,50 @@ export default {
 
 <style scoped>
 
+#thumbs {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  text-align: justify;
+}
+#thumbs #captions {
+  text-align: center;
+  align-items: center ;
+  border-top: 1px dashed var(--fore);
+}
+
+img {
+}
+#thumbs section {
+  height: 100%;
+  float: right;
+  display: flex;
+  padding: 1rem;
+  align-self: stretch;
+  justify-content: center;
+  align-items: center;
+}
+
+#thumbs .image_contaier {
+  flex-basis: 33%;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  justify-content: center;
+  align-items: center;
+}
+
+#thumbs .controls {
+  flex-basis: 33%;
+}
+
+#thumbs section .desc {
+  font-size: 0.9rem;
+  text-align: center;
+}
+#thumbs section .desc p {
+  margin-block-end: 0;
+}
 
 </style>

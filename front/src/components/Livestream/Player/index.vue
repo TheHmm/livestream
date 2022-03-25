@@ -7,7 +7,6 @@ import Thumbs               from './Thumbs.vue'
 import HlsMedia             from './HlsMedia.vue'
 import NativeMedia          from './NativeMedia.vue'
 
-
 export default {
   
   name: 'Player',
@@ -26,7 +25,10 @@ export default {
   computed: {
     mode() {
       return this.$store.getters['livestream/current_mode']( this )
-    }
+    },
+    desires_captions() {
+      return this.$route.query['captions'] === 'true'
+    },
   },
 
   data() {
@@ -102,6 +104,7 @@ export default {
 <template>
   <div
     :id="$id()"
+    :class="mode.name"
     aria-label="livestream player"
   >
 
@@ -109,6 +112,7 @@ export default {
       :is="player" 
       :livestream="livestream"
       :mode="mode"
+      :desires_captions="desires_captions"
     />
 
   </div>
@@ -118,28 +122,47 @@ export default {
 
 #player {
   width: 100%;
-  display: flex;
+  /* display: flex; */
 }
 
-video,
-audio,
-#low_res_player
- {
-  width: 100%;
+#player.transcript,
+#player.thumbs,
+#player.audio {
+  border: 1px dashed var(--fore);
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
   height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+#player.audio {
+  align-items: center;
+  justify-content: center;
+}
+
+input {
+  color: black
+}
+
+#player .controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+
+
+
+video {  
+    width: 100%;
+  /* height: 100%; */
   max-width: 100%;
   max-height: 100%;
   object-fit: cover;
 }
 
-#low_res_player {
-  display: flex;
-}
-
-.captions {
-  max-height: 300px;
-  overflow: scroll;
-}
 
 .mobile video {
   object-fit:unset;

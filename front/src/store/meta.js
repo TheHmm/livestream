@@ -13,6 +13,7 @@ export default {
     ui: {
       reduce_motion: "Reduce motion", 
       reduce_depth: "Reduce depth", 
+      captions: "Closed Captions"
     },
 
     error: null,

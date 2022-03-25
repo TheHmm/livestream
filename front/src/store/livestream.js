@@ -142,22 +142,22 @@ export default {
     },
 
     socket_confirmJoinSrt( { commit }, srt ) {
-      commit( 'SET_TRACK', captions.srt_to_vtt( srt ) )
       logger.info( 'SOCKET', `Subscribed to subtitle track.`)
+      commit( 'CLEAR_TRACK' )
+      commit( 'SET_TRACK', captions.srt_to_vtt( srt ) )
     },
 
     socket_confirmLeaveSrt( { commit }) {
-      commit( 'CLEAR_TRACK' )
       logger.info( 'SOCKET', `Unsubscribed from subtitle track.`)
     },
 
     socket_confirmJoinCc( { commit }, cc ) {
       logger.info( 'SOCKET', `Subscribed to closed captions.`)
+      commit( 'CLEAR_CC' )
       commit( 'SET_CC', cc ) 
     },
 
     socket_confirmLeaveCc( { commit }) {
-      commit( 'CLEAR_CC' )
       logger.info( 'SOCKET', `Unsubscribed from closed captions.`)
 
     },
@@ -169,7 +169,6 @@ export default {
     socket_final( { commit }, caption ) {
       commit( 'SET_CC_INTERIM', null )  
       commit( 'ADD_CAPTION', caption ) 
-      console.log(caption)
     },
 
     socket_srt( { commit }, srt ) {

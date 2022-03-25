@@ -13,15 +13,15 @@ export default {
   name: 'Captions',
 
   props: {
-    player: {
+    playing: {
+      type: Boolean,
+    },
+    hls: {
       type: Object
     },
     stream_start: {
       type: Number
     },
-    native: {
-      type: Boolean
-    }
   },
 
   data() {
@@ -44,40 +44,79 @@ export default {
 
   watch: {
 
+    playing() {
+      if ( this.playing ) {
+        this.play() 
+      } else {
+        this.pause()
+      }
+    },
+
+    cc_interim() {
+      if ( !this.hls ) {
+        this.scroll_to_bottom()
+      }
+    },
+
     'cc':{
       deep: true,
       handler() {
-        this.update_track()
+        if ( this.hls ) {
+          this.update_track()
+        }
       }
-    }
+    },
+
 
   },
 
   created() {
+    this.play()
   },
 
-  async mounted() {
+  mounted() {
+    if ( !this.hls ) {
+      this.scroll_to_bottom()
+    }
   },
 
   updated() {
   },
 
   beforeUnmount() {
+    this.pause()
   },
 
 
   methods: {
 
+    play() {
+     this.$socket.client.emit('join_CC_room')
+    },
+
+    pause() {
+     this.$socket.client.emit('leave_CC_room')
+    },
+
+    scroll_to_bottom() {
+      setTimeout(() => {
+        this.$el.scroll({
+          top: this.$el.scrollHeight,
+          behavior: 'smooth'
+        })
+      }, 50)
+    },
+
     update_track() {
-      console.log(this.cc)
-      const current_cc = this.cc[this.cc.length - 1]?.text
-      if (this.native && this.player?.player && current_cc) {
+      const current_cc = this.cc[this.cc.length - 1]
+      if ( this.hls && current_cc?.text ) {
+        console.log(this.cc)
         const
           now                     = time.now(),
           stream_start            = this.stream_start,
           current_livestream_time = ( now - stream_start ) / 1000,
-          live_sync_position      = this.player.player.liveSyncPosition,
-          _latency                = this.player.player.latencyController._latency 
+          live_sync_position      = this.hls.liveSyncPosition,
+          _latency                = this.hls.latencyController._latency 
 
         console.log(
           current_cc,
@@ -113,7 +152,7 @@ export default {
 <template>
 
   <track
-    v-if="native && track_src"
+    v-if="hls && track_src"
     default 
     srclang="en" 
     kind="captions" 
@@ -130,7 +169,7 @@ export default {
       :key="id"
       class="caption"
     >
-    {{ caption.text }}
+    <span>{{ caption.text }}</span>
     </p>
     <p
       v-if="cc_interim"
@@ -144,10 +183,22 @@ export default {
 
 <style scoped>
 
-
 #captions {
-  max-height: 300px;
+  padding: 0 1rem;
   overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+#captions p {
+  margin-block-start: 0;
+}
+#captions p span {
+  --fore: var(--accent);
+  --back: var(--white);
+  display: inline;
+  background-color: var(--back);
+  padding: 0.125rem 0.5rem;
 }
 
 </style>

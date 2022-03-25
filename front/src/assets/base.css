@@ -143,8 +143,9 @@ body *::selection {
 a,
 a:active,
 a:visited {
-  --fore           : var(--blue);
+  /* --fore           : var(--blue); */
   color            : var(--fore);
+  font-style       : italic;
 }
 
 

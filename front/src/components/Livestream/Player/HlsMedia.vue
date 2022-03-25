@@ -1,6 +1,10 @@
 <script>
 import { mux } from '@/utils/livestream'
 import networking from '@/networking'
+import Captions from './Captions.vue'
+import Play from './Play.vue'
+import Volume from './Volume.vue'
+import Mute from './Mute.vue'
 
 
 // The 'foreign' HLS player with a <video> or <audio>
@@ -11,14 +15,25 @@ export default {
 
   name: 'HlsMedia',
 
+  components: {
+    Captions,
+    Play,
+    Volume,
+    Mute
+  },
+
+
   props: {
-    livestream : { type: Object },
-    mode       : { type: Object }
+    livestream       : { type: Object },
+    mode             : { type: Object },
+    desires_captions : { type: Boolean }
   },
  
   data() {
     return {
       hls : null,
+      playing: false,
+      muted: true,
       updating: false,
     }
   },
@@ -43,16 +58,14 @@ export default {
         this.destroy()
         await this.init()
       }
-    }
+    },
   },
 
   async created() {
-    this.$socket.client.emit('join_CC_room')
     await this.init()
   },
 
   beforeUnmount() {
-    this.$socket.client.emit('leave_CC_room')
     this.destroy()
   },
 
@@ -65,20 +78,48 @@ export default {
       this.hls = new Hls()
       this.init_stream_monitor( this.hls, Hls.Events )
       this.hls.loadSource( source_url )
-      this.hls.attachMedia( this.$el )
+      this.hls.attachMedia( this.$refs.media )
       this.hls.on( Hls.Events.MANIFEST_PARSED, ( event, data ) => {
         if (this.mode.name == 'video') {
-          for ( let l = 0; l < data.levels.length; l ++ ) {
-            this.$store.dispatch('livestream/create_mode_from_hls_level', {
-              ...data.levels[l], 
-              ...{ id: l }
-            })
-          }
+          this.levels_to_modes( data.levels )
         }
-        this.$el.play()
+        this.play()
       })
       this.updating = false
     },
+
+    play() {
+      this.playing = true
+      this.$refs.media.play()
+    },
+
+    pause() {
+      this.playing = false
+      this.$refs.media.pause()
+    },
+
+    mute() {
+      this.muted = true
+      this.$refs.media.muted = true
+    },
+
+    unmute() {
+      this.muted = false
+      this.$refs.media.muted = false
+    },
+
+    volume_up() {
+      if ( this.$refs.media.volume < 1 ) {
+        this.$refs.media.volume += 0.1
+      }
+    },
+    
+    volume_down() {
+      if ( this.$refs.media.volume > 0 ) {
+        this.$refs.media.volume -= 0.1
+      }
+    },
+
  
     destroy() {
       if ( this.hls ) {
@@ -86,6 +127,15 @@ export default {
         this.hls = null
       }
       this.$store.commit('livestream/RESET_MODES')
+    },
+
+    levels_to_modes( levels ) {
+      for ( let id = 0; id < levels.length; id ++ ) {
+        this.$store.dispatch('livestream/create_mode_from_hls_level', {
+          ...data.levels[id], 
+          ...{ id }
+        })
+      }
     },
 
     init_stream_monitor( events ) {
@@ -102,35 +152,60 @@ export default {
 <template>
   <video
     v-if="mode.video"
+    ref="media"
     muted
     controls
     autoplay
     aria-label="video player"
     :src="source_url"
   >
-    <!-- <Captions 
-      :player="player"
+    <Captions 
+      v-if="desires_captions"
+      :hls="hls"
       :stream_start="stream_start"
-      :native="true"
-    /> -->
+    />
   </video>
-  <audio
-    v-else
-    muted
-    controls
-    autoplay
-    aria-label="audio player"
-    :src="source_url"
-  >
-    <!-- <Captions 
-      :player="player"
-      :stream_start="stream_start"
-      :native="true"
-    /> -->
-  </audio>
+  <section v-else>
+    <div class="controls">
+      <Play
+        :playing="playing"
+        @click="playing ? pause() : play() "
+      />
+      <Mute
+        v-if="muted"
+        :muted="muted"
+        @click="muted ? unmute() : mute() "
+      />
+      <Volume
+        direction="-"
+        @click="this.volume_down()"
+      />
+      <Volume
+        direction="+"
+        @click="this.volume_up()"
+      />
+    </div>
+    <audio
+      muted
+      autoplay
+      ref="media"
+      aria-label="audio player"
+      :src="source_url"
+    >
+    </audio>
+  </section>
 </template>
 
 <style scoped>
 
+section {
+  padding: 10%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.controls {
+  width: 100%;
+}
 
 </style>
