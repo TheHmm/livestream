@@ -23,7 +23,7 @@ export default {
 
     ...mapGetters( 'viewers', [
       'moderator',
-      'me',
+      'uuid',
       'get_viewer_by_id',
     ]),
 
@@ -32,8 +32,8 @@ export default {
     body()   { return this.$mdi( this.message.body || '' ) },
     links()  { return this.message.links },
     sender() { return this.get_viewer_by_id( this.message.sender ) },
-    name()   { return this.sender?.name },
-    mine()   { return this.sender == this.me }
+    name()   { return this.sender?.name || 'unknown' },
+    mine()   { return this.sender?.uuid == this.uuid }
 
   },
 
@@ -133,7 +133,7 @@ export default {
 }
 
 .message .body {
-  margin-top: 0.5rem ;
+  margin-top: 0.25rem ;
 }
 
 .message >>> .options {

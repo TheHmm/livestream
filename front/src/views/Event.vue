@@ -1,5 +1,5 @@
 <script>
-
+import {logger} from '@/utils'
 import Livestream from '@/components/Livestream/index.vue'
 import Banner from '../components/Header/Banner.vue'
 
@@ -22,7 +22,9 @@ export default {
 
   created() {
 
-  }
+  },
+
+ 
 }
 </script>
 

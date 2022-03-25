@@ -3,6 +3,7 @@
 import { mapMutations, mapState } from 'vuex'
 import _throw from '@/router/throw'
 import Fallback from './views/Fallback.vue'
+import {logger} from '@/utils'
 
 export default {
 
@@ -55,6 +56,22 @@ export default {
         _throw( error ) 
       )
     }
+  },
+
+  sockets: {
+
+    // When we connect to the socket server, we need to
+    // send everyone our uuid, even if the viewer hasn't
+    // been stored to the database, this way, all visitors
+    // can see each other and send reactions.
+
+    connect() {
+      logger.info( 'SOCKET', 'Connected.' )
+      this.$socket.client.emit('viewer', {
+        uuid: this.uuid,
+        connected: true,
+      })
+    },
   },
 
 }

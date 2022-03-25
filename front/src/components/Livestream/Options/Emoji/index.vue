@@ -13,20 +13,21 @@ export default {
   computed: {
     ...mapGetters( 'events', [
       'emoji_groups'
-    ])
+    ]),
+    ...mapGetters( 'viewers', [
+      'uuid'
+    ]),
   },
 
   methods: {
 
-    ...mapActions( 'viewers', [
-    ]),
 
     send( group, emoji ) { 
       console.log( group, emoji)
       this.$socket.client.emit( 'emoji', {
         group,
         emoji,
-        // uuid 
+        uuid : this.uuid 
       })
     }
   },

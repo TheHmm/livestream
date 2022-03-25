@@ -88,7 +88,7 @@ export default {
   margin: 0;
 }
 #options .tab .contents ul li {
-  padding: 0 1rem;
+  padding: 0 0.5rem;
 }
 #options .tab .contents ul li label,
 #options .tab .contents ul li input {

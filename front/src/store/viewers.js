@@ -1,14 +1,20 @@
 import api from '../api'
 import { logger, time } from '../utils'
+import { v4 as uuid } from 'uuid';
+
 
 export default {
 
   namespaced: true,
 
   state: {
+
     viewers : {},
-    uuid : localStorage.uuid ? localStorage.uuid : null,
-    authenticated: false,
+
+    uuid : localStorage.uuid || uuid(),
+
+    authenticated : false,
+
   },
 
   mutations: {
@@ -98,8 +104,13 @@ export default {
       if ( events ) {
         viewer.events = events
       }
+      const found = getters.get_viewer[viewer.uuid]
+      if ( found ) {
+        viewer = { ...found, ...viewer }
+      }
       commit( 'SET_VIEWER', viewer )
     },
+
 
     // Fetch viewers by event id 
 
@@ -158,14 +169,18 @@ export default {
     // Create a viewer.
 
     async create_viewer( { getters, dispatch }, { name, lifetime } ) {
-      const expires = time.now() + lifetime * 24 * 60 * 60 * 1000
+      const 
+        uuid    = getters.uuid,
+        events  = [ getters.current_event_id ],
+        expires = time.now() + lifetime * 24 * 60 * 60 * 1000
       return new Promise( ( resolve, reject ) => 
         api
         .viewers
         .post({ 
           name, 
-          ...( lifetime && { expires } ),
-          events: [ getters.current_event_id ] 
+          uuid,
+          events,
+          ...( lifetime && { expires } )
         }) 
         .then( viewer => {
           dispatch( 'register', viewer )
@@ -198,7 +213,7 @@ export default {
         return
       }
 
-      logger.info( 'AUTH', `You have a UUID: ${ state.uuid }.` )
+      logger.info( 'AUTH', `Found UUID: ${ state.uuid }.` )
 
 
       // Then we fetch the viewer from the server. We do this
@@ -269,26 +284,13 @@ export default {
     },
 
 
-    // When we connect to the socket server, we need to
-    // send everyone our uuid, be it temporry or official.
-    // this way unregistered viewers can send emoji.
-
-    socket_connect() {
-      logger.info( 'SOCKET', 'connect' )
-      // emit uuid or temp_uuid {
-      //   uuid: state.uuid,
-      //   temp_uuid: state.temp_uuid,
-      // }
-    },
-
-
     // When receiving viewer event from strapi it means
     // a viewer was created. They have a new 'official
     // uuid' so we have to switch their temporary one for
     // the official one.
 
     socket_viewer( { dispatch }, viewer ) {
-      logger.info( 'SOCKET', `viewer ${ viewer.name }` )
+      logger.info( 'SOCKET', `Viewer ${ viewer.name || 'anonymous' }` )
       dispatch( 'set_viewer', viewer )
       // switch uuid
     },

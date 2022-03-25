@@ -168,11 +168,6 @@ module.exports = {
 
     io.on('connection', socket => {
 
-      socket.on('hello', data => {
-        console.log('hello', data)
-        io.sockets.emit('hello', data)
-      })
-
 
       // Closed Captions
 
@@ -210,7 +205,7 @@ module.exports = {
       
       
       // Viewers joining 'cc' room will get the captions that
-      //  have been previously recorded.
+      // have been previously recorded.
 
       socket.on('join_CC_room', () => {
         socket.join('cc')
@@ -249,6 +244,10 @@ module.exports = {
 
       strapi.log.info(`[ USER COUNT: ${userCount()} ]`)
       io.emit('count', userCount())
+
+      socket.on( 'viewer', viewer => {
+        io.emit( 'viewer', viewer )
+      })
 
 
       socket.on('disconnect', () => {

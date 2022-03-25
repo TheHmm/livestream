@@ -31,7 +31,7 @@ export default {
       url          : null,
       image_data   : null,
       interval     : null,
-      reload_every : 5 * 1000,
+      reload_every : 15 * 1000,
     }
   },
 

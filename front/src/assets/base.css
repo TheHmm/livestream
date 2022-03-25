@@ -111,9 +111,9 @@ body {
 /* See file: @/front/index.html */
 
 /* Default font sizes from toni */
-/* => body copy  : 18px => 1.00rem */
-/* => interface  : 24px => 1.33rem */
-/* => buttons    : 42px => 2.33rem */
+/* => body copy : 18px => 1.00rem */
+/* => interface : 24px => 1.33rem */
+/* => buttons   : 42px => 2.33rem */
 
 body {
   font-family      : Arial;
@@ -143,7 +143,6 @@ body *::selection {
 a,
 a:active,
 a:visited {
-  /* --fore           : var(--blue); */
   color            : var(--fore);
   font-style       : italic;
 }
@@ -195,7 +194,8 @@ a:visited {
 .tab .contents {
   background       : var(--back);
   max-height       : 0;
-  min-width        : 0;
+  min-width        : 10rem;
+  max-width        : 10rem;
   padding          : 0;
   transition       : 
     padding    var(--fast) ease-in-out,
@@ -210,7 +210,7 @@ a:visited {
 .tab:focus-within .contents,
 .tab:focus .contents {
   max-height       : 14rem;
-  max-width        : 12rem;
+  max-width        : 10rem;
   padding          : 0.5rem 0;
 }
 

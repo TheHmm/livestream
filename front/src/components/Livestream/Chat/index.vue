@@ -146,6 +146,7 @@ export default {
   align-items: center;
 }
 #chat .contents {
+  min-width: 100%;
   width: 100%;
   overflow: hidden;
   pointer-events: none;
