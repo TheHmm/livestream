@@ -27,7 +27,7 @@ const DEFAULT_MODES = () => ({
     id: 0,
     name: 'video',
     label: 'high-res',
-    hls: true,
+    video: true,
   },
 
 })
@@ -71,6 +71,7 @@ export default {
     CLEAR_CC       : state => state.cc = [],
 
     SET_MODE       : ( state, mode ) => state.modes[mode.name] = mode,
+    SET_MODE_LABEL : ( state, { name, label } ) => state.modes[name].label = label,
     DELETE_MODE    : ( state, name ) => delete state.modes[name],
 
     RESET_MODES    : state => state.modes = DEFAULT_MODES()
@@ -127,7 +128,7 @@ export default {
         id    : level.id,
         name  : level.attrs.RESOLUTION,
         label : level.attrs.RESOLUTION,
-        hls   : true,
+        video : true,
       })
     },
 

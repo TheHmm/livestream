@@ -1,22 +1,19 @@
 <script>
 
 import { defineAsyncComponent } from "vue"
-import Marquee from '../Header/Marquee.vue'
-import Banner from '../Header/Banner.vue'
-import Viewers from './Viewers/index.vue'
-import Announcements from './Announcements/index.vue'
-import Info from './Info.vue'
-import Options from './Options/index.vue'
-import Network from '../Header/Network.vue'
-import Chat from './Chat/index.vue'
+import Marquee                  from '../Header/Marquee.vue'
+import Banner                   from '../Header/Banner.vue'
+import Viewers                  from './Viewers/index.vue'
+import Announcements            from './Announcements/index.vue'
+import Info                     from './Info/index.vue'
+import Status                   from './Info/Status.vue'
+import Options                  from './Options/index.vue'
+import Network                  from '../Header/Network.vue'
+import Chat                     from './Chat/index.vue'
 
 export default {
 
   name: 'Livestream',
-
-  props: {
-    event: { type: Object },
-  },
 
   components: {
     Player: defineAsyncComponent(() => import('./Player/index.vue')),
@@ -25,26 +22,31 @@ export default {
     Viewers,
     Announcements,
     Info,
+    Status,
     Options,
     Network,
     Chat,
+    Status,
+  },
+
+  props: {
+    event: { type: Object },
   },
 
   data() {
     return {
+      header_label : 'banner & announcements',
+      middle_label : 'event information & livestream player',
+      footer_label : 'options & chat'
     }
   },
 
   computed: {  
 
-    // Event-specific marquee
-
-    marquee() { return this.event.marquee },
-
     // Most important property is the livestream. The livestream 
-    // object is attached to the event in the api scripts. It can 
+    // object is attached to the event in the store scripts. It can 
     // return a static object or refer to the livestream entry in 
-    // the store. Please refer to: @/api/events/sanitize
+    // the store. Please refer to: @/store/events/sanitize
 
     livestream()  { return this.event.livestream() },
     playback_id() { return this.livestream.playbackId },
@@ -57,10 +59,12 @@ export default {
 </script>
   
 <template>
-  <!-- <pre> {{ livestream }} </pre>  -->
-  <header aria-label="banner & announcements">
+
+  <header 
+    :aria-label="header_label"
+  >
     <Marquee 
-      :marquee="marquee"
+      :marquee="event.marquee"
       :animate="!active"
     />
     <Banner />
@@ -70,7 +74,7 @@ export default {
 
   <section 
     id="middle"
-    aria-label="event information & livestream player"
+    :aria-label="middle_label"
   >
     <Info
       :event="event"
@@ -80,16 +84,15 @@ export default {
       v-if="playback_id && active"
       :livestream="livestream"
     />
-    <div 
+    <Status 
       v-else
-      id="status"
-      aria-label="livestream status"
-    >
-      <p role="status">{{ status }}</p>
-    </div>
+      :status="status"
+    /> 
   </section>
   
-  <footer aria-label="options & chat">
+  <footer 
+    :aria-label="footer_label"
+  >
     <Options />
     <Network />
     <Chat />
@@ -99,13 +102,10 @@ export default {
 
 <style scoped>
 
-
 header {
   position: relative;
   max-height: 20%;
-  /* overflow: visible; */
 }
-
 header .marquee {
   height: 2rem;
 }
@@ -130,22 +130,10 @@ header .marquee {
   transform: translateY(100%);
   animation: enter var(--enter) ease 0.1s forwards;
 }
-
 @keyframes enter {
   from { transform: translateY(100%) }
   to { transform: translateY(0) }
 }
-
-#middle #status {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed var(--fore);
-}
-
 #middle #info {
   flex-shrink: 0;
   margin-left: 1rem;
@@ -153,7 +141,6 @@ header .marquee {
 
 footer {
   --back: var(--accent);
-  /* background-color: var(--back); */
   position: fixed;
   bottom: 0;
   flex-grow: 0;
@@ -164,39 +151,30 @@ footer {
   display: flex;
   align-items: flex-end;
 }
-
 footer #options {
 }
-
 footer #network {
   margin: 0.2rem 1rem;
   margin-right: auto; 
 }
-
 footer #chat_container {
   margin-left: 1rem;
   width: calc(var(--side-width));
 }
 
-
-
 .mobile #middle {
   flex-direction: column-reverse;
   align-items: stretch;
-  /* padding-bottom: unset; */
 }
 .mobile #middle #status {
   width: unset;
   max-height: 30%;
 }
-
 .mobile footer {
   max-height: 6rem;
   flex-direction: row-reverse;
 }
-
 .mobile footer {
-  /* flex-wrap: wrap; */
   flex-direction: column-reverse;
 }
 </style>

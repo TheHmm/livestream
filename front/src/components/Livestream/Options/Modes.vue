@@ -30,8 +30,36 @@ export default {
           }
         })
       }
+    },
+
+  },
+
+  watch: {
+    current_mode: {
+      handler( new_mode, old_mode ) {
+        if ( new_mode.video ) {
+          this.set_video_mode_label( 'auto' )
+        } else {
+          this.set_video_mode_label( 'high-res' )
+        }
+        // if ( old_mode.video && !new_mode.video ) {
+        //   this.set_video_mode_label( 'high-res' )
+        // }
+        // else if ( !old_mode.video && new_mode.video ) { 
+        //   this.set_video_mode_label( 'auto' )
+        // }
+      }
     }
   },
+
+  methods: {
+    set_video_mode_label( label ) {
+      this.$store.commit('livestream/SET_MODE_LABEL', {
+        name: 'video',
+        label
+      })
+    }
+  }
 
 }
 </script>

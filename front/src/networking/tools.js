@@ -46,7 +46,7 @@ export default {
       data           = response.data,
       headers        = response.headers,
 
-      data_size      = +headers[ 'content-length' ] || data.length,
+      data_size      = +headers[ 'content-length' ] || data.length || 0,
       header_size    = json_size( headers ) - HEADER_GAP,
       bytes_received = data_size + header_size
 
