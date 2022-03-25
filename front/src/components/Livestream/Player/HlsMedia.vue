@@ -2,8 +2,6 @@
 import { mux } from '@/utils/livestream'
 import networking from '@/networking'
 import Captions from './Captions.vue'
-import Play from './Play.vue'
-import Volume from './Volume.vue'
 import Mute from './Mute.vue'
 
 
@@ -17,8 +15,6 @@ export default {
 
   components: {
     Captions,
-    Play,
-    Volume,
     Mute
   },
 
@@ -98,28 +94,10 @@ export default {
       this.$refs.media.pause()
     },
 
-    mute() {
-      this.muted = true
-      this.$refs.media.muted = true
-    },
-
     unmute() {
       this.muted = false
       this.$refs.media.muted = false
     },
-
-    volume_up() {
-      if ( this.$refs.media.volume < 1 ) {
-        this.$refs.media.volume += 0.1
-      }
-    },
-    
-    volume_down() {
-      if ( this.$refs.media.volume > 0 ) {
-        this.$refs.media.volume -= 0.1
-      }
-    },
-
  
     destroy() {
       if ( this.hls ) {
@@ -167,22 +145,10 @@ export default {
   </video>
   <section v-else>
     <!-- <div class="controls">
-      <Play
-        :playing="playing"
-        @click="playing ? pause() : play() "
-      />
       <Mute
         v-if="muted"
         :muted="muted"
         @click="muted ? unmute() : mute() "
-      />
-      <Volume
-        direction="-"
-        @click="this.volume_down()"
-      />
-      <Volume
-        direction="+"
-        @click="this.volume_up()"
       />
     </div> -->
     <audio

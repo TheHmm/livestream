@@ -40,14 +40,8 @@ export default {
         if ( new_mode.video ) {
           this.set_video_mode_label( 'auto' )
         } else {
-          this.set_video_mode_label( 'high-res' )
+          this.set_video_mode_label( 'video' )
         }
-        // if ( old_mode.video && !new_mode.video ) {
-        //   this.set_video_mode_label( 'high-res' )
-        // }
-        // else if ( !old_mode.video && new_mode.video ) { 
-        //   this.set_video_mode_label( 'auto' )
-        // }
       }
     }
   },

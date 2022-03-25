@@ -143,7 +143,6 @@ export default {
     },
 
     register( hls, Events, monitor ) {
-      console.log(hls, Events)
       hls.on( Events.FRAG_LOADING, monitor.frag_loading )
       hls.on( Events.FRAG_LOADED, monitor.frag_loaded )
     },
