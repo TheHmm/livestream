@@ -246,7 +246,6 @@ export default {
     },
 
 
-
     // Blocking viewer
 
     async block_viewer( {}, viewer ) {
@@ -260,37 +259,41 @@ export default {
     },
 
 
+    // Register viewers uuid to local storage
+
     register( { commit }, viewer ) {
       commit( 'SET_UUID', viewer.uuid )
       localStorage.uuid = viewer.uuid
     },
 
-    socket_connect( ) {
+
+    // When we connect to the socket server, we need to
+    // send everyone our uuid, be it temporry or official.
+    // this way unregistered viewers can send emoji.
+
+    socket_connect() {
       logger.info( 'SOCKET', 'connect' )
+      // emit uuid or temp_uuid {
+      //   uuid: state.uuid,
+      //   temp_uuid: state.temp_uuid,
+      // }
     },
 
-    socket_disconnect( ) {
-      logger.info( 'SOCKET', 'disconnect' )
-    },
+
+    // When receiving viewer event from strapi it means
+    // a viewer was created. They have a new 'official
+    // uuid' so we have to switch their temporary one for
+    // the official one.
 
     socket_viewer( { dispatch }, viewer ) {
       logger.info( 'SOCKET', `viewer ${ viewer.name }` )
       dispatch( 'set_viewer', viewer )
-      // commit('SET_VIEWER', viewer)
-      // if (
-      //   state.uuid &&
-      //   viewer.uuid === state.uuid &&
-      //   !state.isAdmin
-      //   // user.uuid.includes(state.uuid.replace(user.name, '')) &&
-      // ) {
-      //   if (viewer.blocked) {
-      //     logger.warn(`STORE`, 'blocked')
-      //     commit('setBlock', true)
-      //   } else {
-      //     logger.warn(`STORE`, 'unblocked')
-      //     commit('setBlock', false)
-      //   }
-      // } 
+      // switch uuid
+    },
+
+
+    socket_disconnect( ) {
+      logger.info( 'SOCKET', 'disconnect' )
     },
     
     // socket_count({ commit }, count) {

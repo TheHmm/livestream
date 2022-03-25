@@ -76,7 +76,7 @@ export default {
       const source_url = this.source_url
       const { default: Hls } = await import( 'hls.js' )
       this.hls = new Hls()
-      this.init_stream_monitor( this.hls, Hls.Events )
+      this.init_stream_monitor( Hls.Events )
       this.hls.loadSource( source_url )
       this.hls.attachMedia( this.$refs.media )
       this.hls.on( Hls.Events.MANIFEST_PARSED, ( event, data ) => {
@@ -131,10 +131,10 @@ export default {
 
     levels_to_modes( levels ) {
       for ( let id = 0; id < levels.length; id ++ ) {
-        this.$store.dispatch('livestream/create_mode_from_hls_level', {
-          ...data.levels[id], 
-          ...{ id }
-        })
+        this.$store.dispatch(
+          'livestream/create_mode_from_hls_level', 
+          { ...levels[id], id }
+        )
       }
     },
 
@@ -166,7 +166,7 @@ export default {
     />
   </video>
   <section v-else>
-    <div class="controls">
+    <!-- <div class="controls">
       <Play
         :playing="playing"
         @click="playing ? pause() : play() "
@@ -184,8 +184,9 @@ export default {
         direction="+"
         @click="this.volume_up()"
       />
-    </div>
+    </div> -->
     <audio
+      controls
       muted
       autoplay
       ref="media"

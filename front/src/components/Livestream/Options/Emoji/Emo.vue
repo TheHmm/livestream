@@ -7,12 +7,7 @@ export default {
 
   props: {
     emo: { type: Object },
-    selected: { type: Boolean }
   },
-
-  emits: [
-    'select'
-  ],
 
   computed: {
     name() { return this.emo.name },
@@ -34,6 +29,7 @@ export default {
       v-if="img_url"
       :src="img_url"
       :alt="caption"
+      :title="caption"
     >
     <label
       v-else 

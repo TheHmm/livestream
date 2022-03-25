@@ -81,6 +81,7 @@ export default {
 <style scoped>
 
 .message {
+  --increment: 4%;
   --accent: hsl( 
       var(--h), 
       var(--s),

@@ -1,5 +1,5 @@
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Emo from './Emo.vue'
 
 export default {
@@ -10,13 +10,6 @@ export default {
     Emo
   },
 
-  data() {
-    return {
-      selected: null,
-      website: '',
-    }
-  },
-
   computed: {
     ...mapGetters( 'events', [
       'emoji_groups'
@@ -24,14 +17,17 @@ export default {
   },
 
   methods: {
-    async send( e ) { 
-      e.preventDefault()
-      if (this.website !== '') {
-        return
-      }
-      //  soccket send emote
-      console.log(this.selected)
-      this.selected = null
+
+    ...mapActions( 'viewers', [
+    ]),
+
+    send( group, emoji ) { 
+      console.log( group, emoji)
+      this.$socket.client.emit( 'emoji', {
+        group,
+        emoji,
+        // uuid 
+      })
     }
   },
 
@@ -51,7 +47,7 @@ export default {
         v-for="emo in group.emoji"
         :key="emo.name"
         :emo="emo"
-        @click="send( emo )"
+        @click="send( group.name, emo.name )"
       />      
     </ul>
   </div>
