@@ -1,7 +1,7 @@
 <script>
 
 import { time } from '@/utils'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Moderation from './Moderation.vue'
 import Links from './Links.vue'
 
@@ -21,19 +21,28 @@ export default {
 
   computed: {
 
+    ...mapGetters( 'viewers', [
+      'moderator',
+      'me',
+      'get_viewer_by_id',
+    ]),
+
     id()     { return this.message.id },
     time()   { return time.time_format( this.message.time ) },
     body()   { return this.$mdi( this.message.body ) },
     links()  { return this.message.links },
-    sender() { return  this.get_viewer_by_id( this.message.sender ) },
+    sender() { return this.get_viewer_by_id( this.message.sender ) },
     name()   { return this.sender?.name },
-
-    ...mapGetters( 'viewers', [
-      'moderator',
-      'get_viewer_by_id'
-    ] )
+    mine()   { return this.sender == this.me }
 
   },
+
+  methods: {
+    ...mapActions( 'messages', [
+      'delete_message'
+    ])
+  },
+
 }
 </script>
 
@@ -60,6 +69,15 @@ export default {
         :message="message"
         :sender="sender"
       />
+      <span
+        v-if="mine"
+        role="menu"
+        class="options"
+      >
+        <span @click="delete_message( message )"> 
+          delete 
+        </span>
+      </span>
     </div>
 
     <div 
@@ -118,6 +136,17 @@ export default {
   margin-top: 0.5rem ;
 }
 
+.message >>> .options {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+.message >>> .options span {
+  font-size: 0.6rem;
+  text-decoration: underline;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
 .message.censored .body {
   font-style: italic;
   font-size: 0.8rem;

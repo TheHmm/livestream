@@ -1,5 +1,5 @@
 import api from '../api'
-import { logger } from '../utils'
+import { logger, time } from '../utils'
 
 export default {
 
@@ -157,12 +157,14 @@ export default {
 
     // Create a viewer.
 
-    async create_viewer( { getters, dispatch }, name ) {
+    async create_viewer( { getters, dispatch }, { name, lifetime } ) {
+      const expires = new Date( time.now() + lifetime * 24 * 60 * 60 * 1000 )
       return new Promise( ( resolve, reject ) => 
         api
         .viewers
         .post({ 
           name, 
+          ...( lifetime && { expires } ),
           events: [ getters.current_event_id ] 
         }) 
         .then( viewer => {

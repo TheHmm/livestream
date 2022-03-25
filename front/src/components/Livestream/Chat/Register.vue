@@ -28,12 +28,16 @@ export default {
 
     async send( e ) {
       e.preventDefault()
-      if ( !this.name || !this.agrees ) { 
+      const { name, agrees, lifetime } = this
+      if ( !name || !agrees ) { 
         return 
       }
       this.sending = true
       try {
-        await this.$store.dispatch( 'viewers/create_viewer', this.name )
+        await this.$store.dispatch( 'viewers/create_viewer', { 
+          name,
+          lifetime
+        })
         this.sending = false
         this.$emit('close')
       } catch ( error ) {
@@ -59,7 +63,7 @@ export default {
     :id="$id()"
   >
     <div v-if="error">
-      <p> An server error seemed to have occurred. Please contact us.</p>
+      <p> A server error seemed to have occurred. Please contact us.</p>
       <input 
         class="close"
         type="reset" 
@@ -104,7 +108,7 @@ export default {
       </label>
       <p>To better handle chat moderation and prevent abusive behaviour, we are introducing a cookie-like function to our livestream.</p>
       <p>When you submit your display name, a unique identifier <code>UID</code> will be created for you on our server and stored in your browser's <code>localStorage</code>.</p>
-      <p>You can opt into automatically deleting your <code>UID</code> from our server after some time has passed. Your messages will remain on our server, but be anonymised. Keep this field empty to opt out of auto-deletion.</p>
+      <p>You can opt into automatic <em>scheduled anonymiztion</em>: to anonymise your messages from your <code>UID</code> after a specified number of days have passed. Keep this field empty to opt out of scheduled anonymization.</p>
       <label
         class="lifetime"
         title="User lifetime"
@@ -113,7 +117,7 @@ export default {
           type="number"
           min="1"
           max="365"
-          v-bind="lifetime"
+          v-model.lazy.trim="lifetime"
         />
         days.
       </label> 

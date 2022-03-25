@@ -253,7 +253,8 @@ module.exports = {
 
       socket.on('disconnect', () => {
         strapi.log.info(`[ USER COUNT: ${userCount()} ]`)
-        io.emit('users', userCount() - 1)
+        // io.emit( 'viewer', 'disconnected' )
+        // io.emit('users', userCount() - 1)
       })
 
 

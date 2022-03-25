@@ -14,7 +14,6 @@ export default {
   computed: {
     censored() { return this.message?.censored },
     blocked()  { return this.sender?.blocked },
-
   },
 
   methods: {
@@ -32,7 +31,7 @@ export default {
 <template>
   <span
     role="menu"
-    :class="$id()"
+    class="options"
   >
 
     <span @click="censor_message( message )"> 
@@ -52,16 +51,5 @@ export default {
 
 <style scoped>
 
-.moderation {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-}
-.moderation span {
-  font-size: 0.6rem;
-  text-decoration: underline;
-  margin-left: 0.5rem;
-  cursor: pointer;
-}
 
 </style>
