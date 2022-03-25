@@ -2,7 +2,8 @@
   "collectionName": "components_emoji_emojis",
   "info": {
     "displayName": "emoji",
-    "icon": "angry"
+    "icon": "angry",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -11,19 +12,20 @@
       "required": true
     },
     "image": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "audio": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "fly": {
       "type": "boolean",
