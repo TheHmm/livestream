@@ -69,11 +69,13 @@ export default {
           fields: '*',
           populate: [
             'logo',
+            'recording',
             // 'viewers',
             // 'messages',
             // 'announcements',
             'emoji_groups',
-            'recording'
+            'emoji_groups.emoji',
+            'emoji_groups.emoji.image',
           ]
         } } )
       .then( result => resolve( result.data.data ) )

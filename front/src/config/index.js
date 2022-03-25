@@ -5,10 +5,11 @@ const
 
   // Environment file
 
-  env        = import.meta.env,
-  url        = env.VITE_APP_URL,
-  api_url    = env.VITE_APP_API_URL,
-  socket_url = env.VITE_APP_SOCKET_URL,
+  env         = import.meta.env,
+  url         = env.VITE_APP_URL,
+  socket_url  = env.VITE_APP_SOCKET_URL,
+  api_url     = env.VITE_APP_API_URL,
+  api_img_url = env.VITE_APP_API_IMG_URL,
 
 
   // Event default options
@@ -36,8 +37,9 @@ const
 
 export default {
   url,
-  api_url,
   socket_url,
+  api_url,
+  api_img_url,
   networking,
   md,
   events

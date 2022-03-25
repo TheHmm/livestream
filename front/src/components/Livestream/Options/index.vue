@@ -1,18 +1,20 @@
 <script>
+import Title  from './Title.vue'
 import Access from './Access.vue'
 import Donate from './Donate.vue'
 import Modes  from './Modes.vue'
-import Title from './Title.vue'
+import Emoji  from './Emoji/index.vue'
 
 export default {
 
   name: 'Options',
 
   components: {
+    Title,
     Access,
     Donate, 
     Modes,
-    Title,
+    Emoji
   },
 
   data() {

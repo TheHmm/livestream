@@ -66,6 +66,12 @@ export default {
       .id
     ,
 
+    emoji_groups : ( state, getters ) => 
+      getters
+      .current_event
+      .emoji_groups
+    ,
+
     get_event_slugs : state => state
       .events
       .map( e => e.slug )
@@ -190,6 +196,13 @@ export default {
 function sanitize ( event, rootGetters ) {
 
   event.accent = color.hsl_to_css_vars(event.accent)
+
+  if ( event.emoji_groups?.data ) {
+    event.emoji_groups.data.map( g => {
+      g.emoji.map( e => e.image = e.image?.data )
+    })
+    event.emoji_groups = event.emoji_groups.data
+  }
 
   // When is it ?
 
