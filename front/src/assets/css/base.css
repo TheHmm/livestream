@@ -1,0 +1,200 @@
+@font-face {
+  font-family: 'impact-nieuw';
+  src: url('../fonts/impact-nieuw.woff2');
+}
+
+:root {
+
+
+  /* Default The Hmm colors */
+
+  --black          : hsl(   0,   0%,   0% );
+  --white          : hsl(   0,   0%, 100% );
+  --yellow         : hsl(  60, 100%,  50% );
+  --blue           : hsl( 240, 100%,  50% );
+  --light-grey     : hsl(   0,   0%,  88% );
+  --mid-grey       : hsl(   0,   0%,  39% );
+  --dark-grey      : hsl(   0,   0%,  20% );
+  --orange-red     : hsl( 352, 100%,  69% );
+
+
+  /* Foregrounds and backgrounds */
+  /* Changes with different elements */
+  
+  --fore           : var(--black);
+  --back           : var(--white);
+  
+
+  /* The default accent color used in the entire website */
+  /* This value is overidden in the Event page. */
+
+  --accent         : var(--yellow);
+  --error          : var(--orange-red);
+
+
+  /* Shadow parameters for box-shadows and drop-shadows */
+
+  --shadow-color   : hsla(0, 0%, 0%, 0.288);
+  --shadow-size    : 1rem;
+  --shadow         : 0 0 var(--shadow-size) 0 var(--shadow-color);
+  --filter-shadow  : 0 0 var(--shadow-size) var(--shadow-color);
+
+
+  /* Custom dashed border */
+
+  --dash           : 1px dashed;
+  
+
+  /* Transition and animation speeds */
+
+  --very-fast      : 0.125s;
+  --fast           : 0.25s;
+  --slow           : 0.5s;
+  --very-slow      : 1s;
+  --enter          : var(--slow);
+
+
+  /* Default ssizes of sections of the page */
+
+  --marquee-height : 2.33rem;
+  --header-height  : max( 23%, 10rem);
+  --side-width     : 20rem;
+  --footer-height  : 4rem;
+  
+}
+
+
+/* Accessibility* classes attached to <main> */
+/* All speeds are set to 0 to reduce motion */
+
+.reduce_motion {
+  --very-fast      : 0s;
+  --fast           : 0s;
+  --slow           : 0s;
+  --very-slow      : 0s;
+}
+
+
+/* All nodes are stripped of their animations / transitions */
+
+.reduce_motion * {
+  animation        : none !important;
+  transform        : none !important;
+  opacity          : unset !important;
+}
+
+
+/* All shadow params are reduced to 0 to eliminate depth. */
+
+.reduce_depth {
+  --shadow-color   : hsla(0, 0%, 0%, 0);
+  --shadow-size    : 0;
+  --shadow         : none;
+  --filter-shadow  : 0 0 0 transparent;
+}
+
+
+/* All nodes are stripped of their box-shadows / drop-shadows */
+
+.reduce_depth * {
+  box-shadow       : none !important;
+  filter           : none !important;
+}
+
+
+/* Preventing headaches */
+
+*,
+*::before,
+*::after {
+  box-sizing       : border-box;
+  color            : var(--fore);
+}
+
+
+/* Any element that is selected gets inverted */
+
+*::selection {
+  background-color : var(--fore);
+  color            : var(--back);
+} 
+
+
+/* Any element that is focused get's a Hmm outline */
+
+*:focus {
+  outline          : 0.15rem solid var(--blue);
+}
+
+
+/* Stripping document of browser styles and adding toni's:*/
+/* => body copy : 18px => 1.00rem */
+/* => interface : 24px => 1.33rem */
+/* => buttons   : 42px => 2.33rem */
+
+html,
+body {
+  padding          : 0;
+  margin           : 0;
+  height           : 100%;
+  width            : 100%;
+  background-color : var(--back);
+  font-family      : Arial, Helvetica, sans-serif;
+  font-size        : 18px;
+  /* line-height      : 1.4; */
+}
+
+
+/* overriding anchors with The Hmm black */
+
+a,
+a:active,
+a:visited {
+  color            : var(--fore);
+  font-family      : 'Times New Roman', Times, serif;
+  font-style       : italic;
+  font-size        : 1.2em;
+  text-decoration  : none;
+  border-bottom    : 1px solid;
+  /* transition       : border var(--fast) ease; */
+}
+
+a:hover {
+  border-bottom    : 2px solid;
+}
+
+h1,
+h2 {
+  font-family      : 'impact-nieuw', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight      : normal;
+  font-size        : 1.8rem;
+  line-height      : 1.1;
+}
+
+h3 {
+  font-weight      : normal;
+}
+
+
+/* all elements with role=status */
+
+*[role="status"] {
+  font-family      : monospace;
+}
+
+
+/* `Comment class looks like this. */
+
+.comment {
+  --fore           : var(--mid-grey);
+  font-style       : italic;
+  font-size        : 0.8rem;
+  line-height      : 0.5;
+}   
+
+
+/* Mpbile styles */
+
+.mobile {
+  font-size: 11pt;
+}

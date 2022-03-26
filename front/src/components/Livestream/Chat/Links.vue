@@ -3,8 +3,8 @@ export default {
   
   name: 'Links',
   props: {
-    links : { type: Object },
-    name  : { type: String }
+    links : Object,
+    name  : String
   },
 
 }

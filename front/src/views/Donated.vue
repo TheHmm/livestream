@@ -1,9 +1,18 @@
 <script>
 import Banner from '../components/Header/Banner.vue'
 
+// Page for people returning form their mollie donation
+// The event slug is passed to mollie through the redirect
+// URL, and can be re=accessed from the route query here.
+
 export default { 
+
   name: "Donated" ,
-  components: { Banner },
+
+  components: { 
+    Banner 
+  },
+
 }
 </script>
 
@@ -24,20 +33,8 @@ export default {
 </template>
 
 <style scoped>
-main {
-  position: absolute;
-  width: 100%;
-}
-main #banner {
-  margin: 2rem auto;
-} 
-main section {
-  background: var(--white);
-  max-width: min(70%, 50rem);
-  margin: 5rem auto;
-  overflow: scroll;
-}
-main section p {
-  margin: 0;
-}
+
+@import '@/assets/css/fallback.css';  
+  
+
 </style>

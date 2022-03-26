@@ -7,8 +7,8 @@ export default {
   name: 'Moderation',
 
   props: {
-    message  : { type: Object },
-    sender   : { type: Object },
+    message  : Object,
+    sender   : Object,
   },
 
   computed: {

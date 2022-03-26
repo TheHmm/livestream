@@ -1,6 +1,6 @@
 import api from '@/api'
-import { time } from '@/utils'
-import { logger } from '@/utils'
+import $time from '@/utils/time'
+import $log from '@/utils/log'
 
 export default {
 
@@ -132,7 +132,7 @@ export default {
     async create_message( { getters, dispatch }, body ) {
       const message = { 
         body, 
-        time: time.now(),
+        time: $time.now(),
         sender: getters.my_id,
         event: getters.current_event_id 
       }
@@ -180,7 +180,7 @@ export default {
     // Receive messages in real time
 
     socket_message( { dispatch }, message ) {
-      logger.info( 'SOCKET', `Message ${ message.body }` )
+      $log.info( 'SOCKET', `Message ${ message.body }` )
       dispatch( 'set_message', message )
     },
     

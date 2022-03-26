@@ -1,11 +1,11 @@
-import axios      from 'axios'
-import config     from '@/config'
-import { logger } from '@/utils'
+import axios   from 'axios'
+import config  from '@/config'
+import $log    from '@/utils/log'
 
 export default {
 
   get_by_event( event_id ) { 
-    logger.info( `API`, `Fetching announcements.` )
+    $log.info( `API`, `Fetching announcements.` )
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/announcements`, { params: { 
@@ -24,7 +24,7 @@ export default {
         resolve( announcements )
       } )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     } ) 

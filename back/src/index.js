@@ -175,7 +175,6 @@ module.exports = {
       // We log the number of connected sockets.
 
       strapi.log.info(`[ USER COUNT: ${ io.count( socket ) } ]`)
-      // io.emit('count', io.ount() )
 
 
       // When a socket connect for the first time, we send
@@ -221,7 +220,6 @@ module.exports = {
           uuid,
           connected: false, 
         })
-        // io.emit('users', userCount() - 1)
       })
 
 

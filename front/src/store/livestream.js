@@ -1,7 +1,6 @@
-import api from "../api"
-import router from '@/router'
-import { logger } from "../utils"
-import { captions } from "../utils"
+import api from "@/api"
+import $log from '@/utils/log'
+import captions from "@/utils/captions"
 
 const DEFAULT_MODES = () => ({
 
@@ -138,27 +137,27 @@ export default {
 
     socket_streamUpdate( { commit }, data ) {
       commit( 'SET_LIVESTREAM', data )
-      logger.info( `SOCKET`, `Got livestream update: ${ data.status }` )
+      $log.info( `SOCKET`, `Got livestream update: ${ data.status }` )
     },
 
     socket_confirmJoinSrt( { commit }, srt ) {
-      logger.info( 'SOCKET', `Subscribed to subtitle track.`)
+      $log.info( 'SOCKET', `Subscribed to subtitle track.`)
       commit( 'CLEAR_TRACK' )
       commit( 'SET_TRACK', captions.srt_to_vtt( srt ) )
     },
 
     socket_confirmLeaveSrt( { commit }) {
-      logger.info( 'SOCKET', `Unsubscribed from subtitle track.`)
+      $log.info( 'SOCKET', `Unsubscribed from subtitle track.`)
     },
 
     socket_confirmJoinCc( { commit }, cc ) {
-      logger.info( 'SOCKET', `Subscribed to closed captions.`)
+      $log.info( 'SOCKET', `Subscribed to closed captions.`)
       commit( 'CLEAR_CC' )
       commit( 'SET_CC', cc ) 
     },
 
     socket_confirmLeaveCc( { commit }) {
-      logger.info( 'SOCKET', `Unsubscribed from closed captions.`)
+      $log.info( 'SOCKET', `Unsubscribed from closed captions.`)
 
     },
 

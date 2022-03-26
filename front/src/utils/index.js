@@ -1,10 +1,7 @@
-import config from "@/config"
-import logger from "./logger"
-import time from './time'
-import color from "./color"
-import livestream from './livestream'
-import captions from './captions'
 import { marked } from 'marked'
+import config     from "@/config"
+import $log       from "./log"
+import $time      from './time'
 
 
 // produce an id or class from a component name
@@ -23,12 +20,9 @@ const
 
 
 export {
+  $log,
+  $time,
   $id,
   $md,
   $mdi,
-  logger,
-  color,
-  time,
-  livestream,
-  captions,
 }

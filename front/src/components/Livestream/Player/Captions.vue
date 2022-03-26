@@ -1,10 +1,9 @@
 <script>
 
 import { mapState }   from 'vuex'
-import { logger }     from '@/utils'
-import { livestream } from '@/utils'
-import { captions }   from "@/utils"
-import { time }       from "@/utils"
+import $log    from '@/utils/log'
+import captions   from "@/utils/captions"
+import livestream from '@/utils/livestream'
 
 
 
@@ -13,15 +12,9 @@ export default {
   name: 'Captions',
 
   props: {
-    playing: {
-      type: Boolean,
-    },
-    hls: {
-      type: Object
-    },
-    stream_start: {
-      type: Number
-    },
+    playing      : Boolean,
+    hls          : Object,
+    stream_start : Number,
   },
 
   data() {
@@ -112,7 +105,7 @@ export default {
       if ( this.hls && current_cc?.text ) {
         console.log(this.cc)
         const
-          now                     = time.now(),
+          now                     = this.$time.now(),
           stream_start            = this.stream_start,
           current_livestream_time = ( now - stream_start ) / 1000,
           live_sync_position      = this.hls.liveSyncPosition,

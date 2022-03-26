@@ -1,4 +1,4 @@
-import api from '../api'
+import api from '@/api'
 
 export default {
 
@@ -11,9 +11,9 @@ export default {
     mobile: false,
     
     ui: {
-      reduce_motion: "Reduce motion", 
-      reduce_depth: "Reduce depth", 
-      captions: "Closed captions"
+      reduce_motion: "reduce motion", 
+      reduce_depth: "reduce depth", 
+      captions: "closed captions"
     },
 
     error: null,

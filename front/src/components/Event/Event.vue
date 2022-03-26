@@ -4,9 +4,7 @@ export default {
   name: 'Event',
 
   props: {
-    event: {
-      type: Object
-    }
+    event: Object
   },
 
   computed: {

@@ -19,7 +19,7 @@ export default {
   },
   
   props: {
-    livestream: { type: Object },
+    livestream : Object,
   },
 
   computed: {
@@ -57,7 +57,7 @@ export default {
 
     update() {
 
-      logger.info( 'LIVESTREAM', `Creating player for ${ this.mode.name }.` )
+      $log.info( 'LIVESTREAM', `Creating player for ${ this.mode.name }.` )
 
 
       // We only load the captions player + the time display
@@ -128,7 +128,7 @@ export default {
 #player.transcript,
 #player.thumbs,
 #player.audio {
-  border: 1px dashed var(--fore);
+  border: var(--border);
   display: flex;
   flex-direction: column;
   justify-content: stretch;

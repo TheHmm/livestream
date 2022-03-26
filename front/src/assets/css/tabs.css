@@ -1,0 +1,67 @@
+
+
+/* Option tabs at the bottom :) */
+
+.tab {
+
+  --back           : var(--yellow);
+  --base-height    : 3rem;
+  --full-height    : 13rem;
+
+  filter           : drop-shadow( var(--filter-shadow) );
+  transform        : translateY(5rem);
+  animation        : tab_enter var(--enter) ease calc( 0.4s + var(--n) *  0.1s) forwards;
+
+}
+
+.tab label.title {
+  background-color : var(--back);
+  height           : var(--base-height);
+  padding          : 0.2rem 1rem;
+  display          : flex;
+  align-items      : flex-end;
+  justify-content  : center;
+}
+
+.tab .contents {
+  background       : var(--back);
+  min-width        : 10rem;
+  max-width        : 10rem;
+  max-height       : 0;
+  padding          : 0;
+  transition       : 
+    padding     var(--fast) ease-in-out,
+    max-height  var(--fast) ease-in-out,
+    max-width   var(--fast) ease-in-out,
+    min-width   var(--fast) ease-in-out
+  ;
+}
+
+.tab .contents >>> ul {
+  list-style       : none;
+  padding          : 0;
+  margin           : 0;
+}
+.tab .contents >>> ul li {
+  padding          : 0.1rem 0.5rem;
+}
+.tab .contents >>> ul li label,
+.tab .contents >>> ul li input {
+  padding          : 0;
+  margin           : 0;
+}
+
+.tab:hover .contents,
+.tab:focus-within .contents,
+.tab:focus .contents {
+  max-height       : var(--full-height);
+  max-width        : 10rem;
+  padding-bottom   : 0.5rem;
+}
+
+
+
+@keyframes tab_enter {
+  from { transform : translateY(5rem); }
+  to { transform   : translateY(0); }
+}

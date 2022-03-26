@@ -1,72 +1,80 @@
 <script>
 import Banner from '@/components/Header/Banner.vue'
-import Error from '@/components/Utils/Error.vue'
+import Error  from '@/components/Utils/Error.vue'
+
+
+// Fallback components that displayss a loading, error,
+// or other type of message. Keeps the Hmmm banner up
+// while the App is doing other things
 
 export default { 
 
-  name:  "Fallback" ,
+  name:  "Fallback",
 
   components: { 
     Banner,
     Error
   },
 
+
+  // This component is mounted either manually by passigg
+  // it a message or through the router as an error page.
+
   props: {
-    message: { type: String }
+    message: { 
+      type: String,
+      default: ''
+    }
   },
 
   computed: {
     is_error() {
      return this.$route.name == 'Error'
     },
+    is_loading() {
+      return this.message == 'Loading...'
+    }
   }
 
 }
 </script>
 
-<template>
 
-  <main
-    :class="{ error: is_error }"
-  >
+<template>
+  <main :class="{ is_error, is_loading }">
     <Banner />
-    <Error 
-      v-if="is_error" 
-    />
+    <Error v-if="is_error" />
     <section
       v-else
-      class="loading"
-      v-html="$md( message || '' )"
+      v-html="$md( message )"
     />
   </main>
-
 </template>
 
+
 <style scoped>
-main {
-  --accent: var(--light-grey);
-  position: absolute;
-  width: 100%;
+
+@import '@/assets/css/fallback.css';  
+
+main.is_loading {
+  --accent    : var(--light-grey);
+  color       : var(--accent);
 }
-main.error {
-  --accent: hsl(352, 100%, 69%);
-  font-family: monospace;
-  font-size: 1rem;
+main.is_loading >>> section,
+main.is_loading >>> section p {
+  color       : inherit;
+  text-align  : center;
 }
-main #banner {
-  margin: 2rem auto;
-} 
-main section.loading {
-  text-align: center;
+
+main.is_error {
+  --accent    : var(--error);
+  color       : var(--accent);
+  font-family : monospace;
 }
-main >>> section {
-  background: var(--white);
-  max-width: min(70%, 50rem);
-  margin: 5rem auto;
-  overflow: scroll;
+main.is_error >>> section,
+main.is_error >>> section p {
+  color       : inherit;
+  text-align  : left;
 }
-main >>> section,
-main >>> section p {
-  color: var(--accent);
-}
+
 </style>

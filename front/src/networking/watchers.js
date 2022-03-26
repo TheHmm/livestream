@@ -171,16 +171,11 @@ export default {
                 url   : entry.name,
                 from  : 'assets',
                 bytes : entry.transferSize 
-                    //  >= entry.encodedBodySize 
-                    //  && entry.transferSize 
-                    //  || entry.encodedBodySize
               })
             }, entry.duration )
-          // } else if ( !entry.name.includes('https://api.live.thehmm.karls.computer/') ) {
-            // console.log(entry.transferSize, entry.encodedBodySize, entry.name)
           }
         }
-      } )
+      })
     },
 
     register( observer ) {

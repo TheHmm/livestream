@@ -1,44 +1,73 @@
 <script>
-import {logger} from '@/utils'
 import Livestream from '@/components/Livestream/index.vue'
-import Banner from '../components/Header/Banner.vue'
 
+
+
+// The Event view. This view wraps the livestream component,
+// creates base styles to work from and handles connection
+// to the socket server.
 
 export default {
 
-  name: 'EventPage',
+  name       : 'EventPage',
+  components : { Livestream },
 
-  components: {
-    Livestream,
-    Banner
-  },
+
+  // We get our event object frmm the route slug. Note that
+  // the event has already been fetched in the before_enter
+  // route guard: @/router/guards/before_enter_event
 
   computed: {
-
-    event() { return this.$store.getters['events/current_event'] },
-    accent() { return this.event.accent },  
-    
+    event()  { 
+      return this.$store.getters[
+        'events/current_event'
+      ]
+    },
   },
+
+
+  // We only need to connect to our socket server when we
+  // enter the event page. In all other routes, socket 
+  // networking is unnecessary.
 
   created() {
-
+    this.$socket.client.connect()
   },
 
-  
 
- 
+  // For the same reason, we disconnect from the socket
+  // server before we leave this route.
+
+  beforeUnmount() {
+    this.$socket.client.disconnect()
+  },
+
+
+  // When we connect to the socket server, we need to
+  // send everyone our uuid, even if the viewer hasn't
+  // been stored to the database, this way, all visitors
+  // can see each other and send emoji.
+
+  sockets: {
+    connect() {
+      this.$log.info( 'SOCKET', 'Connected.' )
+      this.$socket.client.emit('viewer', {
+        uuid: this.$store.state.viewers.uuid,
+      })
+    },
+  },
+
+
 }
 </script>
 
 <template>
   <main 
     :id="$id()"
-    :style="{ ...accent }"
+    :style="{ ...event.accent }"
     aria-labelledby="event_title"
   >
-    <Livestream 
-      :event="event"
-    />
+    <Livestream :event="event" />
   </main>
 </template>
 
@@ -46,8 +75,17 @@ export default {
 
 main {
 
+
+  /* The event accennt color is created in Strapi as a valid */
+  /* hsl() string and converted into the --h,  --sl and --l 
+  /* CSS vars in the script: @/utils/colors */
+
   --accent         : hsl( var(--h), var(--s), var(--l) );
   --increment      : 9.6%;
+
+
+  /* We produce 5 more shades of our accent color by adding */
+  /* to the lightness of the original a defined increment */
 
   --dark-l         : calc( var(--l) + 1 * var(--increment) );
   --darker-l       : calc( var(--l) + 2 * var(--increment) );
@@ -61,27 +99,24 @@ main {
   --accent-lighter : hsl( var(--h), var(--s), var(--lighter-l));
   --accent-light   : hsl( var(--h), var(--s), var(--light-l));
 
-  --footer-height: 4rem;
-  --side-width: 20rem;
-
-  --back: var(--accent-light);
+  --back           : var(--accent-light);
   
-  background-color: var(--white);
+  background-color : var(--back);
 
-  height: 100vh; width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-  animation: enter var(--very-slow) ease forwards;
+  height           : 100%;
+  width            : 100%;
+  display          : flex;
+  flex-direction   : column;
+  animation        : enter var(--very-slow) ease forwards;
 }
 
 @keyframes enter {
-  from { background-color: var(--white) }
-  to { background-color: var(--back) }
+  from { background-color : transparent }
+  to   { background-color : var(--back) }
 }
 
 main.mobile {
-  --side-width: 100%;
+  --side-width     : 100%;
 }
 
 </style>

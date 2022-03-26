@@ -1,7 +1,7 @@
 import axios      from 'axios'
 import config     from '@/config'
-import { logger } from '@/utils'
-import { time }   from '@/utils'
+import $log from '@/utils/log'
+import $time   from '@/utils/time'
 
 export default {
 
@@ -10,13 +10,13 @@ export default {
   // See: back/src/api/event/controllers/event.js
     
   count() { 
-    logger.info( `API`, `Counting events.` )
+    $log.info( `API`, `Counting events.` )
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/events/count` )
       .then( result => resolve( result.data ) )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     } ) 
@@ -27,14 +27,14 @@ export default {
   // order (i.e. most recent event first).
 
   getAll() { 
-    logger.info( `API`, `Fetching events.` )
+    $log.info( `API`, `Fetching events.` )
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/events`, { params: { 
         sort: 'starts:desc',
         filters: {
           ends: {
-            $lt: time.now()
+            $lt: $time.now()
           },
         },
         fields: [ 
@@ -50,7 +50,7 @@ export default {
       } } )
       .then( result => resolve( result.data.data ) )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     } ) 
@@ -61,7 +61,7 @@ export default {
   // See: back/src/api/event/controllers/event.js
 
   get( slug ) { 
-    logger.info( `API`, `Fetching event ${ slug }.` )
+    $log.info( `API`, `Fetching event ${ slug }.` )
     return new Promise( ( resolve, reject ) => {
       axios
       .get( 
@@ -80,7 +80,7 @@ export default {
         } } )
       .then( result => resolve( result.data.data ) )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     } ) 

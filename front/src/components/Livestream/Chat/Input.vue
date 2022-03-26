@@ -1,6 +1,6 @@
 <script>
 import { mapActions } from 'vuex'
-import { logger } from '@/utils'
+import $log from '@/utils/log'
 import Register from './Register.vue'
 
 export default {
@@ -29,19 +29,19 @@ export default {
 
     async send( e ) {
       e.preventDefault()
+      console.log(this.message)
+      if ( !this.message ) {
+        return
+      }
       try {
         if ( await this.authenticate() ) {
-          try {
-            await this.create_message( this.message )
-            this.message = null
-          } catch ( error ) {
-            console.error(error)
-          }
+          await this.create_message( this.message )
+          this.message = null
         } else {
           this.request_registration = true
         }
       } catch ( error ) {
-        logger.error( 'AUTH', error )
+        $log.error( 'AUTH', error )
         this.request_registration = true
       }
 
@@ -70,7 +70,7 @@ export default {
       name="message" 
       id="message" 
       placeholder ="type your message and hit enter" 
-      v-model="message"
+      v-model.trim="message"
     />
     <input 
       type="submit" 

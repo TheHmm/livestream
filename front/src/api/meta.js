@@ -1,6 +1,6 @@
 import axios      from 'axios'
 import config     from '@/config'
-import { logger } from '@/utils'
+import $log       from '@/utils/log'
   
 export default {
 
@@ -8,26 +8,26 @@ export default {
   // Fetch website meta-data.
 
   get() { 
-    logger.info( `API`, `Fetching meta.` )
+    $log.info( `API`, `Fetching meta.` )
     return new Promise( ( resolve, reject ) => 
       axios
       .get( `${ config.api_url }/meta`, {})
       .then( result => resolve( result.data.data ) )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     ) 
   },
 
   donate({ amount, description, from }) {
-    logger.info( `API`, `Donating ${ amount } euros.` )
+    $log.info( `API`, `Donating ${ amount } euros.` )
     return new Promise( ( resolve, reject ) => 
       axios
       .post( `${ config.api_url }/meta/donate`, { amount, description, from } )
       .then( result => resolve( result.data.data ) )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       })
     ) 

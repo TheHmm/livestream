@@ -21,9 +21,7 @@ export default {
 </script>
 
 <template>
-  <div 
-    :id="$id()"
-  >
+  <div :id="$id()">
     <transition-group name="dot" mode="out-in">
       <Viewer 
         v-for="viewer in connected_viewers"
@@ -37,16 +35,16 @@ export default {
 <style scoped>
 
 #viewers {
-  position: absolute;
-  top: 2rem;
-  width: 100%;
-  height: 100%;
-  padding: 0.5rem;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  align-content: flex-start;
-  flex-wrap: wrap;
+  top             : var(--marquee-height);
+  position        : absolute;
+  width           : 100%;
+  height          : 100%;
+  padding         : 0.5rem;
+  display         : flex;
+  align-items     : flex-start;
+  justify-content : flex-start;
+  align-content   : flex-start;
+  flex-wrap       : wrap;
 }
 
 

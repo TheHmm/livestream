@@ -1,6 +1,9 @@
 <script>
 import { mapGetters } from 'vuex'
-import Announcement from './Announcement.vue'
+import Announcement   from './Announcement.vue'
+
+
+// Container for announcements received froms Strapi. 
 
 export default {
 
@@ -11,36 +14,57 @@ export default {
   },
 
   computed: {
-
     ...mapGetters( 'announcements', [ 
-      'announcements_array' ,
+      'most_recent'
     ]),
-
   },
 
 }
 </script>
 
+
 <template>
   <div :id="$id()">
-    <Announcement 
-      v-for="announcement in announcements_array"
-      :key="announcement.id"
-      :announcement="announcement"
-    />
+    <transition name="fall-in" >
+      <Announcement 
+        v-if="most_recent"
+        :announcement="most_recent"
+      />
+    </transition>
   </div>
 </template>
+
 
 <style scoped>
 
 #announcements {
-  position: absolute;
-  top: 2rem;
-  width: 100%;
-  width: 0;
-  overflow: visible;
-  height: 100%;
-  padding: 0.5rem;
+  position   : absolute;
+  top        : var(--marquee-height);
+  height     : var(--header-height);
+  width      : 0;
+  overflow   : visible;
+  font-size  : 1.33rem;
+  transform  : translateY( calc( var(--header-height) * -1 ) );
+  animation  : enter var(--enter) ease 0.75s forwards;
+  transition : transform 0.5s ease;
+}
+
+.fall-in-move, 
+.fall-in-enter-active,
+.fall-in-leave-active {
+  transition : transform 0.5s ease;
+}
+.fall-in-enter-from,
+.fall-in-leave-to {
+  transform  : translateY( calc( var(--header-height) * -1 ) );
+}
+.fall-in-leave-active {
+  position   : absolute;
+}
+
+@keyframes enter {
+  from { transform: translateY( calc( var(--header-height) * -1 ) ) }
+  to   { transform: translateY( 0 ) }
 }
 
 </style>

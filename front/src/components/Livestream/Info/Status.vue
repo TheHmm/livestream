@@ -1,7 +1,7 @@
 <script>
 export default {
   name: 'Status',
-  props: { status: { type: String } },
+  props: { status: String },
 }
 </script>
   
@@ -17,12 +17,12 @@ export default {
 <style scoped>
 
 #status {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed var(--fore);
+  width           : 100%;
+  height          : 100%;
+  text-align      : center;
+  display         : flex;
+  align-items     : center;
+  justify-content : center;
+  border          : var(--dash) var(--fore);
 }
 </style>

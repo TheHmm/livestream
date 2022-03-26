@@ -1,6 +1,6 @@
 import api from "../api"
-import { color } from '@/utils'
-import { time } from '@/utils'
+import color from '@/utils/color'
+import $time from '@/utils/time'
 import router from '@/router'
 
 export default {
@@ -215,9 +215,9 @@ function sanitize ( event, rootGetters ) {
   // When is it ?
 
   event.is = {
-    in_past   : () => time.is_in_past( event.ends ),
-    in_future : () => time.is_in_future( event.starts ),
-    soon      : () => time.is_soon( event.starts ),
+    in_past   : () => $time.is_in_past( event.ends ),
+    in_future : () => $time.is_in_future( event.starts ),
+    soon      : () => $time.is_soon( event.starts ),
   }
 
   // (1) soon: map to current livestream in store

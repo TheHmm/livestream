@@ -1,4 +1,4 @@
-import { logger }    from '@/utils'
+import $log          from '@/utils/log'
 import axios         from 'axios'
 import qs            from 'qs'
 
@@ -25,26 +25,26 @@ axios
 const 
 
   head = url => {
-    logger.info( `API`, `Heading ${ url }.` )
+    $log.info( `API`, `Heading ${ url }.` )
     return new Promise( ( resolve, reject ) => 
       axios
       .head( url )
       .then( result => resolve( result ) )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     ) 
   },
 
   get = (url, opts) => {
-    logger.info( `API`, `Getting ${ url }.` )
+    $log.info( `API`, `Getting ${ url }.` )
     return new Promise( ( resolve, reject ) => 
       axios
       .get( url, opts)
       .then( result => resolve( result ) )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     ) 

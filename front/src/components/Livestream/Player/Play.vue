@@ -5,7 +5,7 @@ export default {
   name: 'PLay',
 
   props: {
-    playing: { type: Boolean }
+    playing: Boolean
   },
 
   data() {

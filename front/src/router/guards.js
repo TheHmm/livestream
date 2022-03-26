@@ -1,15 +1,17 @@
-import store from '@/store'
-import app from '@/main'
+import store  from '@/store'
 import _throw from './throw'
 
 const 
+
+  dispatch = store.dispatch,
+
 
   // Before accessing the homepage, we make sure that 
   // we have all the events from Strapi, to list them.
 
   before_enter_home = async () => {
     try {
-      await store.dispatch( 'events/get_events' )
+      await dispatch( 'events/get_events' )
     } catch ( error ) {
       return _throw( error )
     }
@@ -23,13 +25,12 @@ const
   before_enter_event = async to => {
     const slug = to.params.slug 
     try {
-      await store.dispatch( 'livestream/get_livestream' )
-      const event = await store.dispatch( 'events/get_event', slug )
-      await store.dispatch( 'viewers/get_viewers', event.id )
-      await store.dispatch( 'messages/get_messages', event.id )
-      await store.dispatch( 'announcements/get_announcements', event.id )
-      const socket = app.config.globalProperties.$socket.client
-      socket.connect()
+      const 
+        livestream = await dispatch( 'livestream/get_livestream' ),
+        event      = await dispatch( 'events/get_event', slug ),
+        viewers    = await dispatch( 'viewers/get_viewers', event.id ),
+        messages   = await dispatch( 'messages/get_messages', event.id ),
+        announces  = await dispatch( 'announcements/get_announcements', event.id )
     } catch ( error ) {
       return _throw( error )
     }

@@ -20,9 +20,9 @@ export default {
 
 
   props: {
-    livestream       : { type: Object },
-    mode             : { type: Object },
-    desires_captions : { type: Boolean }
+    livestream       : Object,
+    mode             : Object,
+    desires_captions : Boolean,
   },
  
   data() {

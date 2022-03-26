@@ -1,5 +1,5 @@
 import store      from "@/store"
-import { logger } from "@/utils"
+import $log from '@/utils/log'
 
 export default  {
 
@@ -7,11 +7,11 @@ export default  {
 
     bytes_sent: ( { url, to, bytes } ) => {
       store.dispatch( 'networking/add_bytes_sent', { url, to, bytes } )
-      // logger.info( 'NETWORK', `${ bytes } bytes sent to ${ to }.` )
+      // $log.info( 'NETWORK', `${ bytes } bytes sent to ${ to }.` )
     },
     bytes_received: ( { url, from, bytes } ) => {
       store.dispatch( 'networking/add_bytes_received', { url, from, bytes } )
-      // logger.info( 'NETWORK', `${ bytes } bytes received from ${ from }.` )
+      // $log.info( 'NETWORK', `${ bytes } bytes received from ${ from }.` )
     }
 
   }

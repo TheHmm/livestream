@@ -80,7 +80,9 @@ export default {
   </div>
 </template>
 
-<style >
+<style scoped>
+
+@import '@/assets/css/tabs.css';
 
 #options {
   display     : flex;
@@ -88,19 +90,10 @@ export default {
   overflow    : visible;
 }
 
-#options .tab .contents ul {
-  list-style  : none;
-  padding     : 0;
-  margin      : 0;
-}
-#options .tab .contents ul li {
-  padding     : 0 0.5rem;
-}
-#options .tab .contents ul li label,
-#options .tab .contents ul li input {
-  padding     : 0;
-  margin      : 0;
-}
+/* #options .tab {
+  border-top-left-radius  : 4.5em 100%;
+  border-top-right-radius : 4.5em 100%;
+} */
 
 #options .tab:not(:first-of-type) {
   margin-left : -1rem;
@@ -112,6 +105,13 @@ export default {
   max-height  : 2.5rem;
 }
 
+
+
+.mobile #options .tab:hover .contents,
+.mobile #options .tab:focus-within .contents,
+.mobile #options .tab:focus .contents {
+  min-width   : 10rem;
+}
 
 
 </style>

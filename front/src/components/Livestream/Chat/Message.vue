@@ -1,6 +1,5 @@
 <script>
 
-import { time } from '@/utils'
 import { mapActions, mapGetters } from 'vuex'
 import Moderation from './Moderation.vue'
 import Links from './Links.vue'
@@ -15,8 +14,8 @@ export default {
   },
 
   props: {
-    message    : { type: Object },
-    links_only : { type: Boolean },
+    message    : Object,
+    links_only : Boolean,
   },
 
   computed: {
@@ -28,7 +27,7 @@ export default {
     ]),
 
     id()     { return this.message.id },
-    time()   { return time.time_format( this.message.time ) },
+    time()   { return this.$time.time_format( this.message.time ) },
     body()   { return this.$mdi( this.message.body || '' ) },
     links()  { return this.message.links },
     sender() { return this.get_viewer_by_id( this.message.sender ) },
@@ -103,7 +102,7 @@ export default {
   --accent: hsl( 
       var(--h), 
       var(--s),
-      min( calc( var(--l) + pow(var(--n), 2) * var(--increment) ), 98% )
+      min( calc( var(--l) + var(--n) * var(--increment) ), 98% )
     );
   --back: var(--accent);
   background-color: var(--back);

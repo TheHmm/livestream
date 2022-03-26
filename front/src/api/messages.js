@@ -1,25 +1,25 @@
-import axios      from 'axios'
-import config     from '@/config'
-import { logger } from '@/utils'
+import axios  from 'axios'
+import config from '@/config'
+import $log   from '@/utils/log'
 
 export default {
 
 
   // get( time ) { 
-  //   logger.info( `API`, `Fetching message ${ time }.` )
+  //   $log.info( `API`, `Fetching message ${ time }.` )
   //   return new Promise( ( resolve, reject ) => 
   //     axios 
   //     .get( `${ config.api_url }/messages`, { params: { time } } )
   //     .then( result => resolve( result.data ) )
   //     .catch( error => {
-  //       logger.error( 'API', error ) 
+  //       $log.error( 'API', error ) 
   //       reject( error )
   //     } )
   //   ) 
   // },
 
   get_by_event( event_id ) { 
-    logger.info( `API`, `Fetching messages.` )
+    $log.info( `API`, `Fetching messages.` )
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/messages`, { params: { 
@@ -41,14 +41,14 @@ export default {
         resolve( messages )
       } )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     } ) 
   },
 
   post( data ) {
-    logger.info( `API`, `Posting message ${ data.body }.`)
+    $log.info( `API`, `Posting message ${ data.body }.`)
     return new Promise( ( resolve, reject ) => {
       axios
       .post( `${ config.api_url }/messages`, { data } )
@@ -57,7 +57,7 @@ export default {
         resolve( message )
       } )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     } ) 
@@ -65,7 +65,7 @@ export default {
 
 
   put( id, data ) {
-    logger.info( `API`, `Updating message ${ id }.`)
+    $log.info( `API`, `Updating message ${ id }.`)
     return new Promise( ( resolve, reject ) => {
       axios
       .put( `${ config.api_url }/messages/${ id }`, { data } )
@@ -74,7 +74,7 @@ export default {
         resolve( message )
       } )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     } ) 
@@ -82,7 +82,7 @@ export default {
 
 
   delete( id ) {
-    logger.info( `API`, `Deleting message ${ id }.`)
+    $log.info( `API`, `Deleting message ${ id }.`)
     return new Promise( ( resolve, reject ) => {
       axios
       .delete( `${ config.api_url }/messages/${ id }` )
@@ -91,7 +91,7 @@ export default {
         resolve( message )
       } )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     } ) 

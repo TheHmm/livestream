@@ -102,7 +102,7 @@ input[type="submit"] {
   margin: 0.5rem;
   margin-bottom: 0rem;
 }
- .bt {
+.bt {
   position: absolute;
   left: -99999999rem;
   top: -99999999rem;

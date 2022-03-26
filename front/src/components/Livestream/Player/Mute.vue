@@ -5,7 +5,7 @@ export default {
   name: 'Mute',
 
   props: {
-    muted: { type: Boolean }
+    muted: Boolean
   },
 
   data() {

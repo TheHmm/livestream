@@ -6,7 +6,7 @@ export default {
   name: 'Emo',
 
   props: {
-    emo: { type: Object },
+    emo: Object,
   },
 
   computed: {

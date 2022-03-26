@@ -57,6 +57,7 @@ const
 
 
 export default {
+  time,
   now,
   is_in_past,
   is_in_future,

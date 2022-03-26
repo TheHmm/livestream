@@ -5,8 +5,8 @@ import CircleType from 'circletype'
 export default {
   name: 'Title',
   props: {
-    tab: { type: Object },
-    longest: { type: Number }
+    tab     : Object,
+    longest : Number,
   },
   computed: {
     id() { return `p_${ this.tab.name }` }
@@ -44,14 +44,16 @@ export default {
 <style scoped>
 
 label {
+  --radius                : calc( 2rem + var(--base-height) ) 100%;
   position                : relative;
   overflow                : visible;
   align-items             : center !important;
   align-content           : flex-start !important;
   justify-content         : center;
   text-align              : center;
-  border-top-left-radius  : 4.5em 100%;
-  border-top-right-radius : 4.5em 100%;
+  border-top-left-radius  : var(--radius);
+  border-top-right-radius : var(--radius);
+  font-size               : 1.33rem;
 }
 
 label div,

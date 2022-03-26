@@ -1,6 +1,7 @@
-import api from '../api' 
-import { logger, time } from '../utils' 
 import { v4 as uuid } from 'uuid'
+import api from '@/api' 
+import $log from '@/utils/log' 
+import $time from '@/utils/time' 
 
 
 export default {
@@ -135,8 +136,8 @@ export default {
       }
 
 
-      // For the events relation, strapi is sometimes 
-      // returinng ids an other times it objects. We 
+      // For the events relation, strapi is somes 
+      // returinng ids an other s it objects. We 
       // normalize to ids : [ '1 , '2', '3', ... ]
 
       viewer.events = viewer.events?.data?.map( e => e.id ) || viewer.events
@@ -205,7 +206,7 @@ export default {
       const 
         uuid    = getters.uuid,
         events  = [ getters.current_event_id ],
-        expires = time.now() + lifetime * 24 * 60 * 60 * 1000
+        expires = $time.now() + lifetime * 24 * 60 * 60 * 1000
       return new Promise( ( resolve, reject ) => 
         api
         .viewers
@@ -242,11 +243,11 @@ export default {
       // If not, this is a completely new user.
       
       if ( !state.uuid ) {
-        logger.info( 'AUTH', 'You are not registered yet.' )
+        $log.info( 'AUTH', 'You are not registered yet.' )
         return
       }
 
-      logger.info( 'AUTH', `Found UUID: ${ state.uuid }.` )
+      $log.info( 'AUTH', `Found UUID: ${ state.uuid }.` )
 
 
       // Then we fetch the viewer from the server. We do this
@@ -261,7 +262,7 @@ export default {
         // we update this in the server.
         
         if ( !getters.has_been_to_current_event ) {
-          logger.info('AUTH', 'You havent been to this event.')
+          $log.info('AUTH', 'You havent been to this event.')
           await api.viewers.put( getters.me.id, {
             events: [ 
               ...getters.my_events, 
@@ -275,7 +276,7 @@ export default {
         // everytime.
 
         commit( 'SET_AUTHENTICATED', true )
-        logger.info( 'AUTH', `You're authenticated!` )
+        $log.info( 'AUTH', `You're authenticated!` )
 
         return state.authenticated
 
@@ -286,7 +287,7 @@ export default {
 
       } catch ( error ) {
         if ( error.message == '404' ) {
-          logger.info( 'AUTH', `You're not in our database.` )
+          $log.info( 'AUTH', `You're not in our database.` )
           return
         } else {
           throw error
@@ -324,7 +325,7 @@ export default {
     // 2. a viewer has been created / updated in the DB
 
     socket_viewer( { dispatch }, viewer ) {
-      logger.info( 'SOCKET', `Viewer ${ viewer.name || 'anonymous' }` )
+      $log.info( 'SOCKET', `Viewer ${ viewer.name || 'anonymous' }` )
       dispatch( 'set_viewer', viewer )
     },
 
@@ -334,7 +335,7 @@ export default {
     // all the connected sockets.
 
     socket_viewers( { dispatch }, uuids ) {
-      logger.info( 'SOCKET', `Got connected viewers ${ uuids.length }` )
+      $log.info( 'SOCKET', `Got connected viewers ${ uuids.length }` )
       for ( const uuid of uuids ) {
         dispatch( 'set_viewer',  {
           uuid,
@@ -363,7 +364,7 @@ export default {
     },
 
     socket_disconnect( ) {
-      logger.info( 'SOCKET', 'disconnect' )
+      $log.info( 'SOCKET', 'disconnect' )
     },
     
     // socket_count({ commit }, count) {

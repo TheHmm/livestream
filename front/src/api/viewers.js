@@ -1,12 +1,12 @@
-import axios      from 'axios'
-import config     from '@/config'
-import { logger } from '@/utils'
+import axios   from 'axios'
+import config  from '@/config'
+import $log    from '@/utils/log'
 
 export default {
 
 
   get( uuid ) { 
-    logger.info( `API`, `Fetching viewer ${ uuid }.` )
+    $log.info( `API`, `Fetching viewer ${ uuid }.` )
     return new Promise( ( resolve, reject ) => 
       axios 
       .get( `${ config.api_url }/viewers`, { params: {
@@ -35,7 +35,7 @@ export default {
   },
 
   get_by_event( event_id ) { 
-    logger.info( `API`, `Fetching viewers.` )
+    $log.info( `API`, `Fetching viewers.` )
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/viewers`, { params: { 
@@ -53,14 +53,14 @@ export default {
         resolve( viewers )
       } )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     } ) 
   },
 
   post( data ) {
-    logger.info( `API`, `Posting viewer ${ data.name }.`)
+    $log.info( `API`, `Posting viewer ${ data.name }.`)
     return new Promise( ( resolve, reject ) => {
       axios
       .post( `${ config.api_url }/viewers`, { data } )
@@ -69,7 +69,7 @@ export default {
         resolve( viewer )
       } )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     } ) 
@@ -77,7 +77,7 @@ export default {
 
 
   put( id, data ) {
-    logger.info( `API`, `Posting viewer ${ id }.`)
+    $log.info( `API`, `Posting viewer ${ id }.`)
     return new Promise( ( resolve, reject ) => {
       axios
       .put( `${ config.api_url }/viewers/${ id }`, { data } )
@@ -86,7 +86,7 @@ export default {
         resolve( viewer )
       } )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     } ) 

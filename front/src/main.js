@@ -1,17 +1,22 @@
-import axios           from 'axios'
-import socket          from 'socket.io-client'
-import VueSocketIOExt  from 'vue-socket.io-extended'
+import axios          from 'axios'
+import socket         from 'socket.io-client'
+import VueSocketIOExt from 'vue-socket.io-extended'
 
-import { createApp }   from 'vue'
-import App             from './App.vue'
+import { createApp }  from 'vue'
+import App            from './App.vue'
 
-import router          from './router'
-import store           from './store'
-import config          from './config'
-import networking      from './networking'
-import { logger }      from './utils'
-import { $id }         from './utils'
-import { $md, $mdi }  from './utils'
+import router         from './router'
+import store          from './store'
+import config         from './config'
+import networking     from './networking'
+
+import {
+  $log,               // custom logger
+  $time,              // handy date/time functions
+  $id,                // generate id / class from comp namee
+  $md,                // markdown parser
+  $mdi,               // inline markdown parser
+} from './utils'
 
 const
 
@@ -21,28 +26,27 @@ const
   // & instantiate networking scripts
   // & create vue app
   
-  intro = logger.intro( config ),
+  intro = $log.intro( config ),
   io    = socket.io( config.socket_url, { autoConnect: false } ),
   net   = networking.init( axios, io ),
   app   = createApp( App )
 
 
-// We register extensions and mounting app.
+// We register extensions and mount app.
 
 app.config.globalProperties = { 
-  logger, 
+  $log,
+  $time,
   $id,
   $md,
-  $mdi
+  $mdi,
 }
 
-// router.isReady().then( () => {
-  app
-  .use( VueSocketIOExt, io, { store } )
-  .use( store )
-  .use( router )
-  .mount( '#app' )
-// })
+app
+.use( VueSocketIOExt, io, { store } )
+.use( store )
+.use( router )
+.mount( '#app' )
 
 
 

@@ -5,7 +5,7 @@ export default {
   name: 'Volume',
 
   props: {
-    direction: { type: String }
+    direction: String
   },
 
   data() {

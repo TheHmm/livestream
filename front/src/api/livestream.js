@@ -1,6 +1,6 @@
-import axios      from 'axios'
-import config     from '@/config'
-import { logger } from '@/utils'
+import axios  from 'axios'
+import config from '@/config'
+import $log   from '@/utils/log'
 
 export default {
 
@@ -10,13 +10,13 @@ export default {
   // will be received from the socket server.
 
   get() { 
-    logger.info( `API`, `Fetching livestream.` )
+    $log.info( `API`, `Fetching livestream.` )
     return new Promise( ( resolve, reject ) => 
       axios
       .get( `${ config.api_url }/livestream` )
       .then( result => resolve( result.data.data.publicData ) )
       .catch( error => {
-        logger.error( 'API', error ) 
+        $log.error( 'API', error ) 
         reject( error )
       } )
     ) 

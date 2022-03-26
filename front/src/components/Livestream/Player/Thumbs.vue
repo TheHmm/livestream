@@ -1,6 +1,5 @@
 <script>
 import { mux } from '@/utils/livestream'
-import { time } from '@/utils'
 import api from '@/api'
 import Captions from './Captions.vue'
 import Play from './Play.vue'
@@ -21,8 +20,8 @@ export default {
   },
 
   props: {
-    livestream: { type: Object },
-    desires_captions: { type: Boolean }
+    livestream       : Object,
+    desires_captions : Boolean
   },
 
   data() {
@@ -40,7 +39,7 @@ export default {
       return this.livestream.playbackId 
     },
     time_format() {
-      return time.time_format( this.curr_time * 1000  ) 
+      return this.$time.time_format( this.curr_time * 1000  ) 
     },
     playing() {
       return this.interval !== null
@@ -160,7 +159,7 @@ export default {
 #thumbs #captions {
   text-align: center;
   align-items: center ;
-  border-top: 1px dashed var(--fore);
+  border-top: var(--border);
 }
 
 img {

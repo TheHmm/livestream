@@ -123,6 +123,8 @@ export default {
 
 <style scoped>
 
+@import '@/assets/css/tabs.css';
+
 #chat_container {
   --n: 10;
   overflow: visible;
