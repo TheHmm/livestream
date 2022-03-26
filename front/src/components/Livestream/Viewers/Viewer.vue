@@ -11,7 +11,8 @@ export default {
   },
   data() {
     return {
-      shaking: false
+      shaking: false,
+      showing: false,
     }
   },
   computed: {
@@ -27,6 +28,11 @@ export default {
         this.shaking = false
       }, 1500)
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.showing = true
+    }, this.n * 10)
   }
 }
 
@@ -34,6 +40,7 @@ export default {
 
 <template>
   <div 
+    v-if="showing"
     :title="name"
     :class="[ $id(), { shaking, emoji } ]"
     :style="{ '--n': n }"
@@ -52,7 +59,6 @@ export default {
 <style scoped>
 
 .viewer {
-  --n: 1;
   --back: var(--accent-light);
   --shadow-size: 1rem;
   background-color: var(--back);
@@ -63,7 +69,7 @@ export default {
   max-height: 1.5rem;
   border-radius: 30rem;
   opacity: 0.8;
-  transform: scale(0);
+  transform: scale(1);
   transition: 
     box-shadow var(--fast) ease,
     opacity var(--fast) ease,
@@ -71,13 +77,25 @@ export default {
     max-width var(--slow) ease,
     max-height var(--slow) ease
   ;
-  animation: dot_enter var(--enter) ease calc( var(--n) *  0.1s) forwards;
   transform-origin: center center;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+/* .viewer.dot-move {
+  transition: all 0.5s ease;
+}
+.viewer.dot-leave-active {
+  position: absolute;
+} */
+
+.viewer.dot-enter-from,
+.viewer.dot-leave-to {
+  transform: scale(0);
+}
+
 .viewer:hover,
 .viewer:focus,
 .viewer.emoji {

@@ -24,7 +24,7 @@ export default {
   <div 
     :id="$id()"
   >
-    <transition-group name="dot" mode="in-out">
+    <transition-group name="dot" mode="out-in">
       <Viewer 
         v-for="viewer in connected_viewers"
         :key="viewer.uuid"
@@ -49,10 +49,5 @@ export default {
   flex-wrap: wrap;
 }
 
-
-.dot-enter-from,
-.dot-leave-to {
-  transform: scale(0);
-}
 
 </style>
