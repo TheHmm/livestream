@@ -202,6 +202,13 @@ module.exports = {
       })
 
 
+      // Emoji proxy :]
+
+      socket.on( 'emoji', emoji => {
+        io.emit( 'emoji', emoji )
+      })
+
+
       // When a viewer disconnect, we remove their uuid
       // from our array of connected viewers' uuids and
       // inform the rest.

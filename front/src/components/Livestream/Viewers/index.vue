@@ -52,21 +52,9 @@ export default {
 }
 
 
-.viewer.dot-enter-active,
-.viewer.dot-leave-active {
-  transition: all var(--slow) ease;
-}
 .viewer.dot-enter-from,
 .viewer.dot-leave-to {
-  background-color: red;
-  /* animation: dot_enter var(--slow) ease  forwards; */
-}
-
-
-
-@keyframes dot_enter {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
+  transform: scale(0);
 }
 
 </style>

@@ -10,10 +10,17 @@ export default {
   },
 
   computed: {
-    name() { return this.emo.name },
-    img() { return this.emo.image },
+    name()    { return this.emo.name },
     caption() { return this.img?.caption || this.name },
-    img_url() { return this.img && config.api_img_url + this.img.formats.thumbnail.url },
+    img()     { return this.emo.image },
+    formats() { return this.img.formats },
+    img_url() { 
+      return (
+        this.img ? this.formats ? 
+        config.api_img_url + this.img.formats?.thumbnail?.url :
+        config.api_img_url + this.img.url : null 
+      )
+    },
   },
 
 }
@@ -21,7 +28,7 @@ export default {
 
 <template>
     
-  <li 
+  <div
     :class="$id()"
     role="menuitemradio"
   >
@@ -38,27 +45,22 @@ export default {
     >
       {{ emo.name }}
     </label>
-  </li>
+  </div>
 
 </template>
 
 <style scoped>
 
 .emo {
-  padding: 0rem !important;
-  margin: 0.2rem !important;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 2rem; */
   height: 2rem;
-  cursor: pointer;
+  /* width: 2rem; */
 }
 img {
-  /* width: 100%; */
   height: 100%;
-  object-fit: contain;
-
+  /* width: 100%; */
 }
 
 </style>

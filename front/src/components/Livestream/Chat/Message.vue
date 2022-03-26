@@ -103,7 +103,7 @@ export default {
   --accent: hsl( 
       var(--h), 
       var(--s),
-      min( calc( var(--l) + var(--n) * var(--increment) ), 98% )
+      min( calc( var(--l) + pow(var(--n), 2) * var(--increment) ), 98% )
     );
   --back: var(--accent);
   background-color: var(--back);

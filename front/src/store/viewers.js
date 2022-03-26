@@ -79,6 +79,10 @@ export default {
       return state.viewers[ state.uuid ].id
     },
 
+    is_me : state => viewer => {
+      return state.uuid == viewer.uuid
+    },
+
     blocked : ( state, getters ) => {
       return getters.me?.blocked
     },
@@ -95,6 +99,10 @@ export default {
       return rootGetters['events/current_event_id']
     },
 
+    get_emoji : ( state, getters, rootState, rootGetters ) => {
+      return rootGetters['events/get_emoji']
+    },
+
     has_been_to_current_event : ( state, getters ) => {
       return getters.my_events?.includes( getters.current_event_id )
     }
@@ -105,20 +113,35 @@ export default {
   actions: {
 
 
-    // Process and set message
+    // Process and set viewer
 
     set_viewer( { commit, getters }, viewer ) {
-      if ( viewer.uuid ) {
-        const events = viewer.events?.data?.map( e => e.id ) || viewer.events
-        if ( events ) {
-          viewer.events = events
-        }
-        const found = getters.get_viewer[viewer.uuid]
-        if ( found ) {
-          viewer = { ...found, ...viewer }
-        }
-        commit( 'SET_VIEWER', viewer )
+
+
+      // We can only follow throough with viewers that
+      // have UUID. THe rest cause errors.
+
+      if ( !viewer.uuid ) {
+        return
       }
+
+
+      // If the viewer exists in our store, than this
+      // function was called to update it. We merge.
+
+      const found = getters.get_viewer(viewer.uuid)
+      if ( found ) {
+        viewer = { ...found, ...viewer }
+      }
+
+
+      // For the events relation, strapi is sometimes 
+      // returinng ids an other times it objects. We 
+      // normalize to ids : [ '1 , '2', '3', ... ]
+
+      viewer.events = viewer.events?.data?.map( e => e.id ) || viewer.events
+
+      commit( 'SET_VIEWER', viewer )
     },
 
 
@@ -167,7 +190,7 @@ export default {
     },
 
 
-    // Get viewer by  uuid.
+    // Get viewer by uuid.
 
     async get_viewer( { getters, dispatch }, uuid ) {
       return (
@@ -286,20 +309,29 @@ export default {
     },
 
 
-    // Register viewer's uuid to local storage
+    // Register viewer's uuid to local storage. The only
+    // time this is called is after the viewer has been 
+    // saved to the database.
 
     register( { commit }, viewer ) {
       commit( 'SET_UUID', viewer.uuid )
       localStorage.uuid = viewer.uuid
     },
- 
 
+
+    // This event is received in two different cases : 
+    // 1. a veiwer connected to the socket server 
+    // 2. a viewer has been created / updated in the DB
 
     socket_viewer( { dispatch }, viewer ) {
       logger.info( 'SOCKET', `Viewer ${ viewer.name || 'anonymous' }` )
       dispatch( 'set_viewer', viewer )
     },
 
+
+    // After a user has connected to the socket server,
+    // they are sent an array of UUIDs that correspond to
+    // all the connected sockets.
 
     socket_viewers( { dispatch }, uuids ) {
       logger.info( 'SOCKET', `Got connected viewers`, uuids )
@@ -311,6 +343,24 @@ export default {
       }
     },
 
+
+    // When we receive emoji from the viewer, we convert
+    // the payload into a viewer object and update the 
+    // viewer sender with the emoji. We clear the emoji
+    // after some time.
+
+    socket_emoji( { getters,  dispatch }, { uuid, group, emoji } ) {
+      dispatch( 'set_viewer', {
+        uuid,
+        emoji: getters.get_emoji( group, emoji )
+      })
+      setTimeout( () => {
+        dispatch( 'set_viewer', {
+          uuid,
+          emoji: null
+        })  
+      }, 5000 )
+    },
 
     socket_disconnect( ) {
       logger.info( 'SOCKET', 'disconnect' )

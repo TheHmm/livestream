@@ -72,6 +72,13 @@ export default {
       .emoji_groups
     ,
 
+    get_emoji : ( state, getters ) => ( group, emoji ) =>
+      getters
+      .emoji_groups
+      .find( g => g.name == group )
+      .find( e => e.name == emoji )
+    ,  
+
     get_event_slugs : state => state
       .events
       .map( e => e.slug )

@@ -44,12 +44,15 @@ export default {
       :key="group.id"
     >
       <label> {{ group.name }}</label>
-      <Emo 
+      <li
         v-for="emo in group.emoji"
         :key="emo.name"
-        :emo="emo"
-        @click="send( group.name, emo.name )"
-      />      
+      >
+        <Emo 
+          :emo="emo"
+          @click="send( group.name, emo.name )"
+        />  
+      </li>    
     </ul>
   </div>
 </template>
@@ -70,6 +73,15 @@ export default {
   font-style: italic;
   --fore: var(--grey);
   width: 100%;
+}
+
+#emoji .group li {
+  padding: 0rem !important;
+  margin: 0.2rem;
+}
+
+#emoji >>> .emo {
+  cursor: pointer;
 }
 
 </style>

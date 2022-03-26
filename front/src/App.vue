@@ -72,7 +72,6 @@ export default {
       logger.info( 'SOCKET', 'Connected.' )
       this.$socket.client.emit('viewer', {
         uuid: this.uuid,
-        connected: true,
       })
     },
 
