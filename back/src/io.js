@@ -2,7 +2,7 @@
 
 module.exports = server => {
 
-  
+
   // our socket.io options
 
   const options = {
@@ -14,9 +14,38 @@ module.exports = server => {
     serveClient: false
   }
 
-  // We initialize socket.io server with strapi and
-  // return the io object for use elsewhere.
 
-  return require( 'socket.io' )( server, options )
+  // We initialize socket.io server with strapi
+
+  const io = require( 'socket.io' )( server, options )
+
+
+  // Dirty method to log the # of connected sockets
+
+  io.count = socket => {
+    return socket.client.conn.server.clientsCount
+  }
+
+  // We create a an array to hold connected viewers' 
+  // uuids and attach methods to add/rm uuid.
+
+  io.uuids = []
+
+  io.add_uuid = uuid => {
+    if ( io.uuids.indexOf( uuid ) < 0 ) {
+      io.uuids.push( uuid )
+    }
+  }
+    
+  io.rm_uuid = uuid => {
+    if ( io.uuids.indexOf( uuid ) > -1 ) {
+      io.uuids.splice( io.uuids.indexOf( uuid ), 1 )
+    }
+  }
+
+
+  // We return the io object for use elsewhere.
+
+  return io
 
 }

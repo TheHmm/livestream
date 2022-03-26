@@ -162,28 +162,57 @@ module.exports = {
     }
 
 
-    const
-      uuids = [],
-
-      add_uuid = uuid => {
-        if ( uuids.indexOf( uuid ) < 0 ) {
-          uuids.push( uuid )
-        }
-      },
-
-      rm_uuid = uuid => {
-        if ( uuids.indexOf( uuid ) > -1 ) {
-          uuids.splice( uuids.indexOf( uuid ), 1 )
-        }
-      }
-
+      
     let 
       srt = null,
       cc  = []
-
+    
     io.on('connection', socket => {
 
-      socket.emit( 'viewers', uuids )
+      let uuid // soocket's uuid, client generated. 
+
+
+      // We log the number of connected sockets.
+
+      strapi.log.info(`[ USER COUNT: ${ io.count( socket ) } ]`)
+      // io.emit('count', io.ount() )
+
+
+      // When a socket connect for the first time, we send
+      // it our array of connected sockets' uuids. 
+      
+      socket.emit( 'viewers', io.uuids )
+      
+
+      // When a socket sends us the viewer event, it will
+      // only contain the socket's uuid and its connected
+      // status. We save the uuid to our array and inform
+      // the rest. Note: io.emit( 'viewer' ) is also called
+      // in the viewers after create/update hooks.
+
+      socket.on( 'viewer', viewer => {
+        if ( viewer.uuid ) {
+          uuid = viewer.uuid
+          io.add_uuid( uuid )
+          io.emit( 'viewer', viewer )
+        }
+      })
+
+
+      // When a viewer disconnect, we remove their uuid
+      // from our array of connected viewers' uuids and
+      // inform the rest.
+
+
+      socket.on('disconnect', () => {
+        strapi.log.info(`[ USER COUNT: ${ io.count( socket ) } ]`)
+        io.rm_uuid( uuid )
+        io.emit( 'viewer', {
+          uuid,
+          connected: false, 
+        })
+        // io.emit('users', userCount() - 1)
+      })
 
 
       // Closed Captions
@@ -255,35 +284,11 @@ module.exports = {
         io.to( 'srt' ).emit( 'srt' , srt)
       })
 
-
-      const userCount = () => socket.client.conn.server.clientsCount
-
-      let uuid
-
-      strapi.log.info(`[ USER COUNT: ${userCount()} ]`)
-      io.emit('count', userCount())
-
-      socket.on( 'viewer', viewer => {
-        if ( viewer.uuid ) {
-          uuid = viewer.uuid
-          add_uuid( uuid )
-          io.emit( 'viewer', viewer )
-        }
-      })
-
-
-      socket.on('disconnect', () => {
-        strapi.log.info(`[ USER COUNT: ${userCount()} ]`)
-        rm_uuid( uuid )
-        io.emit( 'viewer', {
-          uuid,
-          connected: false, 
-        })
-        // io.emit('users', userCount() - 1)
-      })
-
+      
 
     })
+
+
 
 
 

@@ -9,7 +9,7 @@ const
   url         = env.VITE_APP_URL,
   socket_url  = env.VITE_APP_SOCKET_URL,
   api_url     = env.VITE_APP_API_URL,
-  api_img_url = env.VITE_APP_API_IMG_URL,
+  api_img_url = env.VITE_APP_IMG_URL,
 
 
   // Event default options
