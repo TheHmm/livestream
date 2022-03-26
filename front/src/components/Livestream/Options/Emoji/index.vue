@@ -50,7 +50,7 @@ export default {
       >
         <Emo 
           :emo="emo"
-          @click="send( group.name, emo.name )"
+          @click="send( group.slug, emo.name )"
         />  
       </li>    
     </ul>

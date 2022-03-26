@@ -56,11 +56,10 @@ export default {
   justify-content: center;
   align-items: center;
   height: 2rem;
-  /* width: 2rem; */
 }
 img {
   height: 100%;
-  /* width: 100%; */
 }
+
 
 </style>

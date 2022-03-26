@@ -334,7 +334,7 @@ export default {
     // all the connected sockets.
 
     socket_viewers( { dispatch }, uuids ) {
-      logger.info( 'SOCKET', `Got connected viewers`, uuids )
+      logger.info( 'SOCKET', `Got connected viewers ${ uuids.length }` )
       for ( const uuid of uuids ) {
         dispatch( 'set_viewer',  {
           uuid,

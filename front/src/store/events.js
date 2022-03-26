@@ -75,7 +75,8 @@ export default {
     get_emoji : ( state, getters ) => ( group, emoji ) =>
       getters
       .emoji_groups
-      .find( g => g.name == group )
+      .find( g => g.slug == group )
+      .emoji
       .find( e => e.name == emoji )
     ,  
 

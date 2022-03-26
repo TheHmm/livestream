@@ -12,25 +12,18 @@ export default {
   },
 
   computed: {
-
     ...mapGetters( 'viewers', [ 
       'connected_viewers' ,
     ]),
-
   },
-
-  methods: {
-    key( viewer ) {
-      console.log(+viewer.uuid[viewer.uuid.length-1])
-      return +viewer.uuid[viewer.uuid.length-1]
-    }
-  }
 
 }
 </script>
 
 <template>
-  <div :id="$id()">
+  <div 
+    :id="$id()"
+  >
     <transition-group name="dot" mode="in-out">
       <Viewer 
         v-for="viewer in connected_viewers"
@@ -49,11 +42,16 @@ export default {
   width: 100%;
   height: 100%;
   padding: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-content: flex-start;
+  flex-wrap: wrap;
 }
 
 
-.viewer.dot-enter-from,
-.viewer.dot-leave-to {
+.dot-enter-from,
+.dot-leave-to {
   transform: scale(0);
 }
 
