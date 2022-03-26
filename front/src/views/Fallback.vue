@@ -36,7 +36,7 @@ export default {
     <section
       v-else
       class="loading"
-      v-html="$md( message )"
+      v-html="$md( message || '' )"
     />
   </main>
 

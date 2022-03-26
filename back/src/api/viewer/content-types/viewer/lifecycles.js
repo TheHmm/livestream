@@ -45,6 +45,7 @@ const
   },
 
   after_create_or_update = event => {
+    event.result.connected = true
     strapi.io.emit( 'viewer', event.result )
   }
 

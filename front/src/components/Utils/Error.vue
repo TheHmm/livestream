@@ -42,7 +42,7 @@ export default {
 
   <section>
     <h3>Error: {{ title }}.</h3>
-    <p v-html="$mdi( message )"></p>
+    <p v-html="$mdi( message || '' )"></p>
     <table>
       <tr v-for="trace in traces">
         <td

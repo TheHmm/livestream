@@ -194,7 +194,10 @@ module.exports = {
         if ( viewer.uuid ) {
           uuid = viewer.uuid
           io.add_uuid( uuid )
-          io.emit( 'viewer', viewer )
+          io.emit( 'viewer', {
+            uuid,
+            connected: true 
+          })
         }
       })
 
