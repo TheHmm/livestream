@@ -63,6 +63,7 @@ export default {
   --shadow-size: 1rem;
   background-color: var(--back);
   box-shadow: 0 0 var(--shadow-size) 0 var(--shadow-color);
+  position: relative;
   min-width: 1.5rem;
   min-height: 1.5rem;
   max-width: 1.5rem;
@@ -101,12 +102,17 @@ export default {
 .viewer.emoji {
   --shadow-size: 0.5rem;
   opacity: 1;
+  z-index: 1;
 }
 
 .viewer >>> .emo {
   border-radius: inherit;
   transform: scale(1);
   transition: transform var(--slow) ease;
+}
+
+.viewer >>> .emo img {
+  border-radius: inherit;
 }
 
 .viewer >>> .dot-enter-from,

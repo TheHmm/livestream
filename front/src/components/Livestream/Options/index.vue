@@ -21,30 +21,35 @@ export default {
     return {
       tabs: [
         {
-          name: 'access',
-          label: 'Accessibility',
-          comp: 'Access',
-          aria_label: 'Accessibility options',
+          name       : 'access',
+          label      : 'Accessibility',
+          comp       : 'Access',
+          aria_label : 'Accessibility options',
         },
         {
-          name: 'donate',
-          label: 'Donate',
-          comp: 'Donate',
-          aria_label: 'Donate to the Hmm'
+          name       : 'donate',
+          label      : 'Donate',
+          comp       : 'Donate',
+          aria_label : 'Donate to the Hmm'
         },
         {
-          name:  'modes',
-          label: 'View modes',
-          comp: 'Modes',
-          aria_label: 'View modes',
+          name       : 'modes',
+          label      : 'View modes',
+          comp       : 'Modes',
+          aria_label : 'View modes',
         },
         {
-          name: 'emoji',
-          label: 'Emotes',
-          comp: 'Emoji',
-          aria_label: 'Emoji reactions',
+          name       : 'emoji',
+          label      : 'Emotes',
+          comp       : 'Emoji',
+          aria_label : 'Emoji reactions',
         }
       ]
+    }
+  },
+  computed: {
+    longest() {
+      return Math.max.apply( null, this.tabs.map( t => t.label.length ) )
     }
   }
   
@@ -66,6 +71,7 @@ export default {
     >
       <Title
         :tab="tab"
+        :longest="longest"
       />
       <div class="contents">
         <Component :is="tab.comp" />
@@ -77,33 +83,33 @@ export default {
 <style >
 
 #options {
-  display: flex;
-  align-items: flex-end;
-  overflow: visible;
+  display     : flex;
+  align-items : flex-end;
+  overflow    : visible;
 }
 
 #options .tab .contents ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  list-style  : none;
+  padding     : 0;
+  margin      : 0;
 }
 #options .tab .contents ul li {
-  padding: 0 0.5rem;
+  padding     : 0 0.5rem;
 }
 #options .tab .contents ul li label,
 #options .tab .contents ul li input {
-  padding: 0;
-  margin: 0;
+  padding     : 0;
+  margin      : 0;
 }
 
-/* #options .tab#access label svg {
-  height: 2rem;
-} */
+#options .tab:not(:first-of-type) {
+  margin-left : -1rem;
+}
 
 .mobile #options {
-  margin: unset;
-  z-index: 1;
-  max-height: 2.5rem;
+  margin      : unset;
+  z-index     : 1;
+  max-height  : 2.5rem;
 }
 
 

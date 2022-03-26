@@ -1,44 +1,42 @@
 <script>
+
+import CircleType from 'circletype'
+
 export default {
   name: 'Title',
   props: {
-    tab: { type: Object }
+    tab: { type: Object },
+    longest: { type: Number }
   },
   computed: {
     id() { return `p_${ this.tab.name }` }
+  },
+  mounted() {
+
+    const 
+      label = document.getElementById( this.id ),
+      arc   = new CircleType( label ),
+      par_w = label.parentElement.offsetHeight * 2,
+      rad   = par_w * ( this.tab.label.length + 3 ) / this.longest
+
+    arc.radius( rad )
+    arc.forceHeight( false )
+    window.addEventListener( 'resize', () => {
+      arc.radius( rad )
+    })
   }
+
+
 }
 </script>
 <template>
-  <!-- <label
-    :class="$id()"
-    :for="tab.name"
-  >
-    <svg 
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 50 50"
-      preserveAspectRatio="none" 
-    >
-      <path
-        :id="id" 
-        d="M 0,50 C0 30 50 30 50 50" 
-      />
-      <text text-anchor="middle">
-        <textPath 
-          :xlink:href="`#${ id }`"
-          startOffset="50%"
-          side="left"
-        >
-          {{ tab.label }}
-        </textPath>
-      </text>
-    </svg>
-  </label> -->
   <label 
     class="title"
     :for="tab.name"
+    :id="id"
+    :title="tab.label"
   > 
-    {{ tab.label }} 
+    {{ tab.label }}
   </label>
 </template>
 
@@ -46,28 +44,18 @@ export default {
 <style scoped>
 
 label {
-  position: relative;
-  padding: 0;
+  position                : relative;
+  overflow                : visible;
+  align-items             : center !important;
+  align-content           : flex-start !important;
+  justify-content         : center;
+  text-align              : center;
+  border-top-left-radius  : 4.5em 100%;
+  border-top-right-radius : 4.5em 100%;
 }
-label svg {
-  fill: none;
-  stroke: black;
-  /* stroke-width: 0.1px; */
-  height: 100%;
-  width: 100%;
-  /* position: absolute; */
-  overflow: visible;
-  /* top: 0; */
-  /* left: 0; */
-}
-label path {
-}
-label svg text {
-  fill: var(--fore);
-  text-align: center;
-  stroke: none;
-  /* width: 100%; */
-  /* height: 100%; */
-  font-size: 0.7rem;
+
+label div,
+label >>> div {
+  height                  : 100%;
 }
 </style>
