@@ -38,6 +38,14 @@
 
   --accent         : var(--blue);
   --error          : var(--orange-red);
+  
+  
+    /* Borders and outlines */
+  
+    --solid          : 1px solid;
+    --dash           : 1px dashed;
+    --thin           : .5px solid;
+    --focus          : 2px solid var(--accent);
 
 
   /* Shadow parameters for box-shadows and drop-shadows */
@@ -46,13 +54,6 @@
   --shadow-size    : 1rem;
   --shadow         : 0 0 var(--shadow-size) 0 var(--shadow-color);
   --filter-shadow  : 0 0 var(--shadow-size) var(--shadow-color);
-
-
-  /* Borders and outlines */
-
-  --solid          : 1px solid;
-  --dash           : 1px dashed;
-  --focus          : 2px solid var(--accent);
   
 
   /* Transition and animation speeds */

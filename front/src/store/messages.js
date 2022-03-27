@@ -27,6 +27,7 @@ export default {
 
     messages_array : state => {
       return Object.values( state.messages )
+      .sort( ( a, b ) => a.time > b.time )
     },
 
     count: ( state, getters ) => {

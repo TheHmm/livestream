@@ -23,7 +23,11 @@ export default {
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/messages`, { params: { 
-        sort: 'time:asc',
+        sort: 'time:desc',
+        pagination: {
+          start: 0,
+          limit: 500,
+        },
         filters: {
           event: {
             id: {
@@ -34,7 +38,7 @@ export default {
         fields: '*',
         populate: [
           'sender'
-        ]
+        ],
       } } )
       .then( result => {
         const messages = result.data.data

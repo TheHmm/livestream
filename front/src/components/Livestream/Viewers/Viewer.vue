@@ -21,7 +21,7 @@ export default {
   },
 
   computed: {
-    name()  { return this.viewer.name || 'uknown' },
+    name()  { return this.viewer.name || 'unnamed viewer' },
     emoji() { return this.viewer.emoji },
     uuid()  { return this.viewer.uuid },
     n()     { return this.uuid[ this.uuid.length-1 ] },
@@ -69,6 +69,8 @@ export default {
 @import '@/assets/css/dot.css';
 
 .viewer {
+  --fore          : var(--accent-lighter);
+  --back          : var(--accent-light);
   position        : relative;
   opacity         : 0.8;
   display         : flex;
@@ -78,44 +80,45 @@ export default {
 }
 
 /* .viewer.dot-move {
-  transition: all 0.5s ease;
+  transition      : all 0.5s ease;
 }
 .viewer.dot-leave-active {
-  position: absolute;
+  position        : absolute;
 } */
 
 .viewer.dot-enter-from,
 .viewer.dot-leave-to {
-  transform: scale(0);
+  transform       : scale(0);
 }
 
 .viewer:hover,
 .viewer:focus,
 .viewer.emoji {
-  --shadow-size: 0.5rem;
-  opacity: 1;
-  z-index: 1;
+  --shadow-size   : 0.5rem;
+  opacity         : 1;
+  z-index         : 1;
 }
 
 .viewer >>> .emo {
-  border-radius: inherit;
-  transform: scale(1);
-  transition: transform var(--slow) ease;
+  --fore          : var(--black);
+  border-radius   : inherit;
+  transform       : scale(1);
+  transition      : transform var(--slow) ease;
 }
 
 .viewer >>> .emo img {
-  border-radius: inherit;
+  border-radius   : inherit;
 }
 
 .viewer >>> .dot-enter-from,
 .viewer >>> .dot-leave-to {
-  transform: scale(0);
+  transform       : scale(0);
 }
 
 .viewer.emoji {
-  transform: scale(2);
-  max-width: 10rem;
-  max-height: 10rem;
+  transform       : scale(2);
+  max-width       : 10rem;
+  max-height      : 10rem;
 }
 
 

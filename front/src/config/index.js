@@ -26,13 +26,11 @@ const
 
 
   // Markdown default options
+  // https://marked.js.org/using_advanced#options
 
   md = {
-    html        : true,
-    linkify     : true,
-    typographer : true,
-    emoji       : true,
-    breaks      : true,
+    baseUrl     : url,
+    silent      : true,
   }
 
 export default {
