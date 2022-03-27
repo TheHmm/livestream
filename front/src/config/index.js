@@ -29,7 +29,6 @@ const
   // https://marked.js.org/using_advanced#options
 
   md = {
-    baseUrl     : url,
     silent      : true,
   }
 
