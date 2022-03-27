@@ -1,6 +1,6 @@
 import $log          from '@/utils/log'
 import axios         from 'axios'
-import qs            from 'qs'
+import {stringify}   from 'qs'
 
 import meta          from './meta'
 import livestream    from './livestream'
@@ -14,7 +14,7 @@ axios
 .request
 .use( config => {
   config.paramsSerializer = params => {
-    return qs.stringify( params, {
+    return stringify( params, {
       encode: false,
     })
   }

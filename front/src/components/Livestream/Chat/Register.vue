@@ -1,9 +1,12 @@
 <script>
 import { mapGetters } from 'vuex'
+import Bot from '../../Utils/Bot.vue'
 
 export default {
-
+  
   name: 'Register',
+
+  components: { Bot },
   
   data() {
     return {
@@ -12,6 +15,7 @@ export default {
       agrees: false,
       sending: false,
       error: null,
+      website: null
     }
   },
 
@@ -28,8 +32,8 @@ export default {
 
     async send( e ) {
       e.preventDefault()
-      const { name, agrees, lifetime } = this
-      if ( !name || !agrees ) { 
+      const { name, agrees, website, lifetime } = this
+      if ( !name || !agrees || website ) { 
         return 
       }
       this.sending = true
@@ -136,6 +140,7 @@ export default {
       I agree to this condition.
       </label>
       <div class="row"> 
+        <Bot v-model="website" />
         <input 
           class="close"
           type="reset" 

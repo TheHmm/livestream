@@ -1,13 +1,25 @@
 <script>
 import { mapState } from 'vuex'
 
+
+// Accessbility menu. Options are imported from the store 
+// but their value is computed from the route query. They 
+// never committed to the store, only pushed to the router.
+// They are only used to coomputed css classes in @/App
+
 export default {
 
   name: 'Access',
   
   computed: {
-    ...mapState( 'meta', [ 'ui' ] )
+    ...mapState( 'meta', [ 
+      'ui' ] 
+    )
   },
+
+
+  // Using the router as a store 😮
+
   methods: {
     get_option( key ) {
       return this.$route.query[key]
@@ -24,6 +36,7 @@ export default {
   
 }
 </script>
+
 
 <template>
   <ul role="menu">
@@ -46,7 +59,3 @@ export default {
     </li>
   </ul>
 </template>
-
-<style scoped>
-
-</style>

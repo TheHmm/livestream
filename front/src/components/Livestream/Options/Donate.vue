@@ -1,9 +1,20 @@
 <script>
 import api from '@/api'
+import Bot from '../../Utils/Bot.vue'
+
+
+// Donation submenu. Makes a doation to The Hmm through mollie
+// via our API as proxy with a POST request to /meta/donate
+// containing the current event slug as a 'from' parameter
+// in the post query so we are returned to the right place.
 
 export default {
 
   name: 'Donate',
+
+  components: {
+    Bot
+  },
 
   data() {
     return {
@@ -13,23 +24,29 @@ export default {
         '9.00': '🍸 => €9'
       },
       selected: null,
-      website: '',
+      website: null,
     }
   },
 
   methods: {
 
+
+    // After receiving a payment object from Mollie through
+    // our API, we redirect the user to the Mollie client
+    // potal to conduct the payment with window.open(...)
+
     async donate( e ) { 
       e.preventDefault()
-      if (this.website !== '') {
+      console.log(this.website)
+      if ( this.website !== null ) {
         return
       }
       try {
         const 
           payment = await api.meta.donate({
-            amount: this.selected,
-            description: this.donations[this.selected],
-            from: this.$route.params.slug
+            amount      : this.selected,
+            description : this.donations[this.selected],
+            from        : this.$route.params.slug
           }),
           checkout = payment._links?.checkout?.href
         window.open( checkout, '_blank')
@@ -48,9 +65,12 @@ export default {
 }
 </script>
 
+
 <template>
-    
-  <form :onsubmit="donate">
+  <form 
+    :onsubmit="donate"
+    @keyup.esc="selected = null"
+  >
 
     <ul role="menu">
       <li 
@@ -72,24 +92,9 @@ export default {
         </label>
       </li>
     </ul>
-
-    <div class="bt">
-      <label
-        for="website"
-        class="comment"
-      >
-        If you are not a bot, leave the below field empty.
-      </label>
-      <input 
-        tabindex="-1"
-        type="text" 
-        name="website" 
-        id="website" 
-        placeholder ="http://example.com" 
-        v-model="website"
-      />
-    </div>
     
+    <Bot v-model="website" />
+
     <input 
       type="submit" 
       :disabled="!selected"
@@ -100,17 +105,14 @@ export default {
   </form>
 </template>
 
+
 <style scoped>
 
 input[type="submit"] {
-  width: calc(100% - 1rem);
-  margin: 0.5rem;
-  margin-bottom: 0rem;
+  width         : calc(100%  - 1rem);
+  margin        : 0.5rem;
+  margin-bottom : 0rem;
 }
-.bt {
-  position: absolute;
-  left: -90000px;
-  top: -90000px;
-}
+
 
 </style>

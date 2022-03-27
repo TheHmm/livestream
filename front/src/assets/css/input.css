@@ -43,6 +43,20 @@ input[type="reset"]:active {
 }
 
 
+/* Inaccessible when disabled */
+
+input[type="text"]:disabled,
+input[type="number"]:disabled,
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+input[type="reset"]:disabled {
+  opacity          : 0.5;
+  background-color : var(--light-grey);
+  color            : var(--dark-grey);
+  font-style       : italic ;
+}
+
+
 /* Inputs that have display text from the user need to be */
 /* the same font size size as their parents. */
 

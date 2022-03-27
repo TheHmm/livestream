@@ -1,6 +1,6 @@
 <script>
 
-import { logger }           from '@/utils'
+import $log                 from '@/utils/log'
 import { hls_is_supported } from '@/utils/livestream'
 import Captions             from './Captions.vue'
 import Thumbs               from './Thumbs.vue'
