@@ -153,6 +153,8 @@ export default {
   overflow: hidden;
   pointer-events: none;
 }
+#chat .contents:focus-within,
+#chat:hover .contents:focus-within,
 #chat.expanded .contents {
   display: flex;
   flex-direction: column;
@@ -174,8 +176,7 @@ export default {
   align-items: flex-start;
   overflow: scroll;
 }
-#chat:not(.expanded):hover .contents,
-#chat:not(.expanded):focus-within .contents,
+/* #chat:not(.expanded):hover .contents, */
 #chat:not(.expanded):focus .contents {
   max-height: 2rem;
   max-width: 100%;

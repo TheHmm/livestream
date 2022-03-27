@@ -24,7 +24,7 @@ export default {
     name()  { return this.viewer.name || 'uknown' },
     emoji() { return this.viewer.emoji },
     uuid()  { return this.viewer.uuid },
-    n()     { return this.uuid[ this.uuid.length-1 ] }
+    n()     { return this.uuid[ this.uuid.length-1 ] },
   },
 
   methods: {
@@ -74,6 +74,7 @@ export default {
   display         : flex;
   justify-content : center;
   align-items     : center;
+  margin-left     : calc( var(--n) * 1rem);
 }
 
 /* .viewer.dot-move {
