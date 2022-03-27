@@ -1,15 +1,9 @@
 <script>
 
-import Network from '@/components/Header/Network.vue'
-
 export default {
   
   name: 'Info',
 
-  components: { 
-    Network 
-  },
-  
   props: {
     event: Object,
   },

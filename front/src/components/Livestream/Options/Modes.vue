@@ -63,20 +63,19 @@ export default {
     <li 
       v-for="mode in modes"
       :key="mode.name"
-      tabindex="0"
       class="mode"
-      role="menuitem"
     >
+      <input 
+        type="radio"
+        :id="mode.name"
+        :name="mode.label"
+        :value="mode" 
+        v-model="current_mode"
+      />
       <label 
-        :title="`Switch to ${ mode.label } streaming mode`"  
-        tabindex="0"
+        :for="mode.name"
+        :title="`Switch to ${ mode.label } streaming mode`"
       >
-        <input 
-          type="radio"
-          :name="mode.label"
-          :value="mode" 
-          v-model="current_mode"
-        />
         {{ mode.label }}
       </label>
     </li>

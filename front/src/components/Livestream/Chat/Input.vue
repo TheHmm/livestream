@@ -69,13 +69,14 @@ export default {
       type="text" 
       name="message" 
       id="message" 
-      placeholder ="type your message and hit enter" 
+      tabindex="0"
+      placeholder ="Type your message and hit enter" 
       v-model.trim="message"
     />
     <input 
       type="submit" 
       title="Send your message to all other viewers."
-      value="Send"
+      value="˃"
     />
   </form>
 
@@ -84,15 +85,19 @@ export default {
 <style scoped>
 
 #message_form {
+  z-index: 1;
+  flex-shrink: 0;
+  height: var(--base-height);
   display: flex;
+  align-items: center;
+  padding: 2px calc( 0.5rem + 2px);
 }
 #message_form input[type="text"] {
-  flex-grow: 1;
-  height: 2rem;
-}
-#message_form input[type="submit"] {
-  margin: 0.5rem;
   height: 100%;
+  border: none;
+  font-size: 1.33rem;
+  overflow: scroll;
 }
+
 
 </style>

@@ -113,6 +113,7 @@ export default {
 /* Base styles are imported from here: */
 
 @import '@/assets/css/base.css';
+@import '@/assets/css/input.css';
 
 /* For accessibily reasons, I removed vue's default root */
 /* <div> and instead gave the document's <body> tag the */

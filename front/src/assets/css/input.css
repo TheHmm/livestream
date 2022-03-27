@@ -1,0 +1,196 @@
+
+
+/* We keep the input types test, numver, button, submit and */
+/* reset visible and restyle their colors ann sizes */
+
+input[type="text"],
+input[type="number"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  position         : relative;
+  color            : var(--accent);
+  border           : var(--solid);
+  background-color : var(--accent-light);
+  height           : 1.33rem;
+}
+
+
+/* They increment in shades as they gethoverred / focused */
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="button"]:focus,
+input[type="submit"]:focus,
+input[type="reset"]:focus,
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+  background-color : var(--accent-lighter);
+}
+
+
+/* When they are active, they are at their darkest */
+
+input[type="text"]:active,
+input[type="number"]:active,
+input[type="button"]:active,
+input[type="submit"]:active,
+input[type="reset"]:active {
+  background-color : var(--accent-mid);
+}
+
+
+/* Inputs that have display text from the user need to be */
+/* the same font size size as their parents. */
+
+input[type="text"],
+input[type="number"] {
+  font-size        : 1em;
+}
+
+
+/* And they must inherit the same font color */
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  color            : var(--fore);
+  border-color     : var(--accent);
+}
+
+
+/* The placeholder is the darkest accent color */
+
+input[type="text"]::placeholder {
+  color            : var(--accent-dark);
+}
+
+
+/* Button style inputs need the pointer for legibility */
+
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  cursor           : pointer;
+}
+
+
+/* Radio buttons and checkboxes are mmade invisible and */
+/* replaced by the customized ::before and ::after pseudo- */
+/* elements of their ensuing <label> */
+
+/* NOTE: all radio and checkboxes must be followed by label */
+/* for this to work! */
+
+input[type="radio"],
+input[type="checkbox"] {
+  position         : relative;
+  border           : unset;
+  background-color : unset;
+  color            : unset;
+  padding          : 0;
+  margin           : 0;
+  opacity          : 0;
+}
+
+
+/* Selectinng ensuing label with + selector */
+
+input[type="radio"] + label,
+input[type="checkbox"] + label {
+  position         : relative;
+  cursor           : pointer;
+  display          : inline-flex;
+  align-items      : center;
+}
+
+/* ::before is a slightly larger circle. */
+
+input[type="radio"] + label::before,
+input[type="checkbox"] + label::before {
+  content          : "";
+  position         : relative;
+  cursor           : inherit;
+  display          : inline-block;
+  width            : 1.33rem;
+  height           : 1.33rem;
+  margin-left      : -0.66rem;
+  margin-right     : 0.33rem;
+  border-radius    : 1rem;
+  background-color : var(--accent-light);
+  color            : var(--accent);
+  border           : var(--solid);
+}
+
+
+/* ::after is mannually positioned checkmark. */
+
+input[type="radio"] + label::after,
+input[type="checkbox"] + label::after {
+  content          : '';
+  position         : absolute;
+  cursor           : inherit;
+  display          : inline-block;
+  color            : var(--accent);
+  font-size        : 1rem;
+  top              : 0.05rem;
+  left             : -0.4rem;
+  width            : 1.5rem;
+  height           : 1.5rem;
+}
+
+
+/* Darker when hovered */
+
+input[type="radio"]:hover + label::before,
+input[type="checkbox"]:hover + label::before {
+  background-color : var(--accent-lighter);
+}
+
+
+/* Outline whenn focused */
+
+input[type="radio"]:focus + label::before,
+input[type="checkbox"]:focus + label::before {
+  outline          : var(--focus);
+}
+
+
+/* checkmarked when checked */
+
+input[type="radio"]:checked + label::after,
+input[type="checkbox"]:checked + label::after {
+  content          : "\2713";
+}
+
+
+/* Inaccessible when disabled */
+
+input[type="radio"]:disabled,
+input[type="radio"]:disabled + label,
+input[type="checkbox"]:disabled,
+input[type="checkbox"]:disabled + label {
+  opacity          : 0.5;
+  color            : var(--dark-grey);
+}
+input[type="radio"]:disabled + label::before,
+input[type="checkbox"]:disabled + label::before {
+  background-color : var(--light-grey);
+  color            : var(--dark-grey);
+}
+input[type="radio"]:disabled + label::after,
+input[type="checkbox"]:disabled + label::after {
+  color            : var(--dark-grey);
+}
+
+
+/* The .reduce_motion class !importantly unsets all opacity */
+/* from any * element. With this declaaration we force our */
+/* native checboxes and radios to return to being trasparent */
+
+.reduce_motion input[type="radio"],
+.reduce_motion input[type="checkbox"] {
+  opacity          : 0 !important;
+}

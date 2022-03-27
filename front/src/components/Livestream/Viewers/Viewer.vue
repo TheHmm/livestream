@@ -15,8 +15,8 @@ export default {
 
   data() {
     return {
-      shaking: false,
       showing: false,
+      shaking: false,
     }
   },
 

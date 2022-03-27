@@ -1,12 +1,8 @@
 <script>
-import Network from './Network.vue'
 
 export default {
 
   name: 'Header',
-  components: {
-    Network
-  }
 
 }
 
@@ -26,7 +22,6 @@ export default {
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/about">About</RouterLink>
     </nav>
-    <Network />
 
   </header>  
 </template>

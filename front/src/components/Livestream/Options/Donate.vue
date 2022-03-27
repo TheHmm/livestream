@@ -18,6 +18,7 @@ export default {
   },
 
   methods: {
+
     async donate( e ) { 
       e.preventDefault()
       if (this.website !== '') {
@@ -36,7 +37,12 @@ export default {
         console.error(err)
       }
       this.selected = null
+    },
+
+    id( amount ) {
+      return 'donate_' + amount.replace( '.00', '' )
     }
+
   }
 
 }
@@ -50,18 +56,18 @@ export default {
       <li 
         v-for="( label, amount ) in donations"
         :key="amount"
-        role="menuitemradio"
       >
+        <input 
+          type="radio"
+          :name="label" 
+          :value="amount"
+          :id="id( amount )"
+          v-model="selected"
+        />
         <label 
           :title="label"
-          tabindex="0"
+          :for="id( amount ) "
         >
-          <input 
-            type="radio"
-            :name="label" 
-            :value="amount"
-            v-model="selected"
-          />
           {{ label }}
         </label>
       </li>
@@ -75,6 +81,7 @@ export default {
         If you are not a bot, leave the below field empty.
       </label>
       <input 
+        tabindex="-1"
         type="text" 
         name="website" 
         id="website" 
@@ -83,14 +90,12 @@ export default {
       />
     </div>
     
-    <label>
-      <input 
-        type="submit" 
-        :disabled="!selected"
-        :title="`Donate ${ selected } to The Hmm`"
-        value="Send"
-      />
-    </label>
+    <input 
+      type="submit" 
+      :disabled="!selected"
+      :title="`Donate ${ selected } to The Hmm`"
+      value="Send"
+    />
 
   </form>
 </template>
@@ -104,8 +109,8 @@ input[type="submit"] {
 }
 .bt {
   position: absolute;
-  left: -99999999rem;
-  top: -99999999rem;
+  left: -90000px;
+  top: -90000px;
 }
 
 </style>

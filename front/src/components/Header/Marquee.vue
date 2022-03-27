@@ -54,7 +54,7 @@ export default {
 }
 .marquee p {
   margin           : 0;
-  padding          : 0 1rem;
+  padding          : 0 0.25rem;
 }
 .marquee.animate p {
   animation        : marquee 60s linear infinite;

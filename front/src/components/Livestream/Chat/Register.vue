@@ -96,7 +96,6 @@ export default {
         class="name"
         title="Display name"
       >
-        Pick a display name:
         <input 
           required
           type="text" 
@@ -105,10 +104,11 @@ export default {
           placeholder="name" 
           v-model.lazy.trim="name"
         />
+        <span>pick a display name.</span>
       </label>
       <p>To better handle chat moderation and prevent abusive behaviour, we are introducing a cookie-like function to our livestream.</p>
       <p>When you submit your display name, a unique identifier <code>UID</code> will be created for you on our server and stored in your browser's <code>localStorage</code>.</p>
-      <p>You can opt into automatic <em>scheduled anonymiztion</em>: to anonymise your messages from your <code>UID</code> after a specified number of days have passed. Keep this field empty to opt out of scheduled anonymization.</p>
+      <p>You can opt into automatic <em>scheduled anonymiztion</em>: specify a number of days after which your messages get anonymized. Keep this field empty to opt out of scheduled anonymization.</p>
       <label
         class="lifetime"
         title="User lifetime"
@@ -122,16 +122,18 @@ export default {
         days.
       </label> 
       <p>If you need help with this or have any questions, please <a target="blank" href="https://thehmm.nl/contact/">contact us</a>.</p>
+      <input 
+        required
+        type="checkbox"
+        v-model="agrees"
+        id="agrees"
+      />
       <label
         title="Agree to these terms."
         class="agrees"
+        for="agrees"
       >
-        <input 
-          required
-          type="checkbox"
-          v-model="agrees"
-        />
-        I agree to this condition.
+      I agree to this condition.
       </label>
       <div class="row"> 
         <input 
@@ -140,6 +142,7 @@ export default {
           title="close."
           value="Close"
           @click="$emit('close')"
+          @key.esc.prevent="$emit('close')"
         />
         <input 
           class="submit"
@@ -173,8 +176,12 @@ dialog form label {
   align-items: center;
   flex-wrap: wrap;
 }
+dialog form label.name {
+  flex-wrap: nowrap;
+}
 dialog form label.name input {
-  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  width: 10rem;
 }
 dialog form label.agrees input {
   margin-right: 0.5rem;
@@ -184,7 +191,8 @@ dialog form label.lifetime input {
   margin-right: 0.5rem;
 }
 dialog form label.agrees {
-  margin: 1rem 0;
+  margin-left: 0.5rem;
+  margin-bottom: 1rem;
 }
 dialog form .row {
   display: flex;

@@ -82,6 +82,7 @@ main {
 
   --accent         : hsl( var(--h), var(--s), var(--l) );
   --increment      : 9.6%;
+  --max-l          : 96%;
 
 
   /* We produce 5 more shades of our accent color by adding */
@@ -91,7 +92,10 @@ main {
   --darker-l       : calc( var(--l) + 2 * var(--increment) );
   --mid-l          : calc( var(--l) + 3 * var(--increment) );
   --lighter-l      : calc( var(--l) + 4 * var(--increment) );
-  --light-l        : calc( var(--l) + 5 * var(--increment) );
+  --light-l        : min( 
+    calc( var(--l) + 5 * var(--increment) ), 
+    var( --max-l ) 
+  );
 
   --accent-dark    : hsl( var(--h), var(--s), var(--dark-l));
   --accent-darker  : hsl( var(--h), var(--s), var(--darker-l));
@@ -100,6 +104,8 @@ main {
   --accent-light   : hsl( var(--h), var(--s), var(--light-l));
 
   --back           : var(--accent-light);
+  --focus          : 2px solid var(--accent);
+
   
   background-color : var(--back);
 
@@ -113,10 +119,6 @@ main {
 @keyframes enter {
   from { background-color : transparent }
   to   { background-color : var(--back) }
-}
-
-main.mobile {
-  --side-width     : 100%;
 }
 
 </style>

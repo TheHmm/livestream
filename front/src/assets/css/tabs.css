@@ -1,12 +1,13 @@
 
 
-/* Option tabs at the bottom :) */
+/* Options and Chat tabs at the bottom :) */
 
 .tab {
 
   --back           : var(--yellow);
   --base-height    : 3rem;
   --full-height    : 13rem;
+  --tab-width      : 10rem;
 
   filter           : drop-shadow( var(--filter-shadow) );
   transform        : translateY(5rem);
@@ -25,15 +26,17 @@
 
 .tab .contents {
   background       : var(--back);
-  min-width        : 10rem;
-  max-width        : 10rem;
+  min-width        : var(--tab-width);
+  max-width        : var(--tab-width);
+  min-height       : 0;
   max-height       : 0;
   padding          : 0;
   transition       : 
     padding     var(--fast) ease-in-out,
+    min-height  var(--fast) ease-in-out,
     max-height  var(--fast) ease-in-out,
-    max-width   var(--fast) ease-in-out,
-    min-width   var(--fast) ease-in-out
+    min-width   var(--fast) ease-in-out,
+    max-width   var(--fast) ease-in-out
   ;
 }
 
@@ -45,17 +48,12 @@
 .tab .contents >>> ul li {
   padding          : 0.1rem 0.5rem;
 }
-.tab .contents >>> ul li label,
-.tab .contents >>> ul li input {
-  padding          : 0;
-  margin           : 0;
-}
 
 .tab:hover .contents,
-.tab:focus-within .contents,
-.tab:focus .contents {
+.tab:focus .contents,
+.tab:focus-within .contents {
   max-height       : var(--full-height);
-  max-width        : 10rem;
+  max-width        : var(--tab-width);
   padding-bottom   : 0.5rem;
 }
 

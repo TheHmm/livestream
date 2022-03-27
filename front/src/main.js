@@ -1,3 +1,8 @@
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+// * * * * * * * * * * * * The Hmm * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 import axios          from 'axios'
 import socket         from 'socket.io-client'
 import VueSocketIOExt from 'vue-socket.io-extended'
@@ -47,8 +52,6 @@ app
 .use( store )
 .use( router )
 .mount( '#app' )
-
-
 
 
 export default app

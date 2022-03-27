@@ -21,9 +21,9 @@ export default {
   computed: {
 
     ...mapGetters( 'viewers', [
-      'moderator',
       'uuid',
       'get_viewer_by_id',
+      'moderator',
     ]),
 
     id()     { return this.message.id },
@@ -37,9 +37,6 @@ export default {
   },
 
   methods: {
-    ...mapActions( 'messages', [
-      'delete_message'
-    ])
   },
 
 }
@@ -64,19 +61,11 @@ export default {
       <span class="time">{{ time }}</span>
       <span class="sender">{{ name }}</span>
       <Moderation
-        v-if="moderator"
+        :moderator="moderator"
+        :mine="mine"
         :message="message"
         :sender="sender"
       />
-      <span
-        v-if="mine"
-        role="menu"
-        class="options"
-      >
-        <span @click="delete_message( message )"> 
-          delete 
-        </span>
-      </span>
     </div>
 
     <div 
@@ -102,15 +91,14 @@ export default {
   --accent: hsl( 
       var(--h), 
       var(--s),
-      min( calc( var(--l) + var(--n) * var(--increment) ), 98% )
-    );
+      min( calc( var(--l) + var(--n) * var(--increment) ), var( --max-l ) ) );
   --back: var(--accent);
   background-color: var(--back);
+  margin: 2px;
   padding: 0 0.5rem;
   padding-block-start: 0.5rem;
   padding-block-end: 0.5rem;
-  margin: 0.5rem;
-  margin-bottom: 0;
+  margin-top: 0.5rem;
   transition: background-color var(--fast) ease;
 }
 .message:first-of-type {

@@ -5,6 +5,9 @@ import Donate from './Donate.vue'
 import Modes  from './Modes.vue'
 import Emoji  from './Emoji/index.vue'
 
+
+// Livestream options.
+
 export default {
 
   name: 'Options',
@@ -16,6 +19,9 @@ export default {
     Modes,
     Emoji
   },
+
+
+  // Our option tabs.
 
   data() {
     return {
@@ -47,6 +53,11 @@ export default {
       ]
     }
   },
+
+
+  // We used the longest label to generate properly
+  // sized curved texts in the Title component
+
   computed: {
     longest() {
       return Math.max.apply( null, this.tabs.map( t => t.label.length ) )
@@ -63,11 +74,10 @@ export default {
   >
     <div 
       v-for="( tab, index ) in tabs"
-      class="tab"
-      tabindex="0"
       :id="tab.name"
       :aria-label="tab.aria_label"
       :style="{ '--n': index }"
+      class="tab"
     >
       <Title
         :tab="tab"
@@ -90,27 +100,26 @@ export default {
   overflow    : visible;
 }
 
-/* #options .tab {
-  border-top-left-radius  : 4.5em 100%;
-  border-top-right-radius : 4.5em 100%;
-} */
-
 #options .tab:not(:first-of-type) {
   margin-left : -1rem;
+}
+
+#options .tab .contents >>> ul {
+  margin: auto;
+}
+
+#options .tab .contents >>> ul li {
+  display     : flex;
+  align-items : center;
+}
+#options .tab .contents >>> ul li::before {
+  content     : unset;
 }
 
 .mobile #options {
   margin      : unset;
   z-index     : 1;
-  max-height  : 2.5rem;
-}
-
-
-
-.mobile #options .tab:hover .contents,
-.mobile #options .tab:focus-within .contents,
-.mobile #options .tab:focus .contents {
-  min-width   : 10rem;
+  max-height  : var(--base-height);
 }
 
 

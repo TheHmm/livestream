@@ -8,7 +8,7 @@ import Announcements            from './Announcements/index.vue'
 import Info                     from './Info/index.vue'
 import Status                   from './Info/Status.vue'
 import Options                  from './Options/index.vue'
-import Network                  from '../Header/Network.vue'
+import Network                  from '../Footer/Network.vue'
 import Chat                     from './Chat/index.vue'
 
 

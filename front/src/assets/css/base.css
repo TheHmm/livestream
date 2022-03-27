@@ -3,6 +3,14 @@
   src: url('../fonts/impact-nieuw.woff2');
 }
 
+@font-face {
+  font-family: 'not-courier-sans';
+  src: 
+    url('../fonts/not-courier-sans.otf') 
+    format("opentype")
+  ;
+}
+
 :root {
 
 
@@ -28,7 +36,7 @@
   /* The default accent color used in the entire website */
   /* This value is overidden in the Event page. */
 
-  --accent         : var(--yellow);
+  --accent         : var(--blue);
   --error          : var(--orange-red);
 
 
@@ -40,9 +48,11 @@
   --filter-shadow  : 0 0 var(--shadow-size) var(--shadow-color);
 
 
-  /* Custom dashed border */
+  /* Borders and outlines */
 
+  --solid          : 1px solid;
   --dash           : 1px dashed;
+  --focus          : 2px solid var(--accent);
   
 
   /* Transition and animation speeds */
@@ -123,7 +133,7 @@
 /* Any element that is focused get's a Hmm outline */
 
 *:focus {
-  outline          : 0.15rem solid var(--blue);
+  outline          : var(--focus);
 }
 
 
@@ -145,7 +155,8 @@ body {
 }
 
 
-/* overriding anchors with The Hmm black */
+/* overriding anchors with The Hmm black, adding */
+/* the border bottom instead of an underline */
 
 a,
 a:active,
@@ -156,12 +167,15 @@ a:visited {
   font-size        : 1.2em;
   text-decoration  : none;
   border-bottom    : 1px solid;
-  /* transition       : border var(--fast) ease; */
 }
 
 a:hover {
   border-bottom    : 2px solid;
 }
+
+
+/* Custom font for headers */
+/* todo: confirm license */
 
 h1,
 h2 {
@@ -171,15 +185,36 @@ h2 {
   line-height      : 1.1;
 }
 
-h3 {
+
+/* In this city we don't like bold type. */
+
+h3,
+h4,
+h5,
+h6 {
   font-weight      : normal;
+}
+
+
+ul {
+  margin           : 0;
+  padding          : 0;
+}
+
+li {
+  margin           : 0;
+  padding          : 0;
+}
+
+li::before {
+  content          : '→ '
 }
 
 
 /* all elements with role=status */
 
 *[role="status"] {
-  font-family      : monospace;
+  font-family      : 'not-courier-sans', monospace;
 }
 
 
@@ -193,8 +228,26 @@ h3 {
 }   
 
 
+/* Input styles */
+
+input,
+input::before {
+  /* appearance       : unset; */
+  /* background-color : transparent; */
+}
+input {
+  /* border-color     : var(--accent); */
+
+}
+
+
+
 /* Mpbile styles */
 
 .mobile {
-  font-size: 11pt;
+
+  --side-width     : 100%;
+
+  font-size        : 11pt;
+
 }

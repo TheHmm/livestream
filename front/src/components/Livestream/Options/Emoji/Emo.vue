@@ -28,24 +28,21 @@ export default {
 
 <template>
     
-  <div
+  <label
     :class="$id()"
-    role="menuitemradio"
+    role="button"
+    tabindex="0"
+    :title="caption || name"
   >
     <img 
       v-if="img_url"
       :src="img_url"
       :alt="caption"
-      :title="caption"
     >
-    <label
-      v-else 
-      :title="caption"
-      tabindex="0"
-    >
+    <span v-else>
       {{ emo.name }}
-    </label>
-  </div>
+    </span>
+  </label>
 
 </template>
 

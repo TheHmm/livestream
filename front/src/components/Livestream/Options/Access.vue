@@ -30,17 +30,17 @@ export default {
     <li 
       v-for="( label, key ) in ui"
       :key="key"
-      role="menuitemcheckbox"
     >
-      <label
+      <input 
+        type="checkbox"
+        :id="key"
+        :checked="get_option( key )"
+        @change="toggle( key )"
+      />
+      <label  
+        :for="key" 
         :title="label"
-        tabindex="0"
       >
-        <input 
-          type="checkbox"
-          :checked="get_option( key )"
-          @change="toggle( key )"
-        />
         {{ label }}
       </label> 
     </li>

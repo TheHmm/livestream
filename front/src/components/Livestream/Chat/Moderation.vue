@@ -7,8 +7,10 @@ export default {
   name: 'Moderation',
 
   props: {
-    message  : Object,
-    sender   : Object,
+    message   : Object,
+    sender    : Object,
+    moderator : Boolean,
+    mine      : Boolean,
   },
 
   computed: {
@@ -29,23 +31,40 @@ export default {
 </script>
 
 <template>
+
   <span
+    v-if="moderator"
     role="menu"
     class="options"
   >
-
-    <span @click="censor_message( message )"> 
+    <span 
+      @click="censor_message( message )"
+      tabindex="0"
+    > 
       {{ censored && 'uncensor' || 'censor' }} 
     </span>
-
-    <span @click="block_viewer( sender )"> 
+    <span 
+      @click="block_viewer( sender )"
+      tabindex="0"
+    > 
       {{ blocked && 'unblock' ||  'block' }}
     </span>
+    <span 
+      @click="delete_message( message )"
+      tabindex="0"
+    > 
+      delete 
+    </span> 
+  </span>
 
+  <span
+    v-else-if="mine"
+    role="menu"
+    class="options"
+  >
     <span @click="delete_message( message )"> 
       delete 
     </span>
-    
   </span>
 </template>
 

@@ -54,10 +54,34 @@ label {
   border-top-left-radius  : var(--radius);
   border-top-right-radius : var(--radius);
   font-size               : 1.33rem;
+  /* background-color     : transparent !important; */
 }
+
+  /* label                : :before {
+  content                 : '';
+  position                : absolute;
+  bottom                  : 0;
+  width                   : 100%;
+  height                  : 4rem;
+  --radius                : calc( 2rem + var(--base-height) ) 100%;
+  --radius                : var( --tab-width );
+  --radius                : 100%;
+  background-color        : var(--back);
+  border-top-left-radius  : var(--radius);
+  border-top-right-radius : var(--radius);
+} */
+
 
 label div,
 label >>> div {
   height                  : 100%;
 }
+
+
+.reduce_motion label >>> div span {
+  position                : relative !important;
+  left                    : unset !important;
+  bottom                  : -1rem !important;
+}
+
 </style>
