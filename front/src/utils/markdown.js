@@ -11,8 +11,7 @@ const
 renderer.link = ( href, title, text ) => {
 
   const 
-    // is_local = href.startsWith( `${location.protocol}//${location.hostname}` ),
-    is_local = href.startsWith( `${ config.md.baseUrl }` ),
+    is_local = href.startsWith( `${location.protocol}//${location.hostname}` ),
     html     = link_renderer.call( renderer, href, title, text )
 
   return is_local ? html : html.replace(/^<a /, `
