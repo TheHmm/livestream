@@ -99,6 +99,7 @@
 		id="clear" 
 		value="clear transcription"
 		name="clear"
+		onclick="clear"
 	/>
 	
 	<script>
@@ -287,6 +288,7 @@
     });
 
 	const socket = io('https://api.live.thehmm.karls.computer');
+	let clear
 	// var apiKey = false;
   //	if (urlParams.has("pie")){
 		
@@ -310,6 +312,12 @@
 
 	socket.on('confirm_join_CC', () => {
 		console.log('Joined closed caption room.')
+		clear = () => {
+			if ( socket ) {
+				console.log( 'clearing captions' )
+				socket.emit('clear_CC')
+			}
+		}
 
 	})
 	socket.on('confirm_leave_CC', () => {

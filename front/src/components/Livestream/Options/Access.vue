@@ -28,7 +28,8 @@ export default {
       this.$router.push({
         query: {
           ...this.$route.query,
-          [ key ]: this.get_option( key ) ? undefined : true
+          // [ key ]: this.get_option( key ) ? undefined : true
+          [ key ]: !this.get_option( key ) 
         }
       })
     }
