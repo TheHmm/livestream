@@ -244,20 +244,6 @@ module.exports = {
       // if they are using the text-only player.
 
 
-      // Viewers joining 'srt' room will get the full srt file 
-      // every time it is updated by marco
-
-      socket.on('join_SRT_room', () => {
-        socket.join('srt')
-        socket.emit('confirm_join_SRT', srt )
-      })
-      
-      socket.on('leave_SRT_room', () => {
-        socket.leave( 'srt' )
-        socket.emit( 'confirm_leave_SRT' )
-      })     
-      
-      
       // Viewers joining 'cc' room will get the captions that
       // have been previously recorded.
 
@@ -287,9 +273,17 @@ module.exports = {
 
       socket.on('final', result => {
         cc.push( result.caption )
-        io.to( 'cc' ).emit( 'final', result.caption )
         srt = result.srt
-        io.to( 'srt' ).emit( 'srt' , srt)
+        io.to( 'cc' ).emit( 'final', result.caption )
+        // io.to( 'srt' ).emit( 'srt' , srt)
+      })
+
+
+
+      socket.on('clear_CC', () => {
+        cc = []
+        srt = null
+        io.to( 'cc' ).emit( 'clear_CC', cc )
       })
 
       

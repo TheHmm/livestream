@@ -62,8 +62,6 @@ export default {
 
     SET_LIVESTREAM : ( state, livestream ) => state.livestream = livestream,
     
-    SET_TRACK      : ( state, track )   => state.track = track,
-    CLEAR_TRACK    : state => state.track = null,
     SET_CC_INTERIM : ( state, caption ) => state.cc_interim = caption,
     SET_CC         : ( state, cc ) => state.cc = cc,
     ADD_CAPTION    : ( state, caption ) => state.cc.push ( caption ),
@@ -140,25 +138,16 @@ export default {
       $log.info( `SOCKET`, `Got livestream update: ${ data.status }` )
     },
 
-    socket_confirmJoinSrt( { commit }, srt ) {
-      $log.info( 'SOCKET', `Subscribed to subtitle track.`)
-      commit( 'CLEAR_TRACK' )
-      commit( 'SET_TRACK', captions.srt_to_vtt( srt ) )
-    },
 
-    socket_confirmLeaveSrt( { commit }) {
-      $log.info( 'SOCKET', `Unsubscribed from subtitle track.`)
-    },
+    // closed captions 
 
     socket_confirmJoinCc( { commit }, cc ) {
       $log.info( 'SOCKET', `Subscribed to closed captions.`)
-      commit( 'CLEAR_CC' )
       commit( 'SET_CC', cc ) 
     },
 
     socket_confirmLeaveCc( { commit }) {
       $log.info( 'SOCKET', `Unsubscribed from closed captions.`)
-
     },
 
     socket_interm( { commit }, caption ) {
@@ -170,8 +159,8 @@ export default {
       commit( 'ADD_CAPTION', caption ) 
     },
 
-    socket_srt( { commit }, srt ) {
-      commit( 'SET_TRACK', srt )
+    socket_clearCc( { commit }, cc ) {
+      commit( 'CLEAR_CC' )
     }
 
 
