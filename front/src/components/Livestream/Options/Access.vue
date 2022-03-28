@@ -13,8 +13,8 @@ export default {
   
   computed: {
     ...mapState( 'meta', [ 
-      'ui' ] 
-    )
+      'ui' 
+    ])
   },
 
 
@@ -41,7 +41,7 @@ export default {
 <template>
   <ul role="menu">
     <li 
-      v-for="( label, key ) in ui"
+      v-for="( option, key ) in ui"
       :key="key"
     >
       <input 
@@ -52,9 +52,9 @@ export default {
       />
       <label  
         :for="key" 
-        :title="label"
+        :title="option.label"
       >
-        {{ label }}
+        {{ option.label }}
       </label> 
     </li>
   </ul>

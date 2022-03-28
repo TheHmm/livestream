@@ -11,9 +11,18 @@ export default {
     mobile: false,
     
     ui: {
-      reduce_motion: "reduce motion", 
-      reduce_depth: "reduce depth", 
-      captions: "closed captions"
+      reduce_motion: {
+        label: "reduce motion", 
+        value: false,
+      },
+      reduce_depth: {
+        label: "reduce depth",
+        value: false, 
+      },
+      captions: {
+        label: "closed captions",
+        value: true
+      }
     },
 
     error: null,

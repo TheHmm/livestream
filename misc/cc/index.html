@@ -336,15 +336,15 @@
 						response = await fetch('https://api.live.thehmm.karls.computer/api/livestream'),
 						livestream = await response.json()
 					timestamp_start = (new Date(livestream.data.publicData.start_time)).getTime()
-					console.log('Got livetream update', livestream)
+					console.log('Got livetream', livestream)
 					if ( livestream?.status == 'active' && livestream.start_time ) {
 						timestamp_start = (new Date(livestream.data.publicData.start_time)).getTime()
 						document.body.style.background = 'green'
 					} else {
 						document.body.style.background = 'red'
 					}
-					console.log(timestamp_start, 'livestream start time:')
-					console.log(Date.now(), 'current time:')
+					console.log(timestamp_start, 'livestream start time')
+					console.log(Date.now(), 'current time')
 				} catch (err) {
 					document.body.style.background = 'red'
 					console.error('strapi error', err)
