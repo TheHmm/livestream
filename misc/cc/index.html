@@ -302,6 +302,11 @@
 	socket.on('confirm_leave_CC', () => {
 		console.log('Left closed caption room.')
 	})
+	socket.on('stream_update', livestream => {
+		console.log('Got livetream update', livestream)
+		// timestamp_start
+	})
+
 	
 	var final_transcript = '';
 	var interim_transcript = "";

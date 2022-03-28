@@ -53,7 +53,9 @@ input[type="reset"]:disabled {
   opacity          : 0.5;
   background-color : var(--light-grey);
   color            : var(--dark-grey);
+  border-color     : var(--dark-grey);
   font-style       : italic ;
+  cursor           : not-allowed;
 }
 
 
@@ -188,15 +190,18 @@ input[type="checkbox"]:disabled,
 input[type="checkbox"]:disabled + label {
   opacity          : 0.5;
   color            : var(--dark-grey);
+  cursor           : not-allowed;
 }
 input[type="radio"]:disabled + label::before,
 input[type="checkbox"]:disabled + label::before {
   background-color : var(--light-grey);
   color            : var(--dark-grey);
+  cursor           : not-allowed;
 }
 input[type="radio"]:disabled + label::after,
 input[type="checkbox"]:disabled + label::after {
   color            : var(--dark-grey);
+  cursor           : not-allowed;
 }
 
 

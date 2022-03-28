@@ -30,10 +30,10 @@ export default {
 
     async send( e ) {
       e.preventDefault()
-      this.sending = true
       if ( !this.message ) {
         return
       }
+      this.sending = true
       try {
         if ( await this.authenticate() ) {
           await this.create_message( this.message )
@@ -73,13 +73,13 @@ export default {
       name="message" 
       id="message" 
       tabindex="0"
-      :disabled="sending"
+      :disabled="sending || request_registration"
       placeholder ="Type your message and hit enter" 
       v-model.trim="message"
     />
     <input 
       type="submit" 
-      :disabled="sending"
+      :disabled="sending || request_registration"
       title="Send your message to all other viewers."
       value="˃"
     />

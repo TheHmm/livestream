@@ -44,6 +44,8 @@ Next, configure a site in your apache or nginx webserver for this domain and set
 
 The example given assumes that you can generate a self-signged SSL certificate on your server, as this is recccommended for Strapi to work across origins!
 
+# todo: maxconnections count on apache 
+
 ## Creating Users
 
 You can head over to `https://{ your-strapi-host }/admin` and create your admin users / other users.

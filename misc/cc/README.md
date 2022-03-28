@@ -2,7 +2,7 @@
 
 Webpage for generating closed captions. 
 
-Forked from here: https://github.com/steveseguin/captionninja and configured to send captions to the strapi server.
+Forked from here: https://github.com/steveseguin/captionninja and configured to send captions to the Strapi server.
 
 TODO
 
