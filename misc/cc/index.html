@@ -97,7 +97,6 @@
 	<button 
 		id="clear" 
 		name="clear"
-		onclick="clear()"
 	>
 		clear transcription
 	</button>
@@ -290,6 +289,10 @@
 
 	const socket = io('https://api.live.thehmm.karls.computer');
 	
+	const clear_button = document.getElementById('#clear')
+
+	clear_button.onclick = clear
+
 	function clear() {
 		console.log( 'clearing captions' )
 		socket.emit('clear_CC')
