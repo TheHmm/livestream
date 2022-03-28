@@ -4,27 +4,15 @@ Webpage for generating closed captions.
 
 Forked from here: https://github.com/steveseguin/captionninja and configured to send captions to the Strapi server.
 
-TODO
+## Installation
 
+This directory contains an index.html file that you can serve statically. It pulls the necessary javascript from the scripts directory.
+## Deployment
 
+Copy these files to a web accessible directory.
+## Apache / Nginx Configuration
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Point a dedicated domain to this directory. See the [example apache config](./cc.apache.example.conf).
 
 
 ---
