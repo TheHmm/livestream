@@ -133,6 +133,7 @@ header #announcements {
   background-color : var(--back);
   box-shadow       : var(--shadow);
   max-height       : 80%;
+  /* max-height       : var(--middle-height); */
   width            : 100%;
   flex-grow        : 1;
   flex-shrink      : 1;

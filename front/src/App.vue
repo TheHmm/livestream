@@ -43,7 +43,7 @@ export default {
       return Object
       .keys( this.ui )
       .reduce( ( acc, key ) => ( 
-        { ...acc, [key]: this.$route.query[key] } 
+        { ...acc, [key]: this.$route.query[key] == 'true' } 
       ), {} )
     }
 

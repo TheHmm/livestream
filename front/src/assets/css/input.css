@@ -191,6 +191,7 @@ input[type="checkbox"]:disabled + label {
   opacity          : 0.5;
   color            : var(--dark-grey);
   cursor           : not-allowed;
+  font-style       : italic ;
 }
 input[type="radio"]:disabled + label::before,
 input[type="checkbox"]:disabled + label::before {

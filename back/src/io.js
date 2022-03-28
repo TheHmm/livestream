@@ -21,9 +21,14 @@ module.exports = server => {
 
 
   // Dirty method to log the # of connected sockets
+  // We save the count to an array of counts for reference.
+
+  // io.counts = []
 
   io.count = socket => {
-    return socket.client.conn.server.clientsCount
+    const count = socket.client.conn.server.clientsCount
+    // io.counts.push( count )
+    return count
   }
 
   // We create a an array to hold connected viewers' 

@@ -27,7 +27,20 @@ export default {
       return this.$store.getters['livestream/current_mode']( this )
     },
     desires_captions() {
-      return this.$route.query['captions'] === 'true'
+      const 
+        key = 'closed_captions',
+        value = this.$route.query[key],
+        default_value = this.$store.state.meta.ui[key].default
+      
+      if ( value ) {
+        if ( value == 'true' ) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return default_value
+      }
     },
   },
 

@@ -1,6 +1,9 @@
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import Emo from './Emo.vue'
+
+
+// Custom emoji 
 
 export default {
 

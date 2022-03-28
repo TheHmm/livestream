@@ -1,5 +1,5 @@
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 
 // Accessbility menu. Options are imported from the store 
@@ -12,8 +12,9 @@ export default {
   name: 'Access',
   
   computed: {
-    ...mapState( 'meta', [ 
-      'ui' 
+    ...mapGetters( 'meta', [ 
+      'ui',
+      'get_default_value'
     ])
   },
 
@@ -21,15 +22,26 @@ export default {
   // Using the router as a store 😮
 
   methods: {
-    get_option( key ) {
-      return this.$route.query[key]
+
+
+    get_value( key ) {
+      // return this.$route.query[key]
+      if ( this.$route.query[key] ) {
+        if ( this.$route.query[key] == 'true' ) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return this.get_default_value(key)
+      }
     },
     toggle( key ) {
       this.$router.push({
         query: {
           ...this.$route.query,
-          // [ key ]: this.get_option( key ) ? undefined : true
-          [ key ]: !this.get_option( key ) 
+          // [ key ]: this.get_value( key ) ? undefined : true
+          [ key ]: !this.get_value( key )
         }
       })
     }
@@ -48,7 +60,7 @@ export default {
       <input 
         type="checkbox"
         :id="key"
-        :checked="get_option( key )"
+        :checked="get_value( key )"
         @change="toggle( key )"
       />
       <label  

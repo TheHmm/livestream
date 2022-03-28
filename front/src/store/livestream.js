@@ -39,20 +39,17 @@ export default {
 
 
     // Livestream object. This is the publicData property of 
-    // the full livestream single type in Strapi:
-
-    // livestream: {
-    //   playbackID : string (used to fetch from mux)
-    //   status     : string ("active" or "idle")
-    //   start_time : unix time string
-    //   
-    // }
+    // the full livestream single type in Strapi
 
     livestream: null,
 
+
+    // Stream modes
+
     modes: DEFAULT_MODES(),
 
-    track      : null,
+    // Captions
+
     cc_interim : null,
     cc         : [],
 

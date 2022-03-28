@@ -154,7 +154,7 @@ export default {
   /> 
 
   <div 
-    v-else
+    v-else-if="cc.length > 0"
     :id="$id()"
   >
     <p
@@ -162,7 +162,7 @@ export default {
       :key="id"
       class="caption"
     >
-    <span>{{ caption.text }}</span>
+      <span>{{ caption.text }}</span>
     </p>
     <p
       v-if="cc_interim"
@@ -171,13 +171,19 @@ export default {
       {{ cc_interim.text }}
     </p>
   </div> 
+  <div
+    v-else-if="cc.length == 0"
+    :id="$id()"
+  >
+    <p>Closed captions not available.</p>
+  </div>
 
 </template>
 
 <style scoped>
 
 #captions {
-  padding: 0 1rem;
+  padding: 1rem;
   overflow: scroll;
   display: flex;
   flex-direction: column;

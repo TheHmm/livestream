@@ -157,6 +157,7 @@ export default {
   text-align: justify;
 }
 #thumbs #captions {
+  flex-basis: 66%;
   text-align: center;
   align-items: center ;
   border-top: var(--border);
@@ -165,7 +166,9 @@ export default {
 img {
 }
 #thumbs section {
-  height: 100%;
+  /* height: 100%; */
+  flex-grow: 1;
+  /* flex-basis: 50%; */
   float: right;
   display: flex;
   padding: 1rem;
@@ -175,7 +178,7 @@ img {
 }
 
 #thumbs .image_contaier {
-  flex-basis: 33%;
+  /* flex-basis: 50%; */
   display: flex;
   flex-direction: column;
   align-self: stretch;

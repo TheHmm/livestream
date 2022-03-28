@@ -1,28 +1,39 @@
 <script>
-import Livestream from '@/components/Livestream/index.vue'
+
+import Chat from '@/components/Livestream/Chat/index.vue'
 
 
-
-// The Event view. This view wraps the livestream component,
-// creates base styles to work from and handles connection
-// to the socket server.
+// The Chat view. This view presents onlythe chat of a given
+// event page.
 
 export default {
 
-  name       : 'EventPage',
-  components : { Livestream },
+  name       : 'ChatPage',
 
-
-  // We get our event object frmm the route slug. Note that
-  // the event has already been fetched in the before_enter
-  // route guard: @/router/guards/before_enter_event
+  components : { 
+    Chat,
+  },
 
   computed: {
+
+
+    // We get our event object frmm the route slug. Note that
+    // the event has already been fetched in the before_enter
+    // route guard: @/router/guards/before_enter_event
+
     event()  { 
       return this.$store.getters[
         'events/current_event'
       ]
     },
+
+
+    // We can set to hide the chat input in the display
+
+    hide_input() {
+      return this.$route.query.hide_input
+    }
+
   },
 
 
@@ -64,10 +75,11 @@ export default {
 <template>
   <main 
     :id="$id()"
+    :class="{ hide_input }"
     :style="{ ...event.accent }"
     aria-labelledby="event_title"
   >
-    <Livestream :event="event" />
+    <Chat />
   </main>
 </template>
 
@@ -122,6 +134,21 @@ main {
 @keyframes enter {
   from { background-color : transparent }
   to   { background-color : var(--back) }
+}
+
+#chatpage >>> #chat .contents {
+  /* min-height: 100vh;
+  max-height: 100vh; */
+}
+#chatpage >>> #chat .close {
+  display: none;
+}
+#chatpage.hide_input {
+  padding-bottom: 2px;
+}
+#chatpage.hide_input >>> #chat #message_form {
+  display: none;
+
 }
 
 </style>

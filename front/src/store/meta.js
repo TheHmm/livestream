@@ -13,15 +13,15 @@ export default {
     ui: {
       reduce_motion: {
         label: "reduce motion", 
-        value: false,
+        default:  false,
       },
       reduce_depth: {
-        label: "reduce depth",
-        value: false, 
+        label: "reduce depth", 
+        default: false,
       },
-      captions: {
+      closed_captions: {
         label: "closed captions",
-        value: true
+        default: true
       }
     },
 
@@ -58,6 +58,14 @@ export default {
     censor_message: state => {
       return state.meta.censorMessage
     },
+
+    ui: state => {
+      return state.ui
+    },
+
+    get_default_value: state => key => {
+      return state.ui[key].default
+    }
 
   },
 

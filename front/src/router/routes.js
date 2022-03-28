@@ -31,6 +31,12 @@ export default [
     beforeEnter: guards.before_enter_event,
   },
   {
+    path: '/:slug/chat',
+    name: 'Chat',
+    component: () => import( '@/views/Chat.vue' ),
+    beforeEnter: guards.before_enter_event,
+  },
+  {
     path: '/donated',
     name: 'Donated',
     component: () => import( '@/views/Donated.vue' ),

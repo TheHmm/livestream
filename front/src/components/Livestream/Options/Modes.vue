@@ -1,6 +1,9 @@
 <script>
 import { mapGetters } from 'vuex'
 
+
+// Submenu for stream modes
+
 export default {
 
   name: 'Modes',
@@ -16,6 +19,9 @@ export default {
       'modes',
     ]),
 
+    
+    // disabled if livestream is idle
+
     idle() {
       return this.get_livestream.status != 'active'
     },
@@ -27,7 +33,7 @@ export default {
       get() {
         return this.$store.getters['livestream/current_mode']( this )
       },
-      set(mode) {
+      set( mode ) {
         this.$router.push({
           query: {
             ...this.$route.query,
@@ -38,6 +44,11 @@ export default {
     },
 
   },
+
+
+  // When switching to video mode, HLS will load some more
+  // available modes. Here the 'video' mode refers to hls'
+  // 'auto' level.
 
   watch: {
     current_mode: {
@@ -63,11 +74,13 @@ export default {
 }
 </script>
 
+
 <template>
   <ul role="menu">
     <li 
       v-for="mode in modes"
       :key="mode.name"
+      :style="{ '--url': `url(@/assets/icons/${mode.name}.svg)` }"
       class="mode"
     >
       <input 
@@ -88,8 +101,13 @@ export default {
   </ul>
 </template>
 
+
 <style scoped>
 .mode {
-  padding: 0.2rem ;
+  /* padding: 0.2rem ; */
+}
+.mode input[type="radio"] + label::after  {
+  /* background-image : var(--url); */
+  /* background-image : url( '@/assets/icons/thumbs.svg' ); */
 }
 </style>

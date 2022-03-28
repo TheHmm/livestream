@@ -58,10 +58,6 @@
         "dots"
       ]
     },
-    "allowFlyingEmoji": {
-      "type": "boolean",
-      "default": true
-    },
     "highlightDonateButton": {
       "type": "boolean",
       "default": false
@@ -97,6 +93,10 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::mux-video-uploader.mux-asset"
+    },
+    "allowEmoji": {
+      "type": "boolean",
+      "default": true
     }
   }
 }

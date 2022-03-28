@@ -12,6 +12,11 @@ export default {
     Input,
   },
 
+  // props: {
+  //   desires_input: { default: true },
+  //   desires_close: { default: true },
+  // },
+
   data() {
     return {
       expanded: false,
