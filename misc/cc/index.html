@@ -67,6 +67,12 @@
 			filter: invert(100%);
 			-webkit-filter: invert(100%);
 		}
+
+		#clear {
+			position: absolute;
+			top: 20px;
+			left: 0;
+		}
 	</style>
 </head>
 <body>
@@ -91,7 +97,7 @@
 	<input 
 		type="button" 
 		id="clear" 
-		value="clear captions"
+		value="clear transcription"
 		name="clear"
 	/>
 	
@@ -304,6 +310,7 @@
 
 	socket.on('confirm_join_CC', () => {
 		console.log('Joined closed caption room.')
+
 	})
 	socket.on('confirm_leave_CC', () => {
 		console.log('Left closed caption room.')
