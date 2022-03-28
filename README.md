@@ -18,68 +18,51 @@ Second version of the Hmm Livestream website with:
 
 
 
-### Reuqirements
+## Reuqirements
 
 - A server with apache (or nginx) to serve static files and act as a proxy
 - NodeJS >=12 <=14 ( this was developed with v14.19.0 )
 - NPM >= 6.x
 - a node process manager to handle updates like `pm2`
 - enough RAM / CPU cores / network bandwidth to handle 100+ active socket connections
+- a mux account and API token
+- a mollie account and API token
 
-### Installation
+## Installation & Deployment
 
-Clone this repository
-#### Strapi
-
-```
-cd back
-npm i
-npm run build 
-```
-
-#### Vue
-
-```
-cd front
-npm i
-npm run build
-```
-
-## Deployment
-
-### Environment Configuration
-
-
-### Apache / Nginx Configuration
-
-
-
+1. Instructions for Strapi are in [back](/back/).
+2. Instructions for Vue are in [front](/front/).
+3. Instructions for Closed Captions are in [misc/cc](/misc/cc/)
 
 ## Usage
+### Streaming
+
+OBS stream settings:
+
+```
+* Service    : Custom
+* Server     : rtmps://global-live.mux.com:443/app
+* Stream key : XXXXX-XXXXXXX-XXXXXXXX-XXXXXX-XXXX
+```
+The stream key can be found in the strapi admin panel at:
+```
+https://{ your-strapi-host }/admin/content-manager/singleType/api::livestream.livestream
+```
+
+### Closed Captions
+TODO
 
 
 
 ### Content Management
-
-TODO:
-
-
-### Closed Captions
-
-
-### Streaming
-
-OBS stream settings.
-
-```
-* Service: Custom
-* Server: rtmps://global-live.mux.com:443/app
-* Stream key: can be found at https://{ your-strapi-host }/admin/content-manager/singleType/api::livestream.livestream
-```
-
-## Development
-
+TODO
+### Moderation
+TODO
+## Development Workflow
 ### Post-receive hook
+TODO
+
+
 
 
 ## License

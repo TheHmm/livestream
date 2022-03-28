@@ -1,3 +1,38 @@
+# CC
+
+Webpage for generating closed captions. 
+
+Forked from here: https://github.com/steveseguin/captionninja and configured to send captions to the strapi server.
+
+TODO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+from old readme:
+
+
+
 # CAPTION.Ninja
 
 This is a free-to-use captioning tool.
