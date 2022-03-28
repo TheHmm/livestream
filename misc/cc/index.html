@@ -288,7 +288,12 @@
     });
 
 	const socket = io('https://api.live.thehmm.karls.computer');
-	let clear
+	
+	function clear() {
+		console.log( 'clearing captions' )
+		socket.emit('clear_CC')
+	}
+
 	// var apiKey = false;
   //	if (urlParams.has("pie")){
 		
@@ -312,13 +317,6 @@
 
 	socket.on('confirm_join_CC', () => {
 		console.log('Joined closed caption room.')
-		clear = () => {
-			if ( socket ) {
-				console.log( 'clearing captions' )
-				socket.emit('clear_CC')
-			}
-		}
-
 	})
 	socket.on('confirm_leave_CC', () => {
 		console.log('Left closed caption room.')
