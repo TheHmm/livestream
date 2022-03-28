@@ -15,6 +15,7 @@ export default {
     return {
       message: null,
       request_registration: false,
+      sending: false,
     }
   },
 
@@ -29,7 +30,7 @@ export default {
 
     async send( e ) {
       e.preventDefault()
-      console.log(this.message)
+      this.sending = true
       if ( !this.message ) {
         return
       }
@@ -40,9 +41,11 @@ export default {
         } else {
           this.request_registration = true
         }
+        this.sending = false
       } catch ( error ) {
         $log.error( 'AUTH', error )
         this.request_registration = true
+        this.sending = false
       }
 
     }
@@ -70,11 +73,13 @@ export default {
       name="message" 
       id="message" 
       tabindex="0"
+      :disabled="sending"
       placeholder ="Type your message and hit enter" 
       v-model.trim="message"
     />
     <input 
       type="submit" 
+      :disabled="sending"
       title="Send your message to all other viewers."
       value="˃"
     />
