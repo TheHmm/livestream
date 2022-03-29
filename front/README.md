@@ -47,13 +47,33 @@ This is an SPA, so it handles routing in the browser. This means that Apache/Ngi
 First, set `AllowOverride` to `All` in your global `apache2.conf` file:
 ```
 <Directory /var/www/>
-    Options Indexes FollowSymLinks
     AllowOverride All
-    Require all granted
 </Directory>
 ```
 
-Then navigate to the root of your public `dist` directory, the one defined as `DocumentRoot` in your site's apache config, and create a `.htaccess` file with the following line:
+Then navigate to the parent directory of the root of your public `dist` directory, the one defined as `DocumentRoot` in your site's apache config, and create a `.htaccess` file with the following line:
 ```
 FallbackResource index.html
+```
+For example, in the following path configuration, the `.htaccess` file is a sibling of the `dist` directory:
+```
+.
+..
+.env
+.env.example
+.gitignore
+.htaccess
+README.md
+apache.example.conf
+dist
+eslintrc.js
+index.html
+node_modules
+package-lock.json
+package.json
+src
+stats.html
+stats.json
+vite.config.js
+
 ```
