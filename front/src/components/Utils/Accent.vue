@@ -31,5 +31,6 @@ div {
   height: 100%;
   width: 100%;
   background-color: var(--accent);
+  z-index: 5;
 }
 </style>
