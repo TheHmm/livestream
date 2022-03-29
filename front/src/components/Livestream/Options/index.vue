@@ -4,6 +4,7 @@ import Access from './Access.vue'
 import Donate from './Donate.vue'
 import Modes  from './Modes.vue'
 import Emoji  from './Emoji/index.vue'
+import { mapGetters } from 'vuex'
 
 
 // Livestream options.
@@ -55,26 +56,35 @@ export default {
   },
 
 
-  // We used the longest label to generate properly
-  // sized curved texts in the Title component
 
   computed: {
+    
+    // We used the longest label to generate properly
+    // sized curved texts in the Title component
+
     longest() {
       return Math.max.apply( null, this.tabs.map( t => t.label.length ) )
-    }
-  }
-  
+    },
+
+    ...mapGetters( 'events', [
+      'highlight_donate'
+    ])
+
+  },
+
 }
 </script>
 
 <template>
   <div 
     :id="$id()"
+    :class="{ highlight_donate }"
     aria-label="livestream options"
   >
     <div 
       v-for="( tab, index ) in tabs"
       :id="tab.name"
+      :ref="tab.name"
       :aria-label="tab.aria_label"
       :style="{ '--n': index }"
       class="tab"
@@ -148,5 +158,18 @@ export default {
   padding-bottom: var(--base-height)
 }
 
+
+#options.highlight_donate #donate .contents {
+  animation: hop 0.25s ease infinite alternate;
+}
+#options.highlight_donate #donate:hover .contents,
+#options.highlight_donate #donate:focus-within .contents {
+  animation: none;
+}
+
+@keyframes hop {
+  from {  max-height: 0 }
+  to   {  max-height: 1rem }
+}
 
 </style>

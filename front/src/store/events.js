@@ -91,13 +91,18 @@ export default {
       .map( e => e.slug )
     ,
 
+    highlight_donate: ( state, getters ) => 
+      getters
+      .current_event
+      .highlightDonateButton
+
   },
 
   actions: {
 
 
-    set_event( { commit, rootGetters }, event ) {
-      commit( 'SET_EVENT', sanitize( event, rootGetters ) )
+    set_event( { commit, rootGetters, dispatch }, event ) {
+      commit( 'SET_EVENT', sanitize( event, rootGetters, dispatch ) )
     },
 
 
@@ -207,7 +212,7 @@ export default {
 // 'livestream' property that returns a different
 // object based on when the event is happening.
 
-function sanitize ( event, rootGetters ) {
+function sanitize ( event, rootGetters, dispatch ) {
 
   if ( event.accent ) {
     event.accent = color.hsl_to_css_vars(event.accent)
@@ -222,6 +227,17 @@ function sanitize ( event, rootGetters ) {
     event.emoji_groups = event.emoji_groups.data
   } else {
     delete event.emoji_groups
+  }
+
+  // Highlighting the donate tab
+
+  if ( event.highlightDonateButton === true ) {
+    setTimeout(() => {
+      dispatch( 'set_event', {
+        slug: event.slug,
+        highlightDonateButton: false,
+      })
+    }, 5 * 1000)
   }
 
   // When is it ?

@@ -79,7 +79,7 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.update()
   },
 
@@ -92,7 +92,6 @@ export default {
     update() {
 
       $log.info( 'LIVESTREAM', `Creating player for ${ this.mode.name }.` )
-
 
       // We only load the captions player + the time display
 
@@ -120,7 +119,7 @@ export default {
       // which is the case for some browsers, we just set the
       // elements source as we would with any non-m3u8 URL.
 
-      } else if ( this.$el.canPlayType( 'application/vnd.apple.mpegurl' ) ) {
+      } else if ( this.$refs.tester.canPlayType( 'application/vnd.apple.mpegurl' ) ) {
         this.player = 'NativeMedia'
       }
 
@@ -148,6 +147,11 @@ export default {
       :mode="mode"
       :desires_captions="desires_captions"
     />
+
+    <video 
+      id="tester"
+      ref="tester"
+    ></video>
 
   </div>
 </template>
@@ -184,6 +188,10 @@ video {
   max-width       : 100%;
   max-height      : 100%;
   object-fit      : contain;
+}
+
+#tester {
+  display: none;
 }
 
 .mobile video {
