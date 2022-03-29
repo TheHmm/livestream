@@ -13,20 +13,35 @@ export default {
     Emo
   },
 
+  data() {
+    return {
+      emoji_timeout: null,
+    }
+  },
+  
   computed: {
     ...mapGetters( 'events', [
-      'emoji_groups'
+      'emoji_groups',
+      'emoji_allowed',
     ]),
     ...mapGetters( 'viewers', [
-      'uuid'
+      'uuid',
     ]),
+    can_send_emoji() {
+      return this.emoji_allowed && !this.emoji_timeout
+    }
   },
+
 
   methods: {
 
-
     send( group, emoji ) { 
-      console.log( group, emoji)
+      if ( !this.can_send_emoji ) {
+        return
+      }
+      this.emoji_timeout = setTimeout(() => {
+        this.emoji_timeout = null
+      }, 5000) 
       this.$socket.client.emit( 'emoji', {
         group,
         emoji,
@@ -38,8 +53,12 @@ export default {
 }
 </script>
 
+
 <template>
-  <div :id="$id()">
+  <div 
+    :id="$id()"
+    :class="{ disabled: !can_send_emoji }"
+  >
     <ul 
       role="menu"
       class="group"
@@ -62,31 +81,38 @@ export default {
   </div>
 </template>
 
+
 <style scoped>
 
 #emoji {
-  padding: 0 0.5rem;
+  padding    : 0 0.5rem;
 }
 
 #emoji .group {
-  display: flex;
-  flex-wrap: wrap;
+  display    : flex;
+  flex-wrap  : wrap;
 }
 
 #emoji .group label {
-  font-size: 0.9rem;
-  font-style: italic;
-  --fore: var(--grey);
-  width: 100%;
+  font-size  : 0.9rem;
+  font-style : italic;
+  --fore     : var(--grey);
+  width      : 100%;
 }
 
 #emoji .group li {
-  padding: 0rem !important;
-  margin: 0.2rem;
+  padding    : 0rem !important;
+  margin     : 0.2rem;
 }
 
 #emoji >>> .emo {
-  cursor: pointer;
+  cursor     : pointer;
+}
+
+#emoji.disabled >>> .emo {
+  cursor     : not-allowed;
+  opacity    : 0.4;
+  filter     : grayscale(1);
 }
 
 </style>

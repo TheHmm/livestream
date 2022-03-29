@@ -66,6 +66,12 @@ export default {
       .id
     ,
 
+    emoji_allowed : ( state, getters ) =>
+      getters
+      .current_event
+      .allowEmoji
+    ,
+
     emoji_groups : ( state, getters ) => 
       getters
       .current_event

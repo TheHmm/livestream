@@ -26,6 +26,7 @@ export default {
 }
 </script>
 
+
 <template>
     
   <label
@@ -46,17 +47,17 @@ export default {
 
 </template>
 
+
 <style scoped>
 
 .emo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 2rem;
+  display         : flex;
+  justify-content : center;
+  align-items     : center;
+  height          : 2rem;
 }
 img {
-  height: 100%;
+  height          : 100%;
 }
-
 
 </style>

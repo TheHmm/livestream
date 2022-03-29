@@ -1,5 +1,5 @@
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Input from './Input.vue'
 import Message from './Message.vue'
 
@@ -21,6 +21,8 @@ export default {
     return {
       expanded: false,
       links_only: false,
+      loading: 'load more messages'
+      
     }
   },
 
@@ -29,20 +31,23 @@ export default {
       'messages_array',
       'count'
     ]),
+    ...mapActions( 'messages', [
+      'fetch_messages'
+    ])
 
   },
 
   watch: {
-
-    messages_array:{
-      handler() { this.scrollToBottom() },
-      deep: true
-    },
-
     expanded() {
       if (this.expanded) {
         this.scrollToBottom( true )
       }
+    }
+  },
+
+  sockets: {
+    message() {
+      this.scrollToBottom( )
     }
   },
 
@@ -55,6 +60,21 @@ export default {
           behavior: 'smooth'
         })
       }, first ? 100 : 50)
+    },
+
+    async load_more() {
+      try {
+        this.loading = 'loading...'
+        const messages = await this.$store.dispatch('messages/fetch_messages')
+        if ( messages.length >  0 ) {
+          this.loading = 'load more messages'
+        } else {
+          this.loading = null
+        }
+      } catch (error ) {
+        this.loading = 'error'
+        console.error(error)
+      }
     }
 
   },
@@ -118,6 +138,14 @@ export default {
           class="messages"
           tabindex="-1"
         >
+          <div 
+            v-if="loading"
+            id="load_more"
+          >
+            <a @click="load_more">
+              {{ loading }}
+            </a>
+          </div>
           <Message
             v-for="( message, index ) in messages_array"
             :key="index"
@@ -221,6 +249,21 @@ export default {
   /* causes this to stop scrolling  */
   /* justify-content: flex-end;  */
 }
+
+#chat .contents #load_more {
+  width: 100%;
+  text-align: center;
+  font-size: 0.66rem;
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+#chat .contents #load_more a {
+  cursor: pointer;
+}
+#chat .contents #load_more:hover {
+  opacity: 1;
+}
+
 
 #chat:not(.expanded):focus .contents {
   padding: 0;

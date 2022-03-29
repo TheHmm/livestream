@@ -3,7 +3,6 @@ import api from '@/api'
 import $log from '@/utils/log' 
 import $time from '@/utils/time' 
 
-
 export default {
 
   namespaced: true,
@@ -30,7 +29,7 @@ export default {
 
     SET_AUTHENTICATED : ( state, authenticated ) => {
       state.authenticated = authenticated
-    }
+    },
 
   },
 
@@ -106,7 +105,7 @@ export default {
 
     has_been_to_current_event : ( state, getters ) => {
       return getters.my_events?.includes( getters.current_event_id )
-    }
+    },
 
 
   },

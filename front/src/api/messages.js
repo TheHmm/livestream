@@ -2,6 +2,10 @@ import axios  from 'axios'
 import config from '@/config'
 import $log   from '@/utils/log'
 
+
+let page = 1
+
+
 export default {
 
 
@@ -25,8 +29,8 @@ export default {
       .get( `${ config.api_url }/messages`, { params: { 
         sort: 'time:desc',
         pagination: {
-          start: 0,
-          limit: 500,
+          page: page,
+          pageSize: page * 10,
         },
         filters: {
           event: {
@@ -42,6 +46,7 @@ export default {
       } } )
       .then( result => {
         const messages = result.data.data
+        page++
         resolve( messages )
       } )
       .catch( error => {
