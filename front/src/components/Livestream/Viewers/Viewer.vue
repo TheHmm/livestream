@@ -1,6 +1,10 @@
 <script>
 import Emo from '../Options/Emoji/Emo.vue'
 
+
+// Viewer dot, will mount an emoji if a user has made that
+// reaction.
+
 export default {
 
   name: 'Viewer',
@@ -13,12 +17,17 @@ export default {
     viewer: Object
   },
 
+
+  // Clicking on a dot will make it shake
+
   data() {
     return {
-      showing: false,
       shaking: false,
     }
   },
+
+
+  // Basic viewer properties
 
   computed: {
     name()  { return this.viewer.name || 'unnamed viewer' },
@@ -36,19 +45,12 @@ export default {
     }
   },
 
-  mounted() {
-    setTimeout(() => {
-      this.showing = true
-    }, this.n * 10)
-  }
-
 }
 
 </script>
 
 <template>
   <div 
-    v-if="showing"
     :title="name"
     :class="[ $id(), 'dot', { shaking, emoji } ]"
     :style="{ '--n': n }"
@@ -79,16 +81,23 @@ export default {
   margin-left     : calc( var(--n) * 1rem);
 }
 
-/* .viewer.dot-move {
+.viewer.dot-move {
   transition      : all 0.5s ease;
 }
 .viewer.dot-leave-active {
   position        : absolute;
-} */
+}
 
-.viewer.dot-enter-from,
-.viewer.dot-leave-to {
+.dot-enter-to,
+.dot-leave-from {
+  transform       : scale(1);
+  transition      : transform var(--slow) ease calc( var(--n) * 0.1s );
+}
+
+.dot-enter-from,
+.dot-leave-to {
   transform       : scale(0);
+  transition      : transform var(--slow) ease;
 }
 
 .viewer:hover,

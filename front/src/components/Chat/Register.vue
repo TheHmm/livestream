@@ -1,25 +1,35 @@
 <script>
 import { mapGetters } from 'vuex'
-import dialogPolyfill from 'dialog-polyfill'
 import Bot from '../Utils/Bot.vue'
 
+
+// Dialog for registratio with polyfill.
+
+import dialogPolyfill from 'dialog-polyfill'
 
 export default {
   
   name: 'Register',
 
   components: { Bot },
+
+
+  // Form  value and state  info
   
   data() {
     return {
-      name: null,
-      lifetime: null,
-      agrees: false,
-      sending: false,
-      error: null,
-      website: null
+      name     : null,
+      lifetime : null,
+      agrees   : false,
+      sending  : false,
+      error    : null,
+      website  : null
     }
   },
+
+
+  // We get the client-generated UUID and use it to create a 
+  // viewer in Strapi.
 
   computed: {
     ...mapGetters( 'viewers' , [ 'uuid' ] )
@@ -28,6 +38,9 @@ export default {
   emits: [
     'close'
   ],
+
+
+  // The polyfill thing is very confusing.
 
   mounted() {
     dialogPolyfill.registerDialog(this.$el)
@@ -38,11 +51,14 @@ export default {
   methods: {
 
     close() {
-      if ( this.$el && this.$el.close ) {
+      if ( this.$el.close ) {
         this.$el.close()
       }
       this.$emit('close')
     },
+
+
+    // Create viewer
 
     async send( e ) {
       e.preventDefault()
@@ -65,7 +81,7 @@ export default {
 
   },
 
-}
+} 
 </script>
 
 <template>
@@ -73,6 +89,7 @@ export default {
     :id="$id()"
     @keydown.esc.prevent="close"
   >
+
     <div v-if="error">
       <p> A server error seemed to have occurred. Please contact us.</p>
       <input 
@@ -83,9 +100,11 @@ export default {
         @click="close"
       />
     </div> 
+
     <div v-else-if="sending">
       <p> Creating viewer {{ name }}.</p>
     </div>
+
     <!-- <div v-else-if="uuid">
       <p> Success! Your uuid is <code>{{ uuid }}</code>.</p>
       <input 
@@ -96,6 +115,7 @@ export default {
         @click="$emit('close')"
       />
     </div>  -->
+    
     <form 
       v-else
       id="register_form"
@@ -166,8 +186,8 @@ export default {
 
 
   </dialog>
-
 </template>
+
 
 <style scoped>
 /* dialog {
@@ -177,45 +197,46 @@ export default {
 } */
 
 dialog {
-  max-width: 25rem;
-  box-shadow: var(--shadow);
-  border: none;
-  padding: 1rem;
+  max-width        : 25rem;
+  box-shadow       : var(--shadow);
+  border           : none;
+  padding          : 1rem;
 }
+dialog .backdrop,
 dialog::backdrop {
-  background-color: hsla(0, 0%, 0%, 0.3);
+  background-color : hsla(0, 0%, 0%, 0.3);
 }
 dialog code {
-  font-size: 0.9rem;
+  font-size        : 0.9rem;
 }
 dialog form label {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  display          : flex;
+  align-items      : center;
+  flex-wrap        : wrap;
 }
 dialog form label.name {
-  flex-wrap: wrap;
+  flex-wrap        : wrap;
 }
 dialog form label.name input {
-  margin-right: 0.5rem;
-  width: 10rem;
+  margin-right     : 0.5rem;
+  width            : 10rem;
 }
 dialog form label.agrees input {
-  margin-right: 0.5rem;
+  margin-right     : 0.5rem;
 }
 dialog form label.lifetime input {
-  width: 3rem;
-  margin-right: 0.5rem;
+  width            : 3rem;
+  margin-right     : 0.5rem;
 }
 dialog form label.agrees {
-  margin-left: 0.5rem;
-  margin-bottom: 1rem;
+  margin-left      : 0.5rem;
+  margin-bottom    : 1rem;
 }
 dialog form .row {
-  display: flex;
+  display          : flex;
 }
 dialog form input.submit {
-  margin-left: auto;
+  margin-left      : auto;
 }
 
 </style>

@@ -30,6 +30,11 @@ const
 
   md = {
     silent      : true,
+    breaks      : true,
+    // html        : true,
+    // linkify     : true,
+    // typographer : true,
+    // emoji       : true,
   }
 
 export default {

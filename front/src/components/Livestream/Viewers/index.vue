@@ -24,9 +24,10 @@ export default {
 }
 </script>
 
+
 <template>
   <div :id="$id()">
-    <transition-group name="dot" mode="out-in">
+    <transition-group name="dot">
       <Viewer 
         v-for="viewer in connected_viewers"
         :key="viewer.uuid"
@@ -35,6 +36,7 @@ export default {
     </transition-group>
   </div>
 </template>
+
 
 <style scoped>
 
@@ -50,6 +52,5 @@ export default {
   align-content   : flex-start;
   flex-wrap       : wrap;
 }
-
 
 </style>
