@@ -33,10 +33,10 @@ header {
 }
 
 nav {
-  margin-bottom: 1rem;
+  margin-bottom: var(--size-s);
 }
 nav a {
-  margin-right: 1rem;
+  margin-right: var(--size-s);
 }
 
 </style>

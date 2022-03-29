@@ -171,7 +171,7 @@ img {
   /* flex-basis: 50%; */
   float: right;
   display: flex;
-  padding: 1rem;
+  padding: var(--size-s);
   align-self: stretch;
   justify-content: center;
   align-items: center;

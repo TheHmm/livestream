@@ -6,7 +6,7 @@
 
   --back           : var(--yellow);
   --base-height    : 3rem;
-  --full-height    : 13rem;
+  --full-height    : 15rem;
   --tab-width      : 10rem;
 
   filter           : drop-shadow( var(--filter-shadow) );
@@ -54,7 +54,9 @@
   max-width        : var(--tab-width);
 }
 
-
+.mobile .tab {
+  --base-height    : 2.5rem;
+}
 
 @keyframes tab_enter {
   from { transform : translateY( var(--distance) ) }

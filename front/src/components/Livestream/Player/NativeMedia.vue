@@ -19,7 +19,6 @@ export default {
     livestream       : Object,
     mode             : Object,
     desires_captions : Boolean
-
   },
 
   computed: {
@@ -48,11 +47,11 @@ export default {
     aria-label="video player"
     :src="source_url"
   >
-     <Captions 
+     <!-- <Captions 
       v-if="desires_captions"
       :hls="hls"
       :stream_start="stream_start"
-    />
+    /> -->
   </video>
   <audio
     v-else

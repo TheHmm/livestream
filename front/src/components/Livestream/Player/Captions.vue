@@ -183,7 +183,7 @@ export default {
 <style scoped>
 
 #captions {
-  padding: 1rem;
+  padding: var(--size-s);
   overflow: scroll;
   display: flex;
   flex-direction: column;
@@ -191,6 +191,9 @@ export default {
 }
 #captions p {
   margin-block-start: 0;
+  max-width: 35rem;
+  margin: var(--size-s) auto;
+  width: 100%;
 }
 #captions p span {
   --fore: var(--accent);

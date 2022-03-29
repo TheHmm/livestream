@@ -31,7 +31,7 @@ export default {
   min-width        : var(--side-width);
   max-width        : var(--side-width);
   padding          : 0.5rem;
-  margin           : 1rem;
+  margin           : var(--size-s);
   transition       : all 0.5s ease;
 }
 .announcement >>> p:first-of-type {

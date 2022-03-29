@@ -134,73 +134,94 @@ header #announcements {
   --border         : var(--dash) var(--fore);
   background-color : var(--back);
   box-shadow       : var(--shadow);
-  /* max-height       : 80%; */
-  max-height       : var(--middle-height);
+  height           : var(--middle-height);
+  position         : relative;
   flex-grow        : 1;
-  /* flex-shrink      : 1; */
-  /* flex-basis       : 30%; */
-  padding          : 1rem;
-  /* padding-bottom   : calc( var(--footer-height) + 1rem ); */
-  padding-bottom   : var(--footer-height);
-  display          : flex;
-  flex-direction   : row-reverse;
-  align-items      : stretch;
-  justify-content  : stretch;
-  transition       : background-color var(--very-slow) ease;
   z-index          : 0;
+  padding          : var(--size-s);
+  padding-bottom   : var(--footer-height);
   transform        : translateY(100%);
   animation        : enter var(--enter) ease 0.1s forwards;
+  transition       : background-color var(--very-slow) ease;
+  display          : flex;
+  flex-direction   : row-reverse;
 }
+
+#middle #info {
+  flex-shrink      : 0;
+  margin-left      : var(--size-s);
+}
+
+footer {
+  max-height       : var(--footer-height);
+  position         : fixed;
+  bottom           : 0;
+  width            : 100%;
+  padding          : 0 var(--size-s);
+  display          : flex;
+  align-items      : flex-end;
+}
+
+footer >>> #network {
+  margin           : 0.2rem var(--size-s);
+  margin-right     : auto;
+}
+
+footer #chat_container {
+  --distance       : 5rem;
+  width            : calc(var(--side-width));
+  position         : absolute;
+  right            : 0;
+  margin           : 0 var(--size-s);
+ }
+
+footer >>> #chat_container #chat .contents:focus-within,
+footer >>> #chat_container #chat.expanded .contents {
+  --height         : calc( 100vh - 18rem );
+}
+
+
+.mobile #middle {
+  flex-direction   : column-reverse;
+}
+
+.mobile #middle #info {
+  flex-shrink      : unset;
+  margin-left      : unset;
+  margin-top       : var(--size-s);
+}
+
+.mobile #middle #status {
+  max-height       : 30%;
+}
+
+.mobile footer {
+  padding          : 0;
+  flex-direction   : row-reverse;
+  flex-wrap        : wrap;
+}
+
+.mobile footer {
+  flex-direction   : column-reverse;
+}
+
+.mobile footer #chat_container {
+  /* bottom           : var(--footer-height); */
+  bottom           : 0;
+  margin           : 0;
+}
+.mobile footer >>> #chat_container #chat .contents:focus-within,
+.mobile footer >>> #chat_container #chat.expanded .contents {
+  /* --height         : calc( 100vh - 23rem ); */
+  --height         : 50vh;
+}
+.mobile footer >>> #chat_container #chat .contents {
+  padding-bottom   : var(--footer-height);
+}
+
 @keyframes enter {
   from { transform : translateY(100%) }
   to   { transform : translateY(0) }
 }
-#middle #info {
-  flex-shrink      : 0;
-  margin-left      : 1rem;
-}
 
-footer {
-  --back           : var(--accent);
-  position         : fixed;
-  bottom           : 0;
-  flex-grow        : 0;
-  width            : 100%;
-  height           : 100%;
-  max-height       : var(--footer-height);
-  padding          : 0 1rem;
-  display          : flex;
-  align-items      : flex-end;
-}
-footer #options {
-}
-footer #network {
-  margin           : 0.2rem 1rem;
-  margin-right     : auto;
-}
-footer #chat_container {
-  width            : calc(var(--side-width));
-  --distance       : 5rem;
-}
-
-footer >>> #chat_container #chat .contents:focus-within,
-footer >>> #chat_container #chat.expanded .contents {
-  --height        : calc( 100vh - 18rem );
-}
-
-.mobile #middle {
-  flex-direction   : column-reverse;
-  align-items      : stretch;
-}
-.mobile #middle #status {
-  width            : unset;
-  max-height       : 30%;
-}
-.mobile footer {
-  max-height       : 6rem;
-  flex-direction   : row-reverse;
-}
-.mobile footer {
-  flex-direction   : column-reverse;
-}
 </style>

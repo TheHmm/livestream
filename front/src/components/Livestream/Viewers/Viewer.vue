@@ -78,7 +78,7 @@ export default {
   display         : flex;
   justify-content : center;
   align-items     : center;
-  margin-left     : calc( var(--n) * 1rem);
+  margin-left     : calc( var(--n) * var(--size-s));
 }
 
 .viewer.dot-move {

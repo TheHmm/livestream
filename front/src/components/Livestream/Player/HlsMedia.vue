@@ -27,10 +27,10 @@ export default {
  
   data() {
     return {
-      hls : null,
-      playing: false,
-      muted: true,
-      updating: false,
+      hls      : null,
+      playing  : false,
+      muted    : true,
+      updating : false,
     }
   },
 

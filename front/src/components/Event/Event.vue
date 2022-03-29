@@ -54,8 +54,8 @@ export default {
 
 li {
   border: 1px solid;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  padding: var(--size-s);
+  margin-bottom: var(--size-s);
 }
 
 li p {

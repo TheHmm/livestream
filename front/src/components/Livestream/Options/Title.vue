@@ -52,7 +52,7 @@ label {
   text-align              : center;
   border-top-left-radius  : var(--radius);
   border-top-right-radius : var(--radius);
-  font-size               : 1.33rem;
+  font-size               : var(--size-m);
 
   /* background-color     : transparent !important; */
 }
@@ -75,14 +75,18 @@ label {
 label div,
 label >>> div {
   height                  : 100%;
-  padding                 : 0.2rem 1rem;
+  padding                 : 0.2rem var(--size-s);
 }
-
 
 .reduce_motion label >>> div span {
   position                : relative !important;
   left                    : unset !important;
-  bottom                  : -1rem !important;
+  bottom                  : calc( -1 * var(--size-s)) !important;
+}
+
+.mobile label {
+  font-size               : var(--size-s);
+  --radius                :  calc(4rem + var(--base-height) ) 100%;
 }
 
 </style>

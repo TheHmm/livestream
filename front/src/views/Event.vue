@@ -59,19 +59,19 @@ export default {
 </script>
 
 <template>
-  <router-view v-slot="{ Component }">
-    <main
-      :id="$id()"
-      :class="$id( $route.name )"
-      :style="{ ...event.accent }"
-      aria-labelledby="event_title"
-    >
+  <main
+    :id="$id()"
+    :class="$id( $route.name )"
+    :style="{ ...event.accent }"
+    aria-labelledby="event_title"
+  >
+    <router-view v-slot="{ Component }">
       <component 
         :is="Component" 
         :event="event"
       />
-    </main>
-  </router-view>
+    </router-view>
+  </main>
 </template>
 
 <style scoped>

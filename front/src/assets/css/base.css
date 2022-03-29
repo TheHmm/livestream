@@ -42,10 +42,10 @@
   
     /* Borders and outlines */
   
-    --solid          : 1px solid;
-    --dash           : 1px dashed;
-    --thin           : .5px solid;
-    --focus          : 2px solid var(--accent);
+    --solid        : 1px solid;
+    --dash         : 1px dashed;
+    --thin         : .5px solid;
+    --focus        : 2px solid var(--accent);
 
 
   /* Shadow parameters for box-shadows and drop-shadows */
@@ -69,8 +69,8 @@
 
   --marquee-height : 2.33rem;
   --header-height  : max( 23%, 10rem);
-  --total-header   : calc( var(--marquee-height) - var(--header-height) );
-  --middle-height  : calc( 100% - var(--total-header) );
+  --total-header   : calc( var(--marquee-height) + var(--header-height) );
+  --middle-height  : calc( 100% - var(--total-header ) );
   --side-width     : 20rem;
   --footer-height  : 4rem;
   
@@ -147,6 +147,7 @@
 
 html,
 body {
+
   padding          : 0;
   margin           : 0;
   height           : 100%;
@@ -154,7 +155,10 @@ body {
   background-color : var(--back);
   font-family      : Arial, Helvetica, sans-serif;
   font-size        : 18px;
-  /* line-height      : 1.4; */
+
+  --size-s         : 1rem;
+  --size-m         : 1.33rem;
+  --size-l         : 2.33rem;
 }
 
 
@@ -202,6 +206,7 @@ h6 {
 ul {
   margin           : 0;
   padding          : 0;
+  font-size        : var(--size-s);
 }
 
 li {
@@ -250,6 +255,9 @@ input {
 .mobile {
 
   --side-width     : 100%;
+  --footer-height  : 2rem;
+  --marquee-height : 2rem;
+
 
   font-size        : 11pt;
 

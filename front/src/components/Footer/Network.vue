@@ -30,8 +30,7 @@ export default {
       this.sent_has_changed = true
       setTimeout( () => {
         this.sent_has_changed = false
-      }, 2000)
-        
+      }, 2000)     
     },
 
     last_bytes_received() {
@@ -113,6 +112,7 @@ table {
   --n             : 6;
   --fore          : white;
   color           : var(--fore);
+  position        : relative;
   border-collapse : collapse;
   font-family     : 'not-courier-sans', monospace;
   font-size       : 0.8rem;

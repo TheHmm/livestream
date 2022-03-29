@@ -225,7 +225,7 @@ export default {
 
 #chat .title {
   align-items     : center;
-  font-size       : 1.33rem;
+  font-size       : var(--size-m);
 }
 
 #chat .title .options {
@@ -233,7 +233,7 @@ export default {
   width           : 100%;
   display         : flex;
   justify-content : space-between;
-  font-size       : 1rem;
+  font-size       : var(--size-s);
 }
 
 #chat .title .options .links {
@@ -253,6 +253,7 @@ export default {
   overflow        : hidden;
   display         : flex;
   flex-direction  : column-reverse;
+  font-size       : var(--size-s);
 }
 
 #chat .contents >>> ul li {
@@ -280,7 +281,7 @@ export default {
   text-align      : center;
   font-size       : 0.66rem;
   opacity         : 0.6;
-  margin-bottom   : 1rem;
+  margin-bottom   : var(--size-s);
 }
 #chat .contents #load_more a {
   cursor          : pointer;
@@ -297,6 +298,10 @@ export default {
 
 .mobile #chat_container {
   padding         : unset;
+}
+
+.mobile #chat .title {
+  font-size       : var(--size-s);
 }
 
 

@@ -115,7 +115,7 @@ export default {
   flex-grow       : 1;
   height          : 100%;
   border          : none;
-  font-size       : 1.33rem;
+  font-size       : var(--size-m);
   overflow        : scroll;
   margin-right    : 0.5rem;
 }

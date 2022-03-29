@@ -43,7 +43,7 @@ export default {
   height     : var(--header-height);
   width      : 0;
   overflow   : visible;
-  font-size  : 1.33rem;
+  font-size  : var(--size-m);
   transform  : translateY( calc( var(--header-height) * -1 ) );
   animation  : enter var(--enter) ease 0.75s forwards;
   transition : transform 0.5s ease;

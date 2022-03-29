@@ -105,9 +105,11 @@ export default {
 }
 
 #options .tab:not(:first-of-type) {
-  margin-left    : -1rem;
+  margin-left    : calc( -1 * var(--size-s));
 }
 
+#options .tab:focus .contents,
+#options .tab:focus-within .contents,
 #options .tab:hover .contents {
   padding-bottom : 0.5rem;
 }
@@ -128,7 +130,11 @@ export default {
   margin         : unset;
   z-index        : 1;
   max-height     : var(--base-height);
+  /* overflow-x     : scroll; */
 }
 
+.mobile #options .tab {
+  margin-left    : calc( -1 * var(--size-s));
+}
 
 </style>

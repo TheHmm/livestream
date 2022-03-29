@@ -109,7 +109,7 @@ export default {
 <style scoped>
 
 input[type="submit"] {
-  width         : calc(100%  - 1rem);
+  width         : calc(100%  - var(--size-s));
   margin        : 0.5rem;
   margin-bottom : 0rem;
 }

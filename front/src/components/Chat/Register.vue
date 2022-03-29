@@ -200,7 +200,7 @@ dialog {
   max-width        : 25rem;
   box-shadow       : var(--shadow);
   border           : none;
-  padding          : 1rem;
+  padding          : var(--size-s);
 }
 dialog .backdrop,
 dialog::backdrop {
@@ -230,7 +230,7 @@ dialog form label.lifetime input {
 }
 dialog form label.agrees {
   margin-left      : 0.5rem;
-  margin-bottom    : 1rem;
+  margin-bottom    : var(--size-s);
 }
 dialog form .row {
   display          : flex;

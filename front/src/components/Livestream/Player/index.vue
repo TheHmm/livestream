@@ -1,15 +1,22 @@
 <script>
-
-import $log                 from '@/utils/log'
 import { hls_is_supported } from '@/utils/livestream'
+import $log                 from '@/utils/log'
 import Captions             from './Captions.vue'
 import Thumbs               from './Thumbs.vue'
 import HlsMedia             from './HlsMedia.vue'
 import NativeMedia          from './NativeMedia.vue'
 
+
+// Player component. This componet mouts the corrrect player
+// based on the selected view mode
+
 export default {
   
   name: 'Player',
+
+
+  // These components are manually mounted in the <Component /> 
+  // slot based on desired mode.
 
   components: { 
     Captions,
@@ -23,9 +30,19 @@ export default {
   },
 
   computed: {
+
+
+    // Computes the current mode by checking the route query
+    // and defaults 'video' mode with automatic quality.
+
     mode() {
       return this.$store.getters['livestream/current_mode']( this )
     },
+
+
+    // Computes wether closed captions are desired from the
+    // route query and defaults to true.
+
     desires_captions() {
       const 
         key = 'closed_captions',
@@ -42,6 +59,7 @@ export default {
         return default_value
       }
     },
+
   },
 
   data() {
@@ -49,6 +67,9 @@ export default {
       player : null,
     }
   },
+
+
+  // When the desired mode changes, updatet the player.
 
   watch: {
     mode( new_mode, old_mode ) {
@@ -134,51 +155,37 @@ export default {
 <style>
 
 #player {
-  width: 100%;
-  /* display: flex; */
+  width           : 100%;
+  display         : flex;
 }
 
 #player.transcript,
 #player.thumbs,
 #player.audio {
-  border: var(--border);
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
+  border          : var(--border);
+  flex-direction  : column;
+  justify-content : stretch;
+  height          : 100%;
 }
 
 #player.audio {
-  align-items: center;
-  justify-content: center;
-}
-
-input {
-  color: black
+  justify-content : center;
+  align-items     : center;
 }
 
 #player .controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  display         : flex;
+  align-items     : center;
+  justify-content : space-around;
 }
-
-
-
 
 video {  
-    width: 100%;
-  /* height: 100%; */
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
+  width           : 100%;
+  max-width       : 100%;
+  max-height      : 100%;
+  object-fit      : contain;
 }
 
-
 .mobile video {
-  object-fit:unset;
-  height: unset;
 }
 </style>

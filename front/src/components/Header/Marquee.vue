@@ -41,12 +41,13 @@ export default {
 <style scoped>
 
 .marquee {
-  box-shadow       : var(--shadow);
   --back           : var(--yellow);
   background-color : var(--back);
+  box-shadow       : var(--shadow);
+  position         : relative;
   white-space      : nowrap;
   overflow         : hidden;
-  font-size        : 1.33rem;
+  font-size        : var(--size-m);
   transform        : translateY(-3rem);
   animation        : enter var(--enter) ease 0.1s forwards;
   display          : flex;
@@ -59,11 +60,15 @@ export default {
 .marquee.animate p {
   animation        : marquee 60s linear infinite;
 }
+
+.mobile .marquee {
+  font-size        : var(--size-s);
+}
+
 @keyframes marquee {
   from { transform : translate(0, 0); }
   to   { transform : translate(-100%, 0); }
 }
-
 @keyframes enter {
   from { transform : translateY(-3rem) }
   to   { transform : translateY(0) }

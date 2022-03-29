@@ -75,8 +75,8 @@ section h3 {
   color: var(--accent);
   font-weight: normal;
   margin: auto;
-  margin-bottom: 1rem;
-  font-size: 1rem;
+  margin-bottom: var(--size-s);
+  font-size: var(--size-s);
 }
 section table td {
   color: var(--accent);

@@ -12,7 +12,7 @@ input[type="reset"] {
   color            : var(--accent);
   border           : var(--solid);
   background-color : var(--accent-light);
-  height           : 1.33rem;
+  height           : var(--size-m);
 }
 
 
@@ -130,11 +130,11 @@ input[type="checkbox"] + label::before {
   position         : relative;
   cursor           : inherit;
   display          : inline-block;
-  width            : 1.33rem;
-  height           : 1.33rem;
+  width            : var(--size-m);
+  height           : var(--size-m);
   margin-left      : -0.66rem;
   margin-right     : 0.33rem;
-  border-radius    : 1rem;
+  border-radius    : var(--size-s);
   background-color : var(--accent-light);
   color            : var(--accent);
   border           : var(--solid);
@@ -150,7 +150,7 @@ input[type="checkbox"] + label::after {
   cursor           : inherit;
   display          : inline-block;
   color            : var(--accent);
-  font-size        : 1rem;
+  font-size        : var(--size-s);
   top              : 0.05rem;
   left             : -0.4rem;
   width            : 1.5rem;
@@ -221,8 +221,8 @@ input[type="checkbox"]:disabled + label::after {
 input[type="button"].circle,
 input[type="submit"].circle,
 input[type="reset"].circle {
-  height           : 1.33rem;
-  width            : 1.33rem;
+  height           : var(--size-m);
+  width            : var(--size-m);
   padding          : 0rem 0.33rem;
-  border-radius    : 1rem;
+  border-radius    : var(--size-s);
 }
