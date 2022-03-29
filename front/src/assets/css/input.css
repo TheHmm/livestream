@@ -214,3 +214,15 @@ input[type="checkbox"]:disabled + label::after {
 .reduce_motion input[type="checkbox"] {
   opacity          : 0 !important;
 }
+
+
+/* Circle buttons with one character in them */
+
+input[type="button"].circle,
+input[type="submit"].circle,
+input[type="reset"].circle {
+  height           : 1.33rem;
+  width            : 1.33rem;
+  padding          : 0rem 0.33rem;
+  border-radius    : 1rem;
+}

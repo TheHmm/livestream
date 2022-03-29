@@ -3,6 +3,10 @@
 import { mapGetters } from 'vuex'
 import Viewer from './Viewer.vue'
 
+
+// Viewers, even unregistered ones show up as the Hmm dots 
+// in the page header
+
 export default {
 
   name: 'Viewers',
@@ -13,7 +17,7 @@ export default {
 
   computed: {
     ...mapGetters( 'viewers', [ 
-      'connected_viewers' ,
+      'connected_viewers',
     ]),
   },
 

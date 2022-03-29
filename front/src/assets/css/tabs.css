@@ -10,7 +10,7 @@
   --tab-width      : 10rem;
 
   filter           : drop-shadow( var(--filter-shadow) );
-  transform        : translateY(5rem);
+  transform        : translateY( var(--distance) );
   animation        : tab_enter var(--enter) ease calc( 0.4s + var(--n) *  0.1s) forwards;
 
 }
@@ -18,10 +18,8 @@
 .tab label.title {
   background-color : var(--back);
   height           : var(--base-height);
-  padding          : 0.2rem 1rem;
+  padding           : 0 0.5rem;
   display          : flex;
-  align-items      : flex-end;
-  justify-content  : center;
 }
 
 .tab .contents {
@@ -54,12 +52,11 @@
 .tab:focus-within .contents {
   max-height       : var(--full-height);
   max-width        : var(--tab-width);
-  padding-bottom   : 0.5rem;
 }
 
 
 
 @keyframes tab_enter {
-  from { transform : translateY(5rem); }
-  to { transform   : translateY(0); }
+  from { transform : translateY( var(--distance) ) }
+  to   { transform : translateY(0) }
 }

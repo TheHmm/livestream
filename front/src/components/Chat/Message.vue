@@ -87,6 +87,7 @@ export default {
 <style scoped>
 
 .message {
+  /* --increment: 4%; */
   --increment: 4%;
   --accent: hsl( 
       var(--h), 
@@ -100,6 +101,10 @@ export default {
   padding-block-end: 0.5rem;
   margin-top: 0.5rem;
   transition: background-color var(--fast) ease;
+  pointer-events: none;
+}
+.expanded .message {
+  pointer-events: all;
 }
 .message:first-of-type {
   margin-top: 0rem;

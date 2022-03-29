@@ -1,6 +1,6 @@
 <script>
 import { mapGetters } from 'vuex'
-import Bot from '../../Utils/Bot.vue'
+import Bot from '../Utils/Bot.vue'
 
 export default {
   
@@ -65,6 +65,7 @@ export default {
 <template>
   <dialog
     :id="$id()"
+    @keydown.esc.prevent="$emit('close')"
   >
     <div v-if="error">
       <p> A server error seemed to have occurred. Please contact us.</p>
@@ -147,7 +148,6 @@ export default {
           title="close."
           value="Close"
           @click="$emit('close')"
-          @key.esc.prevent="$emit('close')"
         />
         <input 
           class="submit"

@@ -9,7 +9,7 @@ import Info                     from './Info/index.vue'
 import Status                   from './Info/Status.vue'
 import Options                  from './Options/index.vue'
 import Network                  from '../Footer/Network.vue'
-import Chat                     from './Chat/index.vue'
+import Chat                     from '../Chat/index.vue'
 
 
 // We lazy load our Player component, as it imports hls.js,
@@ -105,7 +105,9 @@ export default {
   <footer :aria-label="footer_label">
     <Options />
     <Network />
-    <Chat />
+    <Chat 
+      :event="event"  
+    />
   </footer>
 
 </template> 
@@ -132,14 +134,14 @@ header #announcements {
   --border         : var(--dash) var(--fore);
   background-color : var(--back);
   box-shadow       : var(--shadow);
-  max-height       : 80%;
-  /* max-height       : var(--middle-height); */
-  width            : 100%;
+  /* max-height       : 80%; */
+  max-height       : var(--middle-height);
   flex-grow        : 1;
-  flex-shrink      : 1;
-  flex-basis       : 30%;
+  /* flex-shrink      : 1; */
+  /* flex-basis       : 30%; */
   padding          : 1rem;
-  padding-bottom   : calc( var(--footer-height) + 1rem );
+  /* padding-bottom   : calc( var(--footer-height) + 1rem ); */
+  padding-bottom   : var(--footer-height);
   display          : flex;
   flex-direction   : row-reverse;
   align-items      : stretch;
@@ -151,7 +153,7 @@ header #announcements {
 }
 @keyframes enter {
   from { transform : translateY(100%) }
-  to { transform   : translateY(0) }
+  to   { transform : translateY(0) }
 }
 #middle #info {
   flex-shrink      : 0;
@@ -177,8 +179,13 @@ footer #network {
   margin-right     : auto;
 }
 footer #chat_container {
-  margin-left      : 1rem;
   width            : calc(var(--side-width));
+  --distance       : 5rem;
+}
+
+footer >>> #chat_container #chat .contents:focus-within,
+footer >>> #chat_container #chat.expanded .contents {
+  --height        : calc( 100vh - 18rem );
 }
 
 .mobile #middle {

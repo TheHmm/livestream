@@ -209,13 +209,19 @@ export default {
 
 function sanitize ( event, rootGetters ) {
 
-  event.accent = color.hsl_to_css_vars(event.accent)
+  if ( event.accent ) {
+    event.accent = color.hsl_to_css_vars(event.accent)
+  }
+
+  // console.log( event )
 
   if ( event.emoji_groups?.data ) {
     event.emoji_groups.data.map( g => {
       g.emoji.map( e => e.image = e.image?.data )
     })
     event.emoji_groups = event.emoji_groups.data
+  } else {
+    delete event.emoji_groups
   }
 
   // When is it ?

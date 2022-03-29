@@ -79,6 +79,7 @@ export default {
     />
     <input 
       type="submit" 
+      class="circle"
       :disabled="sending || request_registration"
       title="Send your message to all other viewers."
       value="˃"
@@ -87,22 +88,25 @@ export default {
 
 </template>
 
+
 <style scoped>
 
 #message_form {
-  z-index: 1;
-  flex-shrink: 0;
-  height: var(--base-height);
-  display: flex;
-  align-items: center;
-  padding: 2px calc( 0.5rem + 2px);
+  z-index         : 1;
+  flex-shrink     : 0;
+  height          : var(--base-height);
+  display         : flex;
+  justify-content : stretch;
+  align-items     : center;
+  padding         : 2px calc( 0.5rem + 2px);
 }
 #message_form input[type="text"] {
-  height: 100%;
-  border: none;
-  font-size: 1.33rem;
-  overflow: scroll;
+  flex-grow       : 1;
+  height          : 100%;
+  border          : none;
+  font-size       : 1.33rem;
+  overflow        : scroll;
+  margin-right    : 0.5rem;
 }
-
 
 </style>

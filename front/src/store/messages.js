@@ -98,11 +98,11 @@ export default {
 
     // Fetch messages by event id 
 
-    fetch_messages( { getters, dispatch }, event_id ) { 
+    fetch_messages( { dispatch }, event_id ) { 
       return new Promise( ( resolve, reject ) => 
         api
         .messages
-        .get_by_event( event_id || getters.current_event_id )
+        .get_by_event( event_id )
         .then( messages => { 
           for ( const message of messages ) {
             dispatch( 'set_message', message )

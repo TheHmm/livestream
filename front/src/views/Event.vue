@@ -1,16 +1,13 @@
 <script>
-import Livestream from '@/components/Livestream/index.vue'
 
-
-
-// The Event view. This view wraps the livestream component,
-// creates base styles to work from and handles connection
-// to the socket server.
+// The Event view. This view wraps the child route component.
+// This could be the livestream component or chat component.
+// It also creates base styles to work from and handles 
+// connection to the socket server.
 
 export default {
 
-  name       : 'EventPage',
-  components : { Livestream },
+  name : 'EventPage',
 
 
   // We get our event object frmm the route slug. Note that
@@ -18,7 +15,7 @@ export default {
   // route guard: @/router/guards/before_enter_event
 
   computed: {
-    event()  { 
+    event() { 
       return this.$store.getters[
         'events/current_event'
       ]
@@ -62,13 +59,19 @@ export default {
 </script>
 
 <template>
-  <main 
-    :id="$id()"
-    :style="{ ...event.accent }"
-    aria-labelledby="event_title"
-  >
-    <Livestream :event="event" />
-  </main>
+  <router-view v-slot="{ Component }">
+    <main
+      :id="$id()"
+      :class="$id( $route.name )"
+      :style="{ ...event.accent }"
+      aria-labelledby="event_title"
+    >
+      <component 
+        :is="Component" 
+        :event="event"
+      />
+    </main>
+  </router-view>
 </template>
 
 <style scoped>
@@ -117,6 +120,18 @@ main {
   display          : flex;
   flex-direction   : column;
   animation        : enter var(--very-slow) ease forwards;
+}
+
+
+main.chatpage >>> #chat_container #chat {
+  --distance       : 100vh;
+}
+main.chatpage >>> #chat .contents:focus-within,
+main.chatpage >>> #chat.expanded .contents {
+  --height        : calc( 100vh - var(--base-height) );
+}
+main.chatpage >>> #chat .close {
+  display         : none;
 }
 
 @keyframes enter {

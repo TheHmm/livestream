@@ -30,7 +30,7 @@ export default {
         sort: 'time:desc',
         pagination: {
           page: page,
-          pageSize: page * 10,
+          pageSize: 50,
         },
         filters: {
           event: {

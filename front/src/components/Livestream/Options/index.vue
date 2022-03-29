@@ -95,31 +95,39 @@ export default {
 @import '@/assets/css/tabs.css';
 
 #options {
-  display     : flex;
-  align-items : flex-end;
-  overflow    : visible;
+  display        : flex;
+  align-items    : flex-end;
+  overflow       : visible;
+}
+
+#options .tab {
+  --distance     : 5rem;
 }
 
 #options .tab:not(:first-of-type) {
-  margin-left : -1rem;
+  margin-left    : -1rem;
+}
+
+#options .tab:hover .contents {
+  padding-bottom : 0.5rem;
 }
 
 #options .tab .contents >>> ul {
-  margin: auto;
+  margin         : auto;
 }
 
 #options .tab .contents >>> ul li {
-  display     : flex;
-  align-items : center;
+  display        : flex;
+  align-items    : center;
 }
 #options .tab .contents >>> ul li::before {
-  content     : unset;
+  content        : unset;
 }
 
 .mobile #options {
-  margin      : unset;
-  z-index     : 1;
-  max-height  : var(--base-height);
+  margin         : unset;
+  z-index        : 1;
+  max-height     : var(--base-height);
 }
 
 

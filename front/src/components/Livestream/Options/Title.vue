@@ -47,13 +47,13 @@ label {
   --radius                : calc( 2rem + var(--base-height) ) 100%;
   position                : relative;
   overflow                : visible;
-  align-items             : center !important;
-  align-content           : flex-start !important;
   justify-content         : center;
+  align-items             : center;
   text-align              : center;
   border-top-left-radius  : var(--radius);
   border-top-right-radius : var(--radius);
   font-size               : 1.33rem;
+
   /* background-color     : transparent !important; */
 }
 
@@ -75,6 +75,7 @@ label {
 label div,
 label >>> div {
   height                  : 100%;
+  padding                 : 0.2rem 1rem;
 }
 
 

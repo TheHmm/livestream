@@ -29,12 +29,18 @@ export default [
     name: 'Event',
     component: () => import( '@/views/Event.vue' ),
     beforeEnter: guards.before_enter_event,
-  },
-  {
-    path: '/:slug/chat',
-    name: 'Chat',
-    component: () => import( '@/views/Chat.vue' ),
-    beforeEnter: guards.before_enter_event,
+    children: [
+      {
+        path: '',
+        name: 'Livestream',
+        component: () => import( '@/components/Livestream/index.vue' )
+      },
+      {
+        path: 'chat',
+        name: 'ChatPage',
+        component: () => import( '@/components/Chat/index.vue' )
+      }
+    ]
   },
   {
     path: '/donated',
