@@ -1,10 +1,15 @@
 <script>
-
 import { mapActions } from 'vuex'
+
+
+// Message options
 
 export default {
 
-  name: 'Moderation',
+  name: 'Options',
+
+
+  // Who is the sender and what can they do?
 
   props: {
     message   : Object,
@@ -13,10 +18,16 @@ export default {
     mine      : Boolean,
   },
 
+
+  // Message and sender status
+
   computed: {
     censored() { return this.message?.censored },
     blocked()  { return this.sender?.blocked },
   },
+
+
+  // Message actions
 
   methods: {
     ...mapActions( 'messages', [
@@ -35,7 +46,7 @@ export default {
   <span
     v-if="moderator"
     role="menu"
-    class="options"
+    :class="$id()"
   >
     <span 
       @click="censor_message( message )"
@@ -68,7 +79,19 @@ export default {
   </span>
 </template>
 
+
 <style scoped>
 
+.options {
+  display         : flex;
+  align-items     : center;
+  margin-left     : auto;
+}
+.options span {
+  font-size       : 0.6rem;
+  text-decoration : underline;
+  margin-left     : 0.5rem;
+  cursor          : pointer;
+}
 
 </style>

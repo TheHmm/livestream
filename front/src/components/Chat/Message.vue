@@ -1,17 +1,24 @@
 <script>
 
-import { mapActions, mapGetters } from 'vuex'
-import Moderation from './Moderation.vue'
+import { mapGetters } from 'vuex'
+import Options from './Options.vue'
 import Links from './Links.vue'
+
+
+// Chat message
 
 export default {
   
   name: 'Message',
 
   components: { 
-    Moderation, 
+    Options, 
     Links 
   },
+
+
+  // If the chat view mode is set to links only then we only
+  // Show messagges with links in them
 
   props: {
     message    : Object,
@@ -20,34 +27,41 @@ export default {
 
   computed: {
 
+
+    // Some computed properties that decide what actions a  
+    // user has access to for each message
+
     ...mapGetters( 'viewers', [
       'uuid',
       'get_viewer_by_id',
       'moderator',
     ]),
 
+
+    // Basic message details.
+
     id()     { return this.message.id },
     time()   { return this.$time.time_format( this.message.time ) },
     body()   { return this.$mdi( this.message.body || '' ) },
     links()  { return this.message.links },
+
+
+    // We always get the sender details from the store since
+    // The message only has an id in it.
+
     sender() { return this.get_viewer_by_id( this.message.sender ) },
     name()   { return this.sender?.name || 'unknown' },
     mine()   { return this.sender?.uuid == this.uuid }
 
   },
 
-  methods: {
-  },
-
 }
 </script>
 
+
 <template>
   <article 
-    :class="[ 
-      $id(), 
-      { censored: message.censored } 
-    ]"
+    :class="[ $id(), { censored: message.censored } ]"
     tabindex="0"
     :aria-label="`Message from ${ sender }`"
     v-if="links_only ? links : true"
@@ -60,7 +74,7 @@ export default {
       <!-- <span class="sep"> @ </span> -->
       <span class="time">{{ time }}</span>
       <span class="sender">{{ name }}</span>
-      <Moderation
+      <Options
         :moderator="moderator"
         :mine="mine"
         :message="message"
@@ -84,64 +98,62 @@ export default {
   </article>
 </template>
 
+
 <style scoped>
 
 .message {
-  /* --increment: 4%; */
-  --increment: 4%;
-  --accent: hsl( 
+  --increment         : 4%;
+  --accent            : hsl(
       var(--h), 
       var(--s),
       min( calc( var(--l) + var(--n) * var(--increment) ), var( --max-l ) ) );
-  --back: var(--accent);
-  background-color: var(--back);
-  margin: 2px;
-  padding: 0 0.5rem;
-  padding-block-start: 0.5rem;
-  padding-block-end: 0.5rem;
-  margin-top: 0.5rem;
-  transition: background-color var(--fast) ease;
-  pointer-events: none;
+  --back              : var(--accent);
+  background-color    : var(--back);
+  max-width           : 100%;
+  margin              : 2px;
+  padding             : 0.5rem 0.5rem;
+  margin-top          : 0.5rem;
+  pointer-events      : none;
+  transition          : background-color var(--fast) ease;
 }
-.expanded .message {
-  pointer-events: all;
-}
+
 .message:first-of-type {
-  margin-top: 0rem;
+  margin-top          : 0rem;
 }
+
 .message .header {
-  font-family: monospace;
-  font-style: italic;
-  font-size: 0.8rem;
-  opacity: 0.6;
-  display: flex;
+  font-family         : monospace;
+  font-family         : 'not-courier-sans', monospace;
+  font-style          : italic;
+  font-size           : 0.9rem;
+  display             : flex;
+  align-items         : center;
+  width               : 100%;
+  overflow            : scroll;
 }
+
 .message .header .sender {
-  margin-left: 0.5rem;
+  margin-left         : 0.5rem;
+  white-space         : pre;
 }
+
 .message .header .time {
-  margin-right: auto;
-  /* opacity: 0.5; */
+  margin-right        : auto;
 }
 
 .message .body {
-  margin-top: 0.25rem ;
+  margin-top          : 0.25rem ;
 }
 
-.message >>> .options {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
+.expanded .message {
+  pointer-events      : all;
 }
-.message >>> .options span {
-  font-size: 0.6rem;
-  text-decoration: underline;
-  margin-left: 0.5rem;
-  cursor: pointer;
-}
+
 .message.censored .body {
-  font-style: italic;
-  font-size: 0.8rem;
-  opacity: 0.6;
+  font-style          : italic;
+  font-size           : 0.8rem;
+  opacity             : 0.6;
 }
+
+
 </style>

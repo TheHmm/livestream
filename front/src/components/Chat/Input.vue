@@ -3,6 +3,9 @@ import { mapActions } from 'vuex'
 import $log from '@/utils/log'
 import Register from './Register.vue'
 
+
+// Message input area
+
 export default {
 
   name: 'Input',
@@ -11,6 +14,9 @@ export default {
     Register
   },
 
+
+  // Message and registration status
+
   data() {
     return {
       message: null,
@@ -18,6 +24,11 @@ export default {
       sending: false,
     }
   },
+
+
+  // When someone tries to send a message we first check if 
+  // they are authenticated and decide wether to present the
+  // regitration form or not.
 
   methods: {
 

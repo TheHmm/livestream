@@ -1,6 +1,8 @@
 <script>
 import { mapGetters } from 'vuex'
+import dialogPolyfill from 'dialog-polyfill'
 import Bot from '../Utils/Bot.vue'
+
 
 export default {
   
@@ -27,8 +29,20 @@ export default {
     'close'
   ],
 
+  mounted() {
+    dialogPolyfill.registerDialog(this.$el)
+    this.$el.showModal()
+  },
+
 
   methods: {
+
+    close() {
+      if ( this.$el && this.$el.close ) {
+        this.$el.close()
+      }
+      this.$emit('close')
+    },
 
     async send( e ) {
       e.preventDefault()
@@ -51,21 +65,13 @@ export default {
 
   },
 
-  mounted() {
-    this.$el.showModal()
-  },
-
-  beforeUnmount() {
-    this.$el.close()
-  }
- 
 }
 </script>
 
 <template>
   <dialog
     :id="$id()"
-    @keydown.esc.prevent="$emit('close')"
+    @keydown.esc.prevent="close"
   >
     <div v-if="error">
       <p> A server error seemed to have occurred. Please contact us.</p>
@@ -74,7 +80,7 @@ export default {
         type="reset" 
         title="close."
         value="Close"
-        @click="$emit('close')"
+        @click="close"
       />
     </div> 
     <div v-else-if="sending">
@@ -164,11 +170,17 @@ export default {
 </template>
 
 <style scoped>
+/* dialog {
+  position: fixed;
+  top: 50%;
+  transform: translate(0, -50%);
+} */
 
 dialog {
   max-width: 25rem;
   box-shadow: var(--shadow);
   border: none;
+  padding: 1rem;
 }
 dialog::backdrop {
   background-color: hsla(0, 0%, 0%, 0.3);
@@ -182,7 +194,7 @@ dialog form label {
   flex-wrap: wrap;
 }
 dialog form label.name {
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 dialog form label.name input {
   margin-right: 0.5rem;
