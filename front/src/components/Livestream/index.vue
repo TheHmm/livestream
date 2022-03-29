@@ -216,7 +216,7 @@ footer >>> #chat_container #chat.expanded .contents {
   --height         : 50vh;
 }
 .mobile footer >>> #chat_container #chat .contents {
-  padding-bottom   : var(--footer-height);
+  padding-bottom   : calc( var(--footer-height) + 1rem);
 }
 
 @keyframes enter {
