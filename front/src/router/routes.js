@@ -39,6 +39,11 @@ export default [
         path: 'chat',
         name: 'ChatPage',
         component: () => import( '@/components/Chat/index.vue' )
+      },
+      {
+        path: 'accent',
+        name: 'Accent',
+        component: () => import( '@/components/Utils/Accent.vue' )
       }
     ]
   },

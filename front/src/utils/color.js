@@ -19,10 +19,20 @@ const
       '--s': s + '%',
       '--l': l + '%'
     }
+  },
+
+  route_to_css_vars = route => {
+    const { h, s, l } = route.query
+    return {
+      ...( h && { '--h': h } ),
+      ...( s && { '--s': s + '%' } ),
+      ...( l && { '--l': l + '%' } ),
+    }
   }
 
 
 export default {
   parse_hsl,
-  hsl_to_css_vars
+  hsl_to_css_vars,
+  route_to_css_vars
 }
