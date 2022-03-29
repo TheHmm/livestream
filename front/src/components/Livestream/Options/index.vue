@@ -130,11 +130,23 @@ export default {
   margin         : unset;
   z-index        : 1;
   max-height     : var(--base-height);
+  /* padding-left: ; */
+  /* flex-wrap: wrap; */
   /* overflow-x     : scroll; */
 }
 
 .mobile #options .tab {
-  margin-left    : calc( -1 * var(--size-s));
+  margin-left    : calc( -3 * var(--size-s));
 }
+.mobile #options .tab:first-of-type {
+  margin-left    : 0;
+}
+
+.mobile #options .tab:focus .contents,
+.mobile #options .tab:focus-within .contents,
+.mobile #options .tab:hover .contents {
+  padding-bottom: var(--base-height)
+}
+
 
 </style>
