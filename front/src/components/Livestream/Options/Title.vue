@@ -89,4 +89,9 @@ label >>> div {
   --radius                :  calc(4rem + var(--base-height) ) 100%;
 }
 
+.mobile.reduce_motion label >>> div {
+  padding: 0.2rem 0;
+  bottom: 0.2rem;
+}
+
 </style>
