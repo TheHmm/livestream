@@ -287,7 +287,9 @@
       /* clipboard write failed */
     });
 
-	const socket = io('https://live.thehmm.nl');
+
+	const io_url = 'https://live.thehmm.nl';
+	const socket = io( io_url );
 	
 	const clear_button = document.getElementById('clear')
 
@@ -315,7 +317,7 @@
 
 	// socket.onopen = function (){	
 	socket.on('connect', () => {
-		console.log('connected')
+		console.log('connected to ', io_url)
 		socket.emit('join_CC_room')
 		//socket.send(JSON.stringify({"join":roomID}));
 	})
