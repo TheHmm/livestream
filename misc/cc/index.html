@@ -287,7 +287,7 @@
       /* clipboard write failed */
     });
 
-	const socket = io('https://api.live.thehmm.karls.computer');
+	const socket = io('https://live.thehmm.nl');
 	
 	const clear_button = document.getElementById('clear')
 
@@ -357,7 +357,7 @@
 
 				try {
 					const 
-						response = await fetch('https://api.live.thehmm.karls.computer/api/livestream'),
+						response = await fetch('https://live.thehmm.nl/api/livestream'),
 						json_data = await response.json(),
 						livestream = json_data.data.publicData
 					timestamp_start = (new Date(livestream.start_time)).getTime()
