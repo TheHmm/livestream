@@ -49,7 +49,8 @@ export default {
             from        : this.$route.params.slug
           }),
           checkout = payment._links?.checkout?.href
-        window.open( checkout, '_blank')
+        // window.open( checkout )
+        window.location.href = checkout 
       } catch ( err ) {
         console.error(err)
       }

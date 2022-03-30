@@ -154,11 +154,20 @@ export default {
   /* left: 0; */
   margin-left    : 0;
 }
+.mobile #options .tab:focus ,
+.mobile #options .tab:focus-within ,
+.mobile #options .tab:hover {
+ margin-left    : calc( -2.5 * var(--n) * var(--size-s));
+}
 
 .mobile #options .tab:focus .contents,
 .mobile #options .tab:focus-within .contents,
 .mobile #options .tab:hover .contents {
-  padding-bottom: var(--base-height)
+  padding-bottom : var(--base-height);
+
+  --width        : 12rem;
+  min-width: var(--width);
+  max-width: var(--width);
 }
 
 

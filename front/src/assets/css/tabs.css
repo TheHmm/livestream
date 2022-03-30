@@ -34,7 +34,8 @@
     min-height  var(--fast) ease-in-out,
     max-height  var(--fast) ease-in-out,
     min-width   var(--fast) ease-in-out,
-    max-width   var(--fast) ease-in-out
+    max-width   var(--fast) ease-in-out,
+    margin      var(--fast) ease-in-out
   ;
 }
 
