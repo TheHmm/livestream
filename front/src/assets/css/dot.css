@@ -18,6 +18,9 @@
   transition       : 
     box-shadow var(--fast) ease,
     opacity var(--fast) ease,
+    top var(--fast) ease,
+    left var(--fast) ease,
+    margin-left var(--fast) ease,
     transform var(--slow) ease,
     max-width var(--slow) ease,
     max-height var(--slow) ease
