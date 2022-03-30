@@ -231,7 +231,7 @@ footer >>> #chat_container #chat.expanded .contents {
 .mobile footer >>> #chat_container #chat .contents:focus-within,
 .mobile footer >>> #chat_container #chat.expanded .contents {
   /* --height         : calc( 100vh - 23rem ); */
-  --height         : 50vh;
+  --height         : 80vh;
 }
 .mobile footer >>> #chat_container #chat .contents {
   padding-bottom   : calc( var(--footer-height) + 1rem);

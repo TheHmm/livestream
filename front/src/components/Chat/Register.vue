@@ -23,7 +23,8 @@ export default {
       agrees   : false,
       sending  : false,
       error    : null,
-      website  : null
+      website  : null,
+      webkit   : /Safari/.test(navigator.userAgent)
     }
   },
 
@@ -87,6 +88,7 @@ export default {
 <template>
   <dialog
     :id="$id()"
+    :class="{ webkit }"
     @keydown.esc.prevent="close"
   >
 
@@ -201,8 +203,16 @@ dialog {
   box-shadow       : var(--shadow);
   border           : none;
   padding          : var(--size-s);
+  flex-grow        : 1;
 }
-dialog .backdrop,
+dialog.webkit {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background-color: var(--accent-light);
+  overflow: scroll;
+}
+dialog + .backdrop,
 dialog::backdrop {
   background-color : hsla(0, 0%, 0%, 0.3);
 }
@@ -237,6 +247,13 @@ dialog form .row {
 }
 dialog form input.submit {
   margin-left      : auto;
+}
+
+.mobile dialog {
+  position: absolute;
+  top: 0;
+  max-height       : 90%;
+  overflow         : scroll;
 }
 
 </style>
