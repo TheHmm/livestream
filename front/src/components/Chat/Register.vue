@@ -208,7 +208,7 @@ dialog {
 dialog.webkit {
   position: absolute;
   top: 0;
-  height: 100%;
+  max-height: 100%;
   background-color: var(--accent-light);
   overflow: scroll;
 }
