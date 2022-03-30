@@ -200,4 +200,7 @@ img {
   margin-block-end: 0;
 }
 
+.mobile #thumbs img {
+  max-width: 10rem;
+}
 </style>

@@ -189,10 +189,22 @@ footer >>> #chat_container #chat.expanded .contents {
 
 .mobile #middle {
   flex-direction   : column-reverse;
+  justify-content  : flex-end;
+  
+  overflow : scroll;
+}
+
+
+.mobile #middle #player {
+  flex-shrink: 0;
+  /* height: unset; */
+  /* height: 40%; */
+  min-height: 40%;
+  max-height: 60%;
 }
 
 .mobile #middle #info {
-  flex-shrink      : unset;
+  flex-shrink      : 1;
   margin-left      : unset;
   margin-top       : var(--size-s);
 }

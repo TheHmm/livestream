@@ -134,6 +134,10 @@ main.chatpage >>> #chat .close {
   display         : none;
 }
 
+main.mobile {
+  overflow : scroll;
+}
+
 @keyframes enter {
   from { background-color : transparent }
   to   { background-color : var(--back) }

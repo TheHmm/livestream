@@ -221,6 +221,9 @@ video {
   display: none;
 }
 
-.mobile video {
+.mobile #middle #player.thumbs {
+  min-height: 60%;
+  max-height: 70%;
 }
+
 </style>

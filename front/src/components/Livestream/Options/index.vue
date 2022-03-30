@@ -147,8 +147,11 @@ export default {
 
 .mobile #options .tab {
   margin-left    : calc( -3 * var(--size-s));
+  /* position: absolute; */
+  /* left: 15%; */
 }
 .mobile #options .tab:first-of-type {
+  /* left: 0; */
   margin-left    : 0;
 }
 

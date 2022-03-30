@@ -53,4 +53,8 @@ export default {
   flex-wrap       : wrap;
 }
 
+.mobile #viewers {
+  padding: 0rem;
+}
+
 </style>
