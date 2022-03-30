@@ -66,7 +66,7 @@ TODO
 
 
 ## License
-
+[CC4r*](https://constantvzw.org/wefts/cc4r.en.html)
 ## Author
 
 [Karl Moubarak](https://moubarak.eu)

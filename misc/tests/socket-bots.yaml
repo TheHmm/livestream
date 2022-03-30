@@ -1,5 +1,6 @@
 config:
-  target: "https://api.live.thehmm.karls.computer"
+  target: "https://live.thehmm.nl"
+  # target: "https://api.live.thehmm.karls.computer"
   # target: "https://live.thehmm.karls.computer/LightLightLight"
   # target: "http://localhost:3000/LightLightLight"
   plugins:
@@ -11,14 +12,14 @@ config:
   #  socketio-v3: {}
   phases:
     - duration: 15
-      arrivalCount: 100
+      arrivalCount: 500
       name: Warm up
 scenarios:
   # - engine: socketio-v3
   - engine: socketio
     flow:
       - options: 
-          url: '/'
+          url: '/api'
           beforeRequest: addUUID 
       - emit:
           channel: 'viewer'
@@ -32,9 +33,10 @@ scenarios:
             uuid: '{{ id }}'
             group: 'kim'
             emoji: 'sad'
-      - emit:
-          channel: 'join_CC_room'
-            uuid: '{{ id }}'
+      # - emit:
+      #     channel: 'join_CC_room'
+      # - emit:
+      #     channel: 'leave_CC_room'
       # - emit:
       #     channel: "appearance"
       #     data: {
@@ -69,5 +71,5 @@ scenarios:
       #       "connected":false,
       #       "deleted":false
       #     }
-      - think: 50
+      - think: 15
       # - think: 30 
