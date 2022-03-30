@@ -11,7 +11,7 @@ config:
   #  socketio-v3: {}
   phases:
     - duration: 15
-      arrivalCount: 200
+      arrivalCount: 100
       name: Warm up
 scenarios:
   # - engine: socketio-v3
@@ -32,6 +32,9 @@ scenarios:
             uuid: '{{ id }}'
             group: 'kim'
             emoji: 'sad'
+      - emit:
+          channel: 'join_CC_room'
+            uuid: '{{ id }}'
       # - emit:
       #     channel: "appearance"
       #     data: {
@@ -66,5 +69,5 @@ scenarios:
       #       "connected":false,
       #       "deleted":false
       #     }
-      - think: 10
+      - think: 50
       # - think: 30 

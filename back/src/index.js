@@ -249,6 +249,7 @@ module.exports = {
 
       socket.on('join_CC_room', () => {
         socket.join('cc')
+        console.log('joined cc')
         socket.emit('confirm_join_CC', cc)
       })
       
