@@ -52,9 +52,7 @@
 
   --shadow-color   : hsla(0, 0%, 0%, 0.288);
   --shadow-size    : 1rem;
-  --shadow         : 0 0 var(--shadow-size) 0 var(--shadow-color);
-  --filter-shadow  : 0 0 var(--shadow-size) var(--shadow-color);
-  
+  --shadow         : 0 0 var(--shadow-size) 0.1rem var(--shadow-color);  
 
   /* Transition and animation speeds */
 
@@ -103,7 +101,6 @@
   --shadow-color   : hsla(0, 0%, 0%, 0);
   --shadow-size    : 0;
   --shadow         : none;
-  --filter-shadow  : 0 0 0 transparent;
 }
 
 

@@ -119,5 +119,8 @@ export default {
   overflow        : scroll;
   margin-right    : 0.5rem;
 }
+#message_form input[type="text"]::placeholder {
+  font-size       : 1.15rem;
+}
 
 </style>

@@ -44,14 +44,12 @@ export default {
 <style scoped>
 
 label {
-  --radius                : calc( 2rem + var(--base-height) ) 100%;
   position                : relative;
   overflow                : visible;
   justify-content         : center;
   align-items             : center;
   text-align              : center;
-  border-top-left-radius  : var(--radius);
-  border-top-right-radius : var(--radius);
+  border-radius           : inherit;
   font-size               : var(--size-m);
 
   /* background-color     : transparent !important; */
@@ -86,7 +84,6 @@ label >>> div {
 
 .mobile label {
   font-size               : var(--size-s);
-  --radius                :  calc(4rem + var(--base-height) ) 100%;
 }
 
 .mobile.reduce_motion label >>> div {

@@ -9,7 +9,7 @@
   --full-height    : 15rem;
   --tab-width      : 10rem;
 
-  filter           : drop-shadow( var(--filter-shadow) );
+  box-shadow       : var(--shadow);
   transform        : translateY( var(--distance) );
   animation        : tab_enter var(--enter) ease calc( 0.4s + var(--n) *  0.1s) forwards;
 
@@ -35,6 +35,7 @@
     max-height  var(--fast) ease-in-out,
     min-width   var(--fast) ease-in-out,
     max-width   var(--fast) ease-in-out,
+    box-shadow  var(--fast) ease-in-out,
     margin      var(--fast) ease-in-out
   ;
 }

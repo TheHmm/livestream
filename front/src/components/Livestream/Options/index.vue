@@ -112,6 +112,11 @@ export default {
 
 #options .tab {
   --distance     : 5rem;
+  /* box-shadow: none; */
+  --radius                : calc( 2rem + var(--base-height) ) 100%;
+    border-top-left-radius  : var(--radius);
+  border-top-right-radius : var(--radius);
+  background-color: var(--back);
 }
 
 #options .tab:not(:first-of-type) {
@@ -140,6 +145,9 @@ export default {
   margin         : unset;
   z-index        : 1;
   max-height     : var(--base-height);
+  /* --radius       : calc( 5rem + var(--base-height) ) 100%; */
+  --radius       : calc( 5rem ) 100%;
+
   /* padding-left: ; */
   /* flex-wrap: wrap; */
   /* overflow-x     : scroll; */
