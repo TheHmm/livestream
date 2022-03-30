@@ -53,6 +53,7 @@
 .tab:focus-within .contents {
   max-height       : var(--full-height);
   max-width        : var(--tab-width);
+  overflow         : scroll;
 }
 
 .mobile .tab {
