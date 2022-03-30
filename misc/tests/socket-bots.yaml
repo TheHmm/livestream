@@ -1,0 +1,70 @@
+config:
+  target: "https://api.live.thehmm.karls.computer"
+  # target: "https://live.thehmm.karls.computer/LightLightLight"
+  # target: "http://localhost:3000/LightLightLight"
+  plugins:
+    uuid:
+      vars: [ 'id' ]
+  # socketio:
+    # transports: ["websocket"]
+  # engines:
+  #  socketio-v3: {}
+  phases:
+    - duration: 15
+      arrivalCount: 200
+      name: Warm up
+scenarios:
+  # - engine: socketio-v3
+  - engine: socketio
+    flow:
+      - options: 
+          url: '/'
+          beforeRequest: addUUID 
+      - emit:
+          channel: 'viewer'
+          data: 
+            uuid: '{{ id }}'
+            name: 'testBot'
+      - think: 1 
+      - emit:
+          channel: 'emoji'
+          data:
+            uuid: '{{ id }}'
+            group: 'kim'
+            emoji: 'sad'
+      # - emit:
+      #     channel: "appearance"
+      #     data: {
+      #       "uid":"TaIHaUATdEya",
+      #       "name": "testBot",
+      #       "x":0.5989999833333334,
+      #       "y":0.23428440366972478,
+      #       "color": "green",
+      #       "connected":true,
+      #       "deleted":false
+      #     }
+      # - think: 0.5 
+      # - emit:
+      #     channel: "appearance"
+      #     data: {
+      #       "uid":"TaIHaUATdEya",
+      #       "name": "testBot",
+      #       "x":0.600120833333334,
+      #       "y":0.23428440366972478,
+      #       "color": "blue",
+      #       "connected":true,
+      #     }
+      # - think: 0.5
+      # - emit:
+      #     channel: "appearance"
+      #     data: {
+      #       "uid":"TaIHaUATdEya",
+      #       "name": "testBot",
+      #       "x":0.600120833333334,
+      #       "y":0.23528440366972478,
+      #       "color": "red",
+      #       "connected":false,
+      #       "deleted":false
+      #     }
+      - think: 10
+      # - think: 30 

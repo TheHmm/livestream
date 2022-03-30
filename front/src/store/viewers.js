@@ -23,6 +23,10 @@ export default {
       state.viewers[viewer.uuid] = viewer
     },
 
+    // DELETE_VIEWER : ( state, viewer ) => {
+    //   delete state.viewers[viewer.uuid]
+    // },
+
     SET_UUID : ( state, uuid ) => {
       state.uuid = uuid
     },
@@ -124,6 +128,11 @@ export default {
       if ( !viewer.uuid ) {
         return
       }
+
+      // if ( !viewer.connected && !viewer.name ) {
+      //   commit( 'DELETE_VIEWER', viewer )
+      //   return
+      // }
 
 
       // If the viewer exists in our store, than this

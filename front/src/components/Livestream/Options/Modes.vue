@@ -80,7 +80,7 @@ export default {
     <li 
       v-for="mode in modes"
       :key="mode.name"
-      :style="{ '--url': `url(@/assets/icons/${mode.name}.svg)` }"
+      :style="{ '--url': `url(../../assets/icons/${mode.name}.svg)` }"
       class="mode"
     >
       <input 
