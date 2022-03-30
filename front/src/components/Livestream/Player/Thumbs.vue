@@ -39,7 +39,7 @@ export default {
       return this.livestream.playbackId 
     },
     time_format() {
-      return this.$time.time_format( this.curr_time * 1000  ) 
+      return this.$time.dur_format( this.curr_time * 1000  ) 
     },
     playing() {
       return this.interval !== null
@@ -105,12 +105,6 @@ export default {
     <section
       v-if="image_data"
     >
-      <div class="controls">
-        <Play
-          :playing="playing"
-          @click="playing ? pause() : play() "
-        />
-      </div>
       <div class="image_contaier">
         <img
           ref="img"
@@ -128,6 +122,12 @@ export default {
             <br>(1 frame every {{ reload_every / 1000 }} seconds).
 
           </p>
+          <div class="controls">
+            <Play
+              :playing="playing"
+              @click="playing ? pause() : play() "
+            />
+          </div>
         </div>
       </div>
       <div class="controls">
@@ -187,11 +187,13 @@ img {
 }
 
 #thumbs .controls {
-  flex-basis: 33%;
+  /* flex-basis: 33%; */
+  padding-top: 1rem;
 }
 
 #thumbs section .desc {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  line-height: 1.3;
   text-align: center;
 }
 #thumbs section .desc p {

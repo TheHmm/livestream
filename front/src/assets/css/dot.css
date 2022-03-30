@@ -3,12 +3,13 @@
   background-color : var(--back);
   
   --shadow-size    : 1rem;
+  --size           : 1.5rem;
   box-shadow       : 0 0 var(--shadow-size) 0 var(--shadow-color);
 
-  min-width        : 1.5rem;
-  min-height       : 1.5rem;
-  max-width        : 1.5rem;
-  max-height       : 1.5rem;
+  min-width        : var(--size);
+  min-height       : var(--size);
+  max-width        : var(--size);
+  max-height       : var(--size);
   overflow         : hidden;
 
   border-radius    : 30rem;

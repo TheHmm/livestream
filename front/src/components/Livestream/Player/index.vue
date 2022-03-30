@@ -5,6 +5,7 @@ import Captions             from './Captions.vue'
 import Thumbs               from './Thumbs.vue'
 import HlsMedia             from './HlsMedia.vue'
 import NativeMedia          from './NativeMedia.vue'
+import Unmute               from './Unmute.vue'
 
 
 // Player component. This componet mouts the corrrect player
@@ -23,6 +24,7 @@ export default {
     Thumbs,
     HlsMedia,
     NativeMedia,
+    Unmute,
   },
   
   props: {
@@ -37,6 +39,19 @@ export default {
 
     mode() {
       return this.$store.getters['livestream/current_mode']( this )
+    },
+
+
+    // When the viewer first unmutes, we register this to our 
+    // store so they don't have to keep doing it.
+
+    muted() {
+      return this.$store.state.meta.muted
+    },
+
+    show_unmute() {
+      return this.muted && ( this.mode.video || this.mode.name == 'audio' )
+      // return this.muted
     },
 
 
@@ -137,7 +152,7 @@ export default {
 <template>
   <div
     :id="$id()"
-    :class="mode.name"
+    :class="[ mode.name, { video: mode.video } ]"
     aria-label="livestream player"
   >
 
@@ -145,7 +160,13 @@ export default {
       :is="player" 
       :livestream="livestream"
       :mode="mode"
+      :muted="muted"
       :desires_captions="desires_captions"
+    />
+
+    <Unmute
+      v-if="show_unmute"
+      @click="$store.commit( 'meta/SET_MUTED', false )"
     />
 
     <video 
@@ -159,8 +180,10 @@ export default {
 <style>
 
 #player {
+  position        : relative;
   width           : 100%;
   display         : flex;
+  align-self      : flex-start;
 }
 
 #player.transcript,
@@ -170,6 +193,10 @@ export default {
   flex-direction  : column;
   justify-content : stretch;
   height          : 100%;
+}
+
+#player.video {
+  align-items     : flex-start;
 }
 
 #player.audio {

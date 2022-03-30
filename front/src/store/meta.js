@@ -25,6 +25,8 @@ export default {
       }
     },
 
+    muted: true,
+
     error: null,
 
   },
@@ -37,6 +39,10 @@ export default {
 
     SET_MOBILE : ( state, mobile ) => {
       state.mobile = mobile
+    },
+
+    SET_MUTED : ( state, muted ) => {
+      state.muted = muted
     },
 
     SET_ERROR : ( state, error ) => {

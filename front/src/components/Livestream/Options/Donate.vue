@@ -76,6 +76,7 @@ export default {
       <li 
         v-for="( label, amount ) in donations"
         :key="amount"
+        :style="{ '--url': `url(@/assets/icons/donate-${id( amount )}.svg)` }"
       >
         <input 
           type="radio"
@@ -112,6 +113,11 @@ input[type="submit"] {
   width         : calc(100%  - var(--size-s));
   margin        : 0.5rem;
   margin-bottom : 0rem;
+}
+
+input[type="radio"] + label::after  {
+  /* background-image : var(--url); */
+  /* background-image : url( '@/assets/icons/thumbs.svg' ); */
 }
 
 

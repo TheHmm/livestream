@@ -15,6 +15,7 @@ export default {
 
   computed: {
     label() {
+      // return this.playing ? '▌▌' : 'play'
       return this.playing ? 'pause' : 'play'
     }
   },  

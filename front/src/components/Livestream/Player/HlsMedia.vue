@@ -2,7 +2,6 @@
 import { mux } from '@/utils/livestream'
 import networking from '@/networking'
 import Captions from './Captions.vue'
-import Mute from './Mute.vue'
 
 
 // The 'foreign' HLS player with a <video> or <audio>
@@ -15,13 +14,13 @@ export default {
 
   components: {
     Captions,
-    Mute
   },
 
 
   props: {
     livestream       : Object,
     mode             : Object,
+    muted            : Boolean,
     desires_captions : Boolean,
   },
  
@@ -29,7 +28,6 @@ export default {
     return {
       hls      : null,
       playing  : false,
-      muted    : true,
       updating : false,
     }
   },
@@ -94,11 +92,6 @@ export default {
       this.$refs.media.pause()
     },
 
-    unmute() {
-      this.muted = false
-      this.$refs.media.muted = false
-    },
- 
     destroy() {
       if ( this.hls ) {
         this.hls.destroy()
@@ -131,7 +124,7 @@ export default {
   <video
     v-if="mode.video"
     ref="media"
-    muted
+    :muted="muted"
     controls
     autoplay
     aria-label="video player"
@@ -144,16 +137,9 @@ export default {
     /> -->
   </video>
   <section v-else>
-    <!-- <div class="controls">
-      <Mute
-        v-if="muted"
-        :muted="muted"
-        @click="muted ? unmute() : mute() "
-      />
-    </div> -->
     <audio
       controls
-      muted
+      :muted="muted"
       autoplay
       ref="media"
       aria-label="audio player"

@@ -121,11 +121,15 @@ header {
 }
 header .marquee {
   height           : var(--marquee-height);
-  z-index          : 3;
+  z-index          : 1;
+}
+
+header #viewers {
+  z-index          : 1;
 }
 
 header #announcements {
-  z-index          : 3;
+  z-index          : 1;
 }
 
 #middle {
@@ -145,6 +149,7 @@ header #announcements {
   transition       : background-color var(--very-slow) ease;
   display          : flex;
   flex-direction   : row-reverse;
+  z-index          : 2;
 }
 
 #middle #info {
@@ -160,6 +165,7 @@ footer {
   padding          : 0 var(--size-s);
   display          : flex;
   align-items      : flex-end;
+  z-index          : 3;
 }
 
 footer >>> #network {

@@ -18,6 +18,7 @@ export default {
   props: {
     livestream       : Object,
     mode             : Object,
+    muted            : Boolean,
     desires_captions : Boolean
   },
 

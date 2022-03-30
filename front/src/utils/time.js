@@ -37,6 +37,12 @@ const
     } ) 
   ),
 
+  dur_format = dur => (
+    new Date( dur )
+    .toISOString()
+    .slice(11,19)
+  ),
+
   is_in_past   = timestring => time( timestring ) < now(),
 
   is_in_future = timestring => time( timestring ) > now(),
@@ -65,5 +71,6 @@ export default {
   to_hours,
   time_to_srt_stamp,
   date_format,
-  time_format
+  time_format,
+  dur_format,
 }
