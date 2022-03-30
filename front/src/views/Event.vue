@@ -130,12 +130,17 @@ main.chatpage >>> #chat .contents:focus-within,
 main.chatpage >>> #chat.expanded .contents {
   --height        : calc( 100vh - var(--base-height) );
 }
-main.chatpage >>> #chat .close {
+main.chatpage >>> #chat .options .close {
   display         : none;
 }
 
 main.mobile {
   overflow : scroll;
+}
+
+main.mobile.chatpage >>> #chat .contents:focus-within,
+main.mobile.chatpage >>> #chat.expanded .contents {
+    --height : 80vh;
 }
 
 @keyframes enter {
