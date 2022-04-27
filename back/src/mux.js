@@ -28,7 +28,7 @@ module.exports = MUX_TOKEN => {
         {
           name: "English CC (auto)",
           passthrough: "English closed captions (auto-generated)",
-          language_code: "en-US"
+          language_code: "en"
         }
       ],
     },

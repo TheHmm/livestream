@@ -79,6 +79,10 @@ export default {
         }
         this.play()
       })
+      this.hls.on( Hls.Events.SUBTITLE_TRACK_LOADED, ( event, data ) => {
+        // console.log(this.hls.subtitleTracks)
+        console.log(event, data)
+      })
       this.updating = false
     },
 
@@ -135,6 +139,12 @@ export default {
       :hls="hls"
       :stream_start="stream_start"
     /> -->
+    <track
+      default 
+      srclang="en" 
+      kind="captions" 
+      label="English" 
+    />
   </video>
   <section v-else>
     <audio
