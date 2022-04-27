@@ -11,18 +11,19 @@
   },
   "devDependencies": {},
   "dependencies": {
+    "@exfabrica/strapi-plugin-awesome-help": "^1.0.8",
     "@mollie/api-client": "^3.6.0",
+    "@mux/mux-node": "^4.0.0",
     "@strapi/plugin-i18n": "4.1.0",
     "@strapi/plugin-users-permissions": "4.1.0",
     "@strapi/strapi": "4.1.0",
     "react-color": "^2.19.3",
     "slugify": "^1.6.5",
+    "socket.io": "^4.4.1",
     "sqlite3": "5.0.2",
     "strapi-helper-plugin": "^3.6.8",
     "strapi-plugin-mux-video-uploader": "^2.1.1",
-    "strapi-plugin-transformer": "^1.0.3",
-    "@mux/mux-node": "^4.0.0",
-    "socket.io": "^4.4.1"
+    "strapi-plugin-transformer": "^1.0.3"
   },
   "author": {
     "name": "Karl Moubarak"
