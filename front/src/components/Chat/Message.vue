@@ -33,7 +33,6 @@ export default {
 
     ...mapGetters( 'viewers', [
       'uuid',
-      'get_viewer_by_id',
       'moderator',
     ]),
 
@@ -145,6 +144,10 @@ export default {
   margin-top          : 0.25rem ;
 }
 
+.message .body >>> a {
+  word-break: break-all;
+}
+
 .expanded .message {
   pointer-events      : all;
 }
@@ -154,6 +157,7 @@ export default {
   font-size           : 0.8rem;
   opacity             : 0.6;
 }
+
 
 
 </style>
