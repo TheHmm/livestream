@@ -23,6 +23,14 @@ module.exports = MUX_TOKEN => {
       new_asset_settings : { 
         playback_policy  : 'public' 
       },
+      // latency_mode       : 'low',
+      generated_subtitles: [
+        {
+          name: "English CC (auto)",
+          passthrough: "English closed captions (auto-generated)",
+          language_code: "en-US"
+        }
+      ],
     },
 
 
