@@ -40,7 +40,9 @@ export default {
     // Basic message details.
 
     id()     { return this.message.id },
-    time()   { return this.$time.time_format( this.message.time ) },
+    time()   { return this.message.time },
+    time_s() { return this.$time.time_format( this.time ) },
+    time_l() { return this.$time.date_format( this.time ) },
     body()   { return this.$mdi( this.message.body || '' ) },
     links()  { return this.message.links },
 
@@ -70,9 +72,19 @@ export default {
       class="header"
       aria-label="Message meta-data"
     >
-      <!-- <span class="sep"> @ </span> -->
-      <span class="time">{{ time }}</span>
-      <span class="sender">{{ name }}</span>
+      <time 
+        class="time"
+        :datetime="time"
+        :title="time_l"
+      >
+        {{ time_s }}
+      </time>
+      <span 
+        class="sender"
+        :title="name"
+      >
+        {{ name }}
+      </span>
       <Options
         :moderator="moderator"
         :mine="mine"
@@ -129,6 +141,7 @@ export default {
   font-style          : italic;
   font-size           : 0.9rem;
   display             : flex;
+  gap                 : 0.5rem;
   align-items         : center;
   width               : 100%;
   overflow            : scroll;
@@ -136,7 +149,9 @@ export default {
 
 .message .header .sender {
   margin-left         : 0.5rem;
-  white-space         : pre;
+  white-space         : nowrap;
+  overflow            : hidden;
+  text-overflow       : ellipsis;
 }
 
 .message .header .time {
