@@ -23,6 +23,18 @@ export default {
   },
 
 
+  // Authenticate on load, this wayt you can send messages 
+  // immediately
+
+  methods: {
+    async authenticate() {
+      return await this.$store.dispatch(
+        'viewers/authenticate'
+      )
+    }
+  },
+
+
   // We only need to connect to our socket server when we
   // enter the event page. In all other routes, socket 
   // networking is unnecessary.
@@ -51,6 +63,7 @@ export default {
       this.$socket.client.emit('viewer', {
         uuid: this.$store.state.viewers.uuid,
       })
+      await this.authenticate()
     },
   },
 
