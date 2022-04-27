@@ -140,7 +140,7 @@ header #announcements {
   box-shadow       : var(--shadow);
   height           : var(--middle-height);
   position         : relative;
-  flex-grow        : 1;
+  flex-grow        : 0;
   z-index          : 0;
   padding          : var(--size-s);
   padding-bottom   : var(--footer-height);
@@ -190,16 +190,16 @@ footer >>> #chat_container #chat.expanded .contents {
 .mobile #middle {
   flex-direction   : column-reverse;
   justify-content  : flex-end;
-  
-  overflow : scroll;
+  flex-grow        : 1;
+  overflow         : scroll;
 }
 
 
 .mobile #middle #player {
-  flex-shrink: 0;
+  /* flex-shrink: 0; */
   /* height: unset; */
   /* height: 40%; */
-  min-height: 40%;
+  /* min-height: 40%; */
   max-height: 60%;
 }
 

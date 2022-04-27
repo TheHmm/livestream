@@ -182,8 +182,8 @@ export default {
 #player {
   position        : relative;
   width           : 100%;
-  display         : flex;
   align-self      : flex-start;
+  display         : flex;
 }
 
 #player.transcript,
@@ -196,7 +196,8 @@ export default {
 }
 
 #player.video {
-  align-items     : flex-start;
+  justify-content : center;
+  align-self      : stretch;
 }
 
 #player.audio {
@@ -211,7 +212,7 @@ export default {
 }
 
 video {  
-  width           : 100%;
+  height          : 100%;
   max-width       : 100%;
   max-height      : 100%;
   object-fit      : contain;
@@ -226,4 +227,16 @@ video {
   max-height: 70%;
 }
 
+.mobile #middle #player.audio {
+  height: unset;
+  min-height: 30%;
+}
+
+.mobile #middle #player.video {
+  align-self: flex-start
+}
+.mobile #middle #player video {
+  height: unset;
+  width: 100%;
+}
 </style>

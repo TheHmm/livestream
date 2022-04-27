@@ -33,9 +33,9 @@ export default {
     uuid()  { return this.viewer.uuid },
     name()  { return this.viewer.name || 'unnamed viewer' },
     is_me() { return this.$store.getters['viewers/is_me']( this.viewer ) },
+    nick()  { return this.is_me && this.name + ' (you)' || this.name },
     emoji() { return this.viewer.emoji },
     n()     { return this.uuid[ this.uuid.length-1 ] },
-    nick()  { return this.is_me && this.name + ' (you)' || this.name }
   },
 
   methods: {

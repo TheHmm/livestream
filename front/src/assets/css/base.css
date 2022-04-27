@@ -67,7 +67,8 @@
 
   --marquee-height : 2.33rem;
   --header-height  : max( 23%, 10rem);
-  --total-header   : calc( var(--marquee-height) + var(--header-height) );
+  /* --total-header   : calc( var(--marquee-height) + var(--header-height) ); */
+  --total-header   : var(--header-height);
   --middle-height  : calc( 100% - var(--total-header ) );
   --side-width     : 20rem;
   --footer-height  : 4rem;
