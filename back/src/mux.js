@@ -76,6 +76,7 @@ module.exports = MUX_TOKEN => {
       playbackId      : get_playback_id(stream),
       active_asset_id : stream.active_asset_id,
       start_time      : stream.start_time,
+      subtitles       : stream.generated_subtitles,
     })
 
 
