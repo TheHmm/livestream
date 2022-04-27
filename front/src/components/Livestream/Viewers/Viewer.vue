@@ -30,10 +30,12 @@ export default {
   // Basic viewer properties
 
   computed: {
-    name()  { return this.viewer.name || 'unnamed viewer' },
-    emoji() { return this.viewer.emoji },
     uuid()  { return this.viewer.uuid },
+    name()  { return this.viewer.name || 'unnamed viewer' },
+    is_me() { return this.$store.getters['viewers/is_me']( this.viewer ) },
+    emoji() { return this.viewer.emoji },
     n()     { return this.uuid[ this.uuid.length-1 ] },
+    nick()  { return this.is_me && this.name + ' (you)' || this.name }
   },
 
   methods: {
@@ -51,7 +53,7 @@ export default {
 
 <template>
   <div 
-    :title="name"
+    :title="nick"
     :class="[ $id(), 'dot', { shaking, emoji } ]"
     :style="{ '--n': n }"
     tabindex="-1"
