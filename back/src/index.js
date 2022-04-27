@@ -163,9 +163,7 @@ module.exports = {
 
 
       
-    let 
-      srt = null,
-      cc  = []
+    let cc  = []
     
     io.on('connection', socket => {
 
@@ -221,28 +219,17 @@ module.exports = {
           connected: false, 
         })
       })
-
-
-      // Closed Captions
-
-      // There are two socket "rooms" for closed captions:
-      // (1) srt : for the full .srt file (for html players)
-      // (2) cc : for individual, timestamped captions
       
+
+      // There is a socket room for closed captions: "cc".
       // Marco's OBS Setup: Marco is creating captions in his
       // browser with the tool: @/misc/cc. He opens the page,
       // pipes the livestream audio OBS into it as his "mic"
       // input and it uses the Google Voice Recognition API to
       // transform audio into captions.
 
-      // The webpage is subscirbed to both the 'cc' and 'srt' 
-      // socket rooms. It produces the individual captions &
-      // the srt file locally and sends them here.
-
-      // Viewers can subscribed to either rooms: 'srt' if they
-      // are using an normal <video> or <audio> player and 'cc'
-      // if they are using the text-only player.
-
+      // The webpage is subscribed to the 'cc' socket room. 
+      // It produces captions locally and sends them here.
 
       // Viewers joining 'cc' room will get the captions that
       // have been previously recorded.
@@ -271,14 +258,14 @@ module.exports = {
       // as well as an updated srt file. The caption is for 
       // the 'cc' room and the srt is for the 'srt' room.
 
-      socket.on('final', result => {
-        cc.push( result.caption )
-        // TODO: => save srt to /uploads
-        srt = result.srt
-        io.to( 'cc' ).emit( 'final', result.caption )
+      socket.on('final', caption => {
+        cc.push( caption )
+        io.to( 'cc' ).emit( 'final', caption )
       })
 
 
+      // This is so that Marco can clear the icrememnting cc
+      // array when the livestream is over.
 
       socket.on('clear_CC', () => {
         cc = []

@@ -12,15 +12,8 @@ export default {
   name: 'Captions',
 
   props: {
-    playing      : Boolean,
     hls          : Object,
-    stream_start : Number,
-  },
-
-  data() {
-    return {
-      track: 'WEBVTT - Generated using SRT2VTT \r\n\r\n'
-    }
+    playing      : Boolean,
   },
 
   computed: {
@@ -30,9 +23,6 @@ export default {
       'cc',
     ] ),
 
-    track_src() {
-      return captions.vtt_to_blob( this.track )
-    }
   },
 
   watch: {
@@ -50,16 +40,6 @@ export default {
         this.scroll_to_bottom()
       }
     },
-
-    'cc':{
-      deep: true,
-      handler() {
-        if ( this.hls ) {
-          this.update_track()
-        }
-      }
-    },
-
 
   },
 
@@ -84,11 +64,19 @@ export default {
   methods: {
 
     play() {
-     this.$socket.client.emit('join_CC_room')
+      if ( this.hls ) {
+        this.hls.subtitleTrack = 0
+      } else {
+        this.$socket.client.emit('join_CC_room')
+      }
     },
 
     pause() {
-     this.$socket.client.emit('leave_CC_room')
+      if ( this.hls ) {
+        this.hls.subtitleTrack = -1
+      } else {
+        this.$socket.client.emit('leave_CC_room')
+      }
     },
 
     scroll_to_bottom() {
@@ -100,41 +88,6 @@ export default {
       }, 50)
     },
 
-    update_track() {
-      const current_cc = this.cc[this.cc.length - 1]
-      if ( this.hls && current_cc?.text ) {
-        console.log(this.cc)
-        const
-          now                     = this.$time.now(),
-          stream_start            = this.stream_start,
-          current_livestream_time = ( now - stream_start ) / 1000,
-          live_sync_position      = this.hls.liveSyncPosition,
-          _latency                = this.hls.latencyController._latency 
-
-        console.log(
-          current_cc,
-          current_livestream_time,
-          live_sync_position,
-          _latency,
-          current_livestream_time - live_sync_position - _latency
-        )
-        // console.log(
-        //   captions.caption_to_srt( 
-        //     this.cc[this.cc.length-1], 
-        //     stream_start, 
-        //     ( current_livestream_time - live_sync_position - _latency ) * 1000
-        //   ) )
-        this.track += captions.srt_to_vtt(
-            captions.caption_to_srt( 
-              current_cc, 
-              stream_start, 
-            ( current_livestream_time - live_sync_position - _latency ) * 1000
-          )
-        ) 
-        // console.log(this.track)
-
-      }
-    }
   }
 
 
@@ -144,17 +97,8 @@ export default {
 
 <template>
 
-  <track
-    v-if="hls && track_src"
-    default 
-    srclang="en" 
-    kind="captions" 
-    label="English" 
-    :src="track_src"
-  /> 
-
   <div 
-    v-else-if="cc.length > 0"
+    v-if="!hls && cc.length > 0"
     :id="$id()"
   >
     <p

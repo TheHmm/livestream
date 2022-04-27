@@ -29,6 +29,7 @@ export default {
       hls      : null,
       playing  : false,
       updating : false,
+      captions_ready : false,
     }
   },
 
@@ -41,7 +42,7 @@ export default {
     },
     source_url() {
       return mux.source_url( this.playback_id, this.mode.name )
-    }
+    },
   }, 
   
   watch: {
@@ -79,9 +80,8 @@ export default {
         }
         this.play()
       })
-      this.hls.on( Hls.Events.SUBTITLE_TRACK_LOADED, ( event, data ) => {
-        // console.log(this.hls.subtitleTracks)
-        console.log(event, data)
+      this.hls.on( Hls.Events.SUBTITLE_TRACKS_UPDATED, ( event, data ) => {
+        this.captions_ready = true
       })
       this.updating = false
     },
@@ -98,6 +98,7 @@ export default {
 
     destroy() {
       if ( this.hls ) {
+        this.captions_ready = false
         this.hls.destroy()
         this.hls = null
       }
@@ -132,18 +133,13 @@ export default {
     controls
     autoplay
     aria-label="video player"
+    crossorigin="anonymous"
     :src="source_url"
   >
-    <!-- <Captions 
-      v-if="desires_captions"
+    <Captions 
+      v-if="desires_captions && captions_ready"
       :hls="hls"
       :stream_start="stream_start"
-    /> -->
-    <track
-      default 
-      srclang="en" 
-      kind="captions" 
-      label="English" 
     />
   </video>
   <section v-else>

@@ -35,6 +35,7 @@ export default {
     this.$el.src = undefined
   },
 
+
 }
 
 </script>
@@ -42,12 +43,14 @@ export default {
 <template>
   <video
     v-if="mode.video"
-    muted
+    :muted="muted"
     controls
     autoplay
+    playsinline
     aria-label="video player"
     :src="source_url"
   >
+    <!-- TODO -->
      <!-- <Captions 
       v-if="desires_captions"
       :hls="hls"
@@ -56,9 +59,10 @@ export default {
   </video>
   <audio
     v-else
-    muted
+    :muted="muted"
     controls
     autoplay
+    playsinline
     aria-label="audio player"
     :src="source_url"
   >
