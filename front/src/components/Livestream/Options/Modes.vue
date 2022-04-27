@@ -15,16 +15,8 @@ export default {
     // this list can be updated by HLS.js at any moment.
 
     ...mapGetters( 'livestream', [ 
-      'get_livestream',
       'modes',
     ]),
-
-    
-    // disabled if livestream is idle
-
-    idle() {
-      return this.get_livestream.status != 'active'
-    },
 
 
     // Don't know how far this will go before breaking.
@@ -88,7 +80,6 @@ export default {
         :id="mode.name"
         :name="mode.label"
         :value="mode" 
-        :disabled="idle"
         v-model="current_mode"
       />
       <label 
