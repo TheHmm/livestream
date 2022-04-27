@@ -105,7 +105,10 @@ export default {
   --accent            : hsl(
       var(--h), 
       var(--s),
-      min( calc( var(--l) + var(--n) * var(--increment) ), var( --max-l ) ) );
+      min( 
+        calc( var(--l) + var(--n) * var(--increment) ), 
+        calc( var(--max-l) - var(--increment)) 
+      ) );
   --back              : var(--accent);
   background-color    : var(--back);
   max-width           : 100%;

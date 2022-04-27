@@ -130,12 +130,6 @@ export default {
       }
 
 
-      // if ( !viewer.connected && !viewer.name ) {
-      //   commit( 'DELETE_VIEWER', viewer )
-      //   return
-      // }
-
-
       // If the viewer exists in our store, than this
       // function was called to update it. We merge.
 

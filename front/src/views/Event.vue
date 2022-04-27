@@ -46,7 +46,7 @@ export default {
   // can see each other and send emoji.
 
   sockets: {
-    connect() {
+    async connect() {
       this.$log.info( 'SOCKET', 'Connected.' )
       this.$socket.client.emit('viewer', {
         uuid: this.$store.state.viewers.uuid,
