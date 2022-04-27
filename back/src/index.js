@@ -273,9 +273,9 @@ module.exports = {
 
       socket.on('final', result => {
         cc.push( result.caption )
+        // TODO: => save srt to /uploads
         srt = result.srt
         io.to( 'cc' ).emit( 'final', result.caption )
-        // io.to( 'srt' ).emit( 'srt' , srt)
       })
 
 

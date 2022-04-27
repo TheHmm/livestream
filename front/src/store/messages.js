@@ -62,6 +62,10 @@ export default {
       return rootGetters['viewers/blocked']
     },
 
+    viewer_by_id : ( state, getters, rootState, rootGetters ) => {
+      return rootGetters['viewers/get_viewer_by_id']
+    },
+
     current_event_id : ( state, getters, rootState, rootGetters ) => {
       return rootGetters['events/current_event_id']
     },
@@ -90,7 +94,8 @@ export default {
         message.links = null
       }
 
-      message.sender = message.sender?.data?.id || message.sender
+      const sender_id = message.sender?.data?.id || message.sender
+      message.sender = getters.viewer_by_id( sender_id )
  
       commit( 'SET_MESSAGE', message )
     },

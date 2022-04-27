@@ -129,6 +129,7 @@ export default {
         return
       }
 
+
       // if ( !viewer.connected && !viewer.name ) {
       //   commit( 'DELETE_VIEWER', viewer )
       //   return
@@ -149,6 +150,8 @@ export default {
       // normalize to ids : [ '1 , '2', '3', ... ]
 
       viewer.events = viewer.events?.data?.map( e => e.id ) || viewer.events
+
+
 
       commit( 'SET_VIEWER', viewer )
     },

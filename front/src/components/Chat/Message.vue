@@ -49,7 +49,7 @@ export default {
     // We always get the sender details from the store since
     // The message only has an id in it.
 
-    sender() { return this.get_viewer_by_id( this.message.sender ) },
+    sender() { return this.message.sender },
     name()   { return this.sender?.name || 'unknown' },
     mine()   { return this.sender?.uuid == this.uuid }
 

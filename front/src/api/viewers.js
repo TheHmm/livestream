@@ -39,6 +39,10 @@ export default {
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/viewers`, { params: { 
+        pagination: {
+          start: 0,
+          limit: 300,
+        },
         filters: {
           events: {
             id: {
