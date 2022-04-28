@@ -144,7 +144,7 @@ export default {
   gap                 : 0.5rem;
   align-items         : center;
   width               : 100%;
-  overflow            : scroll;
+  overflow            : hidden;
 }
 
 .message .header .sender {
