@@ -95,6 +95,20 @@
   opacity          : unset !important;
 }
 
+@media (prefers-reduced-motion) {
+  :root {
+    --very-fast      : 0s;
+    --fast           : 0s;
+    --slow           : 0s;
+    --very-slow      : 0s;
+  }
+  * {
+    animation        : none !important;
+    transform        : none !important;
+    opacity          : unset !important;
+  }
+}
+
 
 /* All shadow params are reduced to 0 to eliminate depth. */
 

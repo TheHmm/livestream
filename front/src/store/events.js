@@ -264,7 +264,6 @@ function sanitize ( event, rootGetters, dispatch ) {
     }
   }
 
-
   // If the event is having a livestream then it
   // should also have a cover.
   

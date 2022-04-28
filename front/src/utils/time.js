@@ -3,7 +3,7 @@ import config     from "@/config"
 
 const
 
-  BUFFER = config.events.SOON_BUFFER,
+  BUFFER = config.events.TIME_BUFFER,
 
   now = () => new Date().getTime(),
 
@@ -43,7 +43,8 @@ const
     .slice(11,19)
   ),
 
-  is_in_past   = timestring => time( timestring ) < now(),
+  // is_in_past   = timestring => time( timestring ) < now(),
+  is_in_past   = timestring => time( timestring ) < ( now() - BUFFER ),
 
   is_in_future = timestring => time( timestring ) > now(),
 

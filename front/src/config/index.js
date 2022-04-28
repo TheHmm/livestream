@@ -20,7 +20,7 @@ const
     // us to consider it as the upcoming event and to
     // attach the current livestream to it.
 
-    SOON_BUFFER : 24 * 60 * 60 * 1000,  // 12 hours
+    TIME_BUFFER : 24 * 60 * 60 * 1000,  // 24 hours
   
   },
 
