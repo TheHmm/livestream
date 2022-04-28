@@ -24,7 +24,7 @@ export default {
 
   
 <template>
-  <Chat />
+  <Accent />
 </template> 
 
 

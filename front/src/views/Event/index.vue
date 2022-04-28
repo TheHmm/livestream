@@ -189,8 +189,13 @@ main.chatpage.hide_input footer {
   display: none;
 }
 
-main.chatpage #middle {
+main.chatpage #middle,
+main.accent #middle {
   padding: 0;
+}
+main.accent header ,
+main.accent footer {
+  display: none;
 }
 
 main.mobile {
