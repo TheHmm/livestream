@@ -218,6 +218,15 @@ video {
   object-fit      : contain;
 }
 
+video::cue {
+  --fore: var(--accent);
+  --back: var(--white);
+  /* display: inlisne; */
+  color: var(--fore);
+  background-color: var(--back);
+  padding: 0.125rem 0.5rem;
+}
+
 #tester {
   display: none;
 }
@@ -239,4 +248,6 @@ video {
   height: unset;
   width: 100%;
 }
+
+
 </style>
