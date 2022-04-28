@@ -44,9 +44,10 @@ export default {
   width      : 0;
   overflow   : visible;
   font-size  : var(--size-m);
-  transform  : translateY( calc( var(--header-height) * -1 ) );
+  transform  : translateY( calc( var(--header-height) * -3 ) );
   animation  : enter var(--enter) ease 0.75s forwards;
   transition : transform 0.5s ease;
+  z-index    : 5;
 }
 
 .fall-in-move, 
@@ -56,14 +57,14 @@ export default {
 }
 .fall-in-enter-from,
 .fall-in-leave-to {
-  transform  : translateY( calc( var(--header-height) * -1 ) );
+  transform  : translateY( calc( var(--header-height) * -3 ) );
 }
 .fall-in-leave-active {
   position   : absolute;
 }
 
 @keyframes enter {
-  from { transform: translateY( calc( var(--header-height) * -1 ) ) }
+  from { transform: translateY( calc( var(--header-height) * -3 ) ) }
   to   { transform: translateY( 0 ) }
 }
 

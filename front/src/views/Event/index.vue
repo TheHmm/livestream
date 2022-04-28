@@ -5,8 +5,9 @@
 // It also creates base styles to work from and handles 
 // connection to the socket server.
 
-import Header   from '@/components/Header/index.vue'
-import Footer   from '@/components/Footer/index.vue'
+import Header        from '@/components/Header/index.vue'
+import Announcements from '@/components/Header/Announcements/index.vue'
+import Footer        from '@/components/Footer/index.vue'
 
 export default {
 
@@ -14,6 +15,7 @@ export default {
 
   components : {
     Header,
+    Announcements,
     Footer,
   },
 
@@ -111,6 +113,7 @@ export default {
 
     </section>
 
+    <Announcements />
     <Footer />
 
   </main>
@@ -194,9 +197,13 @@ main.accent #middle {
   padding: 0;
 }
 main.accent header ,
-main.accent footer {
+main.accent footer,
+main.accent #announcements {
   display: none;
 }
+/* #announcements {
+  z-index          : 1;
+} */
 
 main.mobile {
   overflow : scroll;

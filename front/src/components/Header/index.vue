@@ -3,7 +3,6 @@
 import Marquee                  from './Marquee.vue'
 import Banner                   from './Banner.vue'
 import Viewers                  from './Viewers/index.vue'
-import Announcements            from './Announcements/index.vue'
 
 export default {
 
@@ -13,7 +12,6 @@ export default {
     Marquee,
     Banner,
     Viewers,
-    Announcements,
   }
 
 }
@@ -25,7 +23,6 @@ export default {
     <Marquee />
     <Banner />
     <Viewers />
-    <Announcements />
   </header>
 </template>
 
@@ -44,9 +41,6 @@ header #viewers {
   z-index          : 1;
 }
 
-header #announcements {
-  z-index          : 1;
-}
 
 
 </style>

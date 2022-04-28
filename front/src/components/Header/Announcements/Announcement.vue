@@ -40,5 +40,9 @@ export default {
 .announcement >>> p:last-of-type {
   margin-block-end: 0;
 }
+.mobile .announcement { 
+  min-width        : 90vw;
+  max-width        : 100vw;
+}
 
 </style>
