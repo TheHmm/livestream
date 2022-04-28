@@ -94,11 +94,5 @@ export default {
 
 
 <style scoped>
-.mode {
-  /* padding: 0.2rem ; */
-}
-.mode input[type="radio"] + label::after  {
-  /* background-image : var(--url); */
-  /* background-image : url( '@/assets/icons/thumbs.svg' ); */
-}
+
 </style>

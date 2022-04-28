@@ -1,11 +1,6 @@
 <script>
 
 import { mapState }   from 'vuex'
-import $log    from '@/utils/log'
-import captions   from "@/utils/captions"
-import livestream from '@/utils/livestream'
-
-
 
 export default {
 

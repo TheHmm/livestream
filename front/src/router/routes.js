@@ -27,23 +27,23 @@ export default [
   {
     path: '/:slug',
     name: 'Event',
-    component: () => import( '@/views/Event.vue' ),
+    component: () => import( '@/views/Event/index.vue' ),
     beforeEnter: guards.before_enter_event,
     children: [
       {
         path: '',
         name: 'Livestream',
-        component: () => import( '@/components/Livestream/index.vue' )
+        component: () => import( '@/views/Event/Livestream.vue' )
       },
       {
         path: 'chat',
         name: 'ChatPage',
-        component: () => import( '@/components/Chat/index.vue' )
+        component: () => import( '@/views/Event/Chat.vue' )
       },
       {
         path: 'accent',
         name: 'Accent',
-        component: () => import( '@/components/Utils/Accent.vue' )
+        component: () => import( '@/views/Event/Accent.vue' )
       }
     ]
   },

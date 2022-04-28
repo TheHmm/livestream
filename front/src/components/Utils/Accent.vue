@@ -19,9 +19,7 @@ export default {
 </script>
 
 <template>
-  <div
-    :style="vars"
-  />
+  <div :style="vars" />
 </template>
 
 

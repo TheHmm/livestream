@@ -3,20 +3,21 @@ export default {
 
   name: 'Marquee',
 
-  props: {
-    marquee: { type: String },
-    animate: { type: Boolean, default: true }
-  },
-
   computed: {
 
     default_marquee() { 
-      return this.$store.getters.default_marquee 
+      return this.$store.getters['meta/default_marquee'] 
     },
+    event() { 
+      return this.$store.getters['events/current_event']
+    },
+    animate() { 
+      return this.event.livestream().status !== 'active' 
+    }, 
 
     text() {
       return ( 
-        this.marquee || 
+        this.event.marquee || 
         this.default_marquee 
       ).repeat(10)
     }

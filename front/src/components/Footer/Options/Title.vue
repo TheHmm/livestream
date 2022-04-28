@@ -77,9 +77,10 @@ label >>> div {
 }
 
 .reduce_motion label >>> div span {
+  font-size               : var(--size-s);
   position                : relative !important;
   left                    : unset !important;
-  bottom                  : calc( -1 * var(--size-s)) !important;
+  bottom                  : calc( -0.5 * var(--size-s)) !important;
 }
 
 .mobile label {
@@ -88,7 +89,7 @@ label >>> div {
 
 .mobile.reduce_motion label >>> div {
   padding: 0.2rem 0;
-  bottom: 0.2rem;
+  bottom: -0.1rem;
 }
 
 </style>

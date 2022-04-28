@@ -160,6 +160,7 @@ export default {
 
 .message .body {
   margin-top          : 0.25rem ;
+  max-width           : 30rem;
 }
 
 .message .body >>> a {

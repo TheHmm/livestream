@@ -147,7 +147,7 @@ export default {
         :for="$id()"
       > 
         <div
-          v-if="expanded"
+          v-if="expanded && !hide_input"
           class="options"
         >
           <span class="links">
@@ -212,7 +212,7 @@ export default {
 @import '@/assets/css/tabs.css';
 
 #chat_container {
-  height          : 100%;
+  /* height      ss    : 100%; */
   --n             : 1;
   display         : flex;
   align-items     : flex-end;

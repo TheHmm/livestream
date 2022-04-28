@@ -1,5 +1,5 @@
 <script>
-import Emo from '../Options/Emoji/Emo.vue'
+import Emo from '../../Footer/Options/Emoji/Emo.vue'
 
 
 // Viewer dot, will mount an emoji if a user has made that

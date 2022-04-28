@@ -159,7 +159,6 @@ export default {
   /* left: 15%; */
 }
 .mobile #options .tab:first-of-type {
-  /* left: 0; */
   margin-left    : 0;
 }
 .mobile #options .tab:focus ,
@@ -172,12 +171,27 @@ export default {
 .mobile #options .tab:focus-within .contents,
 .mobile #options .tab:hover .contents {
   padding-bottom : var(--base-height);
-
   --width        : 12rem;
   min-width: var(--width);
   max-width: var(--width);
 }
 
+.chatpage #options #modes {
+  display: none;
+}
+
+.mobile.chatpage #options .tab {
+  margin-left    : calc( -1 * var(--size-s));
+}
+.mobile.chatpage #options .tab:first-of-type {
+  margin-left    : 0;
+}
+
+.mobile.chatpage #options .tab:focus ,
+.mobile.chatpage #options .tab:focus-within ,
+.mobile.chatpage #options .tab:hover {
+ margin-left    : calc( -1.5 * var(--n) * var(--size-s));
+}
 
 #options.highlight_donate #donate .contents {
   animation: hop 0.25s ease infinite alternate;

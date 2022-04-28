@@ -5,9 +5,17 @@
 // It also creates base styles to work from and handles 
 // connection to the socket server.
 
+import Header   from '@/components/Header/index.vue'
+import Footer   from '@/components/Footer/index.vue'
+
 export default {
 
   name : 'EventPage',
+
+  components : {
+    Header,
+    Footer,
+  },
 
 
   // We get our event object frmm the route slug. Note that
@@ -20,6 +28,9 @@ export default {
         'events/current_event'
       ]
     },
+    hide_input() {
+      return this.$route.query.hide_input
+    } 
   },
 
 
@@ -74,16 +85,34 @@ export default {
 <template>
   <main
     :id="$id()"
-    :class="$id( $route.name )"
-    :style="{ ...event.accent }"
+    :class="[
+      $id( $route.name ),
+      { hide_input }
+    ]"
+    :style="{ 
+      ...event.accent 
+    }"
     aria-labelledby="event_title"
   >
-    <router-view v-slot="{ Component }">
-      <component 
-        :is="Component" 
-        :event="event"
-      />
-    </router-view>
+
+    <Header />
+
+    <section 
+      id="middle"
+      aria-label="event information, livestream player & chat" 
+    >
+
+      <router-view v-slot="{ Component }">
+        <component 
+          :is="Component" 
+          :event="event"
+        />
+      </router-view>
+
+    </section>
+
+    <Footer />
+
   </main>
 </template>
 
@@ -136,29 +165,54 @@ main {
 }
 
 
-main.chatpage >>> #chat_container #chat {
-  --distance       : 100vh;
+#middle {
+  --back           : var(--accent);
+  --fore           : var(--white);
+  --border         : var(--dash) var(--fore);
+  background-color : var(--back);
+  box-shadow       : var(--shadow);
+  height           : var(--middle-height);
+  position         : relative;
+  flex-grow        : 1;
+  z-index          : 0;
+  padding          : var(--size-s);
+  padding-bottom   : var(--footer-height);
+  transform        : translateY(100%);
+  animation        : enterMiddle var(--enter) ease 0.1s forwards;
+  transition       : background-color var(--very-slow) ease;
+  display          : flex;
+  flex-direction   : row-reverse;
+  z-index          : 2;
 }
-main.chatpage >>> #chat .contents:focus-within,
-main.chatpage >>> #chat.expanded .contents {
-  --height        : calc( 100vh - var(--base-height) );
+
+main.chatpage.hide_input footer {
+  display: none;
 }
-main.chatpage >>> #chat .options .close {
-  display         : none;
+
+main.chatpage #middle {
+  padding: 0;
 }
 
 main.mobile {
   overflow : scroll;
 }
 
-main.mobile.chatpage >>> #chat .contents:focus-within,
-main.mobile.chatpage >>> #chat.expanded .contents {
-    --height : 80vh;
+main.mobile #middle {
+  flex-direction   : column-reverse;
+  justify-content  : flex-end;
+  flex-grow        : 1;
+  overflow         : scroll;
 }
+
 
 @keyframes enter {
   from { background-color : transparent }
   to   { background-color : var(--back) }
+}
+
+@keyframes enterMiddle {
+  from { transform : translateY(100%) }
+  to   { transform : translateY(0) }
 }
 
 </style>

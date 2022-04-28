@@ -1,4 +1,5 @@
 <script>
+
 import Banner from '@/components/Header/Banner.vue'
 import Error  from '@/components/Utils/Error.vue'
 
