@@ -1,5 +1,5 @@
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // * * * * * * * * * * * * The Hmm * * * * * * * * * * * * *
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -30,7 +30,7 @@ const
   // & instantiate socket cient
   // & instantiate networking scripts
   // & create vue app
-  
+
   intro = $log.intro( config ),
   io    = socket.io( config.socket_url, { autoConnect: false } ),
   net   = networking.init( axios, io ),
@@ -39,7 +39,7 @@ const
 
 // We register extensions and mount app.
 
-app.config.globalProperties = { 
+app.config.globalProperties = {
   $log,
   $time,
   $id,
@@ -47,11 +47,10 @@ app.config.globalProperties = {
   $mdi,
 }
 
+
 app
-.use( VueSocketIOExt, io, { store } )
 .use( store )
 .use( router )
-.mount( '#app' )
+.use( VueSocketIOExt, io, { store } )
 
-
-export default app
+router.isReady().then( () => app.mount( '#app' ) )

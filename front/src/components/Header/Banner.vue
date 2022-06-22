@@ -5,9 +5,9 @@ export default {
 </script>
 
 <template>
-  <svg 
+  <svg
     id="banner"
-    xmlns="http://www.w3.org/2000/svg" 
+    xmlns="http://www.w3.org/2000/svg"
     viewBox="0 -100 5098.47 915.91"
     preserveAspectRatio="xMinYMin slice"
     aria-label="The Hmm"
@@ -23,8 +23,8 @@ export default {
     <g id="letter-e">
       <path d="M1802.6,461.41V347.92c0-18.34,14.91-32.09,44.71-32.09s45.84,13.75,45.84,32.09V461.39Z">
       </path>
-      <path 
-        d="M2179.7,660.85V628.74H1893.11V736.48c0,18.34-16,32.09-45.84,32.09s-44.71-13.75-44.71-32.09V558.82h377.1V423.57C2179.66,278,2096,176,1847.27,176S1516,278,1516,423.57V660.83c0,145.57,82.53,247.58,331.25,247.58s332.39-102,332.39-247.58Z" 
+      <path
+        d="M2179.7,660.85V628.74H1893.11V736.48c0,18.34-16,32.09-45.84,32.09s-44.71-13.75-44.71-32.09V558.82h377.1V423.57C2179.66,278,2096,176,1847.27,176S1516,278,1516,423.57V660.83c0,145.57,82.53,247.58,331.25,247.58s332.39-102,332.39-247.58Z"
       >
       </path>
     </g>
@@ -48,7 +48,7 @@ svg {
   max-width      : 95%;
   fill           : none;
   stroke         : var(--accent);
-  stroke-width   : 0.75rem;
+  stroke-width   : 0.5rem;
   opacity        : 0;
   transition     : stroke var(--very-slow) ease;
   animation      : enter var(--very-slow) ease forwards;

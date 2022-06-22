@@ -1,6 +1,5 @@
 <script>
 
-import Banner from '@/components/Header/Banner.vue'
 import Error  from '@/components/Utils/Error.vue'
 
 
@@ -8,12 +7,11 @@ import Error  from '@/components/Utils/Error.vue'
 // or other type of message. Keeps the Hmmm banner up
 // while the App is doing other things
 
-export default { 
+export default {
 
   name:  "Fallback",
 
-  components: { 
-    Banner,
+  components: {
     Error
   },
 
@@ -22,7 +20,7 @@ export default {
   // it a message or through the router as an error page.
 
   props: {
-    message: { 
+    message: {
       type: String,
       default: ''
     }
@@ -43,19 +41,15 @@ export default {
 
 <template>
   <main :class="{ is_error, is_loading }">
-    <Banner />
     <Error v-if="is_error" />
-    <section
-      v-else
-      v-html="$md( message )"
-    />
+    <section v-else v-html="$md( message )"/>
   </main>
 </template>
 
 
 <style scoped>
 
-@import '@/assets/css/fallback.css';  
+@import '@/assets/css/fallback.css';
 
 main.is_loading {
   --accent    : var(--light-grey);

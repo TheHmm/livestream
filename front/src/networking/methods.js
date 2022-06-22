@@ -1,5 +1,6 @@
-import store      from "@/store"
-import $log from '@/utils/log'
+import store from "@/store"
+// import $log  from '@/utils/log'
+
 
 export default  {
 

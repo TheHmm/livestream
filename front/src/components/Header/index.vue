@@ -3,6 +3,7 @@
 import Marquee                  from './Marquee.vue'
 import Banner                   from './Banner.vue'
 import Viewers                  from './Viewers/index.vue'
+import Network from '../Footer/Network.vue'
 
 export default {
 
@@ -12,6 +13,7 @@ export default {
     Marquee,
     Banner,
     Viewers,
+    Network,
   }
 
 }
@@ -22,6 +24,7 @@ export default {
   <header aria-label="banner, viewers & announcements">
     <Marquee />
     <Banner />
+    <!-- <Network /> -->
     <Viewers />
   </header>
 </template>

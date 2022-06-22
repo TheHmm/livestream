@@ -48,24 +48,24 @@ export default {
     role="menu"
     :class="$id()"
   >
-    <span 
+    <span
       @click="censor_message( message )"
       tabindex="0"
-    > 
-      {{ censored && 'uncensor' || 'censor' }} 
+    >
+      {{ censored && 'uncensor' || 'censor' }}
     </span>
-    <span 
+    <span
       @click="block_viewer( sender )"
       tabindex="0"
-    > 
+    >
       {{ blocked && 'unblock' ||  'block' }}
     </span>
-    <span 
+    <span
       @click="delete_message( message )"
       tabindex="0"
-    > 
-      delete 
-    </span> 
+    >
+      delete
+    </span>
   </span>
 
   <span
@@ -73,8 +73,8 @@ export default {
     role="menu"
     class="options"
   >
-    <span @click="delete_message( message )"> 
-      delete 
+    <span @click="delete_message( message )">
+      delete
     </span>
   </span>
 </template>

@@ -5,7 +5,10 @@ import Network from './Network.vue'
 
 export default {
   name: 'Footer',
-  components: { 
+  props: {
+    desired_tabs: { type: Array }
+  },
+  components: {
     Options,
     Network,
   },
@@ -14,11 +17,13 @@ export default {
 
 
 <template>
-  <footer 
+  <footer
     aria-label="options & network statistics."
   >
-    <Options />
-    <Network /> 
+    <Options
+      :desired_tabs="desired_tabs"
+    />
+    <Network />
   </footer>
 </template>
 
@@ -30,11 +35,11 @@ footer {
   position         : fixed;
   bottom           : 0;
   width            : 100%;
-  max-width        : var(--main-width);
+  max-width        : calc( var(--main-width) - 1rem );
   padding          : 0 var(--size-s);
   display          : flex;
   align-items      : flex-end;
-  z-index          : 3;
+  z-index          : 2;
 }
 
 footer >>> #network {

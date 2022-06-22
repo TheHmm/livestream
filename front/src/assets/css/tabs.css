@@ -9,8 +9,6 @@
   --tab-width      : 10rem;
 
   box-shadow       : var(--shadow);
-  transform        : translateY( var(--distance) );
-  animation        : tab_enter var(--enter) ease calc( 0.4s + var(--n) *  0.1s) forwards;
 
 }
 
@@ -28,7 +26,7 @@
   min-height       : 0;
   max-height       : 0;
   padding          : 0;
-  transition       : 
+  transition       :
     padding     var(--fast) ease-in-out,
     min-height  var(--fast) ease-in-out,
     max-height  var(--fast) ease-in-out,
@@ -60,9 +58,4 @@
   --base-height    : 2.5rem;
   --tab-width      : 8rem;
 
-}
-
-@keyframes tab_enter {
-  from { transform : translateY( var(--distance) ) }
-  to   { transform : translateY(0) }
 }

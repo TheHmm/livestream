@@ -8,12 +8,12 @@ import Links from './Links.vue'
 // Chat message
 
 export default {
-  
+
   name: 'Message',
 
-  components: { 
-    Options, 
-    Links 
+  components: {
+    Options,
+    Links
   },
 
 
@@ -28,7 +28,7 @@ export default {
   computed: {
 
 
-    // Some computed properties that decide what actions a  
+    // Some computed properties that decide what actions a
     // user has access to for each message
 
     ...mapGetters( 'viewers', [
@@ -61,25 +61,25 @@ export default {
 
 
 <template>
-  <article 
+  <article
     :class="[ $id(), { censored: message.censored } ]"
     tabindex="0"
     :aria-label="`Message from ${ sender }`"
     v-if="links_only ? links : true"
   >
 
-    <div 
+    <div
       class="header"
       aria-label="Message meta-data"
     >
-      <time 
+      <time
         class="time"
         :datetime="time"
         :title="time_l"
       >
         {{ time_s }}
       </time>
-      <span 
+      <span
         class="sender"
         :title="name"
       >
@@ -93,7 +93,7 @@ export default {
       />
     </div>
 
-    <div 
+    <div
       v-if="!links_only"
       v-html="body"
       class="body"
@@ -115,11 +115,11 @@ export default {
 .message {
   --increment         : 4%;
   --accent            : hsl(
-      var(--h), 
+      var(--h),
       var(--s),
-      min( 
-        calc( var(--l) + var(--n) * var(--increment) ), 
-        calc( var(--max-l) - var(--increment)) 
+      min(
+        calc( var(--l) + var(--n) * var(--increment) ),
+        calc( var(--max-l) - var(--increment))
       ) );
   --back              : var(--accent);
   background-color    : var(--back);

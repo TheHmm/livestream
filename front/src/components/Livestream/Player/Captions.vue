@@ -13,7 +13,7 @@ export default {
 
   computed: {
 
-    ...mapState('livestream', [ 
+    ...mapState('livestream', [
       'cc_interim',
       'cc',
     ] ),
@@ -24,7 +24,7 @@ export default {
 
     playing() {
       if ( this.playing ) {
-        this.play() 
+        this.play()
       } else {
         this.pause()
       }
@@ -92,7 +92,7 @@ export default {
 
 <template>
 
-  <div 
+  <div
     v-if="!hls && cc.length > 0"
     :id="$id()"
   >
@@ -109,7 +109,7 @@ export default {
     >
       {{ cc_interim.text }}
     </p>
-  </div> 
+  </div>
   <div
     v-else-if="cc.length == 0"
     :id="$id()"

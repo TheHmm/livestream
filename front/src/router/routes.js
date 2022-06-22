@@ -1,4 +1,3 @@
-import guards from './guards'
 import _throw from './throw'
 
 export default [
@@ -8,17 +7,19 @@ export default [
   // it is meant to route to events based on their slug,
   // which are created in and fetched from Strapi.
 
-    // {
-    //   path: '/',
-    //   name: 'home',
-    //   component: () => import( '@/views/Home.vue' ),
-    //   beforeEnter: guards.before_enter_home
-    // },
-  // {
-  //   path: '/about',
-  //   name: 'about',
-  //   component: () => import( '@/views/About.vue' )
-  // },
+  {
+    path: '/',
+    name: 'home',
+    component: () => import( '@/views/Home.vue' ),
+    meta: {
+      desired_tabs : [
+        'about',
+        'access',
+        'donate',
+        'year',
+      ]
+    },
+  },
   {
     path: '/error',
     name: 'Error',
@@ -28,17 +29,41 @@ export default [
     path: '/:slug',
     name: 'Event',
     component: () => import( '@/views/Event/index.vue' ),
-    beforeEnter: guards.before_enter_event,
     children: [
       {
         path: '',
         name: 'Livestream',
-        component: () => import( '@/views/Event/Livestream.vue' )
+        component: () => import( '@/components/Livestream/index.vue' ),
+        meta: {
+          desired_tabs : [
+            'about',
+            'access',
+            'donate',
+            'modes',
+            'emoji',
+          ]
+        },
       },
       {
         path: 'chat',
         name: 'ChatPage',
-        component: () => import( '@/views/Event/Chat.vue' )
+        component: () => import( '@/views/Event/Chat.vue' ),
+        meta: {
+          desired_tabs : [
+            'about',
+            'access',
+            'donate',
+            'modes',
+            'emoji',
+          ]
+        },
+        children: [
+          // {
+          //   path: 'save',
+          //   name: 'ChatPageSave',
+          //   component: () => import( '@/views/Event/Chat/Save.vue' ),
+          // },
+        ]
       },
       {
         path: 'accent',

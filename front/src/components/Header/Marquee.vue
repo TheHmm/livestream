@@ -5,21 +5,27 @@ export default {
 
   computed: {
 
-    default_marquee() { 
-      return this.$store.getters['meta/default_marquee'] 
+    default_marquee() {
+      return this.$store.getters['meta/default_marquee']
     },
-    event() { 
-      return this.$store.getters['events/current_event']
+    event() {
+      return this.$store.getters[ 'events/get_event' ](
+        this
+        .$route
+        .params
+        .slug
+      )
     },
-    animate() { 
-      return this.event.livestream().status !== 'active' 
-    }, 
+    animate() {
+      return this.event?.livestream()?.status !== 'active'
+    },
 
     text() {
-      return ( 
-        this.event.marquee || 
-        this.default_marquee 
-      ).repeat(10)
+      let marquee = this.default_marquee
+      if ( this.event && this.event.marquee ) {
+        marquee = this.event.marquee
+      }
+      return marquee.repeat(10)
     }
 
   }
@@ -42,7 +48,8 @@ export default {
 <style scoped>
 
 .marquee {
-  --back           : var(--yellow);
+  --back           : var(--black);
+  --fore           : var(--white);
   background-color : var(--back);
   box-shadow       : var(--shadow);
   position         : relative;
@@ -51,6 +58,10 @@ export default {
   font-size        : var(--size-m);
   transform        : translateY(-3rem);
   animation        : enter var(--enter) ease 0.1s forwards;
+  transition       :
+    background-color var(--very-slow) ease,
+    color var(--very-slow) ease
+  ;
   display          : flex;
   align-items      : center;
 }
@@ -64,6 +75,11 @@ export default {
 
 .mobile .marquee {
   font-size        : var(--size-s);
+}
+
+#livestream .marquee {
+  --back           : var(--yellow);
+  --fore           : var(--black);
 }
 
 @keyframes marquee {

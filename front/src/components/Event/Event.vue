@@ -4,15 +4,17 @@ export default {
   name: 'Event',
 
   props: {
-    event: Object
+    event: Object,
+    i: Number,
+    n: Number,
   },
 
   computed: {
-    title()     { return this.event.title },
-    slug()      { return this.event.slug },
-    in_past()   { return this.event.is.in_past() },
-    in_future() { return this.event.is.in_future() },
-    soon()      { return this.event.is.soon() }
+    title()     { return this.event?.title },
+    slug()      { return this.event?.slug },
+    starts()    { return this.event?.starts && this.$time.short_date( this.event.starts )},
+    accent()    { return this.event?.accent },
+    info()      { return this.event?.info },
   },
 
 }
@@ -20,67 +22,106 @@ export default {
 
 <template>
 
-  <li 
-    v-if="event" 
-    :class="[
-      'event',
-      $id(),
-      { in_past, in_future, soon }
-    ]"
+
+  <li
+    :class="'event'"
+    :style="{
+      ...accent,
+      '--i': i,
+      '--n': n,
+    }"
   >
-
-    <router-link 
-      :to="slug"
+    <router-link
+      custom
+      :to="{
+        path: slug,
+        query: $route.query
+      }"
+      v-slot="{
+        navigate,
+        href
+      }"
     >
-      {{ title }}
+      <header
+        :title="href"
+        @click="navigate"
+      >
+        <h1>
+          {{ title }}
+        </h1>
+
+        <p
+          aria-label="event summary"
+          class="summary"
+        >
+          {{ info }}
+        </p>
+
+        <p
+          aria-label="event start time"
+          class="time"
+        >
+          <time
+            :datetime="starts"
+          >
+            {{ starts }}
+          </time>
+        </p>
+      </header>
     </router-link>
-
-    <pre>{{ event }}</pre>
-    <p 
-      aria-label="event start time"
-    >
-      <time>{{ event.starts }}</time>
-    </p>
-    <p
-      aria-label="event summary"
-      class="summary"
-    >
-      {{ event.info }}
-    </p>
   </li>
 </template>
 
 <style scoped >
 
-li {
-  border: 1px solid;
-  padding: var(--size-s);
-  margin-bottom: var(--size-s);
+li::before {
+  content          : unset;
 }
 
-li p {
-  margin: 0;
+li:last-of-type header {
+  padding-bottom   : var(--footer-height);
+}
+li.event {
 }
 
-li.in_past {
-  opacity: 0.5;
+li.event:hover header {
+  padding-bottom   : 10rem;
 }
 
-li.in_future {
-  opacity: 0.2;
+
+li.event header {
+  cursor           : pointer;
+  display          : flex;
+  align-items      : center;
+  width            : 100%;
+  transition       : padding var(--fast) ease;
 }
 
-li.soon {
-  color: fuchsia;
-  opacity: 1;
+li.event h1,
+li.event p {
+  margin-inline    : 0.25rem;
+  white-space      : nowrap;
 }
 
-li .summary {
-  /* max-width: 10rem; */
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
+li.event a {
+  font-style       : unset;
+}
+
+li.event h1,
+li.event p {
+  margin-block     : 0;
+}
+
+li.event p.time {
+  margin-left      : auto;
+  min-width        : 10rem;
+  text-align       : right;
+}
+
+
+li.event .summary {
+  overflow         : hidden;
+  text-overflow    : ellipsis;
 }
 
 </style>

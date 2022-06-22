@@ -1,8 +1,8 @@
 config:
-  # target: "https://api.live.thehmm.karls.computer"
+  target: "https://api.live.thehmm.karls.computer"
   # target: "https://live.thehmm.karls.computer/LightLightLight"
   # target: "http://localhost:3000/LightLightLight"
-  target: "https://live.thehmm.nl"
+  # target: "https://live.thehmm.nl"
   plugins:
     uuid:
       vars: [ 'id' ]
@@ -13,15 +13,15 @@ config:
 scenarios:
   - engine: socketio
     flow:
-      - options: 
+      - options:
           url: '/api'
-          beforeRequest: addUUID 
+          beforeRequest: addUUID
       - emit:
           channel: 'viewer'
-          data: 
+          data:
             uuid: '{{ id }}'
             name: 'testBot'
-      - think: 2 
+      - think: 2
       - emit:
           channel: 'emoji'
           data:
@@ -34,4 +34,4 @@ scenarios:
       - emit:
           channel: 'leave_CC_room'
       - think: 15
-      # - think: 30 
+      # - think: 30

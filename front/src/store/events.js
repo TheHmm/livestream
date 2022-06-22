@@ -26,7 +26,7 @@ export default {
       } else {
         const index = state.events.findIndex( e => e.starts < event.starts )
         if ( index == -1 ) {
-          state.events.push( event )  
+          state.events.push( event )
         } else {
           state.events.splice( index, 0, event )
         }
@@ -39,6 +39,14 @@ export default {
 
     get_events : state => state.events,
 
+    years : ( state, getters ) =>
+      [ ...new Set(
+      getters
+      .get_events
+      .map( e => $time.get_year( e.starts ) )
+      )]
+    ,
+
     get_event : state => slug => state
       .events
       .find( e => e.slug === slug )
@@ -49,14 +57,14 @@ export default {
       .find( e => e.id == id )
     ,
 
-    current_event : ( state, getters ) => 
+    current_event : ( state, getters ) =>
       getters
-      .get_event( 
+      .get_event(
         router
         .currentRoute
         ._value
         .params
-        .slug 
+        .slug
       )
     ,
 
@@ -69,13 +77,13 @@ export default {
     emoji_allowed : ( state, getters ) =>
       getters
       .current_event
-      .allowEmoji
+      ?.allowEmoji
     ,
 
-    emoji_groups : ( state, getters ) => 
+    emoji_groups : ( state, getters ) =>
       getters
       .current_event
-      .emoji_groups
+      ?.emoji_groups
     ,
 
     get_emoji : ( state, getters ) => ( group, emoji ) =>
@@ -84,17 +92,15 @@ export default {
       .find( g => g.slug == group )
       .emoji
       .find( e => e.name == emoji )
-    ,  
+    ,
 
     get_event_slugs : state => state
       .events
       .map( e => e.slug )
     ,
 
-    highlight_donate: ( state, getters ) => 
-      getters
-      .current_event
-      .highlightDonateButton
+    highlight_donate: ( state, getters ) =>
+      getters.current_event?.highlightDonateButton
 
   },
 
@@ -108,21 +114,21 @@ export default {
 
     // Fetch number of events
 
-    fetch_events_count( ) { 
-      return new Promise( ( resolve, reject ) => 
+    fetch_events_count( ) {
+      return new Promise( ( resolve, reject ) =>
         api
         .events
         .count()
         .then( count => resolve( count ) )
         .catch( error => reject( error ) )
-      ) 
+      )
     },
 
 
-    // Fetch all events 
+    // Fetch all events
 
-    fetch_events( { dispatch } ) { 
-      return new Promise( ( resolve, reject ) => 
+    fetch_events( { dispatch } ) {
+      return new Promise( ( resolve, reject ) =>
         api
         .events
         .getAll()
@@ -130,26 +136,26 @@ export default {
           for ( const event of events ) {
             dispatch( 'set_event', event )
           }
-          resolve( events ) 
+          resolve( events )
         } )
         .catch( error => reject( error ) )
-      ) 
+      )
     },
 
 
     // Fetch single event
 
-    fetch_event( { dispatch }, slug ) { 
-      return new Promise( ( resolve, reject ) => 
+    fetch_event( { dispatch }, slug ) {
+      return new Promise( ( resolve, reject ) =>
         api
         .events
         .get(slug)
         .then( event => {
           dispatch( 'set_event', event )
-          resolve( event ) 
+          resolve( event )
         } )
         .catch( error => reject( error ) )
-      ) 
+      )
     },
 
 
@@ -171,7 +177,7 @@ export default {
       if ( remote_count > local_count ) {
         return await dispatch( 'fetch_events' )
       } else {
-        return getters.get_events  
+        return getters.get_events
       }
 
     },
@@ -182,12 +188,12 @@ export default {
     // (e.g. for the event page), so we first check if
     // we have those details before calling fetch.
 
-    async get_event( { getters, dispatch }, slug ) { 
+    async get_event( { getters, dispatch }, slug ) {
       const event = getters.get_event(slug)
       if ( event && event.viewers ) {
         return event
       } else {
-        return await dispatch( 'fetch_event', slug ) 
+        return await dispatch( 'fetch_event', slug )
       }
     },
 
@@ -208,7 +214,7 @@ export default {
 
 
 // Sanitizing 'events' type received from Strapi.
-// Note that for each of these events, we add a 
+// Note that for each of these events, we add a
 // 'livestream' property that returns a different
 // object based on when the event is happening.
 
@@ -252,32 +258,32 @@ function sanitize ( event, rootGetters, dispatch ) {
   // (2) past: return recording of old stream
   // (3) else: return null; stream doesn't exist
 
-  event.livestream = () => { 
+  event.livestream = () => {
     // this is a function returning a value!
     if ( event.is.in_past() ) {
-      const 
+      const
         playbackId = event.recording?.data?.playback_id,
         status = playbackId && 'active' || 'idle'
       return { playbackId, status }
     } else {
-      return rootGetters[ 'livestream/get_livestream' ] 
+      return rootGetters[ 'livestream/get_livestream' ]
     }
   }
 
   // If the event is having a livestream then it
   // should also have a cover.
-  
+
   // event.cover = () => {
   //   if ( event.livestream()?.playbackId ) {
-  //     return livestream.mux.thumb_src( 
-  //       event.livestream().playbackId, 
-  //       10 
+  //     return livestream.mux.thumb_src(
+  //       event.livestream().playbackId,
+  //       10
   //     )
   //   } else {
   //     return null
   //   }
   // }
   // console.log(event.slug, event.recording, event.livestream(), event.cover() )
-  
+
   return event
 }

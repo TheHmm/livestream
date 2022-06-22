@@ -1,7 +1,7 @@
 .dot {
 
   background-color : var(--back);
-  
+
   --shadow-size    : 1rem;
   --size           : 1.5rem;
   box-shadow       : 0 0 var(--shadow-size) 0 var(--shadow-color);
@@ -15,7 +15,8 @@
   border-radius    : 30rem;
   border           : var(--thin);
 
-  transition       : 
+  transition       :
+    background-color var(--very-slow) ease,
     box-shadow var(--fast) ease,
     opacity var(--fast) ease,
     top var(--fast) ease,
@@ -39,16 +40,16 @@
 }
 
 @keyframes shake {
-  10%, 90% { 
+  10%, 90% {
     transform      : translate3d(-1px, 0, 0)
   }
-  20%, 80% { 
+  20%, 80% {
     transform      : translate3d(2px, 0, 0)
   }
-  30%, 50%, 70% { 
+  30%, 50%, 70% {
     transform      : translate3d(-4px, 0, 0)
   }
-  40%, 60% { 
+  40%, 60% {
     transform      : translate3d(4px, 0, 0)
   }
 }

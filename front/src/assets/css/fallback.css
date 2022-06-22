@@ -1,10 +1,11 @@
 main {
   position   : absolute;
   width      : 100%;
+  background-color: unset;
 }
 main #banner {
   margin     : var(--marquee-height) auto;
-} 
+}
 main section {
   /* background : var(--white); */
   max-width  : min(70%, 50rem);

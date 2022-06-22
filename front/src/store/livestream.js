@@ -1,6 +1,5 @@
 import api from "@/api"
 import $log from '@/utils/log'
-import captions from "@/utils/captions"
 
 const DEFAULT_MODES = () => ({
 
@@ -38,7 +37,7 @@ export default {
   state: {
 
 
-    // Livestream object. This is the publicData property of 
+    // Livestream object. This is the publicData property of
     // the full livestream single type in Strapi
 
     livestream: null,
@@ -58,7 +57,7 @@ export default {
   mutations: {
 
     SET_LIVESTREAM : ( state, livestream ) => state.livestream = livestream,
-    
+
     SET_CC_INTERIM : ( state, caption ) => state.cc_interim = caption,
     SET_CC         : ( state, cc ) => state.cc = cc,
     ADD_CAPTION    : ( state, caption ) => state.cc.push ( caption ),
@@ -93,17 +92,17 @@ export default {
 
     // Fetch livestream object, only the public data
 
-    fetch_livestream( { commit } ) { 
-      return new Promise( ( resolve, reject ) => 
+    fetch_livestream( { commit } ) {
+      return new Promise( ( resolve, reject ) =>
         api
         .livestream
         .get()
         .then( livestream => {
           commit( 'SET_LIVESTREAM', livestream )
-          resolve( livestream ) 
+          resolve( livestream )
         } )
         .catch( error => reject( error ) )
-      ) 
+      )
     },
 
 
@@ -111,7 +110,7 @@ export default {
 
     async get_livestream( { getters, dispatch } ) {
       return (
-        getters.get_livestream || 
+        getters.get_livestream ||
         await dispatch( 'fetch_livestream' )
       )
     },
@@ -136,11 +135,11 @@ export default {
     },
 
 
-    // closed captions 
+    // closed captions
 
     socket_confirmJoinCc( { commit }, cc ) {
       $log.info( 'SOCKET', `Subscribed to closed captions.`)
-      commit( 'SET_CC', cc ) 
+      commit( 'SET_CC', cc )
     },
 
     socket_confirmLeaveCc( { commit }) {
@@ -148,12 +147,12 @@ export default {
     },
 
     socket_interm( { commit }, caption ) {
-      commit( 'SET_CC_INTERIM', caption )  
+      commit( 'SET_CC_INTERIM', caption )
     },
 
     socket_final( { commit }, caption ) {
-      commit( 'SET_CC_INTERIM', null )  
-      commit( 'ADD_CAPTION', caption ) 
+      commit( 'SET_CC_INTERIM', null )
+      commit( 'ADD_CAPTION', caption )
     },
 
     socket_clearCc( { commit }, cc ) {

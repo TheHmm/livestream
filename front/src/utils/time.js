@@ -17,7 +17,7 @@ const
 
   date_format = starts => (
     new Date( starts )
-    .toLocaleString( 'en-GB', { 
+    .toLocaleString( 'en-GB', {
       year         : 'numeric',
       month        : 'long',
       day          : 'numeric',
@@ -25,17 +25,30 @@ const
       minute       : 'numeric',
       timeZoneName : 'short'
       // timeZone  : 'CET',
-    } ) 
+    } )
+  ),
+
+  short_date = starts => (
+    new Date( starts )
+    .toLocaleString( 'en-GB', {
+      year         : 'numeric',
+      month        : 'long',
+      day          : 'numeric',
+    } )
   ),
 
   time_format = datetime => (
     new Date( datetime )
-    .toLocaleString( 'en-GB', { 
+    .toLocaleString( 'en-GB', {
       hour         : 'numeric',
       minute       : 'numeric',
       second       : 'numeric',
-    } ) 
+    } )
   ),
+
+  get_year =  timestamp => {
+    return new Date( timestamp ).getFullYear()
+  },
 
   dur_format = dur => (
     new Date( dur )
@@ -48,9 +61,9 @@ const
 
   is_in_future = timestring => time( timestring ) > now(),
 
-  is_soon      = timestring => ( 
+  is_soon      = timestring => (
     time( timestring ) > now() &&
-    time( timestring ) < now() + BUFFER 
+    time( timestring ) < now() + BUFFER
   ),
 
   time_to_srt_stamp = time => {
@@ -72,6 +85,8 @@ export default {
   to_hours,
   time_to_srt_stamp,
   date_format,
+  short_date,
   time_format,
+  get_year,
   dur_format,
 }

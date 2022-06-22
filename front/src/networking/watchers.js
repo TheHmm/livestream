@@ -1,12 +1,12 @@
 import { Service } from 'axios-middleware'
 import config      from "@/config"
-import tools       from "./tools"
+import * as tools  from "./tools"
 import methods     from './methods'
 
-export default { 
+export default {
 
-  
-  // Here, we inject two middleware functions into 
+
+  // Here, we inject two middleware functions into
   // axios so that we can monitor our network activity
   // and report to the vuex store.
 
@@ -22,7 +22,7 @@ export default {
         })
         return request
       },
-  
+
       on_response : response => {
         methods.report.bytes_received({
           url   : response.request.responseURL,
@@ -31,22 +31,22 @@ export default {
         })
         return response
       },
-  
+
     },
-    
+
     create( axios ) {
       return new Service( axios )
     },
 
     register( monitor, hooks ) {
       monitor.register( {
-        onRequest  : hooks.on_request,  
+        onRequest  : hooks.on_request,
         onResponse : hooks.on_response
       } )
     },
 
     init( axios ) {
-      const 
+      const
         monitor = this.create( axios ),
         hooks   = this.hooks
       this.register( monitor, hooks )
@@ -74,24 +74,24 @@ export default {
 
       on_receive: ( event, data, bytes ) => {
         methods.report.bytes_received({
-          url   : event, 
-          from  : 'sockets', 
+          url   : event,
+          from  : 'sockets',
           bytes : bytes || tools.json_size( data )
         })
       },
 
-      on_connect: () => { 
+      on_connect: () => {
         methods.report.bytes_received({
-          url   : 'handshake', 
-          from  : 'sockets', 
+          url   : 'handshake',
+          from  : 'sockets',
           bytes : config.networking.socket.handshake_bytes
         })
       },
 
     },
-    
+
     create( ) {
-      return this.hooks   
+      return this.hooks
     },
 
     register( io, monitor ) {
@@ -137,7 +137,7 @@ export default {
       }
 
     },
-    
+
     create( ) {
       return this.hooks
     },
@@ -155,14 +155,14 @@ export default {
 
   },
 
-  
-  // We inject a network observer to monitor resources 
+
+  // We inject a network observer to monitor resources
   // such as scripts, css files, img sources, etc...
-  // This doesn't work in Safari. ¯\_ (ツ)_/¯ 
+  // This doesn't work in Safari. ¯\_ (ツ)_/¯
 
   assets_monitor: {
 
-    create() { 
+    create() {
       return new PerformanceObserver( entries => {
         for ( const entry of entries.getEntriesByType("resource") ) {
           if ( entry.transferSize ) {
@@ -170,7 +170,7 @@ export default {
               methods.report.bytes_received({
                 url   : entry.name,
                 from  : 'assets',
-                bytes : entry.transferSize 
+                bytes : entry.transferSize
               })
             }, entry.duration )
           }
@@ -179,10 +179,10 @@ export default {
     },
 
     register( observer ) {
-      observer.observe({ 
+      observer.observe({
         type     : "resource",
         buffered : true
-      })      
+      })
     },
 
     init() {
@@ -192,5 +192,5 @@ export default {
 
 
   }
-  
+
 }

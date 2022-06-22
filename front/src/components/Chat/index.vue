@@ -212,7 +212,7 @@ export default {
 @import '@/assets/css/tabs.css';
 
 #chat_container {
-  /* height      ss    : 100%; */
+  /* height          : 100%; */
   --n             : 1;
   display         : flex;
   align-items     : flex-end;

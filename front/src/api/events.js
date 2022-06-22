@@ -1,47 +1,47 @@
-import axios      from 'axios'
-import config     from '@/config'
-import $log from '@/utils/log'
+import axios   from 'axios'
+import config  from '@/config'
+import $log    from '@/utils/log'
 import $time   from '@/utils/time'
 
 export default {
 
-  
+
   // This method counts our events before fetching them
   // See: back/src/api/event/controllers/event.js
-    
-  count() { 
+
+  count() {
     $log.info( `API`, `Counting events.` )
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/events/count` )
       .then( result => resolve( result.data ) )
       .catch( error => {
-        $log.error( 'API', error ) 
+        $log.error( 'API', error )
         reject( error )
       } )
-    } ) 
+    } )
   },
 
-  
-  // Fetch all events; sort in reverse chronological 
+
+  // Fetch all events; sort in reverse chronological
   // order (i.e. most recent event first).
 
-  getAll() { 
+  getAll() {
     $log.info( `API`, `Fetching events.` )
     return new Promise( ( resolve, reject ) => {
       axios
-      .get( `${ config.api_url }/events`, { params: { 
+      .get( `${ config.api_url }/events`, { params: {
         sort: 'starts:desc',
         filters: {
           ends: {
             $lt: $time.now()
           },
         },
-        fields: [ 
+        fields: [
           'title',
           'slug',
           'starts',
-          'ends',
+          'accent',
           'info',
         ],
         populate: [
@@ -50,22 +50,22 @@ export default {
       } } )
       .then( result => resolve( result.data.data ) )
       .catch( error => {
-        $log.error( 'API', error ) 
+        $log.error( 'API', error )
         reject( error )
       } )
-    } ) 
+    } )
   },
 
 
   // Fetch event by slug. Non-standard implementation
   // See: back/src/api/event/controllers/event.js
 
-  get( slug ) { 
+  get( slug ) {
     $log.info( `API`, `Fetching event ${ slug }.` )
     return new Promise( ( resolve, reject ) => {
       axios
-      .get( 
-        `${ config.api_url }/events/${ slug }`, { params: { 
+      .get(
+        `${ config.api_url }/events/${ slug }`, { params: {
           fields: '*',
           populate: [
             'logo',
@@ -80,10 +80,10 @@ export default {
         } } )
       .then( result => resolve( result.data.data ) )
       .catch( error => {
-        $log.error( 'API', error ) 
+        $log.error( 'API', error )
         reject( error )
       } )
-    } ) 
+    } )
   }
 
 }

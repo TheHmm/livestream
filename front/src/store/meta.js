@@ -9,14 +9,14 @@ export default {
     meta : null,
 
     mobile: false,
-    
+
     ui: {
       reduce_motion: {
-        label: "reduce motion", 
+        label: "reduce motion",
         default:  false,
       },
       reduce_depth: {
-        label: "reduce depth", 
+        label: "reduce depth",
         default: false,
       },
       closed_captions: {
@@ -48,7 +48,7 @@ export default {
     SET_ERROR : ( state, error ) => {
       state.error = error
     }
-    
+
   },
 
   getters: {
@@ -58,7 +58,14 @@ export default {
     },
 
     default_marquee: state => {
-      return state.meta.defaultMarquee
+        return (
+          state.meta?.defaultMarquee ||
+          "The Hmm Livestream || "
+        )
+    },
+
+    about: state => {
+      return state.meta?.about
     },
 
     censor_message: state => {
@@ -80,13 +87,13 @@ export default {
 
     // App meta-data such as titles and meta descriptions
 
-    fetch_meta({ commit }) { return new Promise( ( resolve, reject ) => 
+    fetch_meta({ commit }) { return new Promise( ( resolve, reject ) =>
       api
       .meta
       .get()
       .then( meta => {
         commit( 'SET_META', meta )
-        resolve( meta ) 
+        resolve( meta )
       } )
       .catch( error => reject( error ) )
     ) },
