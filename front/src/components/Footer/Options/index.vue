@@ -224,6 +224,7 @@ export default {
   display: flex;
   justify-content: center;
   padding: 0.5rem;
+  z-index: 1;
 }
 #options .tab#about.expanded header {
   justify-content: flex-end;

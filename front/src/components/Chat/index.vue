@@ -10,7 +10,7 @@ import Message from './Message.vue'
 export default {
 
   name: 'Chat',
-  
+
   components: {
     Message,
     Input,
@@ -33,7 +33,7 @@ export default {
       expanded   : this.$route.name == 'ChatPage',
       hide_input : this.$route.query.hide_input,
       links_only : false,
-      loading    : 'load more messages',
+      loading    : null,
     }
   },
 
@@ -42,7 +42,7 @@ export default {
   // is used to compute the background color of the messages
 
   computed: {
-    ...mapGetters( 'messages', [ 
+    ...mapGetters( 'messages', [
       'messages_array',
     ]),
   },
@@ -59,6 +59,13 @@ export default {
     expanded() {
       if (this.expanded) {
         this.scroll_to_end( true )
+      }
+    },
+    messages_array() {
+      if ( this.messages_array.length >= 20 ) {
+        this.loading = 'load more messages'
+      } else {
+        this.loading = null
       }
     }
   },
@@ -82,10 +89,10 @@ export default {
       try {
         this.loading = 'loading...'
         const messages = await this.$store.dispatch(
-          'messages/fetch_messages', 
-          this.event.id 
+          'messages/fetch_messages',
+          this.event.id
         )
-        if ( messages.length >  0 ) {
+        if ( messages.length >= 20 ) {
           this.loading = 'load more messages'
         } else {
           this.loading = null
@@ -128,7 +135,7 @@ export default {
 
 
 <template>
-  <div 
+  <div
     id="chat_container"
     aria-label="chat"
   >
@@ -141,30 +148,30 @@ export default {
       @keyup.space="expand"
       @keyup.enter="expand"
     >
-      
-      <label 
+
+      <label
         class="title"
         :for="$id()"
-      > 
+      >
         <div
           v-if="expanded && !hide_input"
           class="options"
         >
           <span class="links">
-            <input 
+            <input
               name="links"
               id="links"
               type="checkbox"
               v-model="links_only"
             />
-            <label 
+            <label
               title="Show only URLs"
               for="links"
             >
               Show only URLs
             </label>
           </span>
-          <input 
+          <input
             value="✕"
             class="close circle"
             name="close"
@@ -176,15 +183,15 @@ export default {
       </label>
 
       <div class="contents">
-        <Input 
+        <Input
           v-if="!hide_input"
         />
-        <div 
+        <div
           ref="messages"
           class="messages"
           tabindex="-1"
         >
-          <div 
+          <div
             v-if="loading"
             id="load_more"
           >

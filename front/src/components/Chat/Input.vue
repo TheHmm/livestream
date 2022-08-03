@@ -1,5 +1,5 @@
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 import $log from '@/utils/log'
 import Register from './Register.vue'
 
@@ -9,7 +9,7 @@ import Register from './Register.vue'
 export default {
 
   name: 'Input',
-  
+
   components: {
     Register
   },
@@ -20,18 +20,27 @@ export default {
   data() {
     return {
       message: null,
-      request_registration: false,
+      // request_registration: false,
       sending: false,
     }
   },
 
+  computed: {
+    ...mapState( 'viewers', [
+      'request_registration',
+    ])
+  },
 
-  // When someone tries to send a message we first check if 
+
+  // When someone tries to send a message we first check if
   // they are authenticated and decide wether to present the
   // regitration form or not.
 
   methods: {
 
+    ...mapMutations( 'viewers', [
+      'set_request_registration'
+    ]),
     ...mapActions( 'viewers', [
       'authenticate'
     ]),
@@ -50,12 +59,14 @@ export default {
           await this.create_message( this.message )
           this.message = null
         } else {
-          this.request_registration = true
+          // this.request_registration = true
+          this.set_request_registration( true )
         }
         this.sending = false
       } catch ( error ) {
         $log.error( 'AUTH', error )
-        this.request_registration = true
+        // this.request_registration = true
+        this.set_request_registration( true )
         this.sending = false
       }
 
@@ -70,26 +81,26 @@ export default {
 
   <Register
     v-if="request_registration"
-    @close="request_registration = false"
+    @close="set_request_registration( false )"
   />
-  
-  <form 
+
+  <form
     id="message_form"
     aria-label="Message form"
     method="post"
     :onsubmit="send"
   >
-    <input 
-      type="text" 
-      name="message" 
-      id="message" 
+    <input
+      type="text"
+      name="message"
+      id="message"
       tabindex="0"
       :disabled="sending || request_registration"
-      placeholder ="Type your message and hit enter" 
+      placeholder ="Type your message and hit enter"
       v-model.trim="message"
     />
-    <input 
-      type="submit" 
+    <input
+      type="submit"
       class="circle"
       :disabled="sending || request_registration"
       title="Send your message to all other viewers."

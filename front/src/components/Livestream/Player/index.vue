@@ -12,21 +12,21 @@ import Unmute               from './Unmute.vue'
 // based on the selected view mode
 
 export default {
-  
+
   name: 'Player',
 
 
-  // These components are manually mounted in the <Component /> 
+  // These components are manually mounted in the <Component />
   // slot based on desired mode.
 
-  components: { 
+  components: {
     Captions,
     Thumbs,
     HlsMedia,
     NativeMedia,
     Unmute,
   },
-  
+
   props: {
     livestream : Object,
   },
@@ -42,7 +42,7 @@ export default {
     },
 
 
-    // When the viewer first unmutes, we register this to our 
+    // When the viewer first unmutes, we register this to our
     // store so they don't have to keep doing it.
 
     muted() {
@@ -59,11 +59,11 @@ export default {
     // route query and defaults to true.
 
     desires_captions() {
-      const 
+      const
         key = 'closed_captions',
         value = this.$route.query[key],
         default_value = this.$store.state.meta.ui[key].default
-      
+
       if ( value ) {
         if ( value == 'true' ) {
           return true
@@ -112,7 +112,7 @@ export default {
 
       if ( this.mode.name == 'transcript') {
         this.player = 'Captions'
-      
+
 
       // The image player will load a thumbnail every X seconds
       // as well as subscribe to a subtitle stream from Marco.
@@ -121,8 +121,8 @@ export default {
         this.player = 'Thumbs'
 
 
-      // Else, we default to a <video> or <audio> tag (that is 
-      // conditionally created by vue in the template). If hls.js 
+      // Else, we default to a <video> or <audio> tag (that is
+      // conditionally created by vue in the template). If hls.js
       // is supported in the browser, we instantiate it with the
       // the <video> or <audio> element.
 
@@ -130,7 +130,7 @@ export default {
         this.player = 'HlsMedia'
 
 
-      // If the <video> or <audio> tag supports HLS natively, 
+      // If the <video> or <audio> tag supports HLS natively,
       // which is the case for some browsers, we just set the
       // elements source as we would with any non-m3u8 URL.
 
@@ -156,8 +156,8 @@ export default {
     aria-label="livestream player"
   >
 
-    <Component 
-      :is="player" 
+    <Component
+      :is="player"
       :livestream="livestream"
       :mode="mode"
       :muted="muted"
@@ -166,10 +166,10 @@ export default {
 
     <Unmute
       v-if="show_unmute"
-      @click="$store.commit( 'meta/SET_MUTED', false )"
+    @click="$store.commit( 'meta/SET_MUTED', false )"       
     />
 
-    <video 
+    <video
       id="tester"
       ref="tester"
     ></video>
@@ -189,6 +189,7 @@ export default {
 #player.transcript,
 #player.thumbs,
 #player.audio {
+  --border        : var(--dash) var(--fore);
   border          : var(--border);
   flex-direction  : column;
   justify-content : stretch;
@@ -211,7 +212,7 @@ export default {
   justify-content : space-around;
 }
 
-video {  
+video {
   height          : 100%;
   max-width       : 100%;
   max-height      : 100%;

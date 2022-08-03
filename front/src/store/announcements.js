@@ -14,6 +14,10 @@ export default {
 
   mutations: {
 
+    SET_ANNOUNCEMENTS : ( state, announcements ) => {
+      state.announcements = announcements
+    },
+
     SET_ANNOUNCEMENT : ( state, announcement ) => {
       state.announcements[announcement.id] = announcement
     },
@@ -44,35 +48,35 @@ export default {
 
     set_announcement( { commit, getters }, announcement ) {
 
-      if ( 
+      if (
           !announcement.publishedAt ||
-          announcement.deleted 
+          announcement.deleted
         ) {
         commit( 'DELETE_ANNOUNCEMENT', announcement )
         return
       }
-      
+
       commit( 'SET_ANNOUNCEMENT', announcement )
     },
 
-    
-    // Fetch announcements by event id 
 
-    fetch_announcements( { dispatch }, event_id ) { 
-      return new Promise( ( resolve, reject ) => 
+    // Fetch announcements by event id
+
+    fetch_announcements( { dispatch }, event_id ) {
+      return new Promise( ( resolve, reject ) =>
         api
         .announcements
         .get_by_event( event_id )
-        .then( announcements => { 
+        .then( announcements => {
           for ( const announcement of announcements ) {
             dispatch( 'set_announcement', announcement )
           }
-          resolve( announcements ) 
+          resolve( announcements )
         } )
-        .catch( error => 
-          reject( error ) 
+        .catch( error =>
+          reject( error )
         )
-      ) 
+      )
     },
 
 
@@ -85,7 +89,7 @@ export default {
       )
     },
 
-    
+
     // Receive announcements in real time
 
     socket_announcement( { dispatch }, announcement ) {

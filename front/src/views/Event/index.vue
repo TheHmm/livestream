@@ -59,12 +59,11 @@ export default {
     const slug = this.$route.params.slug
     const { dispatch } = this.$store
     try {
-      const
-        livestream = await dispatch( 'livestream/get_livestream' ),
-        event      = await dispatch( 'events/get_event', slug ),
-        viewers    = await dispatch( 'viewers/get_viewers', event.id ),
-        messages   = await dispatch( 'messages/get_messages', event.id ),
-        announces  = await dispatch( 'announcements/get_announcements', event.id )
+      await dispatch( 'livestream/get_livestream' )
+      const { id } = await dispatch( 'events/get_event', slug )
+      await dispatch( 'viewers/get_viewers', id )
+      await dispatch( 'messages/get_messages', id )
+      await dispatch( 'announcements/get_announcements', id )
     } catch ( error ) {
       this.$router.push( _throw( error ) )
     }
@@ -76,6 +75,10 @@ export default {
 
   beforeUnmount() {
     this.$socket.client.disconnect()
+    const { commit } = this.$store
+    commit( 'messages/SET_MESSAGES', {} )
+    commit( 'viewers/SET_VIEWERS', {} )
+    commit( 'announcements/SET_ANNOUNCEMENTS', {} )
   },
 
 

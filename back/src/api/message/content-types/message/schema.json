@@ -36,6 +36,9 @@
     },
     "links": {
       "type": "json"
+    },
+    "emoji": {
+      "type": "json"
     }
   }
 }

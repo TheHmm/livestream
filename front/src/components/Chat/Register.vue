@@ -8,19 +8,19 @@ import Bot from '../Utils/Bot.vue'
 import dialogPolyfill from 'dialog-polyfill'
 
 export default {
-  
+
   name: 'Register',
 
   components: { Bot },
 
 
   // Form  value and state  info
-  
+
   data() {
     return {
-      name     : null,
-      lifetime : null,
-      agrees   : false,
+      name     : undefined,
+      lifetime : undefined,
+      agrees   : undefined,
       sending  : false,
       error    : null,
       website  : null,
@@ -29,11 +29,55 @@ export default {
   },
 
 
-  // We get the client-generated UUID and use it to create a 
+  // We get the client-generated UUID and use it to create a
   // viewer in Strapi.
 
   computed: {
-    ...mapGetters( 'viewers' , [ 'uuid' ] )
+
+    ...mapGetters( 'viewers' , [ 'uuid', 'me' ] ),
+
+    my_name: {
+      get() {
+        return this.name !== undefined
+        ? this.name
+        : this.me?.name
+      },
+      set( val ) {
+        this.name = val
+      }
+    },
+
+    my_lifetime: {
+      get() {
+        return this.lifetime !== undefined
+        ? this.lifetime
+        : ( this.me.expires && Math.round(
+            ( new Date( this.me.expires ) - this.$time.now() )
+            / ( 24 * 60 * 60 * 1000 ) || null
+          ) )
+      },
+      set( val ) {
+        this.lifetime = val
+      }
+    },
+
+    my_agrees: {
+      get() {
+        return this.agrees !== undefined
+        ? this.agrees
+        : this.me.name !== undefined
+      },
+      set( val ) {
+        this.agrees = val
+      }
+    },
+
+    method() {
+      return this.me.name !== undefined
+      ? 'update'
+      : 'create'
+    }
+
   },
 
   emits: [
@@ -59,17 +103,26 @@ export default {
     },
 
 
-    // Create viewer
+    // Create or update viewer
 
     async send( e ) {
       e.preventDefault()
-      const { name, agrees, website, lifetime } = this
-      if ( !name || !agrees || website ) { 
-        return 
+
+      let {
+        my_name     : name,
+        my_lifetime : lifetime,
+        my_agrees   : agrees,
+        method,
+        website
+      } = this
+
+      if ( !name || !agrees || website ) {
+        return
       }
-      this.sending = true
+
       try {
-        await this.$store.dispatch( 'viewers/create_viewer', { 
+        this.sending = true
+        await this.$store.dispatch( `viewers/${ method }_viewer`, {
           name,
           lifetime
         })
@@ -78,11 +131,12 @@ export default {
       } catch ( error ) {
         this.error = error
       }
+
     },
 
   },
 
-} 
+}
 </script>
 
 <template>
@@ -94,31 +148,21 @@ export default {
 
     <div v-if="error">
       <p> A server error seemed to have occurred. Please contact us.</p>
-      <input 
+      <input
         class="close"
-        type="reset" 
+        type="reset"
         title="close."
         value="Close"
         @click="close"
       />
-    </div> 
-
-    <div v-else-if="sending">
-      <p> Creating viewer {{ name }}.</p>
     </div>
 
-    <!-- <div v-else-if="uuid">
-      <p> Success! Your uuid is <code>{{ uuid }}</code>.</p>
-      <input 
-        class="close"
-        type="reset" 
-        title="close."
-        value="Close"
-        @click="$emit('close')"
-      />
-    </div>  -->
-    
-    <form 
+    <div v-else-if="sending">
+      <p v-if="method == 'create'" > Creating viewer {{ name }}.</p>
+      <p v-else-if="method == 'update'"> Updating viewer {{ name }}.</p>
+    </div>
+
+    <form
       v-else
       id="register_form"
       aria-label="Registration form"
@@ -129,13 +173,13 @@ export default {
         class="name"
         title="Display name"
       >
-        <input 
+        <input
           required
-          type="text" 
-          name="name" 
-          id="name" 
-          placeholder="name" 
-          v-model.lazy.trim="name"
+          type="text"
+          name="name"
+          id="name"
+          placeholder="name"
+          v-model.lazy.trim="my_name"
         />
         <span>pick a display name.</span>
       </label>
@@ -146,19 +190,19 @@ export default {
         class="lifetime"
         title="User lifetime"
       >
-        <input 
+        <input
           type="number"
           min="1"
           max="365"
-          v-model.lazy.trim="lifetime"
+          v-model.lazy.trim="my_lifetime"
         />
         days.
-      </label> 
+      </label>
       <p>If you need help with this or have any questions, please <a target="blank" href="https://thehmm.nl/contact/">contact us</a>.</p>
-      <input 
+      <input
         required
         type="checkbox"
-        v-model="agrees"
+        v-model="my_agrees"
         id="agrees"
       />
       <label
@@ -168,20 +212,20 @@ export default {
       >
       I agree to this condition.
       </label>
-      <div class="row"> 
+      <div class="row">
         <Bot v-model="website" />
-        <input 
+        <input
           class="close"
-          type="reset" 
+          type="reset"
           title="close."
           value="Close"
           @click="$emit('close')"
         />
-        <input 
+        <input
           class="submit"
-          type="submit" 
+          type="submit"
           title="Register yourself."
-          value="Submit"
+          :value="method"
         />
       </div>
     </form>

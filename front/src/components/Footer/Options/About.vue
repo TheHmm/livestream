@@ -28,7 +28,6 @@ section {
   transition     : font-size var(--fast) ease-in-out;
   font-size      : 0.8rem;
 }
-
 .expanded section {
   font-size      : 2rem;
 }

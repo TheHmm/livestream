@@ -1,3 +1,5 @@
+const cron = require('../src/cron.js')
+
 module.exports = ({ env }) => ({
   host: env('HOST', '0.0.0.0'),
   port: env.int('PORT', 1337),
@@ -6,4 +8,8 @@ module.exports = ({ env }) => ({
   app: {
     keys: env.array('APP_KEYS'),
   },
+  cron: {
+    enabled: true,
+    tasks: cron
+  }
 });

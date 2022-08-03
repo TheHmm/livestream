@@ -5,17 +5,17 @@ import $log    from '@/utils/log'
 export default {
 
 
-  get( uuid ) { 
+  get( uuid ) {
     $log.info( `API`, `Fetching viewer ${ uuid }.` )
-    return new Promise( ( resolve, reject ) => 
-      axios 
+    return new Promise( ( resolve, reject ) =>
+      axios
       .get( `${ config.api_url }/viewers`, { params: {
         filters: {
           uuid: {
             $eq: uuid
           },
         },
-        fields: '*', 
+        fields: '*',
         populate: [
           'events'
         ]
@@ -23,22 +23,22 @@ export default {
       .then( result => {
         const viewer = result.data.data[0]
         if ( viewer ) {
-          resolve( viewer) 
+          resolve( viewer)
         } else {
-          throw new Error( '404' ) 
+          throw new Error( '404' )
         }
       })
       .catch( error => {
         reject( error )
       } )
-    ) 
+    )
   },
 
-  get_by_event( event_id ) { 
+  get_by_event( event_id ) {
     $log.info( `API`, `Fetching viewers.` )
     return new Promise( ( resolve, reject ) => {
       axios
-      .get( `${ config.api_url }/viewers`, { params: { 
+      .get( `${ config.api_url }/viewers`, { params: {
         pagination: {
           start: 0,
           limit: 300,
@@ -57,10 +57,10 @@ export default {
         resolve( viewers )
       } )
       .catch( error => {
-        $log.error( 'API', error ) 
+        $log.error( 'API', error )
         reject( error )
       } )
-    } ) 
+    } )
   },
 
   post( data ) {
@@ -73,15 +73,15 @@ export default {
         resolve( viewer )
       } )
       .catch( error => {
-        $log.error( 'API', error ) 
+        $log.error( 'API', error )
         reject( error )
       } )
-    } ) 
+    } )
   },
 
 
   put( id, data ) {
-    $log.info( `API`, `Posting viewer ${ id }.`)
+    $log.info( `API`, `Updating viewer ${ id }.`)
     return new Promise( ( resolve, reject ) => {
       axios
       .put( `${ config.api_url }/viewers/${ id }`, { data } )
@@ -90,10 +90,10 @@ export default {
         resolve( viewer )
       } )
       .catch( error => {
-        $log.error( 'API', error ) 
+        $log.error( 'API', error )
         reject( error )
       } )
-    } ) 
+    } )
   },
 
 

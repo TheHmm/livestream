@@ -10,34 +10,27 @@ export default {
 
   state: {
 
-    events: []
+    events: {}
 
   },
 
   mutations: {
 
     SET_EVENT  : ( state, event )  => {
-      const found = state.events.find( e => e.slug == event.slug )
-      if ( found ) {
-        state.events[ state.events.indexOf( found ) ] = {
-          ...found,
-          ...event,
-        }
-      } else {
-        const index = state.events.findIndex( e => e.starts < event.starts )
-        if ( index == -1 ) {
-          state.events.push( event )
-        } else {
-          state.events.splice( index, 0, event )
-        }
-      }
+      state.events[ event.slug ] = event
     },
 
   },
 
   getters: {
 
-    get_events : state => state.events,
+    get_events : state =>
+      Object
+      .values( state.events )
+      .sort( ( a , b ) => {
+        return new Date( a.starts ) > new Date( b.starts )
+      })
+    ,
 
     years : ( state, getters ) =>
       [ ...new Set(
@@ -47,13 +40,14 @@ export default {
       )]
     ,
 
-    get_event : state => slug => state
-      .events
-      .find( e => e.slug === slug )
+    get_event : state => slug =>
+      state
+      .events[ slug ]
     ,
 
-    event_bv_id : state => id => state
-      .events
+    event_bv_id : ( state, getters ) => id =>
+      getters
+      .get_events
       .find( e => e.id == id )
     ,
 
@@ -86,17 +80,21 @@ export default {
       ?.emoji_groups
     ,
 
-    get_emoji : ( state, getters ) => ( group, emoji ) =>
-      getters
-      .emoji_groups
-      .find( g => g.slug == group )
-      .emoji
-      .find( e => e.name == emoji )
-    ,
+    get_emoji : ( state, getters ) => ( group, emoji ) => {
+      if ( group == '__DEFAULT__' ) {
+        return { name: emoji, group }
+      } else {
+        return getters
+        .emoji_groups
+        .find( g => g.slug == group )
+        .emoji
+        .find( e => e.name == emoji )
+      }
+    },
 
-    get_event_slugs : state => state
-      .events
-      .map( e => e.slug )
+    get_event_slugs : state =>
+      Object
+      .keys( state.events )
     ,
 
     highlight_donate: ( state, getters ) =>

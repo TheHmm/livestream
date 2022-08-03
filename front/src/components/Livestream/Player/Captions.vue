@@ -133,6 +133,8 @@ export default {
   max-width: 35rem;
   margin: var(--size-s) auto;
   width: 100%;
+  font-size: 2rem !important;
+
 }
 #captions p span {
   --fore: var(--accent);

@@ -206,6 +206,7 @@ main {
   --back           : var(--accent-light);
   --fore           : var(--black);
   --focus          : 2px solid var(--accent);
+  /* --border         : var(--dash) var(--fore); */
 
 }
 

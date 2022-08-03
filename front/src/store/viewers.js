@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid'
-import api from '@/api' 
-import $log from '@/utils/log' 
-import $time from '@/utils/time' 
+import api from '@/api'
+import $log from '@/utils/log'
+import $time from '@/utils/time'
 
 export default {
 
@@ -15,9 +15,16 @@ export default {
 
     authenticated : false,
 
+    request_registration : false,
+
   },
 
   mutations: {
+
+
+    SET_VIEWERS : ( state, viewers ) => {
+      state.viewers = viewers
+    },
 
     SET_VIEWER : ( state, viewer ) => {
       state.viewers[viewer.uuid] = viewer
@@ -35,6 +42,10 @@ export default {
       state.authenticated = authenticated
     },
 
+    set_request_registration : ( state, request_registration ) => {
+      state.request_registration = request_registration
+    }
+
   },
 
   getters: {
@@ -48,13 +59,13 @@ export default {
     },
 
     connected_viewers : ( state, getters ) => {
-      return ( 
+      return (
         getters
         .viewers_array
         .filter( v => v.connected )
       )
     },
- 
+
     count: ( state, getters ) => {
       return (
         getters
@@ -139,8 +150,8 @@ export default {
       }
 
 
-      // For the events relation, strapi is somes 
-      // returinng ids an other s it objects. We 
+      // For the events relation, strapi is somes
+      // returinng ids an other s it objects. We
       // normalize to ids : [ '1 , '2', '3', ... ]
 
       viewer.events = viewer.events?.data?.map( e => e.id ) || viewer.events
@@ -151,10 +162,10 @@ export default {
     },
 
 
-    // Fetch viewers by event id 
+    // Fetch viewers by event id
 
-    fetch_viewers( { dispatch }, event_id ) { 
-      return new Promise( ( resolve, reject ) => 
+    fetch_viewers( { dispatch }, event_id ) {
+      return new Promise( ( resolve, reject ) =>
         api
         .viewers
         .get_by_event( event_id )
@@ -162,37 +173,37 @@ export default {
           for ( const viewer of viewers ) {
             dispatch( 'set_viewer', viewer )
           }
-          resolve( viewers ) 
+          resolve( viewers )
         } )
         .catch( error => reject( error ) )
-      ) 
+      )
     },
 
 
     // Get viewers by event id.
 
     async get_viewers( { getters, dispatch }, event_id ) {
-      if ( getters.count < 1 ) {
+      if ( getters.count <= 1 ) {
         return await dispatch( 'fetch_viewers', event_id )
       } else {
-        return getters.get_viewers  
+        return getters.get_viewers
       }
     },
 
 
-    // Fetch viewer by uuid 
+    // Fetch viewer by uuid
 
-    fetch_viewer( { dispatch }, uuid ) { 
-      return new Promise( ( resolve, reject ) => 
+    fetch_viewer( { dispatch }, uuid ) {
+      return new Promise( ( resolve, reject ) =>
         api
         .viewers
         .get( uuid )
         .then( viewer => {
           dispatch( 'set_viewer', viewer )
-          resolve( viewer ) 
+          resolve( viewer )
         } )
         .catch( error => reject( error ) )
-      ) 
+      )
     },
 
 
@@ -200,7 +211,7 @@ export default {
 
     async get_viewer( { getters, dispatch }, uuid ) {
       return (
-        getters.get_viewer(  uuid ) || 
+        getters.get_viewer(  uuid ) ||
         await dispatch( 'fetch_viewer', uuid )
       )
     },
@@ -208,25 +219,44 @@ export default {
     // Create a viewer.
 
     async create_viewer( { getters, dispatch }, { name, lifetime } ) {
-      const 
+      const
         uuid    = getters.uuid,
         events  = [ getters.current_event_id ],
-        expires = $time.now() + lifetime * 24 * 60 * 60 * 1000
-      return new Promise( ( resolve, reject ) => 
+        expires = lifetime === '' ? null : $time.now() + lifetime * 24 * 60 * 60 * 1000
+      return new Promise( ( resolve, reject ) =>
         api
         .viewers
-        .post({ 
-          name, 
+        .post({
+          name,
           uuid,
           events,
-          ...( lifetime && { expires } )
-        }) 
+          expires
+        })
         .then( viewer => {
           dispatch( 'register', viewer )
-          resolve( viewer ) 
+          resolve( viewer )
         } )
         .catch( error => reject( error ) )
-      ) 
+      )
+    },
+
+    async update_viewer( { getters, dispatch }, { name, lifetime } ) {
+      const
+        uuid    = getters.uuid,
+        expires = lifetime === '' ? null : $time.now() + lifetime * 24 * 60 * 60 * 1000
+      return new Promise( ( resolve, reject ) =>
+        api
+        .viewers
+        .put( getters.my_id, {
+          name,
+          uuid,
+          expires
+        })
+        .then( viewer => {
+          resolve( viewer )
+        } )
+        .catch( error => reject( error ) )
+      )
     },
 
 
@@ -246,7 +276,7 @@ export default {
       // First, we check if the visitor has previously sent
       // messages on this website (ie. they created a viewer).
       // If not, this is a completely new user.
-      
+
       if ( !state.uuid ) {
         $log.info( 'AUTH', 'You are not registered yet.' )
         return
@@ -260,22 +290,22 @@ export default {
       // don't know if they've chatted to this one.
 
       try {
-        await dispatch( 'fetch_viewer', state.uuid ) 
+        await dispatch( 'fetch_viewer', state.uuid )
 
 
         // If they haven't chatted been to this event, then
         // we update this in the server.
-        
+
         if ( !getters.has_been_to_current_event ) {
           $log.info('AUTH', 'You havent been to this event.')
           await api.viewers.put( getters.me.id, {
-            events: [ 
-              ...getters.my_events, 
-              getters.current_event_id 
+            events: [
+              ...getters.my_events,
+              getters.current_event_id
             ],
           })
         }
-        
+
 
         // We commit this to our state so we dont have to fetch
         // everytime.
@@ -285,9 +315,9 @@ export default {
 
         return state.authenticated
 
-      // The only possibile reason for the viewer to have a 
+      // The only possibile reason for the viewer to have a
       // UUID in their localStorage but it does not exist on
-      // the server is that it was deleted. We return the 
+      // the server is that it was deleted. We return the
       // error so that we can create a new viewer.
 
       } catch ( error ) {
@@ -316,7 +346,7 @@ export default {
 
 
     // Register viewer's uuid to local storage. The only
-    // time this is called is after the viewer has been 
+    // time this is called is after the viewer has been
     // saved to the database.
 
     register( { commit }, viewer ) {
@@ -325,8 +355,8 @@ export default {
     },
 
 
-    // This event is received in two different cases : 
-    // 1. a veiwer connected to the socket server 
+    // This event is received in two different cases :
+    // 1. a veiwer connected to the socket server
     // 2. a viewer has been created / updated in the DB
 
     socket_viewer( { dispatch }, viewer ) {
@@ -351,7 +381,7 @@ export default {
 
 
     // When we receive emoji from the viewer, we convert
-    // the payload into a viewer object and update the 
+    // the payload into a viewer object and update the
     // viewer sender with the emoji. We clear the emoji
     // after some time.
 
@@ -364,14 +394,14 @@ export default {
         dispatch( 'set_viewer', {
           uuid,
           emoji: null
-        })  
+        })
       }, 5000 )
     },
 
     socket_disconnect( ) {
       $log.info( 'SOCKET', 'disconnect' )
     },
-    
+
     // socket_count({ commit }, count) {
     //   commit('setCount', count)
     // },

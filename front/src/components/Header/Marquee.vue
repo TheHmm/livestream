@@ -58,16 +58,14 @@ export default {
   font-size        : var(--size-m);
   transform        : translateY(-3rem);
   animation        : enter var(--enter) ease 0.1s forwards;
-  transition       :
-    background-color var(--very-slow) ease,
-    color var(--very-slow) ease
-  ;
+  transition       : background-color var(--very-slow) ease;
   display          : flex;
   align-items      : center;
 }
 .marquee p {
   margin           : 0;
   padding          : 0 0.25rem;
+  transition       : color var(--very-slow) ease;
 }
 .marquee.animate p {
   animation        : marquee 60s linear infinite;

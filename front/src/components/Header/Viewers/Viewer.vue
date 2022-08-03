@@ -9,8 +9,8 @@ export default {
 
   name: 'Viewer',
 
-  components: { 
-    Emo 
+  components: {
+    Emo
   },
 
   props: {
@@ -52,7 +52,7 @@ export default {
 </script>
 
 <template>
-  <div 
+  <div
     :title="nick"
     :class="[ $id(), 'dot', { shaking, emoji } ]"
     :style="{ '--n': n }"
@@ -120,7 +120,6 @@ export default {
 .viewer >>> .emo img {
   border-radius   : inherit;
 }
-
 .viewer >>> .dot-enter-from,
 .viewer >>> .dot-leave-to {
   transform       : scale(0);

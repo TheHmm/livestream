@@ -17,6 +17,7 @@
     "@strapi/plugin-i18n": "4.1.0",
     "@strapi/plugin-users-permissions": "4.1.0",
     "@strapi/strapi": "4.1.0",
+    "random-anonymous-animals": "^1.0.0",
     "react-color": "^2.19.3",
     "slugify": "^1.6.5",
     "socket.io": "^4.4.1",

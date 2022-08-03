@@ -2,35 +2,45 @@ import axios  from 'axios'
 import config from '@/config'
 import $log   from '@/utils/log'
 
-
-let page = 1
+let pageSize = 20
+let page = 0
+let current_event_id = null
 
 
 export default {
 
 
-  // get( time ) { 
+  // get( time ) {
   //   $log.info( `API`, `Fetching message ${ time }.` )
-  //   return new Promise( ( resolve, reject ) => 
-  //     axios 
+  //   return new Promise( ( resolve, reject ) =>
+  //     axios
   //     .get( `${ config.api_url }/messages`, { params: { time } } )
   //     .then( result => resolve( result.data ) )
   //     .catch( error => {
-  //       $log.error( 'API', error ) 
+  //       $log.error( 'API', error )
   //       reject( error )
   //     } )
-  //   ) 
+  //   )
   // },
 
-  get_by_event( event_id ) { 
+  get_by_event( event_id ) {
     $log.info( `API`, `Fetching messages.` )
+    if ( !current_event_id ) {
+      current_event_id = event_id
+    }
+    if ( current_event_id == event_id ) {
+      page ++
+    } else {
+      page = 1
+    }
+    current_event_id = event_id
     return new Promise( ( resolve, reject ) => {
       axios
-      .get( `${ config.api_url }/messages`, { params: { 
+      .get( `${ config.api_url }/messages`, { params: {
         sort: 'time:desc',
         pagination: {
-          page: page,
-          pageSize: 20,
+          page,
+          pageSize,
         },
         filters: {
           event: {
@@ -44,16 +54,12 @@ export default {
           'sender'
         ],
       } } )
-      .then( result => {
-        const messages = result.data.data
-        page++
-        resolve( messages )
-      } )
+      .then( result => resolve( result.data.data ) )
       .catch( error => {
-        $log.error( 'API', error ) 
+        $log.error( 'API', error )
         reject( error )
       } )
-    } ) 
+    } )
   },
 
   post( data ) {
@@ -66,10 +72,10 @@ export default {
         resolve( message )
       } )
       .catch( error => {
-        $log.error( 'API', error ) 
+        $log.error( 'API', error )
         reject( error )
       } )
-    } ) 
+    } )
   },
 
 
@@ -83,10 +89,10 @@ export default {
         resolve( message )
       } )
       .catch( error => {
-        $log.error( 'API', error ) 
+        $log.error( 'API', error )
         reject( error )
       } )
-    } ) 
+    } )
   },
 
 
@@ -100,10 +106,10 @@ export default {
         resolve( message )
       } )
       .catch( error => {
-        $log.error( 'API', error ) 
+        $log.error( 'API', error )
         reject( error )
       } )
-    } ) 
+    } )
   },
 
 

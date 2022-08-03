@@ -11,6 +11,9 @@ export default {
   },
 
   mutations: {
+    SET_MESSAGES : ( state, messages ) => {
+      state.messages = messages
+    },
     SET_MESSAGE : ( state, message ) => {
       state.messages[message.time] = message
     },
@@ -44,7 +47,7 @@ export default {
         .messages_array
         .sort( (a, b) => a.time - b.time )
       )
-    }, 
+    },
 
     messages_with_links : ( state, getters ) => {
       return (
@@ -88,36 +91,38 @@ export default {
         commit( 'DELETE_MESSAGE', message )
         return
       }
-      
+
       if ( message.censored ) {
         message.body = getters.censor_message
         message.links = null
       }
 
       const sender_id = message.sender?.data?.id || message.sender
-      message.sender = getters.viewer_by_id( sender_id )
- 
+      message.sender = function() {
+        return getters.viewer_by_id( sender_id )
+      }
+
       commit( 'SET_MESSAGE', message )
     },
 
 
-    // Fetch messages by event id 
+    // Fetch messages by event id
 
-    fetch_messages( { dispatch }, event_id ) { 
-      return new Promise( ( resolve, reject ) => 
+    fetch_messages( { dispatch }, event_id ) {
+      return new Promise( ( resolve, reject ) =>
         api
         .messages
         .get_by_event( event_id )
-        .then( messages => { 
+        .then( messages => {
           for ( const message of messages ) {
             dispatch( 'set_message', message )
           }
-          resolve( messages ) 
+          resolve( messages )
         } )
-        .catch( error => 
-          reject( error ) 
+        .catch( error =>
+          reject( error )
         )
-      ) 
+      )
     },
 
 
@@ -127,7 +132,7 @@ export default {
       if ( getters.count < 1 ) {
         return await dispatch( 'fetch_messages', event_id )
       } else {
-        return getters.get_messages  
+        return getters.get_messages
       }
 
     },
@@ -136,25 +141,25 @@ export default {
     // Create a message.
 
     async create_message( { getters, dispatch }, body ) {
-      const message = { 
-        body, 
+      const message = {
+        body,
         time: $time.now(),
         sender: getters.my_id,
-        event: getters.current_event_id 
+        event: getters.current_event_id
       }
       if ( getters.blocked ) {
         dispatch( 'set_message', message )
         return message
       }
-      return new Promise( ( resolve, reject ) => 
+      return new Promise( ( resolve, reject ) =>
         api
         .messages
-        .post( message ) 
+        .post( message )
         .then( message => {
-          resolve( message ) 
+          resolve( message )
         } )
         .catch( error => reject( error ) )
-      ) 
+      )
     },
 
 
@@ -169,7 +174,7 @@ export default {
       } catch ( error ) {
         throw error
       }
-    },  
+    },
 
 
     // Deleting messages.
@@ -180,7 +185,7 @@ export default {
       } catch ( error ) {
         throw error
       }
-    },  
+    },
 
 
     // Receive messages in real time
@@ -189,7 +194,7 @@ export default {
       $log.info( 'SOCKET', `Message ${ message.body }` )
       dispatch( 'set_message', message )
     },
-    
+
     // socket_count({ commit }, count) {
     //   commit('setCount', count)
     // },

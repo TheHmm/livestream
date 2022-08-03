@@ -1,6 +1,6 @@
 <script>
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import Options from './Options.vue'
 import Links from './Links.vue'
 
@@ -50,11 +50,17 @@ export default {
     // We always get the sender details from the store since
     // The message only has an id in it.
 
-    sender() { return this.message.sender },
+    sender() { return this.message.sender() },
     name()   { return this.sender?.name || 'unknown' },
     mine()   { return this.sender?.uuid == this.uuid }
 
   },
+
+  methods: {
+    ...mapMutations( 'viewers', [
+      'set_request_registration'
+    ]),
+  }
 
 }
 </script>
@@ -81,9 +87,20 @@ export default {
       </time>
       <span
         class="sender"
-        :title="name"
       >
-        {{ name }}
+        <u
+          v-if="mine"
+          :title="'Edit ' + name"
+          @click="set_request_registration( true )"
+        >
+          {{ name }}
+        </u>
+        <span
+          v-else
+          :title="name"
+        >
+          {{ name }}
+        </span>
       </span>
       <Options
         :moderator="moderator"
@@ -152,6 +169,9 @@ export default {
   white-space         : nowrap;
   overflow            : hidden;
   text-overflow       : ellipsis;
+}
+.message .header .sender u {
+  cursor              : pointer;
 }
 
 .message .header .time {

@@ -43,8 +43,7 @@
       "type": "string"
     },
     "expires": {
-      "type": "datetime",
-      "private": true
+      "type": "datetime"
     }
   }
 }

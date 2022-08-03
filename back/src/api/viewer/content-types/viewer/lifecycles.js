@@ -36,11 +36,10 @@ const
     // we get the event payload
 
     const viewer = event.params.data
-    
+
     if ( viewer.name && !viewer.uuid ) {
       event.params.data.uuid = await create_uuid( viewer, strapi )
     }
-    console.log(event.params.data)
 
   },
 

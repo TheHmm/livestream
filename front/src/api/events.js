@@ -31,7 +31,7 @@ export default {
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/events`, { params: {
-        sort: 'starts:desc',
+        sort: 'starts:asc',
         filters: {
           ends: {
             $lt: $time.now()
