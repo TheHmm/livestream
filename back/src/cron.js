@@ -3,7 +3,7 @@ const random_animal_name = require("random-anonymous-animals")
 module.exports = {
 
   // '*/10 * * * * *': async ({ strapi }) => { // dev: every 3 seconds
-  '34 17 * * *': async ({ strapi }) => { // dev: every day at midnight
+  '36 17 * * *': async ({ strapi }) => { // dev: every day at midnight
   // '0 0 * * *': async ({ strapi }) => { // prod: every day at midnight
 
     await viewer_anonymization( strapi )

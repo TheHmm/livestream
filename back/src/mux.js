@@ -89,7 +89,7 @@ module.exports = MUX_TOKEN => {
     get_public_asset_details = asset => ({
       status     : asset.status,
       playbackId : get_playback_id( asset ),
-      start_time : get_start_time( asset ),
+      start_time : new Date( asset.recording_times[0].started_at ).getTime(),
       tracks     : asset.tracks,
       duration   : asset.duration
     })
