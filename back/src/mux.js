@@ -84,6 +84,14 @@ module.exports = MUX_TOKEN => {
       active_asset_id : stream.active_asset_id,
       start_time      : stream.start_time,
       subtitles       : stream.generated_subtitles,
+    }),
+
+    get_public_asset_details = asset => ({
+      status     : asset.status,
+      playbackId : get_playback_id( asset ),
+      start_time : get_start_time( asset ),
+      tracks     : asset.tracks,
+      duration   : asset.duration
     })
 
 
@@ -96,7 +104,7 @@ module.exports = MUX_TOKEN => {
     get_livestream,
     get_start_time,
     get_public_stream_details,
-    get_playback_id
+    get_public_asset_details,
   }
 
 }
