@@ -3,7 +3,7 @@
 module.exports = MUX_TOKEN => {
 
   const
-  
+
 
     // import mux-node
 
@@ -19,11 +19,11 @@ module.exports = MUX_TOKEN => {
 
     livestream_options  = {
       playback_policy    : 'public',
-      reconnect_window   : 10,
-      new_asset_settings : { 
-        playback_policy  : 'public' 
+      reconnect_window   : 30,
+      new_asset_settings : {
+        playback_policy  : 'public',
+        mp4_support      : 'standard',
       },
-      // latency_mode       : 'low',
       generated_subtitles: [
         {
           name: "English CC (auto)",
@@ -41,12 +41,19 @@ module.exports = MUX_TOKEN => {
         .LiveStreams
         .create( livestream_options )
     },
-    
 
-    // function to get livestream with MUX api 
+
+    // function to get livestream with MUX api
 
     get_livestream = async id => {
       return await Video.LiveStreams.get( id )
+    }
+
+
+    // function to get livestream with MUX api
+
+    get_asset = async id => {
+      return await Video.Assets.get( id )
     }
 
 
@@ -58,7 +65,7 @@ module.exports = MUX_TOKEN => {
     // lazy way of getting an asset's start time
 
     get_start_time = asset => {
-      const 
+      const
         start   = asset?.recording_times[0]?.started_at,
         seconds = start?.seconds,
         nanos   = start?.nanos,
@@ -68,7 +75,7 @@ module.exports = MUX_TOKEN => {
     },
 
 
-    // we reduce a stream object to its publically 
+    // we reduce a stream object to its publically
     // safe information
 
     get_public_stream_details = stream => ({
@@ -81,12 +88,15 @@ module.exports = MUX_TOKEN => {
 
 
   // we return the mux object for use elsewhere
-  
+
   return {
+    livestream_options,
+    get_asset,
     create_livestream,
     get_livestream,
     get_start_time,
     get_public_stream_details,
+    get_playback_id
   }
 
 }

@@ -74,11 +74,9 @@ export default {
       ?.allowEmoji
     ,
 
-    emoji_groups : ( state, getters ) =>
-      getters
-      .current_event
-      ?.emoji_groups
-    ,
+    emoji_groups : ( state, getters ) => {
+      return getters.current_event?.emoji_groups
+    },
 
     get_emoji : ( state, getters ) => ( group, emoji ) => {
       if ( group == '__DEFAULT__' ) {

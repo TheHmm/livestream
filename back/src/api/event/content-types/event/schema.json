@@ -37,26 +37,10 @@
     "info": {
       "type": "richtext"
     },
-    "logo": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images"
-      ]
-    },
     "accent": {
       "type": "string",
       "default": "hsl(240, 100%, 50%)",
       "regex": "[Hh][Ss][Ll][\\(](((([\\d]{1,3}|[\\d\\%]{2,4})[\\,]{0,1})[\\s]*){3})[\\)]"
-    },
-    "showViewerCount": {
-      "type": "enumeration",
-      "enum": [
-        "no",
-        "number",
-        "dots"
-      ]
     },
     "highlightDonateButton": {
       "type": "boolean",
@@ -89,14 +73,15 @@
       "target": "api::emoji-group.emoji-group",
       "inversedBy": "events"
     },
-    "recording": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::mux-video-uploader.mux-asset"
-    },
     "allowEmoji": {
       "type": "boolean",
       "default": true
+    },
+    "count": {
+      "type": "integer"
+    },
+    "recording": {
+      "type": "json"
     }
   }
 }

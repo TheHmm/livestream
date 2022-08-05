@@ -2,11 +2,13 @@ const random_animal_name = require("random-anonymous-animals")
 
 module.exports = {
 
-  // '*/3 * * * * *': async ({ strapi }) => { // testing , every 3 seconds
-  '0 0 * * *': async ({ strapi }) => { // every day at midnight
+  // '*/10 * * * * *': async ({ strapi }) => { // dev: every 3 seconds
+  '36 16 * * *': async ({ strapi }) => { // dev: every day at midnight
+  // '0 0 * * *': async ({ strapi }) => { // prod: every day at midnight
 
     await viewer_anonymization( strapi )
-    // await event_post_processor( strapi )
+    await event_post_processor( strapi )
+    // await put_transcript_vocab( strapi )
 
 
   },
@@ -53,6 +55,67 @@ async function viewer_anonymization( strapi ) {
 
 async function event_post_processor( strapi ) {
 
+
+  const now = new Date()
+  const livestream_service = strapi.service('api::livestream.livestream')
+  const event_service = strapi.service('api::event.event')
+
+  try {
+
+    const { privateData: livestream   } = await livestream_service.find()
+
+    const { results: events } = await event_service.find({
+      pagination: {
+        start: 0,
+        limit: 500,
+      },
+      sort: 'starts:desc',
+    })
+
+    for ( let i = 0; i < events.length; i++ ) {
+
+      const event      = events[i]
+      const is_last    = i == 0
+      const is_in_past = new Date( event.ends ) < now
+
+      if ( is_last ) {
+        if ( is_in_past ) {
+
+          if ( !event.count ) {
+            event.count = get_max_count( strapi )
+          }
+
+          const event_asset_id = get_most_recent_asset_id( livestream )
+
+          if ( event_asset_id ) {
+            try {
+              const event_asset = await strapi.mux.get_asset( event_asset_id )
+              const playback_id = strapi.mux.get_playback_id( event_asset )
+              if ( !event.recording ) {
+                event.recording = {
+                  asset_id: event_asset_id,
+                  playback_id: playback_id,
+                }
+              }
+            } catch ( err ) {
+              err.asset_id = event_asset_id
+              console.error(err)
+            }
+
+          }
+
+        }
+      }
+
+      // await event_service.update( event.id , { data: event } )
+    }
+
+
+
+  } catch ( error ) {
+    throw error
+  }
+
   // get events from strapi
   // for event in events {
     // if event is last {
@@ -80,4 +143,29 @@ async function event_post_processor( strapi ) {
 
 
 
+}
+
+
+function get_max_count( strapi ) {
+  let count
+  if ( strapi.io.counts.length ) {
+    count = Math.max.apply( null, strapi.io.counts )
+    strapi.io.counts.length = 0
+  }
+  return count
+}
+
+
+function get_most_recent_asset_id ( livestream ) {
+  let most_recent_asset
+  const {
+    active_asset_id,
+    recent_asset_ids
+  } = livestream
+  if ( active_asset_id ) {
+    most_recent_asset = active_asset_id
+  } else if ( recent_asset_ids && recent_asset_ids.length ) {
+    most_recent_asset = recent_asset_ids[ recent_asset_ids.length - 1 ]
+  }
+  return most_recent_asset
 }

@@ -26,10 +26,6 @@
       "allowedTypes": [
         "audios"
       ]
-    },
-    "fly": {
-      "type": "boolean",
-      "default": false
     }
   }
 }

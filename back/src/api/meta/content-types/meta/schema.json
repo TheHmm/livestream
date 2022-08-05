@@ -12,32 +12,13 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "metaTitle": {
-      "type": "string",
-      "required": true
-    },
-    "metaDescription": {
-      "type": "text",
-      "required": true
-    },
     "about": {
       "type": "richtext",
       "required": true
     },
-    "logo": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images"
-      ]
-    },
     "pageNotFoundText": {
       "type": "richtext",
       "required": true
-    },
-    "donateText": {
-      "type": "string"
     },
     "defaultMarquee": {
       "type": "richtext"
@@ -45,8 +26,11 @@
     "censorMessage": {
       "type": "richtext"
     },
-    "CodeOfConduct": {
-      "type": "richtext"
+    "transcription_vocabulary": {
+      "displayName": "phrase",
+      "type": "component",
+      "repeatable": true,
+      "component": "phrases.phrase"
     }
   }
 }

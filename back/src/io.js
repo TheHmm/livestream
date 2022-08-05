@@ -22,16 +22,17 @@ module.exports = server => {
 
   // Dirty method to log the # of connected sockets
   // We save the count to an array of counts for reference.
+  // this array is emptied in the cron job.
 
-  // io.counts = []
+  io.counts = []
 
   io.count = socket => {
     const count = socket.client.conn.server.clientsCount
-    // io.counts.push( count )
+    io.counts.push( count )
     return count
   }
 
-  // We create a an array to hold connected viewers' 
+  // We create a an array to hold connected viewers'
   // uuids and attach methods to add/rm uuid.
 
   io.uuids = []
@@ -41,7 +42,7 @@ module.exports = server => {
       io.uuids.push( uuid )
     }
   }
-    
+
   io.rm_uuid = uuid => {
     if ( io.uuids.indexOf( uuid ) > -1 ) {
       io.uuids.splice( io.uuids.indexOf( uuid ), 1 )

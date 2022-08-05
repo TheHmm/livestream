@@ -39,9 +39,6 @@
       "target": "api::event.event",
       "mappedBy": "viewers"
     },
-    "ip": {
-      "type": "string"
-    },
     "expires": {
       "type": "datetime"
     }
