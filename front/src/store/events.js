@@ -244,42 +244,50 @@ function sanitize ( event, rootGetters, dispatch ) {
 
   // When is it ?
 
-  event.is = {
-    in_past   : () => $time.is_in_past( event.ends ),
-    in_future : () => $time.is_in_future( event.starts ),
-    soon      : () => $time.is_soon( event.starts ),
-  }
+  // event.is = {
+  //   in_past   : () => $time.is_in_past( event.ends ),
+  //   in_future : () => $time.is_in_future( event.starts ),
+  //   soon      : () => $time.is_soon( event.starts ),
+  // }
 
-  // (1) soon: map to current livestream in store
-  // (2) past: return recording of old stream
-  // (3) else: return null; stream doesn't exist
+  // // (1) soon: map to current livestream in store
+  // // (2) past: return recording of old stream
+  // // (3) else: return null; stream doesn't exist
+
+  // event.livestream = () => {
+  //   // this is a function returning a value!
+  //   if ( event.is.in_past() ) {
+  //     const
+  //       playbackId = event.recording?.data?.playback_id,
+  //       status = playbackId && 'active' || 'idle'
+  //     return { playbackId, status }
+  //   } else {
+  //     return rootGetters[ 'livestream/get_livestream' ]
+  //   }
+  // }
+
 
   event.livestream = () => {
     // this is a function returning a value!
-    if ( event.is.in_past() ) {
-      const
-        playbackId = event.recording?.data?.playback_id,
-        status = playbackId && 'active' || 'idle'
-      return { playbackId, status }
+    if ( event.livestream ) {
+      return event.livestream
     } else {
       return rootGetters[ 'livestream/get_livestream' ]
     }
   }
 
+
   // If the event is having a livestream then it
   // should also have a cover.
 
-  // event.cover = () => {
-  //   if ( event.livestream()?.playbackId ) {
-  //     return livestream.mux.thumb_src(
-  //       event.livestream().playbackId,
-  //       10
-  //     )
-  //   } else {
-  //     return null
-  //   }
-  // }
-  // console.log(event.slug, event.recording, event.livestream(), event.cover() )
+  if ( event.livestream()?.status == 'ready' ) {
+    event.cover = livestream.mux.thumb_src(
+      event.livestream().playbackId,
+      10
+    )
+  }
+
+  console.log(event.cover)
 
   return event
 }

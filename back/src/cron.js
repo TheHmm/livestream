@@ -3,13 +3,18 @@ const random_animal_name = require("random-anonymous-animals")
 module.exports = {
 
   // '*/10 * * * * *': async ({ strapi }) => { // dev: every 3 seconds
-  '25 19 * * *': async ({ strapi }) => { // dev: every day at midnight
+  '45 19 * * *': async ({ strapi }) => { // dev: every day at midnight
   // '0 0 * * *': async ({ strapi }) => { // prod: every day at midnight
+
+    strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
+    strapi.log.info(`[ * * * NIGHTLY CRON JOB STARTING * * * ]`)
+    strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
 
     await viewer_anonymization( strapi )
     await event_post_processor( strapi )
-    await put_transcript_vocab( strapi )
+    await cc_vocabulary_update( strapi )
 
+    strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
 
   },
 
@@ -19,6 +24,8 @@ module.exports = {
 
 
 async function viewer_anonymization( strapi ) {
+
+  strapi.log.info(`[ * => VIEWER ANONYMIZATION * * * * * * ]`)
 
   const now = new Date()
   const viewer_service = strapi.service('api::viewer.viewer')
@@ -36,14 +43,16 @@ async function viewer_anonymization( strapi ) {
       }
     })
 
-    console.log(viewers)
-
-    for ( const { id } of viewers ) {
+    for ( const { name, id } of viewers ) {
+      const new_name = random_animal_name()
+      strapi.log.info(`[ * ${ name } -> ${ new_name }`)
       await viewer_service.update( id, { data: {
-        name : random_animal_name(),
+        name : new_name,
         expires : null
       } } )
     }
+
+    strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
 
   } catch ( error ) {
     throw error
@@ -53,7 +62,11 @@ async function viewer_anonymization( strapi ) {
 
 
 
+
+
 async function event_post_processor( strapi ) {
+
+  strapi.log.info(`[ * => EVENT POST PROCESSOR * * * * * * ]`)
 
   const now = new Date()
   const livestream_service = strapi.service('api::livestream.livestream')
@@ -83,17 +96,22 @@ async function event_post_processor( strapi ) {
 
       if ( is_last && is_in_past ) {
 
+        strapi.log.info(`[ * Processing event: ${ event.title }`)
+
         if ( !event.count ) {
           event.count = get_max_count( strapi )
+          strapi.log.info(`[ * Count: ${ event.count }`)
         }
 
         const asset_id = most_recent_asset_id( livestream.privateData )
+        strapi.log.info(`[ * Asset ID: ${ asset_id }`)
 
         if ( asset_id ) {
           try {
             const asset = await strapi.mux.get_asset( asset_id )
             if ( !event.livestream ) {
               event.livestream = strapi.mux.get_public_asset_details( asset )
+              strapi.log.info(`[ * Playback ID: ${ event.livestream.playbackId }`)
             }
           } catch ( err ) {
             err.asset_id = asset_id
@@ -108,6 +126,8 @@ async function event_post_processor( strapi ) {
 
     }
 
+    strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
+
   } catch ( error ) {
     throw error
   }
@@ -116,8 +136,9 @@ async function event_post_processor( strapi ) {
 
 
 
-async function put_transcript_vocab ( strapi ) {
-
+async function cc_vocabulary_update ( strapi ) {
+  strapi.log.info(`[ * => CC VOCABULARY UPDATE * * * * * * ]`)
+  strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
 }
 
 
