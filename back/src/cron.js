@@ -3,12 +3,12 @@ const random_animal_name = require("random-anonymous-animals")
 module.exports = {
 
   // '*/10 * * * * *': async ({ strapi }) => { // dev: every 3 seconds
-  '36 17 * * *': async ({ strapi }) => { // dev: every day at midnight
+  '21 19 * * *': async ({ strapi }) => { // dev: every day at midnight
   // '0 0 * * *': async ({ strapi }) => { // prod: every day at midnight
 
     await viewer_anonymization( strapi )
     await event_post_processor( strapi )
-    // await put_transcript_vocab( strapi )
+    await put_transcript_vocab( strapi )
 
 
   },
@@ -55,7 +55,6 @@ async function viewer_anonymization( strapi ) {
 
 async function event_post_processor( strapi ) {
 
-
   const now = new Date()
   const livestream_service = strapi.service('api::livestream.livestream')
   const event_service = strapi.service('api::event.event')
@@ -82,67 +81,42 @@ async function event_post_processor( strapi ) {
       const is_last    = i == 0
       const is_in_past = new Date( event.ends ) <= now
 
-      if ( is_last ) {
-        if ( is_in_past ) {
+      if ( is_last && is_in_past ) {
 
-          if ( !event.count ) {
-            event.count = get_max_count( strapi )
-          }
+        if ( !event.count ) {
+          event.count = get_max_count( strapi )
+        }
 
-          const asset_id = most_recent_asset_id( livestream.privateData )
+        const asset_id = most_recent_asset_id( livestream.privateData )
 
-          if ( asset_id ) {
-            try {
-              const asset = await strapi.mux.get_asset( asset_id )
-              if ( !event.livestream ) {
-                console.log(asset)
-                event.livestream = strapi.mux.get_public_asset_details( asset )
-              }
-            } catch ( err ) {
-              err.asset_id = asset_id
-              console.error(err)
+        if ( asset_id ) {
+          try {
+            const asset = await strapi.mux.get_asset( asset_id )
+            if ( !event.livestream ) {
+              event.livestream = strapi.mux.get_public_asset_details( asset )
             }
-
+          } catch ( err ) {
+            err.asset_id = asset_id
+            console.error(err)
           }
 
         }
+
+        await event_service.update( event.id , { data: event } )
+
       }
 
-      await event_service.update( event.id , { data: event } )
     }
-
-
 
   } catch ( error ) {
     throw error
   }
 
-  // get events from strapi
-  // for event in events {
-    // if event is last {
-      // if event is in past {
-        // if no event count {
-          // get viewer count from strapi
-          // set count to event object
-          // update event in strapi
-          // clear count in strapi
-        // }
-        // if no event recording {
-          // get livestream asset id from strapi
-          // request mux recording
-          // request mux srt file
-          // set recoring and srt to event in strapi
-        // }
-      // } else if event is in future {
-          // get livestream from strapi
-          // set event livestream
-          // update event in strapi
-      // }
-    // }
-  // }
+}
 
 
 
+async function put_transcript_vocab ( strapi ) {
 
 }
 
