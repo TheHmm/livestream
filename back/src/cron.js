@@ -3,7 +3,7 @@ const random_animal_name = require("random-anonymous-animals")
 module.exports = {
 
   // '*/10 * * * * *': async ({ strapi }) => { // dev: every 3 seconds
-  '02 17 * * *': async ({ strapi }) => { // dev: every day at midnight
+  '19 17 * * *': async ({ strapi }) => { // dev: every day at midnight
   // '0 0 * * *': async ({ strapi }) => { // prod: every day at midnight
 
     await viewer_anonymization( strapi )
@@ -64,6 +64,10 @@ async function event_post_processor( strapi ) {
 
     const livestream = await livestream_service.find()
 
+    if ( !livestream.publicData ) {
+      return
+    }
+
     const { results: events } = await event_service.find({
       pagination: {
         start: 0,
@@ -76,7 +80,7 @@ async function event_post_processor( strapi ) {
 
       const event      = events[i]
       const is_last    = i == 0
-      const is_in_past = new Date( event.ends ) < now
+      const is_in_past = new Date( event.ends ) <= now
 
       if ( is_last ) {
         if ( is_in_past ) {
@@ -85,16 +89,16 @@ async function event_post_processor( strapi ) {
             event.count = get_max_count( strapi )
           }
 
-          const event_asset_id = get_most_recent_asset_id( livestream.privateData )
+          const asset_id = most_recent_asset_id( livestream.privateData )
 
-          if ( event_asset_id ) {
+          if ( asset_id ) {
             try {
-              const event_asset = await strapi.mux.get_asset( event_asset_id )
+              const asset = await strapi.mux.get_asset( asset_id )
               if ( !event.livestream ) {
-                event.livestream = event_asset
+                event.livestream = asset
               }
             } catch ( err ) {
-              err.asset_id = event_asset_id
+              err.asset_id = asset_id
               console.error(err)
             }
 
@@ -152,7 +156,7 @@ function get_max_count( strapi ) {
 }
 
 
-function get_most_recent_asset_id ( livestream ) {
+function most_recent_asset_id ( livestream ) {
   let most_recent_asset
   const {
     active_asset_id,
