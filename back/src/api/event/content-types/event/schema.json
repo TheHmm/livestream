@@ -80,7 +80,7 @@
     "count": {
       "type": "integer"
     },
-    "asset": {
+    "livestream": {
       "type": "json"
     }
   }

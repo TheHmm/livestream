@@ -3,7 +3,7 @@ const random_animal_name = require("random-anonymous-animals")
 module.exports = {
 
   // '*/10 * * * * *': async ({ strapi }) => { // dev: every 3 seconds
-  '42 16 * * *': async ({ strapi }) => { // dev: every day at midnight
+  '02 17 * * *': async ({ strapi }) => { // dev: every day at midnight
   // '0 0 * * *': async ({ strapi }) => { // prod: every day at midnight
 
     await viewer_anonymization( strapi )
@@ -62,7 +62,7 @@ async function event_post_processor( strapi ) {
 
   try {
 
-    const { privateData: livestream   } = await livestream_service.find()
+    const livestream = await livestream_service.find()
 
     const { results: events } = await event_service.find({
       pagination: {
@@ -85,17 +85,13 @@ async function event_post_processor( strapi ) {
             event.count = get_max_count( strapi )
           }
 
-          const event_asset_id = get_most_recent_asset_id( livestream )
+          const event_asset_id = get_most_recent_asset_id( livestream.privateData )
 
           if ( event_asset_id ) {
             try {
               const event_asset = await strapi.mux.get_asset( event_asset_id )
-              const playback_id = strapi.mux.get_playback_id( event_asset )
-              if ( !event.asset ) {
-                event.asset = {
-                  asset_id: event_asset_id,
-                  playback_id: playback_id,
-                }
+              if ( !event.livestream ) {
+                event.livestream = event_asset
               }
             } catch ( err ) {
               err.asset_id = event_asset_id
