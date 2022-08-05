@@ -107,7 +107,7 @@ async function event_post_processor( strapi ) {
         }
       }
 
-      // await event_service.update( event.id , { data: event } )
+      await event_service.update( event.id , { data: event } )
     }
 
 
