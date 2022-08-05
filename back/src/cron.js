@@ -3,7 +3,7 @@ const random_animal_name = require("random-anonymous-animals")
 module.exports = {
 
   // '*/10 * * * * *': async ({ strapi }) => { // dev: every 3 seconds
-  '30 17 * * *': async ({ strapi }) => { // dev: every day at midnight
+  '33 17 * * *': async ({ strapi }) => { // dev: every day at midnight
   // '0 0 * * *': async ({ strapi }) => { // prod: every day at midnight
 
     await viewer_anonymization( strapi )
@@ -95,6 +95,7 @@ async function event_post_processor( strapi ) {
             try {
               const asset = await strapi.mux.get_asset( asset_id )
               if ( !event.livestream ) {
+                console.log(asset)
                 event.livestream = strapi.mux.get_public_asset_details( asset )
               }
             } catch ( err ) {
