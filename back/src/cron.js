@@ -91,8 +91,8 @@ async function event_post_processor( strapi ) {
             try {
               const event_asset = await strapi.mux.get_asset( event_asset_id )
               const playback_id = strapi.mux.get_playback_id( event_asset )
-              if ( !event.recording ) {
-                event.recording = {
+              if ( !event.asset ) {
+                event.asset = {
                   asset_id: event_asset_id,
                   playback_id: playback_id,
                 }
