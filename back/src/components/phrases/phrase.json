@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_phrases_phrases",
+  "info": {
+    "displayName": "phrase",
+    "icon": "microphone"
+  },
+  "options": {},
+  "attributes": {
+    "phrase": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
