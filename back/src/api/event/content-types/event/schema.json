@@ -80,7 +80,7 @@
     "count": {
       "type": "integer"
     },
-    "recording": {
+    "asset": {
       "type": "json"
     }
   }
