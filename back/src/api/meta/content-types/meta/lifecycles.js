@@ -26,7 +26,7 @@ const
         event.params.data.transcription_vocabulary_id = result.id
 
         const livestream = await update_livestream_with_transcription_vocabulary_id(
-          transcription_vocabulary_id,
+          result.id,
           strapi
         )
       }
