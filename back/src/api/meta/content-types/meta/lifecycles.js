@@ -22,7 +22,6 @@ const
           { name, phrases },
           strapi
         )
-        console.log(result.id)
         event.params.data.transcription_vocabulary_id = result.id
 
         const livestream = await update_livestream_with_transcription_vocabulary_id(
@@ -55,6 +54,7 @@ const
 
   update_livestream_with_transcription_vocabulary_id = async ( transcription_vocabulary_id, strapi ) => {
     let { privateData: livestream } = await strapi.service('api::livestream.livestream').find()
+    console.log(livestream.generated_subtitles.transcription_vocabulary_ids)
     if (
       !livestream.
       generated_subtitles?.
