@@ -30,7 +30,12 @@
       "displayName": "phrase",
       "type": "component",
       "repeatable": true,
-      "component": "phrases.phrase"
+      "component": "phrases.phrase",
+      "private": true
+    },
+    "transcription_vocabulary_id": {
+      "type": "string",
+      "private": true
     }
   }
 }

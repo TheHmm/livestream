@@ -6,6 +6,8 @@
 // connection to the socket server.
 
 // import Announcements from '@/components/Header/Announcements/index.vue'
+import _throw           from '@/router/throw'
+
 
 export default {
 

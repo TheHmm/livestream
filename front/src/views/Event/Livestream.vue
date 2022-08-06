@@ -10,7 +10,7 @@ import Chat                     from '@/components/Chat/index.vue'
 // which as a minified bundle, is still larger than all files
 // in this project combined.
 
-const Player = defineAsyncComponent(() => 
+const Player = defineAsyncComponent(() =>
   import('@/components/Livestream/Player/index.vue')
 )
 
@@ -34,16 +34,16 @@ export default {
   },
 
 
-  // The livestream property of the event is attached to it 
-  // during API response sanitization in the store. It can 
-  // return a static object or refer to the livestream entry  
+  // The livestream property of the event is attached to it
+  // during API response sanitization in the store. It can
+  // return a static object or refer to the livestream entry
   // in the store. Please refer to: @/store/events/sanitize
 
-  computed : {  
+  computed : {
     livestream()  { return this.event.livestream() },
     playback_id() { return this.livestream.playbackId },
     status()      { return this.livestream.status },
-    active()      { return this.status == 'active' }, 
+    active()      { return this.status == 'active' },
   },
 
 
@@ -51,28 +51,28 @@ export default {
 
 </script>
 
-  
+
 <template>
 
-  
+
     <Info
       :event="event"
       :status="status"
     />
     <Player
-      v-if="playback_id && active"
+      v-if="playback_id && ( active || ready )"
       :livestream="livestream"
     />
-    <Status 
+    <Status
       v-else
       :status="status"
-    /> 
-    <Chat 
-      :event="event"  
+    />
+    <Chat
+      :event="event"
     />
 
-  
-</template> 
+
+</template>
 
 
 <style scoped>

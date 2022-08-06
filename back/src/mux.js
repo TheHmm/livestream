@@ -37,9 +37,15 @@ module.exports = MUX_TOKEN => {
     // method for creating a livestream with MUX api
 
     create_livestream = async () => {
-      return await Video
-        .LiveStreams
-        .create( livestream_options )
+      return await Video.LiveStreams.create( livestream_options )
+    },
+
+    update_livestream = async ( id, options ) => {
+      return await Video.LiveStreams.update( id, options )
+    },
+
+    update_livestream_generated_subtitles = async ( id, options ) => {
+      return await Video.LiveStreams.updateGeneratedSubtitles( id, options )
     },
 
 
@@ -92,7 +98,15 @@ module.exports = MUX_TOKEN => {
       start_time : new Date( asset.recording_times[0].started_at ).getTime(),
       tracks     : asset.tracks,
       duration   : asset.duration
-    })
+    }),
+
+    create_transcription_vocabularies = async ({ name, phrases }) => {
+      return await Video.TranscriptionVocabularies.create({ name, phrases })
+    },
+
+    update_transcription_vocabularies = async ( id, { phrases } ) => {
+      return await Video.TranscriptionVocabularies.update( id, { phrases } )
+    }
 
 
   // we return the mux object for use elsewhere
@@ -101,10 +115,14 @@ module.exports = MUX_TOKEN => {
     livestream_options,
     get_asset,
     create_livestream,
+    update_livestream,
+    update_livestream_generated_subtitles,
     get_livestream,
     get_start_time,
     get_public_stream_details,
     get_public_asset_details,
+    create_transcription_vocabularies,
+    update_transcription_vocabularies
   }
 
 }

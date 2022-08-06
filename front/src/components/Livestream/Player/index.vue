@@ -166,7 +166,7 @@ export default {
 
     <Unmute
       v-if="show_unmute"
-    @click="$store.commit( 'meta/SET_MUTED', false )"       
+      @click="$store.commit( 'meta/SET_MUTED', false )"
     />
 
     <video

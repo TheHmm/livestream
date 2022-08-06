@@ -1,6 +1,7 @@
 import api from "../api"
 import color from '@/utils/color'
 import $time from '@/utils/time'
+import livestream from '@/utils/livestream'
 import router from '@/router'
 
 export default {
@@ -266,28 +267,22 @@ function sanitize ( event, rootGetters, dispatch ) {
   //   }
   // }
 
+  const found_stream = Object.assign( {}, event.livestream )
 
-  event.livestream = () => {
-    // this is a function returning a value!
-    if ( event.livestream ) {
-      return event.livestream
-    } else {
-      return rootGetters[ 'livestream/get_livestream' ]
+  if ( found_stream ) {
+    event.livestream = () => found_stream
+    if ( found_stream.status == 'ready' ) {
+      event.cover = livestream.mux.thumb_src( found_stream.playbackId, 10 )
+      const captions = found_stream.tracks.find( t => {
+        return t.type == 'text' && t.text_source == 'generated_live_final'
+      })
+      if ( captions ) {
+        console.log(captions)
+      }
     }
+  } else {
+    event.livestream = () => rootGetters[ 'livestream/get_livestream' ]
   }
-
-
-  // If the event is having a livestream then it
-  // should also have a cover.
-
-  if ( event.livestream()?.status == 'ready' ) {
-    event.cover = livestream.mux.thumb_src(
-      event.livestream().playbackId,
-      10
-    )
-  }
-
-  console.log(event.cover)
 
   return event
 }

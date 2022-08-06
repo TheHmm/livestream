@@ -43,10 +43,8 @@ export default {
           'starts',
           'accent',
           'info',
+          'livestream'
         ],
-        populate: [
-          'recording'
-        ]
       } } )
       .then( result => resolve( result.data.data ) )
       .catch( error => {

@@ -44,6 +44,7 @@ export default {
     playback_id() { return this.livestream?.playbackId },
     status()      { return this.livestream?.status },
     active()      { return this.status == 'active' },
+    ready()       { return this.status == 'ready' },
   },
 
 
@@ -60,7 +61,7 @@ export default {
       :status="status"
     />
     <Player
-      v-if="playback_id && active"
+      v-if="playback_id && ( active || ready )"
       :livestream="livestream"
     />
     <Status
