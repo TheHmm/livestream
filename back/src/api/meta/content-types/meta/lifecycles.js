@@ -16,18 +16,21 @@ const
       const name    = 'The Hmm Transcription Vocabulary'
       const phrases = [ ...new Set( transcription_vocabulary.map( p => p.phrase ) )]
 
-      const result = await create_or_update_transcription_vocabulary(
-        transcription_vocabulary_id,
-        { name, phrases },
-        strapi
-      )
-      console.log(result.id)
-      event.params.data.transcription_vocabulary_id = result.id
+      if ( phrases.length ) {
+        const result = await create_or_update_transcription_vocabulary(
+          transcription_vocabulary_id,
+          { name, phrases },
+          strapi
+        )
+        console.log(result.id)
+        event.params.data.transcription_vocabulary_id = result.id
 
-      const livestream = await update_livestream_with_transcription_vocabulary_id(
-        transcription_vocabulary_id,
-        strapi
-      )
+        const livestream = await update_livestream_with_transcription_vocabulary_id(
+          transcription_vocabulary_id,
+          strapi
+        )
+      }
+
 
     } catch ( error ) {
       console.log(error)
@@ -40,14 +43,12 @@ const
 
   create_or_update_transcription_vocabulary = async ( id, { name, phrases }, strapi ) => {
     let result
-    if ( phrases.length ) {
-      if ( id ) {
-        result = await strapi.mux.update_transcription_vocabularies( id, { name, phrases } )
-      } else {
-        result = await strapi.mux.create_transcription_vocabularies( { name, phrases } )
-      }
-      strapi.log.info(`[ * UPDATED TRANSCRIPTION VOCABULARIES * ]`)
+    if ( id ) {
+      result = await strapi.mux.update_transcription_vocabularies( id, { name, phrases } )
+    } else {
+      result = await strapi.mux.create_transcription_vocabularies( { name, phrases } )
     }
+    strapi.log.info(`[ * UPDATED TRANSCRIPTION VOCABULARIES * ]`)
     return result
   },
 
