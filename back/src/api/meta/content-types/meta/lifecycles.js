@@ -39,7 +39,7 @@ const
 
 
   create_or_update_transcription_vocabulary = async ( id, { name, phrases }, strapi ) => {
-    let result = []
+    let result
     if ( phrases.length ) {
       if ( id ) {
         result = await strapi.mux.update_transcription_vocabularies( id, { name, phrases } )
