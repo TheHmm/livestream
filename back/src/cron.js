@@ -3,7 +3,7 @@ const random_animal_name = require("random-anonymous-animals")
 module.exports = {
 
   // '*/10 * * * * *': async ({ strapi }) => { // dev: every 3 seconds
-  '58 14 * * *': async ({ strapi }) => { // dev: every day at midnight
+  '00 15 * * *': async ({ strapi }) => { // dev: every day at midnight
   // '0 0 * * *': async ({ strapi }) => { // prod: every day at midnight
 
     strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
@@ -130,6 +130,9 @@ async function event_post_processor( strapi, now ) {
         start: 0,
         limit: 500,
       },
+      populate: [
+        'viewers'
+      ],
       sort: 'starts:desc',
     })
 
