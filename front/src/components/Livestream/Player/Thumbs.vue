@@ -35,17 +35,17 @@ export default {
   },
 
   computed: {
-    playback_id() { 
-      return this.livestream.playbackId 
+    playback_id() {
+      return this.livestream.playbackId
     },
     time_format() {
-      return this.$time.dur_format( this.curr_time * 1000  ) 
+      return this.$time.dur_format( this.curr_time * 1000 )
     },
     playing() {
       return this.interval !== null
     }
-    
-  },  
+
+  },
 
   created() {
     this.play()
@@ -86,7 +86,7 @@ export default {
     image_src( data ) {
       return window.URL.createObjectURL( data )
     },
-    
+
     get_cur_time() {
       return mux.get_cur_time( this.livestream )
     },
@@ -101,7 +101,7 @@ export default {
   <div
     :id="$id()"
     aria-label="thumbnail player"
-  > 
+  >
     <section
       v-if="image_data"
     >
@@ -114,7 +114,7 @@ export default {
         />
         <div class="desc">
           <p>
-            ↪ <a 
+            ↪ <a
                 target="blank"
                 :title="`Thumbnail of livestream at ${ time_format }`"
                 :href="url"
@@ -138,11 +138,12 @@ export default {
     >
       <span>Loading...</span>
     </section>
-    <Captions 
+    <Captions
       v-if="desires_captions"
       :playing="playing"
+      :livestream="livestream"
       :native="false"
-    />      
+    />
   </div>
 
 </template>

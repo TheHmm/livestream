@@ -5,7 +5,7 @@
     "singularName": "emoji-group",
     "pluralName": "emoji-groups",
     "displayName": "emojiGroup",
-    "description": ""
+    "description": "Groups of emojis that can be used together and linked in an event."
   },
   "options": {
     "draftAndPublish": true

@@ -23,7 +23,7 @@ export default {
     muted            : Boolean,
     desires_captions : Boolean,
   },
- 
+
   data() {
     return {
       hls      : null,
@@ -34,8 +34,8 @@ export default {
   },
 
   computed: {
-    playback_id() { 
-      return this.livestream.playbackId 
+    playback_id() {
+      return this.livestream.playbackId
     },
     stream_start() {
       return this.livestream.start_time
@@ -43,11 +43,11 @@ export default {
     source_url() {
       return mux.source_url( this.playback_id, this.mode.name )
     },
-  }, 
-  
+  },
+
   watch: {
     async mode( new_mode, old_mode ) {
-      if ( old_mode.video && new_mode.video && this.hls ) { 
+      if ( old_mode.video && new_mode.video && this.hls ) {
         this.hls.currentLevel = new_mode.id
       } else if ( !this.updating ) {
         this.destroy()
@@ -108,7 +108,7 @@ export default {
     levels_to_modes( levels ) {
       for ( let id = 0; id < levels.length; id ++ ) {
         this.$store.dispatch(
-          'livestream/create_mode_from_hls_level', 
+          'livestream/create_mode_from_hls_level',
           { ...levels[id], id }
         )
       }
@@ -117,7 +117,7 @@ export default {
     init_stream_monitor( events ) {
       networking.watchers.stream_monitor.init( this.hls, events )
     },
-    
+
 
   }
 
@@ -136,9 +136,10 @@ export default {
     crossorigin="anonymous"
     :src="source_url"
   >
-    <Captions 
+    <Captions
       v-if="desires_captions && captions_ready"
       :hls="hls"
+      :livestream="livestream"
       :stream_start="stream_start"
     />
   </video>

@@ -5,7 +5,7 @@
     "singularName": "livestream",
     "pluralName": "livestreams",
     "displayName": "livestream",
-    "description": ""
+    "description": "The current MUX livestream object."
   },
   "options": {
     "draftAndPublish": false

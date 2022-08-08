@@ -5,7 +5,7 @@
     "singularName": "announcement",
     "pluralName": "announcements",
     "displayName": "announcement",
-    "description": ""
+    "description": "Annunncements that show up on the top-left corner of the website."
   },
   "options": {
     "draftAndPublish": true

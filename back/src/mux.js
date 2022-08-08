@@ -18,23 +18,29 @@ module.exports = MUX_TOKEN => {
     // our livestream options
 
     livestream_options  = {
-      playback_policy    : 'public',
-      reconnect_window   : 30,
-      new_asset_settings : {
-        playback_policy  : 'public',
-        mp4_support      : 'standard',
+      playback_policy     : 'public',
+      reconnect_window    : 30,
+      new_asset_settings  : {
+        playback_policy   : 'public',
+        mp4_support       : 'standard',
       },
-      generated_subtitles: [
-        {
-          name: "English CC (auto)",
-          passthrough: "English closed captions (auto-generated)",
-          language_code: "en"
-        }
-      ],
+      generated_subtitles : [{
+        name          : "English CC (auto)",
+        passthrough   : "English closed captions (auto-generated)",
+        language_code : "en"
+      }],
     },
 
 
-    // method for creating a livestream with MUX api
+    // MUX API proxy fuctions
+
+    get_livestream = async id => {
+      return await Video.LiveStreams.get( id )
+    }
+
+    get_asset = async id => {
+      return await Video.Assets.get( id )
+    }
 
     create_livestream = async () => {
       return await Video.LiveStreams.create( livestream_options )
@@ -48,19 +54,13 @@ module.exports = MUX_TOKEN => {
       return await Video.LiveStreams.updateGeneratedSubtitles( id, options )
     },
 
+    create_transcription_vocabularies = async ({ name, phrases }) => {
+      return await Video.TranscriptionVocabularies.create({ name, phrases })
+    },
 
-    // function to get livestream with MUX api
-
-    get_livestream = async id => {
-      return await Video.LiveStreams.get( id )
-    }
-
-
-    // function to get livestream with MUX api
-
-    get_asset = async id => {
-      return await Video.Assets.get( id )
-    }
+    update_transcription_vocabularies = async ( id, { phrases } ) => {
+      return await Video.TranscriptionVocabularies.update( id, { phrases } )
+    },
 
 
     // lazy way of getting a stream's playback id
@@ -92,37 +92,32 @@ module.exports = MUX_TOKEN => {
       subtitles       : stream.generated_subtitles,
     }),
 
+
+    // we reduce an asset obejct to its publically safe info
+
     get_public_asset_details = asset => ({
       status     : asset.status,
       playbackId : get_playback_id( asset ),
       start_time : new Date( asset.recording_times[0].started_at ).getTime(),
       tracks     : asset.tracks,
       duration   : asset.duration
-    }),
-
-    create_transcription_vocabularies = async ({ name, phrases }) => {
-      return await Video.TranscriptionVocabularies.create({ name, phrases })
-    },
-
-    update_transcription_vocabularies = async ( id, { phrases } ) => {
-      return await Video.TranscriptionVocabularies.update( id, { phrases } )
-    }
+    })
 
 
   // we return the mux object for use elsewhere
 
   return {
     livestream_options,
+    get_livestream,
     get_asset,
     create_livestream,
     update_livestream,
     update_livestream_generated_subtitles,
-    get_livestream,
+    create_transcription_vocabularies,
+    update_transcription_vocabularies,
     get_start_time,
     get_public_stream_details,
     get_public_asset_details,
-    create_transcription_vocabularies,
-    update_transcription_vocabularies
   }
 
 }

@@ -126,6 +126,11 @@ export default {
     },
 
 
+    set_CC ( { commit }, cc ) {
+      commit( 'SET_CC', cc )
+    },
+
+
     // Receiving livestream updates from Strapi via the custom
     // Socket server and committing the changes to store.
 

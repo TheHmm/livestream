@@ -18,23 +18,21 @@ import networking     from './networking'
 import {
   $log,               // custom logger
   $time,              // handy date/time functions
-  $id,                // generate id / class from comp namee
+  $id,                // generate id / class from comp name
   $md,                // markdown parser
   $mdi,               // inline markdown parser
 } from './utils'
 
-const
 
+// We log default config to console
+// & instantiate socket cient
+// & instantiate networking scripts
+// & create vue app
 
-  // We log default config to console
-  // & instantiate socket cient
-  // & instantiate networking scripts
-  // & create vue app
-
-  intro = $log.intro( config ),
-  io    = socket.io( config.socket_url, { autoConnect: false } ),
-  net   = networking.init( axios, io ),
-  app   = createApp( App )
+$log.intro( config )
+const io = socket.io( config.socket_url, { autoConnect: false } )
+networking.init( axios, io )
+const app = createApp( App )
 
 
 // We register extensions and mount app.

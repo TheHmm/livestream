@@ -2,8 +2,8 @@
 
 import Marquee                  from './Marquee.vue'
 import Banner                   from './Banner.vue'
+import Network                  from './Network.vue'
 import Viewers                  from './Viewers/index.vue'
-import Network from '../Footer/Network.vue'
 
 export default {
 
@@ -24,7 +24,7 @@ export default {
   <header aria-label="banner, viewers & announcements">
     <Marquee />
     <Banner />
-    <!-- <Network /> -->
+    <Network />
     <Viewers />
   </header>
 </template>
@@ -42,6 +42,13 @@ header .marquee {
 
 header #viewers {
   z-index          : 1;
+}
+
+header >>> #network {
+  position: absolute;
+  top: calc(var(--marquee-height) + 1rem);
+  right: 1rem;
+  --fore: var(--accent);
 }
 
 

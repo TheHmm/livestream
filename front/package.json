@@ -18,11 +18,13 @@
     "qs": "^6.10.3",
     "socket.io-client": "^4.4.1",
     "uuid": "^8.3.2",
+    "vtt.js": "^0.13.0",
     "vue": "^3.2.29",
     "vue-meta": "^3.0.0-alpha.7",
     "vue-router": "^4.0.12",
     "vue-socket.io-extended": "^5.0.0-alpha.5",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "webvtt-parser": "^2.1.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.1.0",

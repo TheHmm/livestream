@@ -7,8 +7,9 @@ export default {
   name: 'Captions',
 
   props: {
-    hls          : Object,
-    playing      : Boolean,
+    hls        : Object,
+    playing    : Boolean,
+    livestream : Object,
   },
 
   computed: {
@@ -17,6 +18,10 @@ export default {
       'cc_interim',
       'cc',
     ] ),
+
+    active() {
+      return this.livestream.status == 'active'
+    }
 
   },
 
@@ -62,7 +67,9 @@ export default {
       if ( this.hls ) {
         this.hls.subtitleTrack = 0
       } else {
-        this.$socket.client.emit('join_CC_room')
+        if ( this.active ) {
+          this.$socket.client.emit('join_CC_room')
+        }
       }
     },
 
@@ -70,7 +77,9 @@ export default {
       if ( this.hls ) {
         this.hls.subtitleTrack = -1
       } else {
-        this.$socket.client.emit('leave_CC_room')
+        if ( this.active ) {
+          this.$socket.client.emit('leave_CC_room')
+        }
       }
     },
 

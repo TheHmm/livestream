@@ -1,7 +1,6 @@
 <script>
 
 import Options from './Options/index.vue'
-import Network from './Network.vue'
 
 export default {
   name: 'Footer',
@@ -10,7 +9,6 @@ export default {
   },
   components: {
     Options,
-    Network,
   },
 }
 </script>
@@ -23,7 +21,6 @@ export default {
     <Options
       :desired_tabs="desired_tabs"
     />
-    <Network />
   </footer>
 </template>
 
@@ -41,13 +38,6 @@ footer {
   align-items      : flex-end;
   z-index          : 2;
 }
-
-footer >>> #network {
-  margin           : 0.2rem var(--size-s);
-  margin-right     : auto;
-}
-
-
 
 .mobile footer {
   padding          : 0;

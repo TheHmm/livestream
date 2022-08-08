@@ -5,7 +5,7 @@
     "singularName": "event",
     "pluralName": "events",
     "displayName": "event",
-    "description": ""
+    "description": "The Hmm livestream events"
   },
   "options": {
     "draftAndPublish": true

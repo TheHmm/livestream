@@ -98,189 +98,61 @@ module.exports = {
     strapi.io     = io
 
 
+    // Our livestream initialization.
 
-    // Our main livestream initialization function.
-
-    const initialize = async () => {
-
-      let
-        found,
-        livestream
+    let
+      found,
+      livestream
 
 
-      // First we get the 'livestream' entry from Strapi.
-      // This entry will contain these two JSON feilds:
-      // (1) privateData: livestream that we create with MUX
-      // (2) publicData: a public-safe version of it
+    // First we get the 'livestream' entry from Strapi.
+    // This entry will contain these two JSON feilds:
+    // (1) privateData: livestream that we create with MUX
+    // (2) publicData: a public-safe version of it
 
-      try {
-        found = await
-        strapi
-        .service( 'api::livestream.livestream' )
-        .find()
-
-
-        // If the entry has already been created before, then
-        // pull the livestream ID and request from the MUX API
-        // the latest information about the stream.
-
-        const id = found ?.privateData ?.id
-
-        if ( id ) {
-          strapi.log.info( 'Found existing livestream.' )
-          livestream = await mux.get_livestream( id )
+    try {
+      found = await
+      strapi
+      .service( 'api::livestream.livestream' )
+      .find()
 
 
-        // Else, we request from the MUX API to create a new
-        // livestream, using the options that we defined in the
-        // 'mux.js' module.
+      // If the entry has already been created before, then
+      // pull the livestream ID and request from the MUX API
+      // the latest information about the stream.
 
-        } else {
-          strapi.log.info( 'Requesting new livestream.' )
-          livestream = await mux.create_livestream()
-        }
+      const id = found ?.privateData ?.id
 
-
-        // Then, we update the 'livestream' entry in Strapi
-        // with the new or updated livestream object.
-
-        return await
-          strapi
-          .service( 'api::livestream.livestream' )
-          .createOrUpdate({
-            data: { livestream }
-          })
+      if ( id ) {
+        strapi.log.info( 'Found existing livestream.' )
+        livestream = await mux.get_livestream( id )
 
 
-      // It's possible something went wrong with MUX or
-      // Strapi. We return here.
+      // Else, we request from the MUX API to create a new
+      // livestream, using the options that we defined in the
+      // 'mux.js' module.
 
-      } catch ( error ) {
-        throw error
+      } else {
+        strapi.log.info( 'Requesting new livestream.' )
+        livestream = await mux.create_livestream()
       }
 
+
+      // Then, we update the 'livestream' entry in Strapi
+      // with the new or updated livestream object.
+
+      return await
+        strapi
+        .service( 'api::livestream.livestream' )
+        .createOrUpdate({ data: { livestream } })
+
+
+    // It's possible something went wrong with MUX or
+    // Strapi. We return here.
+
+    } catch ( error ) {
+      throw error
     }
-
-
-
-    let cc  = []
-
-    io.on('connection', socket => {
-
-      let uuid // soocket's uuid, client generated.
-
-
-      // We log the number of connected sockets.
-
-      strapi.log.info(`[ USER COUNT: ${ io.count( socket ) } ]`)
-
-
-      // When a socket connect for the first time, we send
-      // it our array of connected sockets' uuids.
-
-      socket.emit( 'viewers', io.uuids )
-
-
-      // When a socket sends us the viewer event, it will
-      // only contain the socket's uuid and its connected
-      // status. We save the uuid to our array and inform
-      // the rest. Note: io.emit( 'viewer' ) is also called
-      // in the viewers after create/update hooks.
-
-      socket.on( 'viewer', viewer => {
-        if ( viewer.uuid ) {
-          uuid = viewer.uuid
-          io.add_uuid( uuid )
-          io.emit( 'viewer', {
-            uuid,
-            connected: true
-          })
-        }
-      })
-
-
-      // Emoji proxy :]
-
-      socket.on( 'emoji', emoji => {
-        io.emit( 'emoji', emoji )
-      })
-
-
-      // When a viewer disconnect, we remove their uuid
-      // from our array of connected viewers' uuids and
-      // inform the rest.
-
-
-      socket.on('disconnect', () => {
-        strapi.log.info(`[ USER COUNT: ${ io.count( socket ) } ]`)
-        io.rm_uuid( uuid )
-        io.emit( 'viewer', {
-          uuid,
-          connected: false,
-        })
-      })
-
-
-      // There is a socket room for closed captions: "cc".
-      // Marco's OBS Setup: Marco is creating captions in his
-      // browser with the tool: @/misc/cc. He opens the page,
-      // pipes the livestream audio OBS into it as his "mic"
-      // input and it uses the Google Voice Recognition API to
-      // transform audio into captions.
-
-      // The webpage is subscribed to the 'cc' socket room.
-      // It produces captions locally and sends them here.
-
-      // Viewers joining 'cc' room will get the captions that
-      // have been previously recorded.
-
-      socket.on('join_CC_room', () => {
-        socket.join('cc')
-        socket.emit('confirm_join_CC', cc)
-      })
-
-      socket.on('leave_CC_room', () => {
-        socket.leave( 'cc' )
-        socket.emit( 'confirm_leave_CC' )
-      })
-
-
-      // An 'interim' (raw) caption event is only interesting
-      // for the viewers in 'cc' room; they see the captions
-      // update in real time.
-
-      socket.on('interm', caption => {
-        io.to( 'cc' ).emit('interm', caption )
-      })
-
-
-      // A 'final' caption event contains a finalized caption
-      // as well as an updated srt file. The caption is for
-      // the 'cc' room and the srt is for the 'srt' room.
-
-      socket.on('final', caption => {
-        cc.push( caption )
-        io.to( 'cc' ).emit( 'final', caption )
-      })
-
-
-      // This is so that Marco can clear the icrememnting cc
-      // array when the livestream is over.
-
-      socket.on('clear_CC', () => {
-        cc = []
-        io.to( 'cc' ).emit( 'clear_CC', cc )
-      })
-
-
-
-    })
-
-
-
-
-
-    await initialize()
 
 
   },

@@ -5,7 +5,7 @@
     "singularName": "message",
     "pluralName": "messages",
     "displayName": "message",
-    "description": ""
+    "description": "Chat messages"
   },
   "options": {
     "draftAndPublish": false

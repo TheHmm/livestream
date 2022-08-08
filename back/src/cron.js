@@ -236,8 +236,6 @@ async function event_post_processor( strapi, now ) {
 
     }
 
-    strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
-
   } catch ( error ) {
     throw error
   }
@@ -246,6 +244,19 @@ async function event_post_processor( strapi, now ) {
 
 
 
+
+
+
+
+
+/**
+ * Gets highest count of concurrent socket connections saved
+ * in the strapi io.counts array and clears the array. Should
+ * run at most once a day.
+ *
+ * @param { object } strapi strapi instance
+ * @returns highest count of conncurrent sockets for the day.
+ */
 
 function get_max_count( strapi ) {
   let count
@@ -256,6 +267,19 @@ function get_max_count( strapi ) {
   return count
 }
 
+
+
+
+
+
+
+/**
+ * Dirty way of getting the most recent asset attached to the
+ * current livestream in strapi.
+ *
+ * @param { object } livestream livestream object in strapi
+ * @returns most recent MUX asset for that livestream
+ */
 
 function most_recent_asset_id ( livestream ) {
   let most_recent_asset

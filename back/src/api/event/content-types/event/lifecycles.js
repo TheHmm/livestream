@@ -42,13 +42,6 @@ module.exports = {
     diff.slug = slug
 
 
-    // move /front/src/api/events/sanitize to here
-
-
-
-
-
-
     // If the update was meant to trigger a one off func
     // in the front end (e.g. highlighting donate button)
     // we switch it back off in Strapi.
@@ -58,7 +51,8 @@ module.exports = {
     }
 
 
-    // console.log( diff )
+    // We inform connected sockets.
+
     strapi.io.emit( 'event_update', diff )
 
 

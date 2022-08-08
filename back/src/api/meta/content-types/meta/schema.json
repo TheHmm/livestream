@@ -5,7 +5,7 @@
     "singularName": "meta",
     "pluralName": "metas",
     "displayName": "Meta",
-    "description": ""
+    "description": "All meta stuff happens here."
   },
   "options": {
     "draftAndPublish": false
@@ -16,15 +16,14 @@
       "type": "richtext",
       "required": true
     },
-    "pageNotFoundText": {
+    "defaultMarquee": {
       "type": "richtext",
       "required": true
     },
-    "defaultMarquee": {
-      "type": "richtext"
-    },
     "censorMessage": {
-      "type": "richtext"
+      "type": "richtext",
+      "required": true
+
     },
     "transcription_vocabulary": {
       "displayName": "phrase",

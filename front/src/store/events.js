@@ -2,6 +2,7 @@ import api from "../api"
 import color from '@/utils/color'
 import $time from '@/utils/time'
 import livestream from '@/utils/livestream'
+import captions from '@/utils/captions'
 import router from '@/router'
 
 export default {
@@ -221,8 +222,6 @@ function sanitize ( event, rootGetters, dispatch ) {
     event.accent = color.hsl_to_css_vars(event.accent)
   }
 
-  // console.log( event )
-
   if ( event.emoji_groups?.data ) {
     event.emoji_groups.data.map( g => {
       g.emoji.map( e => e.image = e.image?.data )
@@ -243,46 +242,40 @@ function sanitize ( event, rootGetters, dispatch ) {
     }, 5 * 1000)
   }
 
-  // When is it ?
+  // We search for the event livestream. In Strapi, all events
+  // that have happened in the past have a MUX asset as their
+  // livestream. And any events that are going to happen in
+  // the future will not have a defined livestream field; and
+  // should point to the ongoing strapi livestream.
 
-  // event.is = {
-  //   in_past   : () => $time.is_in_past( event.ends ),
-  //   in_future : () => $time.is_in_future( event.starts ),
-  //   soon      : () => $time.is_soon( event.starts ),
-  // }
+  const asset = Object.assign( {}, event.livestream )
 
-  // // (1) soon: map to current livestream in store
-  // // (2) past: return recording of old stream
-  // // (3) else: return null; stream doesn't exist
-
-  // event.livestream = () => {
-  //   // this is a function returning a value!
-  //   if ( event.is.in_past() ) {
-  //     const
-  //       playbackId = event.recording?.data?.playback_id,
-  //       status = playbackId && 'active' || 'idle'
-  //     return { playbackId, status }
-  //   } else {
-  //     return rootGetters[ 'livestream/get_livestream' ]
-  //   }
-  // }
-
-  const found_stream = Object.assign( {}, event.livestream )
-
-  if ( found_stream ) {
-    event.livestream = () => found_stream
-    if ( found_stream.status == 'ready' ) {
-      event.cover = livestream.mux.thumb_src( found_stream.playbackId, 10 )
-      const captions = found_stream.tracks.find( t => {
-        return t.type == 'text' && t.text_source == 'generated_live_final'
-      })
-      if ( captions ) {
-        console.log(captions)
-      }
+  if ( asset ) {
+    event.livestream = () => asset
+    if ( asset.status == 'ready' ) {
+      event.cover = livestream.mux.thumb_src( asset.playbackId, 10 )
+      get_and_set_cc( asset, dispatch )
     }
   } else {
     event.livestream = () => rootGetters[ 'livestream/get_livestream' ]
   }
 
   return event
+}
+
+
+function get_and_set_cc( asset, dispatch ) {
+  const text_track = asset.tracks.find( t => {
+    return t.type == 'text' && t.text_source == 'generated_live_final'
+  })
+  if ( text_track ) {
+    const cc_url = livestream.mux.text_src( asset.playbackId, text_track.id )
+    api.get( cc_url )
+    .then( ({ data }) => dispatch(
+      'livestream/set_CC',
+      captions.parse_vtt( data ),
+      { root: true }
+    ))
+    .catch( err => console.error( err ) )
+  }
 }
