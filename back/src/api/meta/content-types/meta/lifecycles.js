@@ -108,7 +108,7 @@ const
   // Check if our livestream is currently configured with a
   // certain vocabulary id.
 
-  livestream_has_vocabulary_id = async ( stream, id ) => {
+  livestream_has_vocabulary_id = ( stream, id ) => {
     return (
       id &&
       stream &&
