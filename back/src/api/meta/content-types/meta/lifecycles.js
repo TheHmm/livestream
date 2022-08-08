@@ -90,6 +90,8 @@ const
 
   update_livestream_with_vocabulary_id = async ( id ) => {
     const { privateData } = await strapi.service('api::livestream.livestream').find()
+    console.log(privateData)
+    console.log(livestream_has_vocabulary_id( privateData, id ) , !livestream_has_vocabulary_id( privateData, id ) )
     if ( !livestream_has_vocabulary_id( privateData, id ) ) {
       strapi.log.warn( 'Livestream will be updated with vocabulary ID.' )
       const { generated_subtitles } = strapi.mux.livestream_options
