@@ -16,7 +16,6 @@ const
 
 
   // Custom MUX livestream making interface
-  //
 
   before_create_or_update_handler = async event => {
 

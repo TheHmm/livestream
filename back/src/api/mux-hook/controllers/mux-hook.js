@@ -24,22 +24,22 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       data  = event.data
 
 
-    // Order of MUX events from the moment Marco starts streaming:
+    // Order of MUX events from when Marco starts streaming:
     // 1. video.live_stream.connected
     // 2. video.asset.created
     // 3. video.live_stream.recording
-    // 4. video.asset.ready                   => we process this
-    // 5. video.live_stream.active            => we process this
+    // 4. video.asset.ready              => we process this
+    // 5. video.live_stream.active       => we process this
 
-    // Then, Marco click 'Stop Streaming', the ensuing events are:
+    // Then Marco clicks 'Stop Streaming' & the events are:
     // 7. video.live_stream.disconnected
-    // 8. video.live_stream.idle              => we process this
-    // 9. video.asset.live_stream_completed
+    // 8. video.live_stream.idle         => we process this
 
-    // From here on we are only interested in events 4, 5, and 8.
-    // We stop here if the event is of any other type are other.
-
-    // console.log(type, data)
+    // From here on we are only interested in events 4, 5,
+    // and 8. We stop here if the event is of any other type.
+    // A last event type we want is "updated" to account for
+    // livestream updates that happen such as a change in
+    // transcription vocabulary ids.
 
     if (
       type !== 'video.asset.ready' &&
@@ -59,21 +59,11 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
     try {
 
-      const livestream = (
+      const { privateData: livestream } = (
         await strapi
         .service( 'api::livestream.livestream' )
         .find()
-      ).privateData
-
-
-      // We create a timeout that will be different for the
-      // different event types. This is because the two events
-      // asset.ready and stream.active are sometimes being called
-      // a bit too close together and strapi doesn't have time
-      // to update twice the livestream entry twice, resulting in
-      // there not being a start_time.
-
-      let timeout = 0
+      )
 
 
       // We proess the event video.asset.ready, which contains
@@ -94,7 +84,6 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
         livestream.status     = 'active'
         livestream.start_time = strapi.mux.get_start_time( data )
-        // timeout = 5 * 1000
 
 
       // We proccess the livestream.active and livestream.idle
@@ -117,13 +106,11 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
       // Finally, we update the 'livestream' entry in Strapi
       // with this new information.
 
-      setTimeout( async  () => {
-        await strapi
-        .service( 'api::livestream.livestream' )
-        .createOrUpdate({
-          data: { livestream }
-        })
-      }, timeout)
+      await strapi
+      .service( 'api::livestream.livestream' )
+      .createOrUpdate({
+        data: { livestream }
+      })
 
     } catch ( error ) {
       return strapi.log.error( error )

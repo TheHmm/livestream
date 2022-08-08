@@ -32,7 +32,7 @@ module.exports = MUX_TOKEN => {
     },
 
 
-    // MUX API proxy fuctions
+    // MUX API proxy functions
 
     get_livestream = async id => {
       return await Video.LiveStreams.get( id )

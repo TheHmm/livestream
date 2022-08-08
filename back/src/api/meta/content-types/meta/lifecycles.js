@@ -87,6 +87,9 @@ const
 
   // We inform MUX that our livestream will be using this
   // transcription vocabulary, only if it doesnt know yet.
+  // Note that we don't update the livestream entry in our
+  // strapi, that's cus it's automatically done through mux
+  // hooks (live_stream.updated event).
 
   update_livestream_with_vocabulary_id = async ( id ) => {
     const { privateData } = await strapi.service('api::livestream.livestream').find()

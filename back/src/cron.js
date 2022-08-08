@@ -2,9 +2,10 @@ const random_animal_name = require("random-anonymous-animals")
 
 module.exports = {
 
-  // '*/10 * * * * *': async ({ strapi }) => { // dev: every 3 seconds
-  '26 15 * * *': async ({ strapi }) => { // dev: every day at midnight
-  // '0 0 * * *': async ({ strapi }) => { // prod: every day at midnight
+  // '*/10 * * * * *': async ({ strapi }) => {
+  '03 15 * * *': async ({ strapi }) => {
+
+  // '0 0 * * *': async ({ strapi }) => { // every day at midnight
 
     strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
     strapi.log.info(`[ * * * NIGHTLY CRON JOB STARTING * * * ]`)
@@ -93,6 +94,7 @@ async function viewer_anonymization( strapi, now ) {
 
 
 
+
 /**
  * Iterates over all past events from Strapi, sets the event
  * viewer count and the appropriate livestream asset.
@@ -116,8 +118,18 @@ async function event_post_processor( strapi, now ) {
     // If this is not yet defined then we stop here as it's
     // not important to run this function.
 
-    const livestream = await livestream_service.find()
-    if ( !livestream.publicData ) { return }
+    const { privateData: livestream } = await livestream_service.find()
+
+    if ( !livestream ) {
+      return
+    }
+
+
+    // Then we get the current max number of connected socks
+    // from strapi and clear the array, meaning this function
+    // will return undefined if called again on this day.
+
+    const current_max_count = get_max_count( strapi )
 
 
     // We get all our past events from strapi in descending
@@ -148,12 +160,12 @@ async function event_post_processor( strapi, now ) {
 
     for ( let i = 0; i < events.length; i++ ) {
 
-      const event   = events[i]
       const is_last = i == 0
-
-      let changed
+      const event   = events[i]
 
       strapi.log.info(`[ * Processing event: ${ event.title }`)
+
+      let changed
 
 
       // Processing last event.
@@ -161,12 +173,12 @@ async function event_post_processor( strapi, now ) {
       if ( is_last ) {
 
 
-        // We get the max count of connect socks from strapi,
-        // and clear it. In case there is none, we go for the
+        // We set the event count to the current max_count
+        // from Strapi. In case there is none, we go for the
         // viewers array length.
 
         if ( !event.count ) {
-          event.count = get_max_count( strapi ) || event.viewers.length
+          event.count = current_max_count || event.viewers.length
           strapi.log.info(`[ * Count: ${ event.count }`)
           changed = true
         }
@@ -176,11 +188,12 @@ async function event_post_processor( strapi, now ) {
         // object in Strapi. This is likely the asset of the
         // most recent event that took place. We try and get
         // the asset details from MUX and set them to the event
-        // recording data. This officially marks our event is
-        // recorded.
+        // recording data. This officially marks our event as
+        // recorded, since the status of the asset will be
+        // "ready" as opposed to "active" or "idle".
 
         if ( !event.livestream ) {
-          const asset_id = most_recent_asset_id( livestream.privateData )
+          const asset_id = most_recent_asset_id( livestream )
           strapi.log.info(`[ * Asset ID: ${ asset_id }`)
           if ( asset_id ) {
             try {
@@ -229,7 +242,6 @@ async function event_post_processor( strapi, now ) {
 
       if ( changed ) {
         await event_service.update( event.id , { data: event } )
-        changed = false
       }
 
       strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
