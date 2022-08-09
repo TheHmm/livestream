@@ -12,7 +12,7 @@
     computed: {
       title()     { return this.event?.title },
       slug()      { return this.event?.slug },
-      starts()    { return this.event?.starts && this.$time.short_date( this.event.starts )},
+      starts()    { return this.event?.starts && this.$time.short_date_format( this.event.starts )},
       accent()    { return this.event?.accent },
       info()      { return this.event?.info },
     },

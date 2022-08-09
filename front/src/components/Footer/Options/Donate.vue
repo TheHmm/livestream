@@ -35,22 +35,22 @@ export default {
     // our API, we redirect the user to the Mollie client
     // potal to conduct the payment with window.open(...)
 
-    async donate( e ) { 
+    async donate( e ) {
       e.preventDefault()
       console.log(this.website)
       if ( this.website !== null ) {
         return
       }
       try {
-        const 
+        const
           payment = await api.meta.donate({
             amount      : this.selected,
             description : this.donations[this.selected],
-            from        : this.$route.params.slug
+            from        : this.$route.params.slug || '/'
           }),
           checkout = payment._links?.checkout?.href
         // window.open( checkout )
-        window.location.href = checkout 
+        window.location.href = checkout
       } catch ( err ) {
         console.error(err)
       }
@@ -68,25 +68,25 @@ export default {
 
 
 <template>
-  <form 
+  <form
     :onsubmit="donate"
     @keyup.esc="selected = null"
   >
 
     <ul role="menu">
-      <li 
+      <li
         v-for="( label, amount ) in donations"
         :key="amount"
         :style="{ '--url': `url(@/assets/icons/donate-${id( amount )}.svg)` }"
       >
-        <input 
+        <input
           type="radio"
-          :name="label" 
+          :name="label"
           :value="amount"
           :id="id( amount )"
           v-model="selected"
         />
-        <label 
+        <label
           :title="label"
           :for="id( amount ) "
         >
@@ -94,11 +94,11 @@ export default {
         </label>
       </li>
     </ul>
-    
+
     <Bot v-model="website" />
 
-    <input 
-      type="submit" 
+    <input
+      type="submit"
       :disabled="!selected"
       :title="`Donate ${ selected } to The Hmm`"
       value="Send"

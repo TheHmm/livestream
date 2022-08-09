@@ -1,92 +1,48 @@
-// import moment     from 'moment-timezone'
-import config     from "@/config"
+export default {
 
-const
 
-  BUFFER = config.events.TIME_BUFFER,
+  // Easily get time in ms of datetime stamp and time in ms
+  // of now.
 
-  now = () => new Date().getTime(),
+  time : timestring => ( new Date( timestring ) ).getTime(),
+  now  : () => new Date().getTime(),
 
-  time = timestring => ( new Date( timestring ) ).getTime(),
 
-  to_hours = ms => ms / 3600000,
+  // Formatterings
 
-  // human_format = time => moment
-  //   .tz( time, 'Europe/Amsterdam' )
-  //   .format( 'dddd DD MMMM [at] HH:mm z' ),
-
-  date_format = starts => (
-    new Date( starts )
-    .toLocaleString( 'en-GB', {
+  long_date_format : starts => {
+    return new Date( starts ).toLocaleString( 'en-GB', {
       year         : 'numeric',
       month        : 'long',
       day          : 'numeric',
       hour         : 'numeric',
       minute       : 'numeric',
       timeZoneName : 'short'
-      // timeZone  : 'CET',
-    } )
-  ),
+    })
+  }, // => 3 August 2022 at 12:36 CEST
 
-  short_date = starts => (
-    new Date( starts )
-    .toLocaleString( 'en-GB', {
+  short_date_format : starts => {
+    return new Date( starts ).toLocaleString( 'en-GB', {
       year         : 'numeric',
       month        : 'long',
       day          : 'numeric',
-    } )
-  ),
+    })
+  }, // => 30 June 2022
 
-  time_format = datetime => (
-    new Date( datetime )
-    .toLocaleString( 'en-GB', {
+  time_format : datetime => {
+    return new Date( datetime ).toLocaleString( 'en-GB', {
       hour         : 'numeric',
       minute       : 'numeric',
       second       : 'numeric',
-    } )
-  ),
+    })
+  }, // => 21:22:34
 
-  get_year =  timestamp => {
+  get_year :  timestamp => {
     return new Date( timestamp ).getFullYear()
-  },
+  }, // => 2022
 
-  dur_format = dur => (
-    new Date( dur )
-    .toISOString()
-    .slice(11,19)
-  ),
+  dur_format : dur => {
+    return new Date( dur ).toISOString().slice(11,19)
+  }  // => 13:09:49
 
-  // is_in_past   = timestring => time( timestring ) < now(),
-  is_in_past   = timestring => time( timestring ) < ( now() - BUFFER ),
-
-  is_in_future = timestring => time( timestring ) > now(),
-
-  is_soon      = timestring => (
-    time( timestring ) > now() &&
-    time( timestring ) < now() + BUFFER
-  ),
-
-  time_to_srt_stamp = time => {
-    const date = new Date( 0 )
-		date.setSeconds( time/1000 )
-		let stamp = date.toISOString().replace(".",",").replace("1970-01-01T","")
-		stamp = stamp.substring(0, stamp.length - 1)
-    console.log(stamp)
-    return stamp
-  }
-
-
-export default {
-  time,
-  now,
-  is_in_past,
-  is_in_future,
-  is_soon,
-  to_hours,
-  time_to_srt_stamp,
-  date_format,
-  short_date,
-  time_format,
-  get_year,
-  dur_format,
 }

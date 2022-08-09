@@ -1,5 +1,6 @@
 import json_sizer from 'json-size'
-import config     from '@/config'
+import consts     from './consts'
+import config     from "@/config"
 
 export const json_size = json_sizer
 
@@ -22,34 +23,24 @@ export const format_bytes = ( bytes, decimals = 3 ) => {
 // Gets the size in bytes of requests sent.
 
 export const get_bytes_sent = request => {
-
   const
-
-    HEADER_GAP = config.networking.header_gaps.requests,
+    HEADER_GAP = consts.header_gaps.requests,
     bytes_sent = json_size( request ) + HEADER_GAP
-
   return bytes_sent
-
 }
 
 
 // Gets the size in bytes of responses received.
 
 export const get_bytes_received = response => {
-
   const
-
-    HEADER_GAP     = config.networking.header_gaps.responses,
-
+    HEADER_GAP     = consts.header_gaps.responses,
     data           = response.data,
     headers        = response.headers,
-
     data_size      = +headers[ 'content-length' ] || data.length || 0,
     header_size    = json_size( headers ) - HEADER_GAP,
     bytes_received = data_size + header_size
-
   return bytes_received
-
 }
 
 export const which_server_is_it = url => (

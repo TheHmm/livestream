@@ -3,14 +3,14 @@ import Banner from '../components/Header/Banner.vue'
 
 // Page for people returning form their mollie donation
 // The event slug is passed to mollie through the redirect
-// URL, and can be re=accessed from the route query here.
+// URL, and can be re-accessed from the route query here.
 
-export default { 
+export default {
 
   name: "Donated" ,
 
-  components: { 
-    Banner 
+  components: {
+    Banner
   },
 
 }
@@ -24,9 +24,9 @@ export default {
       <p>Thank you for donating to the Hmm!</p>
       <p>
         <router-link :to="$route.query.from">
-          Return to stream.
+          Return.
         </router-link>
-      </p> 
+      </p>
     </section>
   </main>
 
@@ -34,7 +34,7 @@ export default {
 
 <style scoped>
 
-@import '@/assets/css/fallback.css';  
-  
+@import '@/assets/css/fallback.css';
+
 
 </style>

@@ -13,20 +13,16 @@ import watchers   from './watchers'
 
 // The chosen approach is to over-calculate
 
-const
-
-  init = ( axios, io ) => {
-
-    watchers.strapi_monitor.init( axios )
-    watchers.socket_monitor.init( io )
-    watchers.assets_monitor.init()
-
-  }
-
-
 export default {
+
   tools,
   methods,
   watchers,
-  init
+
+  init : ( axios, io ) => {
+    watchers.strapi_monitor.init( axios )
+    watchers.socket_monitor.init( io )
+    watchers.assets_monitor.init()
+  }
+
 }

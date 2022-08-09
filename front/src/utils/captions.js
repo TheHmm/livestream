@@ -1,4 +1,3 @@
-// import { WebVTT } from 'vtt.js'
 import { WebVTTParser } from 'webvtt-parser'
 
 export default {
@@ -27,7 +26,6 @@ export default {
   },
 
   parse_vtt: vtt => {
-    // const parser = new WebVTT.Parser(window)
     const parser = new WebVTTParser()
     const parsed = parser.parse( vtt )
     const cues = parsed.cues

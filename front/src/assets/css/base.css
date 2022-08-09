@@ -143,6 +143,13 @@
 }
 
 
+/* Relative positioning of rows and cells not supported */
+
+td, tr {
+  position         : unset;
+}
+
+
 /* Stripping document of browser styles and adding toni's:*/
 /* => body copy : 18px => 1.00rem */
 /* => interface : 24px => 1.33rem */

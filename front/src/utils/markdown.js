@@ -2,22 +2,23 @@ import { marked } from 'marked'
 import config     from "@/config"
 
 
+// Open external links in new tab :)
 // https://github.com/markedjs/marked/issues/655
-  
-const 
+
+const
   renderer      = new marked.Renderer(),
   link_renderer = renderer.link
 
 renderer.link = ( href, title, text ) => {
 
-  const 
+  const
     is_local = href.startsWith( `${location.protocol}//${location.hostname}` ),
     html     = link_renderer.call( renderer, href, title, text )
 
   return is_local ? html : html.replace(/^<a /, `
-    <a 
-      target="_blank" 
-      title="${ title || href }" 
+    <a
+      target="_blank"
+      title="${ title || href }"
       rel="noreferrer noopener nofollow"
     `
   )
@@ -29,7 +30,7 @@ config.md.renderer = renderer
 // Set default options of markdown parser.
 marked.setOptions( config.md )
 
-const 
+const
 
     $md  = marked.parse,
     $mdi = marked.parseInline

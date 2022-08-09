@@ -1,5 +1,5 @@
 import { Service } from 'axios-middleware'
-import config      from "@/config"
+import consts      from './consts'
 import * as tools  from "./tools"
 import methods     from './methods'
 
@@ -13,7 +13,6 @@ export default {
   strapi_monitor : {
 
     hooks : {
-
       on_request : request => {
         methods.report.bytes_sent({
           url   : request.url,
@@ -22,7 +21,6 @@ export default {
         })
         return request
       },
-
       on_response : response => {
         methods.report.bytes_received({
           url   : response.request.responseURL,
@@ -31,7 +29,6 @@ export default {
         })
         return response
       },
-
     },
 
     create( axios ) {
@@ -63,7 +60,6 @@ export default {
   socket_monitor : {
 
     hooks: {
-
       on_send: ( event, data, bytes ) => {
         methods.report.bytes_sent({
           url   : event,
@@ -71,7 +67,6 @@ export default {
           bytes : bytes || tools.json_size( data )
         })
       },
-
       on_receive: ( event, data, bytes ) => {
         methods.report.bytes_received({
           url   : event,
@@ -79,15 +74,13 @@ export default {
           bytes : bytes || tools.json_size( data )
         })
       },
-
       on_connect: () => {
         methods.report.bytes_received({
           url   : 'handshake',
           from  : 'sockets',
-          bytes : config.networking.socket.handshake_bytes
+          bytes : consts.socket.handshake_bytes
         })
       },
-
     },
 
     create( ) {
@@ -118,14 +111,12 @@ export default {
 
   stream_monitor : {
 
-
     hooks: {
-
       frag_loading: ( event, data ) => {
         methods.report.bytes_sent({
           url   : data.frag.baseurl,
           to    : 'mux',
-          bytes : config.networking.mux.request_bytes + data.frag.baseurl.length
+          bytes : consts.mux.request_bytes + data.frag.baseurl.length
         })
       },
       frag_loaded: ( event, data ) => {
@@ -135,7 +126,6 @@ export default {
           bytes : data.frag.stats.loaded
         })
       }
-
     },
 
     create( ) {

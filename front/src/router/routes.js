@@ -1,11 +1,12 @@
-import _throw from './throw'
-
 export default [
 
 
   // Defining our routes; note the route for '/:slug' :
   // it is meant to route to events based on their slug,
   // which are created in and fetched from Strapi.
+
+  // desired_tabs: the names of the footer tabs that this
+  // route displays.
 
   {
     path: '/',
@@ -24,6 +25,11 @@ export default [
     path: '/error',
     name: 'Error',
     component: () => import( '@/views/Fallback.vue' )
+  },
+  {
+    path: '/donated',
+    name: 'Donated',
+    component: () => import( '@/views/Donated.vue' ),
   },
   {
     path: '/:slug',
@@ -71,11 +77,6 @@ export default [
         component: () => import( '@/views/Event/Accent.vue' )
       }
     ]
-  },
-  {
-    path: '/donated',
-    name: 'Donated',
-    component: () => import( '@/views/Donated.vue' ),
   },
   {
     path: '/:pathMatch(.*)*',

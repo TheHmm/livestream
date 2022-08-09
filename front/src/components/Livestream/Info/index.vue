@@ -24,7 +24,7 @@ export default {
     soon()      { return this.event?.is.soon() },
     starts()    { return this.event?.starts },
     ends()      { return this.event?.ends },
-    timestamp() { return this.starts && this.$time.short_date( this.starts ) }
+    timestamp() { return this.starts && this.$time.short_date_format( this.starts ) }
 
   }
 

@@ -68,11 +68,6 @@ const
       typeof sourceBuffer.prototype.appendBuffer === 'function' &&
       typeof sourceBuffer.prototype.remove === 'function')
 
-    // console.log( 'mediaSource: ', mediaSource )
-    // console.log( 'sourceBuffer', sourceBuffer )
-    // console.log( 'isTypeSupported', isTypeSupported )
-    // console.log( 'sourceBufferValidAPI', sourceBufferValidAPI )
-
     return !!isTypeSupported && !!sourceBufferValidAPI
 
   }

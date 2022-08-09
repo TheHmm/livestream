@@ -16,39 +16,30 @@ import config         from './config'
 import networking     from './networking'
 
 import {
-  $log,               // custom logger
-  $time,              // handy date/time functions
-  $id,                // generate id / class from comp name
-  $md,                // markdown parser
-  $mdi,               // inline markdown parser
+  $log,            // custom logger
+  $time,           // handy date/time functions
+  $id,             // generate id / class from comp name
+  $md,             // markdown parser
+  $mdi,            // inline markdown parser
 } from './utils'
 
-
 // We log default config to console
-// & instantiate socket cient
-// & instantiate networking scripts
-// & create vue app
-
 $log.intro( config )
+
+// & instantiate socket cient
 const io = socket.io( config.socket_url, { autoConnect: false } )
+
+// & instantiate networking scripts
 networking.init( axios, io )
+
+// & create vue app
 const app = createApp( App )
 
+// & register extensions and mount app.
+app.config.globalProperties = { $log, $time, $id, $md, $mdi }
 
-// We register extensions and mount app.
+// & attach our extensions to our app
+app.use( store ).use( router ).use( VueSocketIOExt, io, { store } )
 
-app.config.globalProperties = {
-  $log,
-  $time,
-  $id,
-  $md,
-  $mdi,
-}
-
-
-app
-.use( store )
-.use( router )
-.use( VueSocketIOExt, io, { store } )
-
+// & finally mount after the router is ready
 router.isReady().then( () => app.mount( '#app' ) )

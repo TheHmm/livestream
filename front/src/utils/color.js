@@ -1,13 +1,13 @@
 
-const 
+const
 
   hsl_regwx = /^(?:hsl)?\(?(\d{1,3}),\s*(\d{1,3}%),\s*(\d{1,3}%)\)?$/,
 
   parse_hsl = hsl_string => {
     const bytes = hsl_regwx.exec( hsl_string )
     return {
-      h : parseFloat( bytes[1] ), 
-      s : parseFloat( bytes[2] ), 
+      h : parseFloat( bytes[1] ),
+      s : parseFloat( bytes[2] ),
       l : parseFloat( bytes[3] )
     }
   },

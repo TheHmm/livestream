@@ -270,7 +270,8 @@ function get_and_set_cc( asset, dispatch ) {
   })
   if ( text_track ) {
     const cc_url = livestream.mux.text_src( asset.playbackId, text_track.id )
-    api.get( cc_url )
+    api
+    .get( cc_url )
     .then( ({ data }) => dispatch(
       'livestream/set_CC',
       captions.parse_vtt( data ),
