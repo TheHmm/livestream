@@ -9,22 +9,11 @@ let current_event_id = null
 
 export default {
 
-
-  // get( time ) {
-  //   $log.info( `API`, `Fetching message ${ time }.` )
-  //   return new Promise( ( resolve, reject ) =>
-  //     axios
-  //     .get( `${ config.api_url }/messages`, { params: { time } } )
-  //     .then( result => resolve( result.data ) )
-  //     .catch( error => {
-  //       $log.error( 'API', error )
-  //       reject( error )
-  //     } )
-  //   )
-  // },
-
   get_by_event( event_id ) {
     $log.info( `API`, `Fetching messages.` )
+
+    // TODO
+
     if ( !current_event_id ) {
       current_event_id = event_id
     }

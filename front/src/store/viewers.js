@@ -1,51 +1,30 @@
 import { v4 as uuid } from 'uuid'
-import api from '@/api'
-import $log from '@/utils/log'
-import $time from '@/utils/time'
+import api            from '@/api'
+import $log           from '@/utils/log'
+import $time          from '@/utils/time'
 
 export default {
 
   namespaced: true,
 
+
+  // By the time the store is loaded, the current viewer's
+  // UUID must exist: it is eithrr pulled from storafe or
+  // created here on the spot.
+
   state: {
-
-    viewers : {},
-
-    uuid : localStorage.uuid || uuid(),
-
-    authenticated : false,
-
+    viewers              : {},
+    uuid                 : localStorage.uuid || uuid(),
+    authenticated        : false,
     request_registration : false,
-
   },
 
   mutations: {
-
-
-    SET_VIEWERS : ( state, viewers ) => {
-      state.viewers = viewers
-    },
-
-    SET_VIEWER : ( state, viewer ) => {
-      state.viewers[viewer.uuid] = viewer
-    },
-
-    // DELETE_VIEWER : ( state, viewer ) => {
-    //   delete state.viewers[viewer.uuid]
-    // },
-
-    SET_UUID : ( state, uuid ) => {
-      state.uuid = uuid
-    },
-
-    SET_AUTHENTICATED : ( state, authenticated ) => {
-      state.authenticated = authenticated
-    },
-
-    set_request_registration : ( state, request_registration ) => {
-      state.request_registration = request_registration
-    }
-
+    SET_VIEWERS              : ( state, viewers ) => { state.viewers = viewers },
+    SET_VIEWER               : ( state, viewer ) => { state.viewers[viewer.uuid] = viewer },
+    SET_UUID                 : ( state, uuid ) => { state.uuid = uuid },
+    SET_AUTHENTICATED        : ( state, authenticated ) => { state.authenticated = authenticated },
+    set_request_registration : ( state, val ) => { state.request_registration = val }
   },
 
   getters: {
@@ -59,19 +38,11 @@ export default {
     },
 
     connected_viewers : ( state, getters ) => {
-      return (
-        getters
-        .viewers_array
-        .filter( v => v.connected )
-      )
+      return getters.viewers_array.filter( v => v.connected )
     },
 
     count: ( state, getters ) => {
-      return (
-        getters
-        .connected_viewers
-        .length
-      )
+      return getters.connected_viewers.length
     },
 
     get_viewer : state => uuid => {
@@ -150,15 +121,14 @@ export default {
       }
 
 
-      // For the events relation, strapi is somes
-      // returinng ids an other s it objects. We
+      // For the events relation, strapi is sometimes
+      // returinng ids and other times it gives objects. We
       // normalize to ids : [ '1 , '2', '3', ... ]
 
       viewer.events = viewer.events?.data?.map( e => e.id ) || viewer.events
 
-
-
       commit( 'SET_VIEWER', viewer )
+
     },
 
 
@@ -180,7 +150,9 @@ export default {
     },
 
 
-    // Get viewers by event id.
+    // Get viewers by event id. If our current conection count
+    // is <= 1 ( only ourselves ), then we go ahead and fetch
+    // from strapi
 
     async get_viewers( { getters, dispatch }, event_id ) {
       if ( getters.count <= 1 ) {
@@ -216,13 +188,13 @@ export default {
       )
     },
 
+
     // Create a viewer.
 
     async create_viewer( { getters, dispatch }, { name, lifetime } ) {
-      const
-        uuid    = getters.uuid,
-        events  = [ getters.current_event_id ],
-        expires = lifetime === '' ? null : $time.now() + lifetime * 24 * 60 * 60 * 1000
+      const uuid    = getters.uuid
+      const events  = [ getters.current_event_id ]
+      const expires = lifetime === '' ? null : $time.now() + lifetime * 24 * 60 * 60 * 1000
       return new Promise( ( resolve, reject ) =>
         api
         .viewers
@@ -235,15 +207,17 @@ export default {
         .then( viewer => {
           dispatch( 'register', viewer )
           resolve( viewer )
-        } )
+        })
         .catch( error => reject( error ) )
       )
     },
 
+
+    // Update viewer
+
     async update_viewer( { getters, dispatch }, { name, lifetime } ) {
-      const
-        uuid    = getters.uuid,
-        expires = lifetime === '' ? null : $time.now() + lifetime * 24 * 60 * 60 * 1000
+      const uuid    = getters.uuid
+      const expires = lifetime === '' ? null : $time.now() + lifetime * 24 * 60 * 60 * 1000
       return new Promise( ( resolve, reject ) =>
         api
         .viewers
@@ -254,14 +228,14 @@ export default {
         })
         .then( viewer => {
           resolve( viewer )
-        } )
+        })
         .catch( error => reject( error ) )
       )
     },
 
 
-    // We check that a user exists before they are given
-    // access to sending messages.
+    // We check that a user exists in Strapi before they are
+    // given access to sending messages.
 
     async authenticate( { state, commit, getters, dispatch } ) {
 
@@ -349,6 +323,9 @@ export default {
     // time this is called is after the viewer has been
     // saved to the database.
 
+    // Else, uuid() is called on the next refresh and the
+    // current one is lost.
+
     register( { commit }, viewer ) {
       commit( 'SET_UUID', viewer.uuid )
       localStorage.uuid = viewer.uuid
@@ -368,6 +345,11 @@ export default {
     // After a user has connected to the socket server,
     // they are sent an array of UUIDs that correspond to
     // all the connected sockets.
+
+    // This is the sort of "outer circle" of connected viewers
+    // that also includes those not yet registered. It allows
+    // for sending / receiving emojis, feeling a vibe for how
+    // many people are there, even if silently.
 
     socket_viewers( { dispatch }, uuids ) {
       $log.info( 'SOCKET', `Got connected viewers ${ uuids.length }` )
@@ -397,14 +379,6 @@ export default {
         })
       }, 5000 )
     },
-
-    socket_disconnect( ) {
-      $log.info( 'SOCKET', 'disconnect' )
-    },
-
-    // socket_count({ commit }, count) {
-    //   commit('setCount', count)
-    // },
 
 
   }

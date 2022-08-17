@@ -1,5 +1,5 @@
 <script>
-import Emo from '../../Footer/Options/Emoji/Emo.vue'
+import Emo from '../../Footer/Emoji/Emo.vue'
 
 
 // Viewer dot, will mount an emoji if a user has made that
@@ -8,14 +8,8 @@ import Emo from '../../Footer/Options/Emoji/Emo.vue'
 export default {
 
   name: 'Viewer',
-
-  components: {
-    Emo
-  },
-
-  props: {
-    viewer: Object
-  },
+  components: { Emo },
+  props: { viewer: Object },
 
 
   // Clicking on a dot will make it shake
@@ -56,6 +50,7 @@ export default {
     :title="nick"
     :class="[ $id(), 'dot', { shaking, emoji } ]"
     :style="{ '--n': n }"
+    :aria-label="`Dot for viewer ${ name }`"
     tabindex="-1"
     @click="shake"
   >
@@ -63,6 +58,7 @@ export default {
       <Emo
         v-if="emoji"
         :emo="emoji"
+        :aria-label="`Emoji from viewer ${ name }`"
       />
     </transition>
   </div>

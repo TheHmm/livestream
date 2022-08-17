@@ -1,80 +1,62 @@
-import api from "../api"
-import color from '@/utils/color'
-import $time from '@/utils/time'
+import api        from "../api"
+import color      from '@/utils/color'
+import $time      from '@/utils/time'
 import livestream from '@/utils/livestream'
-import captions from '@/utils/captions'
-import router from '@/router'
+import captions   from '@/utils/captions'
+import router     from '@/router'
 
 export default {
-
 
   namespaced: true,
 
   state: {
-
     events: {}
-
   },
 
   mutations: {
-
     SET_EVENT  : ( state, event )  => {
       state.events[ event.slug ] = event
     },
-
   },
 
   getters: {
 
-    get_events : state =>
-      Object
-      .values( state.events )
-      .sort( ( a , b ) => {
+    get_events : state => {
+      return Object.values( state.events ).sort( ( a , b ) => {
         return new Date( a.starts ) > new Date( b.starts )
       })
-    ,
+    },
 
-    years : ( state, getters ) =>
-      [ ...new Set(
-      getters
-      .get_events
-      .map( e => $time.get_year( e.starts ) )
-      )]
-    ,
+    years : ( state, getters ) => {
+      return [ ...new Set( getters.get_events.map( e => {
+        return $time.get_year( e.starts )
+      }))]
+    },
 
-    get_event : state => slug =>
-      state
-      .events[ slug ]
-    ,
+    get_event : state => slug => {
+      return state.events[ slug ]
+    },
 
-    event_bv_id : ( state, getters ) => id =>
-      getters
-      .get_events
-      .find( e => e.id == id )
-    ,
+    event_bv_id : ( state, getters ) => id => {
+      return getters.get_events.find( e => e.id == id )
+    },
 
-    current_event : ( state, getters ) =>
-      getters
-      .get_event(
-        router
-        .currentRoute
-        ._value
-        .params
-        .slug
-      )
-    ,
+    current_event : ( state, getters ) => {
+      const id = router.currentRoute._value.params.slug
+      return getters.get_event( id )
+    },
 
-    current_event_id : ( state, getters ) =>
-      getters
-      .current_event
-      .id
-    ,
+    current_event_id : ( state, getters ) => {
+      return getters.current_event?.id
+    },
 
-    emoji_allowed : ( state, getters ) =>
-      getters
-      .current_event
-      ?.allowEmoji
-    ,
+    highlight_donate: ( state, getters ) => {
+      return getters.current_event?.highlightDonateButton
+    },
+
+    emoji_allowed : ( state, getters ) => {
+     return getters.current_event?.allowEmoji
+    },
 
     emoji_groups : ( state, getters ) => {
       return getters.current_event?.emoji_groups
@@ -92,18 +74,13 @@ export default {
       }
     },
 
-    get_event_slugs : state =>
-      Object
-      .keys( state.events )
-    ,
-
-    highlight_donate: ( state, getters ) =>
-      getters.current_event?.highlightDonateButton
-
   },
 
   actions: {
 
+
+    // Sanitize and commit set event. Called on every receipt
+    // of an event object ( either from API or socket )
 
     set_event( { commit, rootGetters, dispatch }, event ) {
       commit( 'SET_EVENT', sanitize( event, rootGetters, dispatch ) )
@@ -162,22 +139,18 @@ export default {
     // we fetch them.
 
     async get_events( { getters, dispatch } ) {
-
       const local_count = getters.get_events.length
       let remote_count
-
       try {
         remote_count = await dispatch( 'fetch_events_count' )
       } catch ( error ) {
         remote_count = local_count
       }
-
       if ( remote_count > local_count ) {
         return await dispatch( 'fetch_events' )
       } else {
         return getters.get_events
       }
-
     },
 
 
@@ -186,8 +159,12 @@ export default {
     // (e.g. for the event page), so we first check if
     // we have those details before calling fetch.
 
+    // Our control property here is the 'viewers' field, a
+    // relational field on the event strapi object that is
+    // not populated in the fetch_events() api call.
+
     async get_event( { getters, dispatch }, slug ) {
-      const event = getters.get_event(slug)
+      const event = getters.get_event( slug )
       if ( event && event.viewers ) {
         return event
       } else {
@@ -212,15 +189,18 @@ export default {
 
 
 // Sanitizing 'events' type received from Strapi.
-// Note that for each of these events, we add a
-// 'livestream' property that returns a different
-// object based on when the event is happening.
 
 function sanitize ( event, rootGetters, dispatch ) {
+
+
+  // Convert the HSL accent string to someething digestible
 
   if ( event.accent ) {
     event.accent = color.hsl_to_css_vars(event.accent)
   }
+
+
+  // Clean up dirty strapi component structure in response
 
   if ( event.emoji_groups?.data ) {
     event.emoji_groups.data.map( g => {
@@ -231,16 +211,20 @@ function sanitize ( event, rootGetters, dispatch ) {
     delete event.emoji_groups
   }
 
-  // Highlighting the donate tab
+
+  // Un/Highlighting the donate tab. This is done already in
+  // Strapi, but just doing it again artificially in the front
+  // end ensures no annoying jumping donate button.
 
   if ( event.highlightDonateButton === true ) {
     setTimeout(() => {
       dispatch( 'set_event', {
-        slug: event.slug,
-        highlightDonateButton: false,
+        slug : event.slug,
+        highlightDonateButton : false,
       })
     }, 5 * 1000)
   }
+
 
   // We search for the event livestream. In Strapi, all events
   // that have happened in the past have a MUX asset as their
@@ -263,6 +247,9 @@ function sanitize ( event, rootGetters, dispatch ) {
   return event
 }
 
+
+// Manually pulling the subtitle file of an asset if it even
+// exists and converting it to text for the transcript mode
 
 function get_and_set_cc( asset, dispatch ) {
   const text_track = asset.tracks.find( t => {

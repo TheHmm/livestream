@@ -1,12 +1,9 @@
 <script>
 
-import { mapState }     from 'vuex'
-import { mapMutations } from 'vuex'
-import _throw           from '@/router/throw'
-import Fallback         from '@/views/Fallback.vue'
-import Header           from '@/components/Header/index.vue'
-import Footer           from '@/components/Footer/index.vue'
-import Announcements    from '@/components/Header/Announcements/index.vue'
+import _throw   from '@/utils/throw'
+import Header   from '@/components/Header/index.vue'
+import Footer   from '@/components/Footer/index.vue'
+import Fallback from '@/views/Fallback.vue'
 
 
 // Our App component. This wraps our routes in a router
@@ -18,139 +15,119 @@ export default {
   name: 'App',
 
   components: {
-    Fallback,
     Header,
     Footer,
-    Announcements,
+    Fallback,
   },
 
 
   // Our indicator that the client is connected to the
-  // internet and the API is fuctional. This bject being
+  // internet and the API is functional. This object being
   // fulfilled allows normal routing to begin.
 
   data() {
-    return {
-      meta: null,
-    }
+    return { meta: null }
   },
 
 
-  // Produces our mobile and accessibility classes.
+  // This is first request to the Strapi API that we make.
+  // If this throws an error, than it's likely something is
+  // wrohg with Strapi. We indicate this by routing to the
+  // error page.
+
+  async created() {
+    this.$store.dispatch( 'meta/handle_mobile' )
+    try {
+      this.meta = await this.$store.dispatch( 'meta/get_meta' )
+    } catch ( error ) {
+      _throw( error )
+      this.$router.push({
+        name:'Error',
+        query: { type: error.message }
+      })
+      throw error
+    }
+  },
 
   computed: {
 
-    ...mapState( 'meta', [
-      'mobile',
-      'ui'
-    ]),
+
+    // Produces our mobile class
+
+    mobile() {
+      return this.$store.state.meta.mobile
+    },
+
+
+    // Produces our accessibility classes by first looking in
+    // the store for our ui options and then looking in the
+    // route query to see what their values have been set to.
+    // returns in accessibility paramater as a class name
+    // only if set to true in the query parameters, for ex:
+    // '?reduce_depth=true' => body.reduce_depth
 
     access() {
       return Object
-      .keys( this.ui )
+      .keys( this.$store.state.meta.ui )
       .reduce( ( acc, key ) => (
         { ...acc, [key]: this.$route.query[key] == 'true' }
       ), {} )
     },
 
-    desired_tabs() {
-      return this.$route.meta.desired_tabs
-    },
+
+    // The current event, as selected by the route path
+    // e.g. 'live.thehmm.nl/event-slug', pulled from the
+    // store. Only used to get accent colors
 
     event() {
       return this.$store.getters[ 'events/get_event' ](
-        this
-        .$route
-        .params
-        .slug
+        this.$route.params.slug
       )
     },
+
+
+    // If the route points to an event, get it's accent to
+    // theme the whole page
 
     accent() {
       return this.event?.accent
     },
 
-  },
 
-  methods: {
-
-    ...mapMutations( 'meta', [
-      'SET_MOBILE'
-    ]),
-
-    check_mobile() {
-      return window.innerWidth < 700
-    },
 
   },
-
-  created() {
-    this.SET_MOBILE( this.check_mobile() )
-    window.onresize = () => {
-      this.SET_MOBILE( this.check_mobile() )
-    }
-  },
-
-
-  // This is first request to the Strapi api that we make. It
-  // happens here and not in any of the router guards so that
-  // the App can mount a loading or error page. The custom
-  // _throw function handles errors with the router.
-
-  async mounted() {
-    try {
-      this.meta = await this.$store.dispatch( 'meta/get_meta' )
-    } catch ( error ) {
-      this.$router.push( _throw( error ) )
-    }
-  },
-
-
 
 }
 
 </script>
 
 <template>
-
-  <!-- For accessibily reasons, I removed vue's default root
-  <div> and instead gave the document's <body> tag the #app
-  id. See file: @/front/index.html -->
-
-  <main
-    :id="$id( $route.name )"
-    :class="[ mobile, { ...access } ]"
+  <body
+    :id="[ $id( $route.name )]"
+    :class="{ mobile, ...access }"
     :style="{ ...accent }"
   >
 
     <Header />
 
-    <section class="middle">
+    <main :aria-label="`${ $route.name } page`">
       <router-view v-slot="{ Component }">
-        <transition
-          name="fly"
-          mode="out-in"
-          appear
-        >
-          <Component
-            v-if="meta"
-            :is="Component"
-          />
-          <Fallback
-            v-else
-            message="Loading..."
-          />
+        <transition name="fly" mode="out-in" appear >
+          <suspense :timeout="0">
+            <template #default>
+              <Component :is="Component" />
+            </template>
+            <template #fallback >
+              <Fallback :message="'Loading...'" />
+            </template>
+          </suspense>
         </transition>
       </router-view>
-    </section>
+    </main>
 
-    <Announcements />
+    <Footer />
 
-    <Footer
-      :desired_tabs="desired_tabs"
-    />
-
-  </main>
+  </body>
 </template>
 
 
@@ -161,7 +138,7 @@ export default {
 @import '@/assets/css/base.css';
 @import '@/assets/css/input.css';
 
-main {
+body {
   opacity          : 0;
   background-color : var(--back);
   animation        : enter var(--enter) ease forwards;
@@ -178,7 +155,7 @@ main {
 }
 
 
-main .middle {
+body main {
   height           : var(--middle-height);
   position         : relative;
   flex-grow        : 1;
@@ -188,32 +165,44 @@ main .middle {
 
 
 
-main.mobile >>> .middle {
+body.mobile >>> main {
   flex-direction   : column-reverse;
   justify-content  : flex-end;
   flex-grow        : 1;
   overflow         : scroll;
 }
 
-main#chatpage.hide_input footer {
+body#chatpage.hide_input footer {
   display: none;
 }
 
-main#chatpage #middle,
-main#accent #middle {
+body#chatpage #middle,
+body#accent #middle {
   padding: 0;
 }
-main#accent header ,
-main#accent footer,
-main#accent #announcements {
+body#accent header ,
+body#accent footer,
+body#accent #announcements {
   display: none;
 }
 
-main.mobile {
+body#accent {
+  --very-fast      : 0s;
+  --fast           : 0s;
+  --slow           : 0s;
+  --very-slow      : 0s;
+}
+body#accent * {
+  animation        : none  !important;
+  transform        : none  !important;
+  opacity          : unset !important;
+}
+
+body.mobile {
   overflow : scroll;
 }
 
-main.mobile .middle {
+body.mobile main {
   flex-direction   : column-reverse;
   justify-content  : flex-end;
   flex-grow        : 1;

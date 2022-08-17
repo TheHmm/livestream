@@ -21,6 +21,7 @@ import {
   $id,             // generate id / class from comp name
   $md,             // markdown parser
   $mdi,            // inline markdown parser
+  _throw           // custom error thrower
 } from './utils'
 
 // We log default config to console
@@ -42,4 +43,4 @@ app.config.globalProperties = { $log, $time, $id, $md, $mdi }
 app.use( store ).use( router ).use( VueSocketIOExt, io, { store } )
 
 // & finally mount after the router is ready
-router.isReady().then( () => app.mount( '#app' ) )
+router.isReady().then( () => app.mount( 'body' ) )

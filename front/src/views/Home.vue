@@ -1,21 +1,24 @@
 <script>
 
-import { mapGetters } from 'vuex'
-import _throw    from '@/router/throw'
+import store     from '@/store'
+import _throw    from '@/utils/throw'
 import EventList from '../components/Event/List.vue'
 
 export default {
+
   name: 'HomePage',
 
   components: {
     EventList
   },
 
-  async created() {
+  async setup() {
     try {
-      await this.$store.dispatch( 'events/get_events' )
+      const res = await store.dispatch( 'events/get_events' )
+      return { res }
     } catch ( error ) {
-      this.$router.push( _throw( error ) )
+      _throw( error )
+      throw error
     }
   },
 
@@ -25,13 +28,9 @@ export default {
       return this.$route.query.year
     },
 
-    ...mapGetters('events', [
-      'get_events'
-    ]),
-
     events() {
-      return this
-      .get_events
+      return store
+      .getters[ 'events/get_events' ]
       .filter( e => {
         if ( this.year ) {
           return (
@@ -49,7 +48,6 @@ export default {
 
 </script>
 
-  <!-- aria-label="Event archive" -->
 
 <template>
   <EventList

@@ -1,90 +1,58 @@
 import api from "@/api"
 import $log from '@/utils/log'
 
-const DEFAULT_MODES = () => ({
 
-  transcript: {
-    id: -3,
-    name: 'transcript',
-    label: 'text'
-  },
-  thumbs: {
-    id: -2,
-    name: 'thumbs',
-    label: 'low-low-res'
-  },
-  audio: {
-    id: -1,
-    name: 'audio',
-    label: 'audio'
-  },
+// Livestream related states such as the livestream object,
+// viewing modes, and close captions.
 
-  // the mode 'video' will be overridden if HLS.js is used
+// VIEWING MODES: Can be changed by certain parts of the app.
+// For example, when loading an HLS playlist, multiple video
+// dimensions are available, so we adjust the list every time.
+// The mode 'video' will be changed to 'auto' when other video
+// modes are present.
 
-  video: {
-    id: 0,
-    name: 'video',
-    label: 'video',
-    video: true,
-  },
+// Also note: the current viewing mode is selected by changing
+// the URL parameter 'mode' to the mode name (uncommitted)
 
-})
+function DEFAULT_MODES() { return {
+  transcript : { id: -3, name: 'transcript', label: 'text' },
+  thumbs     : { id: -2, name: 'thumbs',     label: 'low-low-res' },
+  audio      : { id: -1, name: 'audio',      label: 'audio' },
+  video      : { id:  0, name: 'video',      label: 'video', video: true,},
+}}
 
 export default {
 
   namespaced: true,
 
   state: {
-
-
-    // Livestream object. This is the publicData property of
-    // the full livestream single type in Strapi
-
-    livestream: null,
-
-
-    // Stream modes
-
-    modes: DEFAULT_MODES(),
-
-    // Captions
-
+    livestream : null,
+    modes      : DEFAULT_MODES(),
     cc_interim : null,
     cc         : [],
-
   },
 
   mutations: {
-
     SET_LIVESTREAM : ( state, livestream ) => state.livestream = livestream,
-
-    SET_CC_INTERIM : ( state, caption ) => state.cc_interim = caption,
+    SET_CC_INTERIM : ( state, cue ) => state.cc_interim = cue,
     SET_CC         : ( state, cc ) => state.cc = cc,
-    ADD_CAPTION    : ( state, caption ) => state.cc.push ( caption ),
-    CLEAR_CC       : state => state.cc = [],
-
+    ADD_CUE        : ( state, cue ) => state.cc.push ( cue ),
+    CLEAR_CC       : ( state ) => state.cc = [],
     SET_MODE       : ( state, mode ) => state.modes[mode.name] = mode,
     SET_MODE_LABEL : ( state, { name, label } ) => state.modes[name].label = label,
     DELETE_MODE    : ( state, name ) => delete state.modes[name],
-
-    RESET_MODES    : state => state.modes = DEFAULT_MODES()
-
+    RESET_MODES    : ( state ) => state.modes = DEFAULT_MODES()
   },
 
   getters: {
-
-    get_livestream : state => state.livestream,
-
-    modes          : state => state.modes,
-
-    default_mode   : state => state.modes['video'],
-
+    get_livestream : ( state ) => state.livestream,
+    modes          : ( state ) => state.modes,
+    default_mode   : ( state ) => state.modes['video'],
     current_mode   : ( state, getters ) => self => (
       self.$route.query?.mode &&
       state.modes[self.$route.query.mode] ||
       getters.default_mode
     )
-
   },
 
   actions: {
@@ -116,6 +84,8 @@ export default {
     },
 
 
+    // Connvert hls.js level object to a mode and to our modes
+
     create_mode_from_hls_level( { commit }, level ) {
       commit( 'SET_MODE', {
         id    : level.id,
@@ -125,6 +95,10 @@ export default {
       })
     },
 
+
+    // Set the whole list of closed captions to a defined arr
+    // of cues (used when pullling cues ddirectly from a vtt
+    // file)
 
     set_CC ( { commit }, cc ) {
       commit( 'SET_CC', cc )
@@ -140,7 +114,8 @@ export default {
     },
 
 
-    // closed captions
+    // We can only received live CC updates if we are subscribed
+    // to the cc socket channel.
 
     socket_confirmJoinCc( { commit }, cc ) {
       $log.info( 'SOCKET', `Subscribed to closed captions.`)
@@ -151,13 +126,13 @@ export default {
       $log.info( 'SOCKET', `Unsubscribed from closed captions.`)
     },
 
-    socket_interm( { commit }, caption ) {
-      commit( 'SET_CC_INTERIM', caption )
+    socket_interm( { commit }, cue ) {
+      commit( 'SET_CC_INTERIM', cue )
     },
 
-    socket_final( { commit }, caption ) {
+    socket_final( { commit }, cue ) {
       commit( 'SET_CC_INTERIM', null )
-      commit( 'ADD_CAPTION', caption )
+      commit( 'ADD_CUE', cue )
     },
 
     socket_clearCc( { commit }, cc ) {

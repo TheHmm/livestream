@@ -66,11 +66,6 @@ export default {
         `${ config.api_url }/events/${ slug }`, { params: {
           fields: '*',
           populate: [
-            'logo',
-            'recording',
-            // 'viewers',
-            // 'messages',
-            // 'announcements',
             'emoji_groups',
             'emoji_groups.emoji',
             'emoji_groups.emoji.image',

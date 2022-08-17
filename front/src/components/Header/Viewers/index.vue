@@ -4,19 +4,19 @@ import { mapGetters } from 'vuex'
 import Viewer from './Viewer.vue'
 
 
-// Viewers, even unregistered ones show up as the Hmm dots 
+// Viewers, even unregistered ones show up as the Hmm dots
 // in the page header
 
 export default {
 
   name: 'Viewers',
-  
+
   components: {
     Viewer
   },
 
   computed: {
-    ...mapGetters( 'viewers', [ 
+    ...mapGetters( 'viewers', [
       'connected_viewers',
     ]),
   },
@@ -26,15 +26,18 @@ export default {
 
 
 <template>
-  <div :id="$id()">
+  <section
+    :id="$id()"
+    :aria-label="`Area with dots representing the number of connected viewers. Currently: ${ connected_viewers.length  }`"
+  >
     <transition-group name="dot">
-      <Viewer 
+      <Viewer
         v-for="viewer in connected_viewers"
         :key="viewer.uuid"
         :viewer="viewer"
       />
     </transition-group>
-  </div>
+  </section>
 </template>
 
 
@@ -51,10 +54,11 @@ export default {
   justify-content : flex-start;
   align-content   : flex-start;
   flex-wrap       : wrap;
+  z-index         : 1;
 }
 
 .mobile #viewers {
-  padding: 0rem;
+  padding         : 0rem;
 }
 
 </style>

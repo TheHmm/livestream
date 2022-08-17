@@ -5,16 +5,33 @@
 // It also creates base styles to work from and handles
 // connection to the socket server.
 
-// import Announcements from '@/components/Header/Announcements/index.vue'
-import _throw           from '@/router/throw'
-
+import { useRoute }     from 'vue-router'
+import store            from '@/store'
+import _throw           from '@/utils/throw'
+import Announcements    from '@/components/Livestream/Announcements/index.vue'
 
 export default {
 
   name : 'EventPage',
 
   components : {
-    // Announcements,
+    Announcements,
+  },
+
+  async setup() {
+    const slug = useRoute().params.slug
+    const { dispatch } = store
+    try {
+      await dispatch( 'livestream/get_livestream' )
+      const { id } = await dispatch( 'events/get_event', slug )
+      await dispatch( 'viewers/get_viewers', id )
+      await dispatch( 'messages/get_messages', id )
+      await dispatch( 'announcements/get_announcements', id )
+      return { id }
+    } catch ( error ) {
+      _throw( error )
+      throw error
+    }
   },
 
 
@@ -56,19 +73,8 @@ export default {
   // enter the event page. In all other routes, socket
   // networking is unnecessary.
 
-  async created() {
+  created() {
     this.$socket.client.connect()
-    const slug = this.$route.params.slug
-    const { dispatch } = this.$store
-    try {
-      await dispatch( 'livestream/get_livestream' )
-      const { id } = await dispatch( 'events/get_event', slug )
-      await dispatch( 'viewers/get_viewers', id )
-      await dispatch( 'messages/get_messages', id )
-      await dispatch( 'announcements/get_announcements', id )
-    } catch ( error ) {
-      this.$router.push( _throw( error ) )
-    }
   },
 
 
@@ -97,6 +103,9 @@ export default {
       })
       await this.authenticate()
     },
+    disconnect() {
+      this.$log.info( 'SOCKET', 'Disconnected.' )
+    }
   },
 
 
@@ -120,7 +129,7 @@ export default {
           :event="event"
         />
       </router-view>
-    <!-- <Announcements /> -->
+    <Announcements />
     </section>
 </template>
 

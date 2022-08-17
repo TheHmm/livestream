@@ -170,7 +170,7 @@ body {
 }
 
 
-main {
+body {
 
   /* The event accennt color is created in Strapi as a valid */
   /* hsl() string thenn converted into the --h, --s and --l
@@ -315,16 +315,26 @@ li::before {
 }
 
 
+/* .fallback.fly-enter-active, */
 .fly-enter-active li.event,
 .event.fly-enter-active {
   animation        : fly var(--enter) ease calc( 0.1s * var(--n) ) both;
 }
+/* .fallback.fly-leave-active, */
 .fly-leave-active li.event,
 .event.fly-leave-active {
   animation        : fly var(--enter) ease calc( 0.1s * var(--i) ) reverse both;
 }
-
 @keyframes fly {
   from { transform : translateY( max( 100%, 50vh )) }
   to   { transform : translateY(0) }
+}
+
+.fallback.fly-enter-active,
+.fallback.fly-leave-active {
+  transition: opacity var(--very-fast) ease;
+}
+.fallback.fl-enter-from,
+.fallback.fly-leave-to {
+  opacity: 0;
 }

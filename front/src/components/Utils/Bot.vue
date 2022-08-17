@@ -2,7 +2,7 @@
 <script>
 
 
-// Our bot form input component. All forms on the site havv 
+// Our bot form input component. All forms on the site havv
 // this elemment in them and reject submmit actions if it
 // produces input.
 
@@ -16,19 +16,22 @@ export default {
 
 
 <template>
-  <div :class="$id()">
+  <div
+    :class="$id()"
+    aria-label="Ignore this field if you are human"
+  >
     <label
       for="website"
       class="comment"
     >
       If you are not a bot, leave the below field empty.
     </label>
-    <input 
+    <input
       tabindex="-1"
-      type="text" 
-      name="website" 
-      id="website" 
-      placeholder ="http://example.com" 
+      type="text"
+      name="website"
+      id="website"
+      placeholder ="http://example.com"
       :value="modelValue"
       @change="$emit( 'update:modelValue', $event.target.value )"
     />

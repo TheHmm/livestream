@@ -1,7 +1,7 @@
 <script>
 
 import Error  from '@/components/Utils/Error.vue'
-
+import { mapState } from 'vuex'
 
 // Fallback components that displayss a loading, error,
 // or other type of message. Keeps the Hmmm banner up
@@ -23,12 +23,13 @@ export default {
     message: {
       type: String,
       default: ''
-    }
+    },
   },
 
   computed: {
+    ...mapState( 'meta', [ 'error' ]),
     is_error() {
-     return this.$route.name == 'Error'
+     return this.error
     },
     is_loading() {
       return this.message == 'Loading...'
@@ -40,34 +41,44 @@ export default {
 
 
 <template>
-  <main :class="{ is_error, is_loading }">
+  <section :class="[ $id(), { is_error, is_loading }]">
     <Error v-if="is_error" />
     <section v-else v-html="$md( message )"/>
-  </main>
+  </section>
 </template>
 
 
 <style scoped>
 
-@import '@/assets/css/fallback.css';
+section {
+  max-width  : min(80%, 60rem);
+  margin     : var(--marquee-height) auto;
+  overflow   : scroll;
+  --n        : 0.1;
+  --i        : 0.1;
+  opacity    : 1;
+  transition : opacity var(--fast) ease;
+}
 
-main.is_loading {
+section p {
+  margin     : 0;
+}
+section.is_loading {
   --accent    : var(--light-grey);
   color       : var(--accent);
 }
-main.is_loading >>> section,
-main.is_loading >>> section p {
+section.is_loading >>> section,
+section.is_loading >>> section p {
   color       : inherit;
   text-align  : center;
 }
 
-main.is_error {
+section.is_error {
   --accent    : var(--error);
   color       : var(--accent);
   font-family : monospace;
 }
-main.is_error >>> section,
-main.is_error >>> section p {
+section.is_error >>> p {
   color       : inherit;
   text-align  : left;
 }

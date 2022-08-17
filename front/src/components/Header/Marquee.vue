@@ -1,4 +1,9 @@
 <script>
+
+
+// Marquee that changes text based on event name. Animates
+// only when the livestream is not 'active'
+
 export default {
 
   name: 'Marquee',
@@ -8,24 +13,27 @@ export default {
     default_marquee() {
       return this.$store.getters['meta/default_marquee']
     },
+
     event() {
       return this.$store.getters[ 'events/get_event' ](
-        this
-        .$route
-        .params
-        .slug
+        this.$route.params.slug
       )
     },
+
     animate() {
       return this.event?.livestream()?.status !== 'active'
     },
 
-    text() {
+    marquee() {
       let marquee = this.default_marquee
       if ( this.event && this.event.marquee ) {
         marquee = this.event.marquee
       }
-      return marquee.repeat(10)
+      return marquee
+    },
+
+    text() {
+      return this.marquee.repeat(10)
     }
 
   }
@@ -35,12 +43,12 @@ export default {
 
 <template>
   <div
-    :class="[ $id(), { animate } ]"
     role="marquee"
-    aria-label="marquee with event title"
+    :class="[ $id(), { animate } ]"
+    :aria-label="`Marquee with title ${ marquee }`"
   >
-    <p> {{ text }} </p>
-    <p> {{ text }} </p>
+    <p aria-hidden="true"> {{ text }} </p>
+    <p aria-hidden="true"> {{ text }} </p>
   </div>
 </template>
 
@@ -61,6 +69,8 @@ export default {
   transition       : background-color var(--very-slow) ease;
   display          : flex;
   align-items      : center;
+  height           : var(--marquee-height);
+  z-index          : 1;
 }
 .marquee p {
   margin           : 0;

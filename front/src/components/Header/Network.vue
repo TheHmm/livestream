@@ -61,43 +61,43 @@ export default {
 <template>
   <table
     :id="$id()"
-    aria-label="network monitor"
+    aria-label="Network monitor"
   >
 
-    <tr aria-label="bytes sent">
+    <tr aria-label="Bytes sent">
       <td
         role="status"
-        aria-label="last bytes sent"
+        aria-label="Last bytes sent"
         :class="[ 'last', { has_changed: sent_has_changed } ]"
       >
         {{ `sent ${ format_bytes( last_bytes_sent?.bytes ) } to ${ last_bytes_sent?.to } ↑` }}
       </td>
       <td
         class="value"
-        aria-label="total bytes sent"
+        aria-label="Total bytes sent"
       >
         {{ format_bytes( total_bytes_sent ) }}
       </td>
-      <td>
+      <td aria-hidden="true">
         sent
       </td>
     </tr>
 
-    <tr aria-label="bytes received">
+    <tr aria-label="Bytes received">
       <td
         role="status"
-        aria-label="last bytes received"
+        aria-label="Last bytes received"
         :class="[ 'last', { has_changed: received_has_changed } ]"
       >
         {{ `received ${ format_bytes( last_bytes_received?.bytes ) } from ${ last_bytes_received?.from } ↓` }}
       </td>
       <td
         class="value"
-        aria-label="total bytes received"
+        aria-label="Total bytes received"
       >
         {{ format_bytes( total_bytes_received ) }}
       </td>
-      <td>
+      <td aria-hidden="true">
         received
       </td>
     </tr>
@@ -110,9 +110,11 @@ export default {
 
 table {
   --n             : 6;
-  --fore          : white;
+  --fore          : var(--accent);
   color           : var(--fore);
-  position        : relative;
+  position        : absolute;
+  top             : calc(var(--marquee-height) + 1rem);
+  right           : 1rem;
   border-collapse : collapse;
   font-family     : 'not-courier-sans', monospace;
   font-size       : 0.8rem;

@@ -1,30 +1,27 @@
   <script>
   export default {
-
     name: 'Event',
-
     props: {
-      event: Object,
-      i: Number,
-      n: Number,
+      event : Object,
+      i     : Number,
+      n     : Number,
     },
-
     computed: {
-      title()     { return this.event?.title },
-      slug()      { return this.event?.slug },
-      starts()    { return this.event?.starts && this.$time.short_date_format( this.event.starts )},
-      accent()    { return this.event?.accent },
-      info()      { return this.event?.info },
+      title()  { return this.event?.title },
+      slug()   { return this.event?.slug },
+      starts() { return this.event?.starts && this.$time.short_date_format( this.event.starts )},
+      accent() { return this.event?.accent },
+      info()   { return this.event?.info },
+      cover()  { return this.event?.cover },
+      query()  { return this.$route.query }
     },
-
   }
   </script>
 
   <template>
-
-
     <li
-      :class="'event'"
+      :class="$id()"
+      :aria-label="title"
       :style="{
         ...accent,
         '--i': i,
@@ -33,44 +30,36 @@
     >
       <router-link
         custom
-        :to="{
-          path: slug,
-          query: $route.query
-        }"
-        v-slot="{
-          navigate,
-          href
-        }"
+        :to="{ path: slug, query }"
+        v-slot="{ navigate }"
       >
         <header
-          :title="href"
+          :title="title"
           @click="navigate"
         >
-          <h1>
-            {{ title }}
-          </h1>
-
+          <h1> {{ title }} </h1>
           <p
             aria-label="event summary"
             class="summary"
           >
             {{ info }}
           </p>
-
-          <p
+          <time
             aria-label="event start time"
             class="time"
+            :datetime="starts"
           >
-            <time
-              :datetime="starts"
-            >
-              {{ starts }}
-            </time>
-          </p>
+            {{ starts }}
+          </time>
         </header>
-        <section>
+        <section
+          :title="title"
+          @click="navigate"
+        >
           <img
-            :src="event.cover"
+            v-if="cover"
+            :src="cover"
+            :alt="`Still from livestream ${ title }`"
           />
         </section>
       </router-link>
@@ -99,6 +88,7 @@
 
 
   li.event section {
+    cursor           : pointer;
     width            : 100%;
     transition       : all var(--fast) ease;
     padding-top: 0.5rem;
@@ -131,7 +121,7 @@
     margin-block     : 0;
   }
 
-  li.event p.time {
+  li.event .time {
     margin-left      : auto;
     min-width        : 10rem;
     text-align       : right;

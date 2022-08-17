@@ -1,44 +1,33 @@
 import api from '@/api'
 import $log from '@/utils/log'
-import $time from '@/utils/time'
 
 export default {
 
   namespaced: true,
 
   state: {
-
     announcements: {}
-
   },
 
   mutations: {
-
     SET_ANNOUNCEMENTS : ( state, announcements ) => {
       state.announcements = announcements
     },
-
     SET_ANNOUNCEMENT : ( state, announcement ) => {
       state.announcements[announcement.id] = announcement
     },
-
     DELETE_ANNOUNCEMENT : ( state, announcement ) => {
       delete state.announcements[announcement.id]
     },
   },
 
   getters: {
-
     announcements_array : state => {
-      return Object
-      .values( state.announcements )
+      return Object.values( state.announcements )
     },
-
     most_recent : ( state, getters ) => {
       return getters.announcements_array[0]
     }
-
-
   },
 
   actions: {
@@ -47,16 +36,11 @@ export default {
     // Process and set announcement
 
     set_announcement( { commit, getters }, announcement ) {
-
-      if (
-          !announcement.publishedAt ||
-          announcement.deleted
-        ) {
+      if ( !announcement.publishedAt || announcement.deleted ) {
         commit( 'DELETE_ANNOUNCEMENT', announcement )
-        return
+      } else {
+        commit( 'SET_ANNOUNCEMENT', announcement )
       }
-
-      commit( 'SET_ANNOUNCEMENT', announcement )
     },
 
 

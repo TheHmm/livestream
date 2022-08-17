@@ -1,6 +1,6 @@
-import api from '@/api'
+import api   from '@/api'
 import $time from '@/utils/time'
-import $log from '@/utils/log'
+import $log  from '@/utils/log'
 
 export default {
 
@@ -11,15 +11,9 @@ export default {
   },
 
   mutations: {
-    SET_MESSAGES : ( state, messages ) => {
-      state.messages = messages
-    },
-    SET_MESSAGE : ( state, message ) => {
-      state.messages[message.time] = message
-    },
-    DELETE_MESSAGE : ( state, message ) => {
-      delete state.messages[message.time]
-    }
+    SET_MESSAGES   : ( state, messages ) => { state.messages = messages },
+    SET_MESSAGE    : ( state, message ) => { state.messages[message.time] = message },
+    DELETE_MESSAGE : ( state, message ) => { delete state.messages[message.time] }
   },
 
   getters: {
@@ -29,32 +23,23 @@ export default {
     },
 
     messages_array : state => {
-      return Object.values( state.messages )
-      .sort( ( a, b ) => a.time > b.time )
+      return Object.values( state.messages ).sort( ( a, b ) => {
+        return a.time > b.time
+      })
     },
 
     count: ( state, getters ) => {
-      return (
-        getters
-        .messages_array
-        .length
-      )
+      return getters.messages_array.length
     },
 
     chat_by_time : ( state, getters ) => {
-      return (
-        getters
-        .messages_array
-        .sort( (a, b) => a.time - b.time )
-      )
+      return getters.messages_array.sort( (a, b) => {
+        return a.time - b.time
+      })
     },
 
     messages_with_links : ( state, getters ) => {
-      return (
-        getters
-        .messages_array
-        .filter( m => m.links )
-      )
+      return getters.messages_array.filter( m => m.links )
     },
 
     my_id : ( state, getters, rootState, rootGetters ) => {
@@ -77,7 +62,6 @@ export default {
       return rootGetters['meta/censor_message']
     },
 
-
   },
 
   actions: {
@@ -95,6 +79,7 @@ export default {
       if ( message.censored ) {
         message.body = getters.censor_message
         message.links = null
+        message.emoji = null
       }
 
       const sender_id = message.sender?.data?.id || message.sender
@@ -138,38 +123,38 @@ export default {
     },
 
 
-    // Create a message.
+    // Create a message. Blocked viewers will be prevented
+    // from sending messages, but will be able to see their's
+    // as being sent.
 
     async create_message( { getters, dispatch }, body ) {
       const message = {
-        body,
-        time: $time.now(),
-        sender: getters.my_id,
-        event: getters.current_event_id
+        body   : body,
+        time   : $time.now(),
+        sender : getters.my_id,
+        event  : getters.current_event_id
       }
       if ( getters.blocked ) {
         dispatch( 'set_message', message )
         return message
       }
-      return new Promise( ( resolve, reject ) =>
+      return new Promise( ( resolve, reject ) => {
         api
         .messages
         .post( message )
-        .then( message => {
-          resolve( message )
-        } )
+        .then( message => resolve( message ) )
         .catch( error => reject( error ) )
-      )
+      })
     },
 
 
-    // Censoring messages.
+    // Un/Censoring messages
 
     async censor_message( {}, message ) {
       try {
         await api.messages.put( message.id, {
           censored: !message.censored,
-          sender: message.sender,
+          // sender: message.sender,       // ???????
         })
       } catch ( error ) {
         throw error
@@ -194,11 +179,6 @@ export default {
       $log.info( 'SOCKET', `Message ${ message.body }` )
       dispatch( 'set_message', message )
     },
-
-    // socket_count({ commit }, count) {
-    //   commit('setCount', count)
-    // },
-
 
   }
 

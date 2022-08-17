@@ -10,7 +10,7 @@ export default {
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 -100 5098.47 915.91"
     preserveAspectRatio="xMinYMin slice"
-    aria-label="The Hmm"
+    aria-label="The Hmm Banner"
   >
     <g id="letter-t">
       <polygon points="499.22 218.41 715.85 218.41 715.85 30.41 7.5 30.41 7.5 218.41 225.28 218.41 225.28 892.41 499.22 892.41 499.22 218.41" >
@@ -58,6 +58,4 @@ svg {
   from { opacity : 0; }
   to   { opacity : 1; }
 }
-
-
 </style>
