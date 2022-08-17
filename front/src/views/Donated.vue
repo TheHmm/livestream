@@ -11,7 +11,7 @@ export default { name: "Donated" }
   <section class="fallback">
     <p>Thank you for donating to the Hmm!</p>
     <p>
-      <router-link :to="$route.query.from">
+      <router-link :to="$route.query?.from || '/'">
         Return.
       </router-link>
     </p>

@@ -192,14 +192,14 @@ async function event_post_processor( strapi, now ) {
         // recorded, since the status of the asset will be
         // "ready" as opposed to "active" or "idle".
 
-        if ( !event.livestream ) {
+        if ( !event.recording ) {
           const asset_id = most_recent_asset_id( livestream )
           strapi.log.info(`[ * Asset ID: ${ asset_id }`)
           if ( asset_id ) {
             try {
               const asset = await strapi.mux.get_asset( asset_id )
-              event.livestream = strapi.mux.get_public_asset_details( asset )
-              strapi.log.info(`[ * Playback ID: ${ event.livestream.playbackId }`)
+              event.recording = strapi.mux.get_public_asset_details( asset )
+              strapi.log.info(`[ * Playback ID: ${ event.recording.playbackId }`)
               changed = true
             } catch ( err ) {
               err.asset_id = asset_id
@@ -231,7 +231,7 @@ async function event_post_processor( strapi, now ) {
         // set yet, this is impossible to automate, so we go
         // for a warning to set it manually.
 
-        if ( !event.livestream ) {
+        if ( !event.recording ) {
           strapi.log.warn(`[ * Event has no recording, please set manually`)
         }
 

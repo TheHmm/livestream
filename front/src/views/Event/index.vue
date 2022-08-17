@@ -5,10 +5,10 @@
 // It also creates base styles to work from and handles
 // connection to the socket server.
 
-import { useRoute }     from 'vue-router'
-import store            from '@/store'
-import _throw           from '@/utils/throw'
-import Announcements    from '@/components/Livestream/Announcements/index.vue'
+import { useRoute }  from 'vue-router'
+import store         from '@/store'
+import _throw        from '@/utils/throw'
+import Announcements from '@/components/Livestream/Announcements/index.vue'
 
 export default {
 
@@ -53,7 +53,7 @@ export default {
     },
     hide_input() {
       return this.$route.query.hide_input
-    }
+    },
   },
 
 
@@ -113,24 +113,22 @@ export default {
 </script>
 
 <template>
-    <section
-      :class="[ 'event' ]"
-      :style="{ ...accent }"
+  <section :class="[ 'event' ]">
+    <!-- :style="{ ...accent }" -->
+    <!-- { hide_input } -->
+  <!-- aria-labelledby="event_title" -->
+    <!-- aria-label="event information, livestream player & chat" -->
+    <router-view
+      v-if="event"
+      v-slot="{ Component }"
     >
-      <!-- { hide_input } -->
-    <!-- aria-labelledby="event_title" -->
-      <!-- aria-label="event information, livestream player & chat" -->
-      <router-view
-          v-if="event"
-          v-slot="{ Component }"
-      >
-        <component
-          :is="Component"
-          :event="event"
-        />
-      </router-view>
+      <component
+        :is="Component"
+        :event="event"
+      />
+    </router-view>
     <Announcements />
-    </section>
+  </section>
 </template>
 
 <style scoped>

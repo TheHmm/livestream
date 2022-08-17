@@ -80,7 +80,7 @@
     "count": {
       "type": "integer"
     },
-    "livestream": {
+    "recording": {
       "type": "json"
     }
   }

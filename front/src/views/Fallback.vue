@@ -1,7 +1,6 @@
 <script>
 
-import Error  from '@/components/Utils/Error.vue'
-import { mapState } from 'vuex'
+import Error from '@/components/Utils/Error.vue'
 
 // Fallback components that displayss a loading, error,
 // or other type of message. Keeps the Hmmm banner up
@@ -10,10 +9,7 @@ import { mapState } from 'vuex'
 export default {
 
   name:  "Fallback",
-
-  components: {
-    Error
-  },
+  components: { Error },
 
 
   // This component is mounted either manually by passigg
@@ -27,7 +23,10 @@ export default {
   },
 
   computed: {
-    ...mapState( 'meta', [ 'error' ]),
+    // ...mapState( 'meta', [ 'error' ]),
+    error() {
+      return this.$store.state.meta.error
+    },
     is_error() {
      return this.error
     },

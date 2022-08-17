@@ -232,13 +232,13 @@ function sanitize ( event, rootGetters, dispatch ) {
   // the future will not have a defined livestream field; and
   // should point to the ongoing strapi livestream.
 
-  const asset = Object.assign( {}, event.livestream )
+  const recording = Object.assign( {}, event.livestream )
 
-  if ( asset ) {
-    event.livestream = () => asset
-    if ( asset.status == 'ready' ) {
-      event.cover = livestream.mux.thumb_src( asset.playbackId, 10 )
-      get_and_set_cc( asset, dispatch )
+  if ( recording ) {
+    // event.livestream = () => recording
+    if ( recording.status == 'ready' ) {
+      event.cover = livestream.mux.thumb_src( recording.playbackId, 10 )
+      get_and_set_cc( recording, dispatch )
     }
   } else {
     event.livestream = () => rootGetters[ 'livestream/get_livestream' ]
@@ -251,12 +251,12 @@ function sanitize ( event, rootGetters, dispatch ) {
 // Manually pulling the subtitle file of an asset if it even
 // exists and converting it to text for the transcript mode
 
-function get_and_set_cc( asset, dispatch ) {
-  const text_track = asset.tracks.find( t => {
+function get_and_set_cc( recording, dispatch ) {
+  const text_track = recording.tracks.find( t => {
     return t.type == 'text' && t.text_source == 'generated_live_final'
   })
   if ( text_track ) {
-    const cc_url = livestream.mux.text_src( asset.playbackId, text_track.id )
+    const cc_url = livestream.mux.text_src( recording.playbackId, text_track.id )
     api
     .get( cc_url )
     .then( ({ data }) => dispatch(
