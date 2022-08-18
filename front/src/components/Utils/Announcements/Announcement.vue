@@ -1,21 +1,15 @@
 <script>
-
 export default {
-
   name: 'Announcement',
-
-  props: {
-    announcement: Object 
-  }
-  
+  props: { announcement: Object }
 }
 </script>
 
-
 <template>
-  <div 
+  <div
     :class="$id()"
     :title="announcement?.title"
+    :aria-label="`Announcement: ${ announcement?.title }`"
     tabindex="-1"
     v-html=" $md( announcement?.body || '' ) "
   />
@@ -40,7 +34,7 @@ export default {
 .announcement >>> p:last-of-type {
   margin-block-end: 0;
 }
-.mobile .announcement { 
+.mobile .announcement {
   min-width        : 90vw;
   max-width        : 100vw;
 }

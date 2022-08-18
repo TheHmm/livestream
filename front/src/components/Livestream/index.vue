@@ -20,8 +20,8 @@ export default {
 
   components : {
     Info,
-    Status,
     Player,
+    Status,
     Chat,
   },
 
@@ -29,9 +29,7 @@ export default {
   // This component inherits only the event fron it's parent
   // and handles the rest independently.
 
-  props : {
-    event: Object,
-  },
+  props : { event: Object },
 
 
   // The livestream property of the event is attached to it
@@ -40,13 +38,16 @@ export default {
   // in the store. Please refer to: @/store/events/sanitize
 
   computed : {
-    livestream()  { return this.event?.livestream() },
+    livestream()  { return this.event?.livestream() || this.event?.recording },
     playback_id() { return this.livestream?.playbackId },
-    status()      { return this.livestream?.status },
-    active()      { return this.status == 'active' },
-    ready()       { return this.status == 'ready' },
+    status()      { return this.livestream?.status || 'unavailable' },
+    show_player() { return (
+      this.playback_id && (
+        this.status == 'active' ||
+        this.status == 'ready'
+      )
+    )}
   },
-
 
 }
 
@@ -54,25 +55,10 @@ export default {
 
 
 <template>
-
-
-    <Info
-      :event="event"
-      :status="status"
-    />
-    <Player
-      v-if="playback_id && ( active || ready )"
-      :livestream="livestream"
-    />
-    <Status
-      v-else
-      :status="status"
-    />
-    <Chat
-      :event="event"
-    />
-
-
+  <Info :event="event" />
+  <Player v-if="show_player" :livestream="livestream" />
+  <Status v-else :status="status" />
+  <Chat :event="event" />
 </template>
 
 

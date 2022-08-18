@@ -20,8 +20,12 @@ export default {
       )
     },
 
+    slug() {
+      return this.event?.slug
+    },
+
     animate() {
-      return this.event?.livestream()?.status !== 'active'
+      return this.event?.livestream?.status !== 'active'
     },
 
     marquee() {
@@ -34,9 +38,30 @@ export default {
 
     text() {
       return this.marquee.repeat(10)
-    }
+    },
 
+  },
+
+
+  data() {
+    return {
+      hidden: true,
+    }
+  },
+
+  mounted() {
+    this.hidden = false
+  },
+
+  watch: {
+    slug() {
+      this.hidden = true
+      setTimeout( () => {
+        this.hidden = false
+      }, 1000 )
+    }
   }
+
 }
 </script>
 
@@ -44,7 +69,7 @@ export default {
 <template>
   <div
     role="marquee"
-    :class="[ $id(), { animate } ]"
+    :class="[ $id(), { animate, hidden } ]"
     :aria-label="`Marquee with title ${ marquee }`"
   >
     <p aria-hidden="true"> {{ text }} </p>
@@ -64,13 +89,18 @@ export default {
   white-space      : nowrap;
   overflow         : hidden;
   font-size        : var(--size-m);
-  transform        : translateY(-3rem);
-  animation        : enter var(--enter) ease 0.1s forwards;
-  transition       : background-color var(--very-slow) ease;
+  transform        : translateY(0rem);
   display          : flex;
   align-items      : center;
   height           : var(--marquee-height);
   z-index          : 1;
+  transition       :
+    background-color var(--very-slow) ease,
+    transform var(--enter) ease
+  ;
+}
+.marquee.hidden {
+  transform        : translateY(-3rem);
 }
 .marquee p {
   margin           : 0;
@@ -93,10 +123,6 @@ export default {
 @keyframes marquee {
   from { transform : translate(0, 0); }
   to   { transform : translate(-100%, 0); }
-}
-@keyframes enter {
-  from { transform : translateY(-3rem) }
-  to   { transform : translateY(0) }
 }
 
 </style>

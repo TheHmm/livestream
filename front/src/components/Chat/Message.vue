@@ -70,7 +70,7 @@ export default {
   <article
     :class="[ $id(), { censored: message.censored } ]"
     tabindex="0"
-    :aria-label="`Message from ${ sender }`"
+    :aria-label="`Message from ${ name }`"
     v-if="links_only ? links : true"
   >
 
@@ -141,7 +141,7 @@ export default {
   --back              : var(--accent);
   background-color    : var(--back);
   max-width           : 100%;
-  margin              : 2px;
+  /* margin              : 2px; */
   padding             : 0.5rem 0.5rem;
   margin-top          : 0.5rem;
   pointer-events      : none;

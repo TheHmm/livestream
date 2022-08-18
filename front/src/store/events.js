@@ -226,20 +226,28 @@ function sanitize ( event, rootGetters, dispatch ) {
   }
 
 
-  // We search for the event livestream. In Strapi, all events
-  // that have happened in the past have a MUX asset as their
-  // livestream. And any events that are going to happen in
-  // the future will not have a defined livestream field; and
-  // should point to the ongoing strapi livestream.
+  // Way to tell if it has been more than 12 hours since the
+  // event has passed.
 
-  const recording = Object.assign( {}, event.livestream )
+  event.is_in_past = $time.is_in_past( event.ends )
 
-  if ( recording ) {
-    // event.livestream = () => recording
-    if ( recording.status == 'ready' ) {
-      event.cover = livestream.mux.thumb_src( recording.playbackId, 10 )
-      get_and_set_cc( recording, dispatch )
+  if ( event.is_in_past ) {
+    event.livestream = () => undefined
+
+
+    // We search for the event livestream. In Strapi, all events
+    // that have happened in the past have a MUX asset as their
+    // livestream. And any events that are going to happen in
+    // the future will not have a defined livestream field; and
+    // should point to the ongoing strapi livestream.
+
+    if ( event.recording ) {
+      if ( event.recording.status == 'ready' ) {
+        event.cover = livestream.mux.thumb_src( event.recording.playbackId, 10 )
+        get_and_set_cc( recording, dispatch )
+      }
     }
+
   } else {
     event.livestream = () => rootGetters[ 'livestream/get_livestream' ]
   }

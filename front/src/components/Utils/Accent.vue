@@ -1,7 +1,7 @@
 <script>
 import color from '@/utils/color'
 export default {
-  name : 'AccentPage',
+  name : 'Accent',
   props : { event: Object },
   computed: {
     vars() {

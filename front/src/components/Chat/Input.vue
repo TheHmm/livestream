@@ -14,13 +14,16 @@ export default {
     Register
   },
 
+  props: {
+    is_in_past: Boolean
+  },
+
 
   // Message and registration status
 
   data() {
     return {
       message: null,
-      // request_registration: false,
       sending: false,
     }
   },
@@ -95,15 +98,16 @@ export default {
       name="message"
       id="message"
       tabindex="0"
-      :disabled="sending || request_registration"
+      :disabled="sending || request_registration || is_in_past"
       placeholder ="Type your message and hit enter"
       v-model.trim="message"
     />
     <input
       type="submit"
       class="circle"
-      :disabled="sending || request_registration"
+      :disabled="sending || request_registration || is_in_past"
       title="Send your message to all other viewers."
+      aria-label="Send your message to all other viewers."
       value="˃"
     />
   </form>

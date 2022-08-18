@@ -8,7 +8,7 @@
 import { useRoute }  from 'vue-router'
 import store         from '@/store'
 import _throw        from '@/utils/throw'
-import Announcements from '@/components/Livestream/Announcements/index.vue'
+import Announcements from '@/components/Utils/Announcements/index.vue'
 
 export default {
 
@@ -42,17 +42,11 @@ export default {
   computed: {
     event() {
       return this.$store.getters[ 'events/get_event' ](
-        this
-        .$route
-        .params
-        .slug
+        this.$route.params.slug
       )
     },
-    accent() {
-      return this.event?.accent
-    },
-    hide_input() {
-      return this.$route.query.hide_input
+    is_in_past() {
+      return this.event?.is_in_past
     },
   },
 
@@ -74,7 +68,9 @@ export default {
   // networking is unnecessary.
 
   created() {
-    this.$socket.client.connect()
+    if ( !this.is_in_past ) {
+      this.$socket.client.connect()
+    }
   },
 
 
@@ -82,11 +78,14 @@ export default {
   // server before we leave this route.
 
   beforeUnmount() {
-    this.$socket.client.disconnect()
+    if ( !this.is_in_past ) {
+      this.$socket.client.disconnect()
+    }
     const { commit } = this.$store
     commit( 'messages/SET_MESSAGES', {} )
     commit( 'viewers/SET_VIEWERS', {} )
     commit( 'announcements/SET_ANNOUNCEMENTS', {} )
+    commit( 'livestream/SET_CC', [] )
   },
 
 
@@ -113,11 +112,10 @@ export default {
 </script>
 
 <template>
-  <section :class="[ 'event' ]">
-    <!-- :style="{ ...accent }" -->
-    <!-- { hide_input } -->
-  <!-- aria-labelledby="event_title" -->
-    <!-- aria-label="event information, livestream player & chat" -->
+  <section
+    class="event"
+    aria-labelledby="event_title"
+  >
     <router-view
       v-if="event"
       v-slot="{ Component }"
@@ -137,12 +135,13 @@ export default {
   flex-direction   : row-reverse;
   height           : 100%;
   /* animation        : enterMiddle var(--enter) ease 0.1s forwards !important; */
-  padding-bottom   : var(--footer-height) !important;
+  padding-bottom   : var(--footer-height);
 }
 
-/* @keyframes enterMiddle {
-  from { transform : translateY(100%) }
-  to   { transform : translateY(0) }
-} */
+#chatpage .event {
+  padding: 0;
+  padding-bottom: 0;
+}
+
 
 </style>

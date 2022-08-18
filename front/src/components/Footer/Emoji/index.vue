@@ -21,14 +21,22 @@ export default {
 
   computed: {
     ...mapGetters( 'events', [
+      'get_event',
       'emoji_groups',
-      'emoji_allowed',
+      'emoji_allowed'
     ]),
     ...mapGetters( 'viewers', [
       'uuid',
     ]),
+    event() {
+      return this.get_event( this.$route.params.slug )
+    },
     can_send_emoji() {
-      return this.emoji_allowed && !this.emoji_timeout
+      return (
+        this.emoji_allowed &&
+        !this.emoji_timeout &&
+        !this.event.is_in_past
+      )
     }
   },
 

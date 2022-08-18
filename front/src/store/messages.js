@@ -154,7 +154,7 @@ export default {
       try {
         await api.messages.put( message.id, {
           censored: !message.censored,
-          // sender: message.sender,       // ???????
+          sender: message.sender().id,
         })
       } catch ( error ) {
         throw error

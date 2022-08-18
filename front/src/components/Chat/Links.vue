@@ -1,17 +1,14 @@
 <script>
 export default {
-  
   name: 'Links',
   props: {
     links : Object,
     name  : String
   },
-
 }
 </script>
-
 <template>
-  <ul 
+  <ul
     class="body"
     :aria-label="`Message URLs from ${ name }`"
   >
@@ -19,7 +16,7 @@ export default {
       v-for="(url, index) in links"
       :key="index"
     >
-      <a 
+      <a
         target="blank"
         :href="url"
         :title="url"
@@ -29,6 +26,3 @@ export default {
     </li>
   </ul>
 </template>
-
-<style scoped>
-</style>

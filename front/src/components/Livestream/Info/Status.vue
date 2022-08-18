@@ -4,18 +4,19 @@ export default {
   props: { status: String },
 }
 </script>
-  
+
 <template>
-  <div 
+  <div
     :id="$id()"
-    aria-label="livestream status"
+    aria-label="Livestream status"
   >
-    <p role="status">{{ status }}</p>
+    <p role="status">
+      {{ status }}
+    </p>
   </div>
-</template>   
+</template>
 
 <style scoped>
-
 #status {
   width           : 100%;
   height          : 100%;

@@ -43,7 +43,7 @@ export default {
           'starts',
           'accent',
           'info',
-          'livestream'
+          'recording'
         ],
       } } )
       .then( result => resolve( result.data.data ) )

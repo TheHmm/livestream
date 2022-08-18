@@ -2,29 +2,20 @@
 import { mapGetters } from 'vuex'
 import Announcement   from './Announcement.vue'
 
-
-// Container for announcements received froms Strapi.
-
 export default {
-
   name: 'Announcements',
-
-  components: {
-    Announcement
-  },
-
+  components: { Announcement },
   computed: {
-    ...mapGetters( 'announcements', [
-      'most_recent'
-    ]),
+    ...mapGetters( 'announcements', [ 'most_recent' ]),
   },
-
 }
 </script>
 
-
 <template>
-  <div :id="$id()">
+  <div
+    :id="$id()"
+    aria-label="Announcements from The Hmm"
+  >
     <transition name="fall-in" >
       <Announcement
         v-if="most_recent"
@@ -34,9 +25,7 @@ export default {
   </div>
 </template>
 
-
 <style scoped>
-
 #announcements {
   position   : fixed;
   top        : var(--marquee-height);
@@ -51,7 +40,6 @@ export default {
   z-index    : 5;
   opacity    : 0;
 }
-
 .fall-in-move,
 .fall-in-enter-active,
 .fall-in-leave-active {
@@ -64,7 +52,6 @@ export default {
 .fall-in-leave-active {
   position   : absolute;
 }
-
 @keyframes enter {
   from {
     transform: translateY( calc( var(--header-height) * -3 ) );
@@ -75,5 +62,4 @@ export default {
     opacity: 1;
   }
 }
-
 </style>

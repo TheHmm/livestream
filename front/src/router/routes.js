@@ -34,7 +34,7 @@ export default [
   {
     path: '/:slug',
     name: 'Event',
-    component: () => import( '@/views/Event/index.vue' ),
+    component: () => import( '@/views/Event.vue' ),
     children: [
       {
         path: '',
@@ -50,10 +50,15 @@ export default [
           ]
         },
       },
+      // {
+      //   path: 'captions',
+      //   name: 'CaptionsPage',
+      //   component: () => import( '@/components/Livestream/Player/Captions.vue' ),
+      // },
       {
         path: 'chat',
         name: 'ChatPage',
-        component: () => import( '@/views/Event/Chat.vue' ),
+        component: () => import( '@/components/Chat/index.vue' ),
         meta: {
           desired_tabs : [
             'about',
@@ -74,7 +79,7 @@ export default [
       {
         path: 'accent',
         name: 'Accent',
-        component: () => import( '@/views/Event/Accent.vue' )
+        component: () => import( '@/components/Utils/Accent.vue' )
       }
     ]
   },
