@@ -1,4 +1,11 @@
 <script>
+
+// Livestream status indicator:
+// - active      : livestream is running
+// - idle        : livestream will run eventually
+// - ready       : recording of livestream is available
+// - unavailable : none of the above
+
 export default {
   name: 'Status',
   props: { status: String },

@@ -1,6 +1,8 @@
 <script>
 import { mapGetters } from 'vuex'
 
+// year picker filter component
+
 export default {
 
   name: 'Year',

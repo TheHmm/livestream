@@ -1,5 +1,9 @@
 <script>
 
+
+// Event archive page. Async component, loads passt events list
+// in setup.
+
 import store     from '@/store'
 import _throw    from '@/utils/throw'
 import EventList from '../components/Event/List.vue'
@@ -8,9 +12,7 @@ export default {
 
   name: 'HomePage',
 
-  components: {
-    EventList
-  },
+  components: { EventList },
 
   async setup() {
     try {
@@ -24,9 +26,15 @@ export default {
 
   computed: {
 
+
+    // Filter events by year.
+
     year() {
       return this.$route.query.year
     },
+
+
+    // Get events, filter by year, sort reverse-chrono.
 
     events() {
       return store

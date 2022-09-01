@@ -1,4 +1,6 @@
 <script>
+
+// About tab
 export default {
 
   name: 'About',

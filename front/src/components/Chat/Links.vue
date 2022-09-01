@@ -1,4 +1,7 @@
 <script>
+
+// List of only message links
+
 export default {
   name: 'Links',
   props: {

@@ -1,6 +1,9 @@
 <script>
 import { mapState } from 'vuex'
 
+// Error component, displays an error object in place of the
+// expected contet / result
+
 export default {
 
   name:  "Error" ,

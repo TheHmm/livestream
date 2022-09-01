@@ -150,8 +150,8 @@ body {
 }
 
 @keyframes enter {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from { opacity   : 0; }
+  to   { opacity   : 1; }
 }
 
 
@@ -173,17 +173,17 @@ body.mobile >>> main {
 }
 
 body#chatpage.hide_input footer {
-  display: none;
+  display          : none;
 }
 
 body#chatpage #middle,
 body#accent #middle {
-  padding: 0;
+  padding          : 0;
 }
 body#accent header ,
 body#accent footer,
 body#accent #announcements {
-  display: none;
+  display          : none;
 }
 
 body#accent {
@@ -199,7 +199,7 @@ body#accent * {
 }
 
 body.mobile {
-  overflow : scroll;
+  overflow         : scroll;
 }
 
 body.mobile main {

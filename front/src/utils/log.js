@@ -1,3 +1,6 @@
+// Custom logger
+
+
 const
 
   log = ( from, ...args ) => {

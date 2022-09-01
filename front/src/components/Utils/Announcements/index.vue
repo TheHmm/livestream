@@ -2,6 +2,8 @@
 import { mapGetters } from 'vuex'
 import Announcement   from './Announcement.vue'
 
+// Container for announcements. Mounted absolutely on top.
+
 export default {
   name: 'Announcements',
   components: { Announcement },

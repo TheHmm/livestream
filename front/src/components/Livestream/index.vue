@@ -87,7 +87,7 @@ export default {
 
 
 .mobile #player {
-  max-height: 60%;
+  max-height       : 60%;
 }
 
 .mobile #info {

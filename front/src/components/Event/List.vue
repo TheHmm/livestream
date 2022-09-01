@@ -1,4 +1,7 @@
 <script>
+
+// Event list
+
 import Event from './Event.vue'
 export default {
   name       : 'EventList',

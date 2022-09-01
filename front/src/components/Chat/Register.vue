@@ -3,7 +3,7 @@ import { mapGetters } from 'vuex'
 import Bot from '../Utils/Bot.vue'
 
 
-// Dialog for registratio with polyfill.
+// Dialog for registration with polyfill.
 
 import dialogPolyfill from 'dialog-polyfill'
 

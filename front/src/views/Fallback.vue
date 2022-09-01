@@ -23,12 +23,11 @@ export default {
   },
 
   computed: {
-    // ...mapState( 'meta', [ 'error' ]),
     error() {
       return this.$store.state.meta.error
     },
     is_error() {
-     return this.error
+      return this.error
     },
     is_loading() {
       return this.message == 'Loading...'

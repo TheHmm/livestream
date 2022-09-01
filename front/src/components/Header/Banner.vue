@@ -1,7 +1,5 @@
 <script>
-export default {
-  name: 'Banner',
-}
+export default { name: 'Banner' }
 </script>
 
 <template>
@@ -53,7 +51,6 @@ svg {
   transition     : stroke var(--very-slow) ease;
   animation      : enter var(--very-slow) ease forwards;
 }
-
 @keyframes enter {
   from { opacity : 0; }
   to   { opacity : 1; }

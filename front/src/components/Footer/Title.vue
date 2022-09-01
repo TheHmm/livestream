@@ -1,5 +1,7 @@
 <script>
 
+// Tab title component
+
 import CircleType from 'circletype'
 
 export default {

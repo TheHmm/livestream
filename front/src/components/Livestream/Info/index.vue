@@ -1,5 +1,8 @@
 <script>
 
+// Livestream / Event info card for event page
+
+
 export default {
   name: 'Info',
   props: { event: Object },
