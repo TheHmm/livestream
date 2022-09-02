@@ -50,11 +50,14 @@ export default [
           ]
         },
       },
-      // {
-      //   path: 'captions',
-      //   name: 'CaptionsPage',
-      //   component: () => import( '@/components/Livestream/Player/Captions.vue' ),
-      // },
+      {
+        path: 'captions',
+        name: 'CaptionsPage',
+        component: () => import( '@/components/Livestream/Player/Captions.vue' ),
+        meta: {
+          hide_header: true
+        }
+      },
       {
         path: 'chat',
         name: 'ChatPage',

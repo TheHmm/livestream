@@ -37,9 +37,6 @@ export default {
     playback_id() {
       return this.livestream.playbackId
     },
-    stream_start() {
-      return this.livestream.start_time
-    },
     source_url() {
       return mux.source_url( this.playback_id, this.mode.name )
     },
@@ -140,7 +137,6 @@ export default {
       v-if="desires_captions && captions_ready"
       :hls="hls"
       :livestream="livestream"
-      :stream_start="stream_start"
     />
   </video>
   <section v-else>

@@ -20,7 +20,7 @@ export default {
     ] ),
 
     active() {
-      return this.livestream.status == 'active'
+      return this.livestream?.status == 'active'
     }
 
   },
@@ -51,9 +51,6 @@ export default {
     if ( !this.hls ) {
       this.scroll_to_bottom()
     }
-  },
-
-  updated() {
   },
 
   beforeUnmount() {
@@ -153,4 +150,7 @@ export default {
   padding: 0.125rem 0.5rem;
 }
 
+#captionspage #captions {
+  width: 100%;
+}
 </style>

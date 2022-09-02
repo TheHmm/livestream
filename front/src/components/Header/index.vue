@@ -16,13 +16,21 @@ export default {
     Banner,
     Viewers,
     Network,
+  },
+  computed: {
+    hide_header() {
+      return this.$route.meta.hide_header
+    }
   }
 }
 
 </script>
 
 <template>
-  <header aria-label="Banner, viewer dots, and network information">
+  <header
+    v-if="!hide_header"
+    aria-label="Banner, viewer dots, and network information"
+  >
     <Marquee />
     <Banner />
     <Network />
