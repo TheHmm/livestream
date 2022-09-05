@@ -138,6 +138,16 @@ module.exports = {
       }
 
 
+      try {
+        const ccv = await mux.get_transcription_vocabularies(
+            found.privateData.generated_subtitles[0].transcription_vocabulary_ids[0]
+         )
+         console.log  (ccv)
+      } catch (err){
+        console.log(err)
+      }
+
+
       // Then, we update the 'livestream' entry in Strapi
       // with the new or updated livestream object.
 
