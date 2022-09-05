@@ -21,7 +21,7 @@ export default {
     livestream       : Object,
     mode             : Object,
     muted            : Boolean,
-    desires_captions : Boolean,
+    // desires_captions : Boolean,
   },
 
   data() {
@@ -134,7 +134,7 @@ export default {
     :src="source_url"
   >
     <Captions
-      v-if="desires_captions && captions_ready"
+      v-if="captions_ready"
       :hls="hls"
       :livestream="livestream"
     />

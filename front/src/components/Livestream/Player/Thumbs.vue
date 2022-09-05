@@ -21,7 +21,6 @@ export default {
 
   props: {
     livestream       : Object,
-    desires_captions : Boolean
   },
 
   data() {
@@ -139,10 +138,8 @@ export default {
       <span>Loading...</span>
     </section>
     <Captions
-      v-if="desires_captions"
       :playing="playing"
       :livestream="livestream"
-      :native="false"
     />
   </div>
 
