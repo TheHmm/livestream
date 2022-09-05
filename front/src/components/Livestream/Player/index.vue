@@ -54,27 +54,6 @@ export default {
       // return this.muted
     },
 
-
-    // Computes wether closed captions are desired from the
-    // route query and defaults to true.
-
-    // desires_captions() {
-    //   const
-    //     key = 'closed_captions',
-    //     value = this.$route.query[key],
-    //     default_value = this.$store.state.meta.ui[key].default
-
-    //   if ( value ) {
-    //     if ( value == 'true' ) {
-    //       return true
-    //     } else {
-    //       return false
-    //     }
-    //   } else {
-    //     return default_value
-    //   }
-    // },
-
   },
 
   data() {
