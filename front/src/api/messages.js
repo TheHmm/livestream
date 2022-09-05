@@ -51,6 +51,35 @@ export default {
     } )
   },
 
+  get_all_event_messages( event_id ) {
+    return new Promise( ( resolve, reject ) => {
+      axios
+      .get( `${ config.api_url }/messages`, { params: {
+        sort: 'time:asc',
+        pagination: {
+          start: 0,
+          limit: 700,
+        },
+        filters: {
+          event: {
+            id: {
+              $eq: event_id
+            }
+          },
+        },
+        fields: '*',
+        populate: [
+          'sender'
+        ],
+      } } )
+      .then( result => resolve( result.data.data ) )
+      .catch( error => {
+        $log.error( 'API', error )
+        reject( error )
+      } )
+    } )
+  },
+
   post( data ) {
     $log.info( `API`, `Posting message ${ data.body }.`)
     return new Promise( ( resolve, reject ) => {

@@ -118,6 +118,7 @@ export default {
   <footer
     aria-label="Accessibility, viewing and donation options."
     :class="{ highlight_donate }"
+    v-if="tabs.length"
   >
     <transition-group
       name="tab_enter"

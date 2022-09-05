@@ -176,10 +176,6 @@ body#chatpage.hide_input footer {
   display          : none;
 }
 
-body#chatpage #middle,
-body#accent #middle {
-  padding          : 0;
-}
 body#accent header ,
 body#accent footer,
 body#accent #announcements {
@@ -209,8 +205,14 @@ body.mobile main {
   overflow         : scroll;
 }
 
-/* body#captionspage {
-} */
+body#savepage {
+  height: unset;
+}
+
+
+body#savepage main {
+  height: unset;
+}
 
 
 </style>

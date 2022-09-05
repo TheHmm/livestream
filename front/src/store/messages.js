@@ -110,6 +110,26 @@ export default {
       )
     },
 
+    // Fetch all messages with links from event
+
+    fetch_all_event_messages( { dispatch }, event_id ) {
+      return new Promise( ( resolve, reject ) =>
+        api
+        .messages
+        .get_all_event_messages( event_id )
+        .then( messages => {
+          for ( const message of messages ) {
+            dispatch( 'set_message', message )
+          }
+          resolve( messages )
+        } )
+        .catch( error =>
+          reject( error )
+        )
+      )
+    },
+
+
 
     // Get messages by event id.
 

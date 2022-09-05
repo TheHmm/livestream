@@ -232,20 +232,20 @@ video::cue {
   display: none;
 }
 
-.mobile #middle #player.thumbs {
+.mobile #player.thumbs {
   min-height: 60%;
   max-height: 70%;
 }
 
-.mobile #middle #player.audio {
+.mobile #player.audio {
   height: unset;
   min-height: 30%;
 }
 
-.mobile #middle #player.video {
+.mobile #player.video {
   align-self: flex-start
 }
-.mobile #middle #player video {
+.mobile #player video {
   height: unset;
   width: 100%;
 }

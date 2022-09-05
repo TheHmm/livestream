@@ -138,10 +138,19 @@ export default {
   padding-bottom   : var(--footer-height);
 }
 
+#savepage .event,
 #chatpage .event {
   padding: 0;
   padding-bottom: 0;
 }
 
+#savepage .event {
+  height: unset;
+  display: unset;
+}
+
+#captionspage .event {
+  background: black !important;
+}
 
 </style>

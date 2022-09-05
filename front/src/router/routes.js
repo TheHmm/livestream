@@ -71,13 +71,16 @@ export default [
             'emoji',
           ]
         },
-        children: [
-          // {
-          //   path: 'save',
-          //   name: 'ChatPageSave',
-          //   component: () => import( '@/views/Event/Chat/Save.vue' ),
-          // },
-        ]
+        // children: []
+      },
+      {
+        path: 'chat/save',
+        name: 'SavePage',
+        component: () => import( '@/components/Chat/save.vue' ),
+        meta: {
+          hide_header: true,
+          desired_tabs: []
+        }
       },
       {
         path: 'accent',

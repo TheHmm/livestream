@@ -177,6 +177,17 @@ export default {
             </label>
           </span>
           <input
+            value="save"
+            aria-label="Save chat"
+            class="close"
+            name="save"
+            type="button"
+            @click.stop="$router.push({
+              name: 'SavePage',
+              params: $route.params
+            })"
+          />
+          <input
             value="✕"
             aria-label="Close chat window"
             class="close circle"
@@ -247,13 +258,14 @@ export default {
   font-family     : 'not-courier-sans', Arial, Helvetica, sans-serif;
   width           : 100%;
   display         : flex;
-  justify-content : space-between;
   font-size       : var(--size-s);
+  gap             : 0.5rem;
 }
 
 #chat .title .options .links {
   display         : flex;
   align-items     : center;
+  margin-right    : auto;
 }
 
 /* #chat .title .options .links label::before {
