@@ -157,4 +157,8 @@ export default {
 #captionspage #captions {
   width: 100%;
 }
+#captionspage #captions p span  {
+  --fore: var(--black);
+}
+
 </style>
