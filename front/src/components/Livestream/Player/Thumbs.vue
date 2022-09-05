@@ -20,7 +20,7 @@ export default {
   },
 
   props: {
-    livestream       : Object,
+    livestream : Object,
   },
 
   data() {

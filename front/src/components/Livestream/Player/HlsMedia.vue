@@ -1,7 +1,7 @@
 <script>
 import { mux }    from '@/utils/livestream'
 import networking from '@/networking'
-// import Captions   from './Captions.vue'
+import Captions   from './Captions.vue'
 
 
 // The 'foreign' HLS player with a <video> or <audio>
@@ -13,7 +13,7 @@ export default {
   name: 'HlsMedia',
 
   components: {
-    // Captions,
+    Captions,
   },
 
 
@@ -132,11 +132,11 @@ export default {
     crossorigin="anonymous"
     :src="source_url"
   >
-    <!-- <Captions
+    <Captions
       v-if="captions_ready"
       :hls="hls"
       :livestream="livestream"
-    /> -->
+    />
   </video>
   <section v-else>
     <audio

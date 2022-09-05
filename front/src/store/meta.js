@@ -13,9 +13,8 @@ export default {
     muted   : true,
     error   : null,
     ui      : {
-      reduce_motion   : { label: "reduce motion",   default: false },
-      reduce_depth    : { label: "reduce depth",    default: false },
-      closed_captions : { label: "closed captions", default: true } // TODO
+      reduce_motion : { label: "reduce motion", default: false },
+      reduce_depth  : { label: "reduce depth",  default: false },
     },
   },
 

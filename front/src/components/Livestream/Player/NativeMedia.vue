@@ -14,7 +14,6 @@ export default {
     livestream       : Object,
     mode             : Object,
     muted            : Boolean,
-    // desires_captions : Boolean
   },
 
   computed: {
