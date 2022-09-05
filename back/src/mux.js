@@ -62,10 +62,6 @@ module.exports = MUX_TOKEN => {
       return await Video.TranscriptionVocabularies.update( id, { phrases } )
     },
 
-    get_transcription_vocabularies = async ( id ) => {
-      return await Video.TranscriptionVocabularies.get( id )
-    },
-
 
     // lazy way of getting a stream's playback id
 
@@ -119,7 +115,6 @@ module.exports = MUX_TOKEN => {
     update_livestream_generated_subtitles,
     create_transcription_vocabularies,
     update_transcription_vocabularies,
-    get_transcription_vocabularies,
     get_start_time,
     get_public_stream_details,
     get_public_asset_details,
