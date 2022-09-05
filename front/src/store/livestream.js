@@ -101,7 +101,6 @@ export default {
     // file)
 
     set_CC ( { commit }, cc ) {
-      console.log(cc)
       commit( 'SET_CC', cc )
     },
 
@@ -128,7 +127,6 @@ export default {
     },
 
     socket_interm( { commit }, cue ) {
-      console.log(cue)
       commit( 'SET_CC_INTERIM', cue )
     },
 

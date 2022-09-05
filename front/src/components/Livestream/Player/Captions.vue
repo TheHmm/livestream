@@ -44,7 +44,11 @@ export default {
   },
 
   created() {
-    this.play()
+    if ( this.$route.name == 'CaptionsPage' ) {
+      this.$socket.client.emit('join_CC_room')
+    } else {
+      this.play()
+    }
   },
 
   mounted() {
