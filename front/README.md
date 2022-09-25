@@ -34,7 +34,7 @@ npm run build
 
 This will produce a directory `dist` with the built SPA. You should:
 1. Move or symlink this directory to a web-accessible one and
-2. Point your domain to this directory. 
+2. Point your domain to this directory.
 
 **Note**: Because of the way Vue works, the domain you point to your application must be the one in your environment variable `VITE_APP_URL`.
 ## Apache / Nginx Configuration

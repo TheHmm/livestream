@@ -14,12 +14,12 @@ Then you can install the required libraries ( ~ 700MB ) and build the admin UI.
 
 ```
 npm i
-npm run build 
+npm run build
 ```
 
 ## Development
 
-In a development environment, start Strapi with autoReload enabled. 
+In a development environment, start Strapi with autoReload enabled.
 ```
 npm run develop
 ```
@@ -34,7 +34,7 @@ Strapi will start on the port configured in the .env file. If any errors occur w
 
 ## Apache / Nginx Configuration
 
-At this point, you should set up a dedicated domain / subdomain for Strapi ( separate from the Vue SPA ) in your DNS manager and point it to your server's IP address. 
+At this point, you should set up a dedicated domain / subdomain for Strapi ( separate from the Vue SPA ) in your DNS manager and point it to your server's IP address.
 
 Next, configure a site in your apache or nginx webserver for this domain and set it up to proxy connections to the port where Strapi is running.
 
@@ -44,13 +44,11 @@ Next, configure a site in your apache or nginx webserver for this domain and set
 
 The example given assumes that you can generate a self-signged SSL certificate on your server, as this is recccommended for Strapi to work across origins!
 
-# todo: maxconnections count on apache 
+# todo: maxconnections count on apache
 
 ## Creating Users
 
 You can head over to `https://{ your-strapi-host }/admin` and create your admin users / other users.
-
-*( Note for Marco: please create a user for me with author/editor permissions so i can migrate content. )*
 
 ## Daemonizing
 
@@ -78,4 +76,4 @@ Last, head over to your mux dashboard and set up a webhook in your settings that
 ```
 https://{ your-strapi-host }/api/mux-hook
 ```
-This webhook will inform Strapi of all its video and livestream API events, and Strapi in turn informs connected clients of these events. Make sure you pick the appropriate environment. 
+This webhook will inform Strapi of all its video and livestream API events, and Strapi in turn informs connected clients of these events. Make sure you pick the appropriate environment.
