@@ -1,7 +1,7 @@
 # The Hmm Livestream v2
 
 Second version of the Hmm Livestream website with:
-- a CMS to archive livestreams and maagge the chats
+- a CMS to archive livestreams and manage the chats
 - an SPA for custom routing
 - a revamped stylesheet
 - multiple view modes for livestreams
@@ -14,9 +14,6 @@ Second version of the Hmm Livestream website with:
 | back      |  Strapi CMS       |
 | front     |  Vue SPA          |
 | misc      |  Captions, etc... |
-
-
-
 
 ## Reuqirements
 
@@ -61,7 +58,7 @@ TODO
 ## Development Workflow
 ### Post-receive hook
 TODO
-  
+
 
 
 
