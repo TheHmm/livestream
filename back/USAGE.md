@@ -1,11 +1,5 @@
 # Strapi Usage Instructions
 
-## Quick Links
-
--
--
--
-
 ## 🌍 Context
 
 There are two types of users on Strapi:
