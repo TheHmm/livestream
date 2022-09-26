@@ -36,7 +36,7 @@ Second version of the Hmm Livestream website with:
 
 This project is multi-faceted and has several usage instructions:
 1. [for streaming](#streaming)
-2. [for producing real time closed captions](#closed-captions)
+2. [for producing closed captions](#closed-captions)
 3. [for content management](#content-management)
 4. [for moderation](#moderation)
 ### Streaming
@@ -60,7 +60,7 @@ When viewing a livestream, the visitor can pick between several viewing modes: (
 
 These are already enabled in our MUX configuration by default. So we are always producing captions for our video mode. These are closed captions that viewers can turn on and off in the web video player. Configuration instructions can be found at [back/USAGE.md#captions](back/USAGE.md#captions)
 
-#### own
+#### Google Captions
 
 Aside from the MUX-provided closed captioning service, we run a secondary captioning service with the Google Voice API 🤮 to show a real-time transcript of the speakers of the stream online as well as in the space. This makes it possible to follow the event only by reading it. Instructions on how to run these can be found at [misc/cc/USAGE.md](misc/cc/USAGE.md)
 
