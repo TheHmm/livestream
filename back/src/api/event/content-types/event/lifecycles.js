@@ -62,7 +62,7 @@ module.exports = {
         try {
           const asset = await strapi.mux.get_asset( asset_id )
           params.data.recording = strapi.mux.get_public_asset_details( asset )
-          strapi.log.info(`[ * Playback ID: ${ event.recording.playbackId }`)
+          strapi.log.info(`[ * Playback ID: ${ params.data.recording.playbackId }`)
         } catch ( err ) {
           console.error(err)
           params.data.recording = {
