@@ -10,6 +10,8 @@ module.exports = {
   async beforeUpdate( event ) {
 
 
+    const params    = event.params
+
     // fetch recording if asset_id provided
 
     const recording = params.data.recording
@@ -37,7 +39,6 @@ module.exports = {
     // one from Strapi.
 
     const
-      params    = event.params,
       id        = params.where.id,
       new_event = params.data,
       slug      = params.data.slug,
