@@ -41,6 +41,7 @@ export default {
           'title',
           'slug',
           'starts',
+          'ends',
           'accent',
           'info',
           'recording'

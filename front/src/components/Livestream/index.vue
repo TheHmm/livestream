@@ -56,7 +56,7 @@ export default {
 
 <template>
   <Info :event="event" />
-  <Player v-if="show_player" :livestream="livestream" />
+  <Player v-if="show_player" :event="event" />
   <Status v-else :status="status" />
   <Chat :event="event" />
 </template>

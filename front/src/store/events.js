@@ -2,7 +2,6 @@ import api        from "../api"
 import color      from '@/utils/color'
 import $time      from '@/utils/time'
 import livestream from '@/utils/livestream'
-import captions   from '@/utils/captions'
 import router     from '@/router'
 
 export default {
@@ -237,14 +236,13 @@ function sanitize ( event, rootGetters, dispatch ) {
 
     // We search for the event livestream. In Strapi, all events
     // that have happened in the past have a MUX asset as their
-    // livestream. And any events that are going to happen in
-    // the future will not have a defined livestream field; and
+    // recording. And any events that are going to happen in
+    // the future will not have a defined recording field; and
     // should point to the ongoing strapi livestream.
 
     if ( event.recording && event.recording.status ) {
       if ( event.recording.status == 'ready' ) {
         event.cover = livestream.mux.thumb_src( event.recording.playbackId, 10 )
-        get_and_set_cc( event.recording, dispatch )
       }
     }
 
@@ -253,25 +251,4 @@ function sanitize ( event, rootGetters, dispatch ) {
   }
 
   return event
-}
-
-
-// Manually pulling the subtitle file of an asset if it even
-// exists and converting it to text for the transcript mode
-
-function get_and_set_cc( recording, dispatch ) {
-  const text_track = recording.tracks.find( t => {
-    return t.type == 'text' && t.text_source == 'generated_live_final'
-  })
-  if ( text_track ) {
-    const cc_url = livestream.mux.text_src( recording.playbackId, text_track.id )
-    api
-    .get( cc_url )
-    .then( ({ data }) => dispatch(
-      'livestream/set_CC',
-      captions.parse_vtt( data ),
-      { root: true }
-    ))
-    .catch( err => console.error( err ) )
-  }
 }

@@ -51,11 +51,19 @@ export default [
         },
       },
       {
-        path: 'captions',
-        name: 'CaptionsPage',
-        component: () => import( '@/components/Livestream/Player/Captions.vue' ),
+        path: 'player',
+        name: 'PlayerPage',
+        component: () => import( '@/components/Livestream/Player/index.vue' ),
         meta: {
           hide_header: true
+        }
+      },
+      {
+        path: 'captions',
+        name: 'CaptionsPage',
+        redirect: {
+          name: 'PlayerPage',
+          query: { mode: 'transcript' }
         }
       },
       {
@@ -71,7 +79,6 @@ export default [
             'emoji',
           ]
         },
-        // children: []
       },
       {
         path: 'chat/save',

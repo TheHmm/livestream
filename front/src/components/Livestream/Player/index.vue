@@ -28,7 +28,7 @@ export default {
   },
 
   props: {
-    livestream : Object,
+    event : Object,
   },
 
   computed: {
@@ -39,6 +39,10 @@ export default {
 
     mode() {
       return this.$store.getters['livestream/current_mode']( this )
+    },
+
+    livestream()  {
+      return this.event?.livestream() || this.event?.recording
     },
 
 
@@ -228,5 +232,15 @@ video::cue {
   width: 100%;
 }
 
+#playerpage #player {
+  /* border: none; */
+}
+
+#playerpage #captions {
+  width: 100%;
+}
+#playerpage #captions p span  {
+  --fore: var(--black);
+}
 
 </style>

@@ -1,6 +1,9 @@
 <script>
 
 import { mapState }   from 'vuex'
+import livestream from '@/utils/livestream'
+import captions   from '@/utils/captions'
+import api        from '@/api'
 
 export default {
 
@@ -21,6 +24,9 @@ export default {
 
     active() {
       return this.livestream?.status == 'active'
+    },
+    ready() {
+      return this.livestream?.status == 'ready'
     }
 
   },
@@ -44,11 +50,10 @@ export default {
   },
 
   created() {
-    if ( this.$route.name == 'CaptionsPage' ) {
-      this.$socket.client.emit('join_CC_room')
-    } else {
-      this.play()
+    if ( this.ready ) {
+      this.get_and_set_cc( this.livestream, this.$store.dispatch )
     }
+    this.play()
   },
 
   mounted() {
@@ -92,6 +97,27 @@ export default {
         })
       }, 50)
     },
+
+
+    // Manually pulling the subtitle file of an asset if it even
+    // exists and converting it to text for the transcript mode
+
+    get_and_set_cc( recording, dispatch ) {
+      const text_track = recording.tracks.find( t => {
+        return t.type == 'text' && t.text_source == 'generated_live_final'
+      })
+      if ( text_track ) {
+        const cc_url = livestream.mux.text_src( recording.playbackId, text_track.id )
+        api
+        .get( cc_url )
+        .then( ({ data }) => dispatch(
+          'livestream/set_CC',
+          captions.parse_vtt( data ),
+          { root: true }
+        ))
+        .catch( err => console.error( err ) )
+      }
+    }
 
   }
 
@@ -154,10 +180,10 @@ export default {
   padding: 0.125rem 0.5rem;
 }
 
-#captionspage #captions {
+#playerpage #captions {
   width: 100%;
 }
-#captionspage #captions p span  {
+#playerpage #captions p span  {
   --fore: var(--black);
 }
 

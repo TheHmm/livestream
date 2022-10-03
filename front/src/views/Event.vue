@@ -149,7 +149,8 @@ export default {
   display: unset;
 }
 
-#captionspage .event {
+#playerpage .event {
+  padding-bottom: var(--size-s);
   background: black !important;
 }
 

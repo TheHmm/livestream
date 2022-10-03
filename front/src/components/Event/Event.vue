@@ -74,14 +74,22 @@ export default {
 li::before {
   content          : unset;
 }
+li.event {
+  display: flex;
+  flex-direction: column;
+}
+
+li.event section {
+  cursor           : pointer;
+  width            : 100%;
+  transition       : all var(--fast) ease;
+  padding-top      : 0.5rem;
+  max-height       : 0;
+}
 
 li:last-of-type section {
   padding-bottom   : var(--footer-height);
   max-height       : var(--footer-height);
-}
-li.event {
-  display: flex;
-  flex-direction: column;
 }
 
 li.event:hover section {
@@ -89,13 +97,6 @@ li.event:hover section {
   max-height       : 12rem;
 }
 
-
-li.event section {
-  cursor           : pointer;
-  width            : 100%;
-  transition       : all var(--fast) ease;
-  padding-top: 0.5rem;
-}
 
 li.event section img {
   width : 100%;

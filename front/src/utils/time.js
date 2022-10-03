@@ -11,6 +11,7 @@ export default {
   // Determining if event is in past
 
   BUFFER : 12 * 60 * 60 * 1000,  // 12 hours,
+
   is_in_past ( timestring ) {
     return this.time( timestring ) < ( this.now() - this.BUFFER )
   },
