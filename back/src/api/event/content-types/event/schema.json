@@ -77,7 +77,7 @@
     "count": {
       "type": "integer"
     },
-    "recording": {
+    "mux_recording": {
       "type": "json"
     }
   }

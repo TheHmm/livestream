@@ -225,6 +225,8 @@ function sanitize ( event, rootGetters, dispatch ) {
   }
 
 
+  event.recording = event.mux_recording
+
   // Way to tell if it has been more than 12 hours since the
   // event has ended.
 
@@ -239,6 +241,7 @@ function sanitize ( event, rootGetters, dispatch ) {
     // recording. And any events that are going to happen in
     // the future will not have a defined recording field; and
     // should point to the ongoing strapi livestream.
+
 
     if ( event.recording && event.recording.status ) {
       if ( event.recording.status == 'ready' ) {

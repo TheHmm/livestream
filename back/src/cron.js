@@ -192,24 +192,24 @@ async function event_post_processor( strapi, now ) {
         // recorded, since the status of the asset will be
         // "ready" as opposed to "active" or "idle".
 
-        if ( !event.recording ) {
+        if ( !event.mux_recording ) {
           const asset_id = most_recent_asset_id( livestream )
           strapi.log.info(`[ * Asset ID: ${ asset_id }`)
           if ( asset_id ) {
             try {
               const asset = await strapi.mux.get_asset( asset_id )
-              event.recording = strapi.mux.get_public_asset_details( asset )
-              strapi.log.info(`[ * Playback ID: ${ event.recording.playbackId }`)
+              event.mux_recording = strapi.mux.get_public_asset_details( asset )
+              strapi.log.info(`[ * Playback ID: ${ event.mux_recording.playbackId }`)
             } catch ( err ) {
               console.error(err)
-              event.recording = {
+              event.mux_recording = {
                 error: err,
                 asset_id: null,
               }
             }
           } else {
-            event.recording = {
-              error: "Could not automatically fetch recording, please set asset_id below:",
+            event.mux_recording = {
+              error: "Could not automatically fetch mux_recording, please set asset_id below:",
               asset_id: null,
             }
           }
@@ -235,14 +235,14 @@ async function event_post_processor( strapi, now ) {
         }
 
 
-        // if the event has not got recording defined, we request it:
+        // if the event has not got mux_recording defined, we request it:
 
-        if ( !event.recording ) {
-          event.recording = {
-            error: "Could not automatically fetch recording, please set asset_id below:",
+        if ( !event.mux_recording ) {
+          event.mux_recording = {
+            error: "Could not automatically fetch mux_recording, please set asset_id below:",
             asset_id: null,
           }
-          strapi.log.warn(`[ * Event has no recording, please set manually`)
+          strapi.log.warn(`[ * Event has no mux_recording, please set manually`)
           changed = true
         }
 
