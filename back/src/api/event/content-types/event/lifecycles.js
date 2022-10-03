@@ -51,9 +51,32 @@ module.exports = {
     }
 
 
+    // fetch recording if asset_id provided
+
+    const recording = params.data.recording
+
+    if ( recording ) {
+      const asset_id = recording.asset_id
+      const status = recording.status
+      if ( asset_id  && !status ) {
+        try {
+          const asset = await strapi.mux.get_asset( asset_id )
+          params.data.recording = strapi.mux.get_public_asset_details( asset )
+          strapi.log.info(`[ * Playback ID: ${ event.recording.playbackId }`)
+        } catch ( err ) {
+          console.error(err)
+          params.data.recording = {
+            error: err,
+            asset_id: null,
+          }
+        }
+      }
+    }
+
     // We inform connected sockets.
 
     strapi.io.emit( 'event_update', diff )
+
 
 
   },

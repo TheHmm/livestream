@@ -241,7 +241,7 @@ function sanitize ( event, rootGetters, dispatch ) {
     // the future will not have a defined livestream field; and
     // should point to the ongoing strapi livestream.
 
-    if ( event.recording ) {
+    if ( event.recording && event.recording.status ) {
       if ( event.recording.status == 'ready' ) {
         event.cover = livestream.mux.thumb_src( event.recording.playbackId, 10 )
         get_and_set_cc( event.recording, dispatch )

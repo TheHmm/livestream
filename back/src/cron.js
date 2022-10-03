@@ -2,8 +2,8 @@ const random_animal_name = require("random-anonymous-animals")
 
 module.exports = {
 
-  // '*/10 * * * * *': async ({ strapi }) => {
-  '03 15 * * *': async ({ strapi }) => {
+  '58 13 * * *': async ({ strapi }) => {
+  // '03 15 * * *': async ({ strapi }) => {
 
   // '0 0 * * *': async ({ strapi }) => { // every day at midnight
 
@@ -200,12 +200,20 @@ async function event_post_processor( strapi, now ) {
               const asset = await strapi.mux.get_asset( asset_id )
               event.recording = strapi.mux.get_public_asset_details( asset )
               strapi.log.info(`[ * Playback ID: ${ event.recording.playbackId }`)
-              changed = true
             } catch ( err ) {
-              err.asset_id = asset_id
               console.error(err)
+              event.recording = {
+                error: "Could not automatically fetch recording, please set manually.",
+                asset_id: null,
+              }
+            }
+          } else {
+            event.recording = {
+              error: "Could not automatically fetch recording, please set manually.",
+              asset_id: null,
             }
           }
+          changed = true
         }
 
 
@@ -227,13 +235,54 @@ async function event_post_processor( strapi, now ) {
         }
 
 
+
+        // if the event has a recording defined, it could be
+        // one of two things:
+
+        if ( event.recording ) {
+
+
+          // 1 => the cron job has previously successfully
+          // gotten the event recordign in the past, in which
+          // case the recording will have a status of "ready"
+
+          if ( event.recording.status && event.recording.status == "ready" ) {
+            // expected behaviour, do nothing
+
+
+          // 2 => the cron job did not previously correctly
+          // run and the archivist put in
+
+          } else if ( event.recording.asset_id && event.recording.asset_id !== null ) {
+            const asset_id = event.recording.asset_id
+            console.log( `[ * Event has Asset ID: ${ asset_id }` )
+            try {
+              const asset = await strapi.mux.get_asset( asset_id )
+              event.recording = strapi.mux.get_public_asset_details( asset )
+              strapi.log.info(`[ * Playback ID: ${ event.recording.playbackId }`)
+            } catch ( err ) {
+              console.error(err)
+              event.recording = {
+                error: "Could not automatically fetch recording, please set manually.",
+                asset_id: null,
+              }
+            }
+            changed = true
+          }
+
         // In case the event doesnt have a livestream recording
         // set yet, this is impossible to automate, so we go
         // for a warning to set it manually.
 
-        if ( !event.recording ) {
+        } else {
+          event.recording = {
+            error: "Could not automatically fetch recording, please set manually.",
+            asset_id: null,
+          }
           strapi.log.warn(`[ * Event has no recording, please set manually`)
+          changed = true
         }
+
 
       }
 
