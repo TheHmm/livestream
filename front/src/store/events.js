@@ -227,7 +227,7 @@ function sanitize ( event, rootGetters, dispatch ) {
 
 
   // Way to tell if it has been more than 12 hours since the
-  // event has passed.
+  // event has ended.
 
   event.is_in_past = $time.is_in_past( event.ends )
 
@@ -244,7 +244,7 @@ function sanitize ( event, rootGetters, dispatch ) {
     if ( event.recording ) {
       if ( event.recording.status == 'ready' ) {
         event.cover = livestream.mux.thumb_src( event.recording.playbackId, 10 )
-        get_and_set_cc( recording, dispatch )
+        get_and_set_cc( event.recording, dispatch )
       }
     }
 

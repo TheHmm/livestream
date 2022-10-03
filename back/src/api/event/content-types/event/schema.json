@@ -46,9 +46,6 @@
       "type": "boolean",
       "default": false
     },
-    "chatPlaybackDelay": {
-      "type": "decimal"
-    },
     "messages": {
       "type": "relation",
       "relation": "oneToMany",
