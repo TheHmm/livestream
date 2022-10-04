@@ -1,4 +1,6 @@
 <script>
+import livestream from '@/utils/livestream'
+
 
 // Event tab in homepage
 
@@ -15,8 +17,23 @@ export default {
     starts() { return this.event?.starts && this.$time.short_date_format( this.event.starts )},
     accent() { return this.event?.accent },
     info()   { return this.event?.info || "" },
-    cover()  { return this.event?.cover },
-    query()  { return this.$route.query }
+    query()  { return this.$route.query },
+    cover()  {
+      let cover
+      if ( this.event.recording
+        && this.event.recording.status
+        && this.event.recording.status == 'ready'
+        ) {
+        cover = livestream.mux.thumb_src( this.event.recording.playbackId, 10, 1920 )
+       } else if (
+           this.event.livestream
+        && this.event.livestream().status == 'active'
+        && this.event.livestream().playbackId
+        ) {
+        cover = livestream.mux.thumb_src( this.event.livestream().playbackId, 0, 1920 )
+      }
+      return cover
+    }
   },
 }
 </script>

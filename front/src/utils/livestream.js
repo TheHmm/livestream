@@ -25,8 +25,8 @@ const
       }
     },
 
-    thumb_src( playback_id, curr_time ) {
-      return `https://image.mux.com/${ playback_id }/thumbnail.jpg?&width=300&time=${ curr_time }`
+    thumb_src( playback_id, curr_time, width = 300 ) {
+      return `https://image.mux.com/${ playback_id }/thumbnail.jpg?&width=${ width }&time=${ curr_time }`
     },
 
     video_src( playback_id ) {

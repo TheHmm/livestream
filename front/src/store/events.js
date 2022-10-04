@@ -231,24 +231,8 @@ function sanitize ( event, rootGetters, dispatch ) {
   // event has ended.
 
   event.is_in_past = $time.is_in_past( event.ends )
-
   if ( event.is_in_past ) {
     event.livestream = () => undefined
-
-
-    // We search for the event livestream. In Strapi, all events
-    // that have happened in the past have a MUX asset as their
-    // recording. And any events that are going to happen in
-    // the future will not have a defined recording field; and
-    // should point to the ongoing strapi livestream.
-
-
-    if ( event.recording && event.recording.status ) {
-      if ( event.recording.status == 'ready' ) {
-        event.cover = livestream.mux.thumb_src( event.recording.playbackId, 10 )
-      }
-    }
-
   } else {
     event.livestream = () => rootGetters[ 'livestream/get_livestream' ]
   }
