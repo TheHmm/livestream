@@ -164,20 +164,10 @@ body main {
 
 
 
-
-body.mobile >>> main {
-  flex-direction   : column-reverse;
-  justify-content  : flex-end;
-  flex-grow        : 1;
-  overflow         : scroll;
-}
-
 body#chatpage.hide_input footer {
   display          : none;
 }
 
-body#accent header ,
-body#accent footer,
 body#accent #announcements {
   display          : none;
 }
@@ -198,18 +188,19 @@ body.mobile {
   overflow         : scroll;
 }
 
+
 body.mobile main {
   flex-direction   : column-reverse;
   justify-content  : flex-end;
   flex-grow        : 1;
-  overflow         : scroll;
+  /* overflow         : scroll; */
 }
-
+body.mobile #network {
+  display: none;
+}
 body#savepage {
   height: unset;
 }
-
-
 body#savepage main {
   height: unset;
 }

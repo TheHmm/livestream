@@ -272,13 +272,9 @@ footer .tab#about.expanded:focus-within .contents {
   max-width: calc( 100vw - 2rem );
 }
 
-footer .tab#about {
-}
-
-
 .mobile footer {
   margin         : unset;
-  z-index        : 1;
+  z-index        : 3;
   max-height     : var(--base-height);
   /* --radius       : calc( 5rem + var(--base-height) ) 100%; */
   --radius       : calc( 5rem ) 100%;
@@ -289,9 +285,11 @@ footer .tab#about {
 }
 
 .mobile footer .tab {
-  margin-left    : calc( -3 * var(--size-s));
-  /* position: absolute; */
-  /* left: 15%; */
+  /* margin-left    : calc( -3 * var(--size-s)); */
+  position       : absolute;
+  /* left           : 15%; */
+  left           : 0;
+  margin-left    : calc( 3.5 * var(--n) * var(--size-s));
 }
 .mobile footer .tab:first-of-type {
   margin-left    : 0;
@@ -300,6 +298,7 @@ footer .tab#about {
 .mobile footer .tab:focus-within ,
 .mobile footer .tab:hover {
  margin-left    : calc( -2.5 * var(--n) * var(--size-s));
+ margin-left    : calc( 2.5 * var(--n) * var(--size-s));
 }
 
 .mobile footer .tab:focus .contents,
@@ -310,9 +309,16 @@ footer .tab#about {
   min-width: var(--width);
   max-width: var(--width);
 }
-
 .chatpage footer #modes {
   display: none;
+}
+
+
+.mobile footer .tab#about header {
+  justify-content: left;
+}
+.mobile footer .tab#about.expanded header {
+  justify-content: flex-end;
 }
 
 .mobile.chatpage footer .tab {

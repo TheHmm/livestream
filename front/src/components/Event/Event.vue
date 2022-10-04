@@ -14,7 +14,7 @@ export default {
     slug()   { return this.event?.slug },
     starts() { return this.event?.starts && this.$time.short_date_format( this.event.starts )},
     accent() { return this.event?.accent },
-    info()   { return this.event?.info },
+    info()   { return this.event?.info || "" },
     cover()  { return this.event?.cover },
     query()  { return this.$route.query }
   },
@@ -44,9 +44,8 @@ export default {
         <p
           aria-label="event summary"
           class="summary"
-        >
-          {{ info }}
-        </p>
+          v-html="$mdi(info).replaceAll('<br>', ' ')"
+        />
         <time
           aria-label="event start time"
           class="time"
@@ -77,6 +76,7 @@ li::before {
 li.event {
   display: flex;
   flex-direction: column;
+  padding-bottom: 0;
 }
 
 li.event section {
@@ -84,12 +84,12 @@ li.event section {
   width            : 100%;
   transition       : all var(--fast) ease;
   padding-top      : 0.5rem;
-  max-height       : 0;
+  max-height       : 3rem;
+  overflow         : hidden;
 }
 
 li:last-of-type section {
   padding-bottom   : var(--footer-height);
-  max-height       : var(--footer-height);
 }
 
 li.event:hover section {
@@ -105,21 +105,21 @@ li.event section img {
 li.event header {
   cursor           : pointer;
   display          : flex;
-  align-items      : center;
+  align-items      : baseline;
   width            : 100%;
   transition       : padding var(--fast) ease;
+  gap              : 0.25rem;
 }
 
-li.event h1,
 li.event p {
-  margin-inline    : 0.25rem;
-  white-space      : nowrap;
 }
-
 li.event a {
   font-style       : unset;
 }
 
+li.event h1 {
+  flex-basis       : 30%;
+}
 li.event h1,
 li.event p {
   margin-block     : 0;
@@ -127,14 +127,34 @@ li.event p {
 
 li.event .time {
   margin-left      : auto;
-  min-width        : 10rem;
   text-align       : right;
+  flex-shrink      : 0;
 }
 
 
 li.event .summary {
+  flex-basis       : 50%;
   overflow         : hidden;
   text-overflow    : ellipsis;
+}
+
+
+.mobile li.event header {
+  display: block;
+}
+.mobile li.event .summary {
+  display: none;
+}
+
+.mobile li:last-of-type section {
+  padding-bottom   : 4rem;
+}
+.mobile li.event:hover section {
+  padding-bottom   : unset;
+  max-height       : 3rem;
+}
+.mobile li:last-of-type:hover section {
+  padding-bottom   : 4rem;
 }
 
 </style>

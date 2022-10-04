@@ -138,6 +138,10 @@ export default {
   padding-bottom   : var(--footer-height);
 }
 
+.mobile .event {
+  flex-direction: column-reverse;
+}
+
 #savepage .event,
 #chatpage .event {
   padding: 0;

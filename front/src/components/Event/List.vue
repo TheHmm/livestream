@@ -29,7 +29,7 @@ ul {
   z-index          : 2;
   list-style       : none;
   padding          : 0;
-  height           : 100%;
+  min-height       : 100%;
   display          : flex;
   flex-direction   : column;
   justify-content  : flex-end;

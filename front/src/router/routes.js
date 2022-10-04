@@ -75,7 +75,6 @@ export default [
             'about',
             'access',
             'donate',
-            'modes',
             'emoji',
           ]
         },

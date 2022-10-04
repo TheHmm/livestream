@@ -37,7 +37,7 @@ export default {
     },
 
     text() {
-      return this.marquee.repeat(10)
+      return this.marquee.repeat(20)
     },
 
   },

@@ -1,10 +1,3 @@
-<script>
-export default {
-  name: 'Banner',
-}
-</script>
-
-<template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 -100 5098.47 915.91"
@@ -36,24 +29,3 @@ export default {
       </path>
     </g>
   </svg>
-</template>
-
-<style scoped>
-svg {
-  display        : block;
-  margin         : auto;
-  overflow       : visible;
-  width          : 95%;
-  max-width      : 95%;
-  fill           : none;
-  stroke         : var(--accent);
-  stroke-width   : 0.5rem;
-  opacity        : 0;
-  transition     : stroke var(--very-slow) ease;
-  animation      : enter var(--very-slow) ease forwards;
-}
-@keyframes enter {
-  from { opacity : 0; }
-  to   { opacity : 1; }
-}
-</style>

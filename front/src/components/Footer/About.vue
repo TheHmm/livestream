@@ -36,4 +36,8 @@ section {
 .expanded section {
   font-size      : 2rem;
 }
+
+.mobile .expanded section {
+  font-size      : 1rem;
+}
 </style>

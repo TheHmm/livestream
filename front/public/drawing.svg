@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="drawing.svg"
+   inkscape:export-filename="/Users/km/Desktop/LIVE.THEHMM/front/public/drawing.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="0.85253906"
+     inkscape:cx="180.0504"
+     inkscape:cy="263.33104"
+     inkscape:window-width="1764"
+     inkscape:window-height="1081"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter1040"
+       x="-0.43434518"
+       y="-0.43336407"
+       width="1.8686904"
+       height="1.8667281">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="46.192769"
+         id="feGaussianBlur1042" />
+    </filter>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <ellipse
+       style="fill:#4d4d4d;fill-rule:evenodd;stroke-width:0;filter:url(#filter1040);opacity:0.63987138"
+       id="path31-5"
+       cx="256.29327"
+       cy="256.29324"
+       rx="127.62044"
+       ry="127.90936" />
+    <ellipse
+       style="fill:#ffff00;fill-rule:evenodd;stroke-width:0"
+       id="path31"
+       cx="256.29324"
+       cy="248.66895"
+       rx="127.97398"
+       ry="127.37886" />
+  </g>
+</svg>
