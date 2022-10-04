@@ -14,7 +14,7 @@ const
 
   // Extract an array of unique emoji from string
 
-  emoji_regex = /\p{Emoji}/gu,
+  emoji_regex = /\p{Emoji_Presentation}/gu,
 
   get_emoji = body => {
     const emoji = body.match( emoji_regex )
