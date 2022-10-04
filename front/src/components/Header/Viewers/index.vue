@@ -18,7 +18,16 @@ export default {
   computed: {
     ...mapGetters( 'viewers', [
       'connected_viewers',
+      'viewers_array',
     ]),
+    event() {
+      return this.$store.getters[ 'events/get_event' ](
+        this.$route.params.slug
+      )
+    },
+    viewers() {
+      return this.event?.is_in_past && this.viewers_array || this.connected_viewers
+    }
   },
 
 }
@@ -32,7 +41,7 @@ export default {
   >
     <transition-group name="dot">
       <Viewer
-        v-for="viewer in connected_viewers"
+        v-for="viewer in viewers"
         :key="viewer.uuid"
         :viewer="viewer"
       />
@@ -49,10 +58,11 @@ export default {
   width           : 100%;
   height          : 100%;
   padding         : 0.5rem;
+  padding-bottom  : 2.5rem;
   display         : flex;
   align-items     : flex-start;
   justify-content : flex-start;
-  align-content   : flex-start;
+  align-content   : flex-end;
   flex-wrap       : wrap;
   z-index         : 1;
 }

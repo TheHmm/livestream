@@ -89,7 +89,7 @@ export default {
 .dot-enter-to,
 .dot-leave-from {
   transform       : scale(1);
-  transition      : transform var(--slow) ease calc( var(--n) * 0.1s );
+  transition      : transform var(--slow) ease calc( var(--n) * 0.2s );
 }
 
 .dot-enter-from,
