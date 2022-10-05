@@ -43,7 +43,7 @@ export default {
 
   computed: {
     ...mapGetters( 'messages', [
-      'messages_array',
+      'sorted_messages',
     ]),
     is_in_past() {
       return this.event?.is_in_past
@@ -52,6 +52,11 @@ export default {
 
 
   mounted() {
+    if ( this.sorted_messages.length >= 20 ) {
+      this.loading = 'load more messages'
+    } else {
+      this.loading = null
+    }
     this.scroll_to_end( )
   },
 
@@ -64,8 +69,9 @@ export default {
         this.scroll_to_end( true )
       }
     },
-    messages_array() {
-      if ( this.messages_array.length >= 20 ) {
+    sorted_messages() {
+      console.log("update")
+      if ( this.sorted_messages.length >= 20 ) {
         this.loading = 'load more messages'
       } else {
         this.loading = null
@@ -219,9 +225,9 @@ export default {
             </a>
           </div>
           <Message
-            v-for="( message, i ) in messages_array"
+            v-for="( message, i ) in sorted_messages"
             :key="i"
-            :style="{ '--n': messages_array.length - i - 1 }"
+            :style="{ '--n': sorted_messages.length - i - 1 }"
             :message="message"
             :links_only="links_only"
           />

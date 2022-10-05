@@ -12,8 +12,6 @@ export default {
   get_by_event( event_id ) {
     $log.info( `API`, `Fetching messages.` )
 
-    // TODO
-
     if ( !current_event_id ) {
       current_event_id = event_id
     }

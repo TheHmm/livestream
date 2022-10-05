@@ -26,7 +26,13 @@ export default {
       )
     },
     viewers() {
-      return this.event?.is_in_past && this.viewers_array || this.connected_viewers
+      if ( this.event?.is_in_past ) {
+        return this.viewers_array
+      } else if ( this.connected_viewers.length ) {
+        return this.connected_viewers
+      } else {
+        return []
+      }
     }
   },
 
@@ -35,18 +41,21 @@ export default {
 
 
 <template>
-  <section
-    :id="$id()"
+  <!-- <section
+  > -->
+    <transition-group
+      tag="sectiion"
+      :id="$id()"
     :aria-label="`Area with dots representing the number of connected viewers. Currently: ${ connected_viewers.length  }`"
-  >
-    <transition-group name="dot">
+
+      name="dot">
       <Viewer
         v-for="viewer in viewers"
         :key="viewer.uuid"
         :viewer="viewer"
       />
     </transition-group>
-  </section>
+  <!-- </section> -->
 </template>
 
 
@@ -58,11 +67,10 @@ export default {
   width           : 100%;
   height          : 100%;
   padding         : 0.5rem;
-  padding-bottom  : 2.5rem;
   display         : flex;
   align-items     : flex-start;
   justify-content : flex-start;
-  align-content   : flex-end;
+  align-content   : flex-start;
   flex-wrap       : wrap;
   z-index         : 1;
 }

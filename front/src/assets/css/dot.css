@@ -15,7 +15,7 @@
   border-radius    : 30rem;
   border           : var(--thin);
 
-  transition       :
+  /* transition       :
     background-color var(--very-slow) ease,
     box-shadow var(--fast) ease,
     opacity var(--fast) ease,
@@ -25,7 +25,7 @@
     transform var(--slow) ease,
     max-width var(--slow) ease,
     max-height var(--slow) ease
-  ;
+  ; */
   transform-origin : center center;
 }
 

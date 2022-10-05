@@ -77,25 +77,28 @@ export default {
   justify-content : center;
   align-items     : center;
   margin-left     : calc( var(--n) * var(--size-s));
+  /* transform       : scale(1); */
+  scale: 1;
+  transition      : all var(--slow) ease;
 }
 
+.viewer.dot-enter-active,
+.viewer.dot-leave-active,
 .viewer.dot-move {
-  transition      : all 0.5s ease;
+  transition      : all var(--slow) ease;
+}
+.dot-enter-to,
+.dot-leave-from {
+
+}
+.dot-enter-from,
+.dot-leave-to {
+  /* transform       : scale(0); */
+  scale: 0;
+  /* transition      : all var(--slow) ease; */
 }
 .viewer.dot-leave-active {
   position        : absolute;
-}
-
-.dot-enter-to,
-.dot-leave-from {
-  transform       : scale(1);
-  transition      : transform var(--slow) ease calc( var(--n) * 0.2s );
-}
-
-.dot-enter-from,
-.dot-leave-to {
-  transform       : scale(0);
-  transition      : transform var(--slow) ease;
 }
 
 .viewer:hover,
@@ -118,7 +121,7 @@ export default {
 }
 .viewer >>> .dot-enter-from,
 .viewer >>> .dot-leave-to {
-  transform       : scale(0);
+  /* transform       : scale(0); */
 }
 
 .viewer.emoji {

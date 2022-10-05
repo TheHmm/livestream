@@ -23,7 +23,11 @@ export default {
     },
 
     messages_array : state => {
-      return Object.values( state.messages ).sort( ( a, b ) => {
+      return Object.values( state.messages )
+    },
+
+    sorted_messages : ( state, getters ) => {
+      return getters.messages_array.sort( ( a, b ) => {
         return a.time > b.time
       })
     },

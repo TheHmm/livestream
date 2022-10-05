@@ -20,23 +20,23 @@ export default {
     :id="$id()"
     aria-label="Event information"
   >
-   <router-link
-      custom
-      :to="{ path: '/', query: $route.query }"
-      v-slot="{ navigate }"
-    >
-      <input
-        value="✕"
-        class="close circle"
-        name="close"
-        type="button"
-        @click.stop="navigate"
-      />
-    </router-link>
     <h3 aria-label="event time">
       <time :datetime="starts">
         {{ timestamp }}
       </time>
+      <router-link
+        custom
+        :to="{ path: '/', query: $route.query }"
+        v-slot="{ navigate }"
+      >
+        <input
+          value="✕"
+          class="close circle"
+          name="close"
+          type="button"
+          @click.stop="navigate"
+        />
+      </router-link>
     </h3>
     <h1 id="event_title">
       {{ title }}
@@ -58,13 +58,21 @@ export default {
   text-align  : center;
 }
 #info input {
-  position    : absolute;
+  /* position    : absolute;
   right       : 0;
-  z-index     : 1;
+  z-index     : 0; */
 }
 #info h2,
 #info h3 {
   margin-top  : 0;
+}
+#info h3 {
+  display: flex;
+  /* justify-content: center; */
+}
+#info h3 time {
+  margin: auto;
+  padding-left: 1rem;
 }
 #info div {
   font-weight : lighter;
