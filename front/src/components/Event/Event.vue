@@ -27,6 +27,7 @@ export default {
         cover = livestream.mux.thumb_src( this.event.recording.playbackId, 10, 1920 )
        } else if (
            this.event.livestream
+        && this.event.livestream()
         && this.event.livestream().status == 'active'
         && this.event.livestream().playbackId
         ) {

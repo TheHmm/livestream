@@ -77,4 +77,13 @@ export default {
 #info div {
   font-weight : lighter;
 }
+.mobile #info div {
+  display: none;
+}
+.mobile #info h1 {
+  margin-block: 0rem;
+}
+.mobile #info h3 {
+  margin-block: 0rem;
+}
 </style>

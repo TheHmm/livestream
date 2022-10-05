@@ -28,7 +28,7 @@ export default {
 
     sorted_messages : ( state, getters ) => {
       return getters.messages_array.sort( ( a, b ) => {
-        return a.time > b.time
+        return new Date(a.time) > new Date(b.time)
       })
     },
 
@@ -74,6 +74,11 @@ export default {
     // Process and set message
 
     set_message( { commit, getters }, message ) {
+
+      const event_id = message.event?.data?.id || message.event
+      if ( event_id && event_id != getters.current_event_id ) {
+        return
+      }
 
       if ( message.deleted ) {
         commit( 'DELETE_MESSAGE', message )
@@ -159,6 +164,7 @@ export default {
         event  : getters.current_event_id
       }
       if ( getters.blocked ) {
+        message.time = (new Date).toString()
         dispatch( 'set_message', message )
         return message
       }

@@ -4,11 +4,11 @@ import $log    from '@/utils/log'
 
 export default {
 
-  get_by_event( event_id ) { 
+  get_by_event( event_id ) {
     $log.info( `API`, `Fetching announcements.` )
     return new Promise( ( resolve, reject ) => {
       axios
-      .get( `${ config.api_url }/announcements`, { params: { 
+      .get( `${ config.api_url }/announcements`, { params: {
         sort: 'publishedAt:asc',
         filters: {
           events: {
@@ -24,10 +24,10 @@ export default {
         resolve( announcements )
       } )
       .catch( error => {
-        $log.error( 'API', error ) 
+        $log.error( 'API', error )
         reject( error )
       } )
-    } ) 
+    } )
   },
 
 }

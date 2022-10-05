@@ -198,10 +198,13 @@ body.mobile main {
 body.mobile #network {
   display: none;
 }
+body#savepage.mobile,
 body#savepage {
   height: unset;
 }
+body#savepage.mobile main,
 body#savepage main {
+  display: block;
   height: unset;
 }
 

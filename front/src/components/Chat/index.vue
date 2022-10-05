@@ -70,7 +70,6 @@ export default {
       }
     },
     sorted_messages() {
-      console.log("update")
       if ( this.sorted_messages.length >= 20 ) {
         this.loading = 'load more messages'
       } else {

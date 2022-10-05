@@ -68,7 +68,7 @@ export default {
 
     async get_announcements( { getters, dispatch }, event_id ) {
       return (
-        getters.get_announcements ||
+        getters.announcements_array.length ||
         await dispatch( 'fetch_announcements', event_id )
       )
     },

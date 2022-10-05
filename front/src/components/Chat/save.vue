@@ -163,20 +163,11 @@ export default {
   list-style      : none;
 }
 
-#chat  .messages {
+#chat .messages {
   min-width       : 100%;
-  width           :100%;
-  overflow        : hidden;
+  width           : 100%;
   font-size       : var(--size-s);
-  max-height      : unset;
   padding         : 0.5rem;
-  height          : 100%;
-  overflow        : scroll;
-  /* display         : flex;
-  flex-direction  : column;
-  align-items     : flex-start; */
-  /* causes this to stop scrolling */
-  /* justify-content: flex-end;  */
 }
 
 @media print {
@@ -185,6 +176,7 @@ export default {
   }
 }
 
-
+.mobile #chat .messages {
+}
 
 </style>

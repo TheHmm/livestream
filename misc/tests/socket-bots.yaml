@@ -1,8 +1,8 @@
 config:
-  target: "https://api.live.thehmm.karls.computer"
+  # target: "https://api.live.thehmm.karls.computer"
   # target: "https://live.thehmm.karls.computer/LightLightLight"
   # target: "http://localhost:3000/LightLightLight"
-  # target: "https://live.thehmm.nl"
+  target: "https://live.thehmm.nl"
   plugins:
     uuid:
       vars: [ 'id' ]
@@ -26,8 +26,8 @@ scenarios:
           channel: 'emoji'
           data:
             uuid: '{{ id }}'
-            group: 'kim'
-            emoji: 'sad'
+            group: 'the-creator-economy'
+            emoji: 'kim crying'
       - emit:
           channel: 'join_CC_room'
       - think: 5

@@ -63,6 +63,10 @@ module.exports = {
     delete diff.createdBy
     delete diff.updatedBy
 
+    if ( diff.emoji_groups ) {
+      delete diff.emoji_groups
+    }
+
     diff.slug = slug
 
 

@@ -38,7 +38,8 @@ export default {
         },
         fields: '*',
         populate: [
-          'sender'
+          'sender',
+          'event'
         ],
       } } )
       .then( result => resolve( result.data.data ) )

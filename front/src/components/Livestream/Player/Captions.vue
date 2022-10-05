@@ -167,9 +167,9 @@ export default {
 #captions p {
   margin-block-start: 0;
   max-width: 35rem;
-  margin: var(--size-s) auto;
+  margin: 0.5rem auto;
   width: 100%;
-  font-size: 2rem !important;
+  font-size: 2rem;
 
 }
 #captions p span {
@@ -186,5 +186,8 @@ export default {
 #playerpage #captions p span  {
   --fore: var(--black);
 }
-
+.mobile  #captions p {
+  margin: 0.5rem auto;
+  font-size: 1rem;
+}
 </style>

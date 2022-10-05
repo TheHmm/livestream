@@ -204,16 +204,18 @@ video {
 video::cue {
   --fore: var(--accent);
   --back: var(--white);
+  font-size: 1rem;
   /* display: inlisne; */
   color: var(--fore);
   background-color: var(--back);
-  padding: 0.125rem 0.5rem;
+  /* padding: 0.125rem 0.5rem; */
 }
 
 #tester {
   display: none;
 }
 
+.mobile #player.transcript,
 .mobile #player.thumbs {
   min-height: 60%;
   max-height: 70%;
@@ -242,5 +244,8 @@ video::cue {
 #playerpage #captions p span  {
   --fore: var(--black);
 }
-
+#playerpage.mobile #player {
+  min-height: 100%;
+  max-height: unset;
+}
 </style>

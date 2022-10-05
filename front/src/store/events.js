@@ -81,8 +81,8 @@ export default {
     // Sanitize and commit set event. Called on every receipt
     // of an event object ( either from API or socket )
 
-    set_event( { commit, rootGetters, dispatch }, event ) {
-      commit( 'SET_EVENT', sanitize( event, rootGetters, dispatch ) )
+    set_event( { commit, getters, rootGetters, dispatch }, event ) {
+      commit( 'SET_EVENT', sanitize( event, getters, rootGetters, dispatch ) )
     },
 
 
@@ -189,25 +189,36 @@ export default {
 
 // Sanitizing 'events' type received from Strapi.
 
-function sanitize ( event, rootGetters, dispatch ) {
+function sanitize ( event, getters, rootGetters, dispatch ) {
+
+
+  // If the event exists in our store, than this
+  // function was called to update it. We merge.
+
+  const found = getters.get_event( event.slug )
+  if ( found ) {
+    event = { ...found, ...event }
+  }
 
 
   // Convert the HSL accent string to someething digestible
 
-  if ( event.accent ) {
+  if ( event.accent && typeof event.accent == "string" ) {
     event.accent = color.hsl_to_css_vars(event.accent)
   }
 
 
   // Clean up dirty strapi component structure in response
 
-  if ( event.emoji_groups?.data ) {
-    event.emoji_groups.data.map( g => {
-      g.emoji.map( e => e.image = e.image?.data )
-    })
-    event.emoji_groups = event.emoji_groups.data
-  } else {
-    delete event.emoji_groups
+  if ( event.emoji_groups && !Array.isArray( event.emoji_groups ) ) {
+    if ( event.emoji_groups.data ) {
+      event.emoji_groups.data.map( g => {
+        g.emoji.map( e => e.image = e.image?.data )
+      })
+      event.emoji_groups = event.emoji_groups.data
+    } else {
+      delete event.emoji_groups
+    }
   }
 
 
@@ -224,8 +235,9 @@ function sanitize ( event, rootGetters, dispatch ) {
     }, 5 * 1000)
   }
 
-
-  event.recording = event.mux_recording
+  if ( !event.recording ) {
+    event.recording = event.mux_recording
+  }
 
   // Way to tell if it has been more than 12 hours since the
   // event has ended.
