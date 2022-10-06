@@ -111,8 +111,20 @@ This will first update the event with a **count**, which is the *largest recorde
 
 The more difficult task of the nightly script is to fetch from MUX the recording of the event with its transcript. This is difficult because it is possible that the livestream had to be cut off during the event, in which case 2 or more recordings are generated. The nightly script will only ever pick the last recording.
 
-The only way to correct this mistake is to do it manually, by downloading the chunks from MUX, compiling them into a single video, and reuploading them back to MUX. More details to come soon.
+The only way to correct this mistake is to do it manually. You can do this by:
+1. going to the MUX dashboard and signing in.
+2. going to the video > assets area and making sure you have the right envirnoment set (production)
+3. going through the recorded video assets and picking the finding the correct Once
+4. copy the Asset ID (at the top of the asset page)
+5. Go to the event's page in strapi and scroll to the bottom
+6. In the **`mux_recording`** field, paste the following:
+```
+{
+  "asset_id": "THE-ASSET-ID-YOU-JUST-COPIED"
+}
+```
 
+In case the assets are cut up or need editing. First download them from MUX, stitch / edit them as you deem fit, and then reupload them to MUX as an asset. If this works, you will have an asset id for the video you uploaded and can follow the steps above with it.
 ##### Announcements
 
 Announcements are temporary or permanent messages that show up on the top left part of the event page. There can only ever be 1 announcement on display. Announcements have the folowing fields:

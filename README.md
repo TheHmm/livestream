@@ -39,6 +39,7 @@ This project is multi-faceted and has several usage instructions:
 2. [for producing closed captions](#closed-captions)
 3. [for content management](#content-management)
 4. [for moderation](#moderation)
+5. [for viewing](#viewing)
 ### Streaming
 
 OBS stream settings:
@@ -71,7 +72,9 @@ Please follow instructions in [back/USAGE.md](back/USAGE.md)
 
 Please follow instructions in [back/USAGE.md#moderation](back/USAGE.md#moderation)
 
+### Viewing
 
+Please follow instructions in [front/USAGE.md](front/USAGE.md)
 
 ## License
 

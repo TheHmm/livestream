@@ -77,3 +77,12 @@ Last, head over to your mux dashboard and set up a webhook in your settings that
 https://{ your-strapi-host }/api/mux-hook
 ```
 This webhook will inform Strapi of all its video and livestream API events, and Strapi in turn informs connected clients of these events. Make sure you pick the appropriate environment.
+
+
+## Backing-up
+
+We are using the `sqlite` database with strapi so backing up is quite straight forward. On your development server, just copy the entire `back` folder somewhere safe before making any breaking changes to it. This will copy the configurations, database and uploads.
+
+In case you are using git to version manage your strapi config, you can always just copy the following files/folders:
+- `back/.tmp/data.db` : the entire sqlite database
+- `back/public/uploads`: all the files uploaded through strapi
