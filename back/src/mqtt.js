@@ -32,7 +32,7 @@ module.exports = ({ HOST, TOPIC }) => {
     emoji( sender, emoji ) {
       const uuid = `ESP-${ sender }`
       strapi.io.socket_emoji({
-        group : "test",
+        group : "global",
         emoji,
         uuid,
       })
