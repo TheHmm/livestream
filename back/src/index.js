@@ -41,6 +41,11 @@ module.exports = {
         KEY          : process.env.MOLLIE_API_KEY,
         REDIRECT_URL : process.env.MOLLIE_REDIRECT_URL,
         WEBHOOK_URL  : process.env.MOLLIE_WEBHOOK_URL
+      },
+
+      MQTT_COFNIG    = {
+        HOST         : process.env.MQTT_HOST,
+        TOPIC        : process.env.MQTT_TOPIC,
       }
 
 
@@ -76,15 +81,16 @@ module.exports = {
 
       mux    = require( './mux' )( MUX_CONFIG ),
       mollie = require( './mollie' )( MOLLIE_CONFIG ),
-      io     = require( './io'  )( strapi.server.httpServer )
+      io     = require( './io'  )( strapi.server.httpServer ),
+      mqtt   = require( './mqtt' )( MQTT_COFNIG )
 
 
     // If either of the three were not initialized properly,
     // we stop here and return an error
 
-    if ( !mux || !mollie || !io ) {
+    if ( !mux || !mollie || !io || !mqtt ) {
       throw new Error(
-        'MUX, MOLLIE or IO objects were not initialized.'
+        'MUX, MOLLIE, IO, or MQTT were not initialized.'
       )
     }
 
@@ -96,6 +102,7 @@ module.exports = {
     strapi.mux    = mux
     strapi.mollie = mollie
     strapi.io     = io
+    strapi.mqtt   = mqtt
 
 
     // Our livestream initialization.

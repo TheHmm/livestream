@@ -68,119 +68,154 @@ module.exports = server => {
   }
 
 
+  // When a socket sends us the viewer event, it will
+  // only contain the socket's uuid and its connected
+  // status. We save the uuid to our array and inform
+  // the rest. Note: io.emit( 'viewer' ) is also called
+  // in the viewers after create/update hooks.
+
+  function socket_viewer( viewer ) {
+    io.add_uuid( viewer.uuid )
+    io.emit( 'viewer', {
+      uuid      : viewer.uuid,
+      name      : viewer.name,
+      connected : true
+    })
+  }
+
+
+  // Emoji proxy
+
+  function socket_emoji( emoji ) {
+    io.emit( 'emoji', emoji )
+  }
+
+
+  // When a viewer disconnect, we remove their uuid
+  // from our array of connected viewers' uuids and
+  // inform the rest.
+
+  function socket_disconnect( uuid ) {
+    io.rm_uuid( uuid )
+    io.emit( 'viewer', {
+      uuid,
+      connected: false,
+    })
+  }
+
+
+  // There is a socket room for closed captions: "cc".
+  // Marco's OBS Setup: Marco is creating captions in his
+  // browser with the tool: @/misc/cc. He opens the page,
+  // pipes the livestream audio OBS into it as his "mic"
+  // input and it uses the Google Voice Recognition API to
+  // transform audio into captions.
+
+  // The webpage is subscribed to the 'cc' socket room.
+  // It produces captions locally and sends them here.
+
+  // Viewers joining 'cc' room will get the captions that
+  // have been previously recorded.
+
+  function socket_join_CC_room( socket ) {
+    socket.join( 'cc' )
+    socket.emit( 'confirm_join_CC', io.cc )
+  }
+
+  function socket_leave_CC_room( socket ) {
+    socket.leave( 'cc' )
+    socket.emit( 'confirm_leave_CC' )
+  }
+
+  // An 'interim' (raw) caption event is only interesting
+  // for the viewers in 'cc' room; they see the captions
+  // update in real time.
+
+  function socket_interm( cue ) {
+    io.to( 'cc' ).emit( 'interm', cue )
+  }
+
+
+  // A 'final' caption event contains a finalized caption
+  // as well as an updated srt file. The caption is for
+  // the 'cc' room and the srt is for the 'srt' room.
+
+  function socket_final( cue ) {
+    io.add_cue( cue )
+    io.to( 'cc' ).emit( 'final', cue )
+  }
+
+
+  // This is so that Marco can clear the icrememnting cc
+  // array when the livestream is over.
+
+  function socket_clear_CC() {
+    io.cc.length = 0
+    io.to( 'cc' ).emit( 'clear_CC', io.cc )
+  }
+
+
   // Live stuff !!!
 
-  io.on( 'connection', socket => {
+  function socket_connect( socket ) {
 
     let uuid // soocket's uuid, client-generated.
-
-    // We log the number of connected sockets.
-
-    strapi.log.info(`[ USER COUNT: ${ io.count( socket ) } ]`)
-
 
     // When a socket connect for the first time, we send
     // it our array of connected sockets' uuids.
 
     socket.emit( 'viewers', io.uuids )
 
-
-    // When a socket sends us the viewer event, it will
-    // only contain the socket's uuid and its connected
-    // status. We save the uuid to our array and inform
-    // the rest. Note: io.emit( 'viewer' ) is also called
-    // in the viewers after create/update hooks.
-
-    socket.on( 'viewer', viewer => {
+    socket.on( 'viewer', ( viewer ) => {
       if ( viewer.uuid ) {
         uuid = viewer.uuid
-        io.add_uuid( uuid )
-        io.emit( 'viewer', {
-          uuid,
-          connected: true
-        })
+        socket_viewer( viewer )
       }
     })
 
-
-    // Emoji proxy :]
-
-    socket.on( 'emoji', emoji => {
-      io.emit( 'emoji', emoji )
+    socket.on( 'emoji', ( emoji ) => {
+      socket_emoji( emoji )
     })
 
-
-    // When a viewer disconnect, we remove their uuid
-    // from our array of connected viewers' uuids and
-    // inform the rest.
-
-
-    socket.on('disconnect', () => {
-      strapi.log.info(`[ USER COUNT: ${ io.count( socket ) } ]`)
-      io.rm_uuid( uuid )
-      io.emit( 'viewer', {
-        uuid,
-        connected: false,
-      })
+    socket.on( 'disconnect', () => {
+      socket_disconnect( uuid )
     })
 
-
-    // There is a socket room for closed captions: "cc".
-    // Marco's OBS Setup: Marco is creating captions in his
-    // browser with the tool: @/misc/cc. He opens the page,
-    // pipes the livestream audio OBS into it as his "mic"
-    // input and it uses the Google Voice Recognition API to
-    // transform audio into captions.
-
-    // The webpage is subscribed to the 'cc' socket room.
-    // It produces captions locally and sends them here.
-
-    // Viewers joining 'cc' room will get the captions that
-    // have been previously recorded.
-
-    socket.on('join_CC_room', () => {
-      socket.join( 'cc' )
-      socket.emit( 'confirm_join_CC', io.cc )
+    socket.on( 'join_CC_room', () => {
+      socket_join_CC_room( socket )
     })
 
-    socket.on('leave_CC_room', () => {
-      socket.leave( 'cc' )
-      socket.emit( 'confirm_leave_CC' )
+    socket.on( 'leave_CC_room', () => {
+      socket_leave_CC_room( socket )
     })
 
-
-    // An 'interim' (raw) caption event is only interesting
-    // for the viewers in 'cc' room; they see the captions
-    // update in real time.
-
-    socket.on('interm', cue => {
-      io.to( 'cc' ).emit( 'interm', cue )
+    socket.on( 'interm', ( cue ) => {
+     socket_interm( cue )
     })
 
-
-    // A 'final' caption event contains a finalized caption
-    // as well as an updated srt file. The caption is for
-    // the 'cc' room and the srt is for the 'srt' room.
-
-    socket.on('final', cue => {
-      io.add_cue( cue )
-      io.to( 'cc' ).emit( 'final', cue )
+    socket.on( 'final', ( cue ) => {
+      socket_final( cue )
     })
 
-
-    // This is so that Marco can clear the icrememnting cc
-    // array when the livestream is over.
-
-    socket.on('clear_CC', () => {
-      io.cc.length = 0
-      io.to( 'cc' ).emit( 'clear_CC', io.cc )
+    socket.on( 'clear_CC', () => {
+      socket_clear_CC()
     })
 
 
 
-  })
+  }
 
+  io.on( 'connection', socket_connect )
 
+  io.socket_connect       = socket_connect
+  io.socket_viewer        = socket_viewer
+  io.socket_emoji         = socket_emoji
+  io.socket_disconnect    = socket_disconnect
+  io.socket_join_CC_room  = socket_join_CC_room
+  io.socket_leave_CC_room = socket_leave_CC_room
+  io.socket_interm        = socket_interm
+  io.socket_final         = socket_final
+  io.socket_clear_CC      = socket_clear_CC
 
 
 
