@@ -42,7 +42,7 @@ export default {
     },
 
     cc_interim() {
-      if ( !this.hls ) {
+      if ( !this.hls && !this.ready ) {
         this.scroll_to_bottom()
       }
     },
@@ -57,7 +57,7 @@ export default {
   },
 
   mounted() {
-    if ( !this.hls ) {
+    if ( !this.hls && !this.ready ) {
       this.scroll_to_bottom()
     }
   },
