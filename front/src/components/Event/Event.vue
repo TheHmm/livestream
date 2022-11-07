@@ -126,7 +126,7 @@ li.event header {
   align-items      : baseline;
   width            : 100%;
   transition       : padding var(--fast) ease;
-  gap              : 0.25rem;
+  gap              : 0.5rem;
 }
 
 li.event p {
@@ -152,6 +152,9 @@ li.event .time {
 
 li.event .summary {
   flex-basis       : 50%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow         : hidden;
   text-overflow    : ellipsis;
 }
