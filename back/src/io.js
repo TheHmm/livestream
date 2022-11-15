@@ -183,6 +183,11 @@ module.exports = server => {
 
     socket.on( 'emoji', ( emoji ) => {
       socket_emoji( emoji )
+      if ( emoji.emoji == 'nose' ) {
+        strapi.mqtt.send( `server:scent:on` )
+      } else if ( emoji.emoji == 'hmmopshere' ) {
+        strapi.mqtt.send( `server:scent:long` )
+      }
     })
 
     socket.on( 'disconnect', () => {
