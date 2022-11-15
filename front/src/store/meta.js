@@ -16,13 +16,15 @@ export default {
       reduce_motion : { label: "reduce motion", default: false },
       reduce_depth  : { label: "reduce depth",  default: false },
     },
+    misc    : {}
   },
 
   mutations: {
     SET_META   : ( state, meta )   => { state.meta = meta },
     SET_MOBILE : ( state, mobile ) => { state.mobile = mobile },
     SET_MUTED  : ( state, muted )  => { state.muted = muted },
-    SET_ERROR  : ( state, error )  => { state.error = error }
+    SET_ERROR  : ( state, error )  => { state.error = error },
+    SET_MISC   : ( state, misc )   => { state.misc = misc }
   },
 
   getters: {
@@ -43,7 +45,7 @@ export default {
     },
     get_default_value: state => key => {
       return state.ui[key].default
-    }
+    },
   },
 
   actions: {
@@ -68,6 +70,10 @@ export default {
       window.onresize = () => {
         commit( 'SET_MOBILE', window.innerWidth < 700 )
       }
+    },
+
+    socket_misc({ state, commit }, data ) {
+      commit( 'SET_MISC', { ...state.misc, ...data } )
     }
 
   }

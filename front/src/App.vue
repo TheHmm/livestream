@@ -74,6 +74,12 @@ export default {
       ), {} )
     },
 
+    // miscellaneous classes that can be added by ESP modules
+
+    misc() {
+      return this.$store.state.meta.misc
+    },
+
 
     // The current event, as selected by the route path
     // e.g. 'live.thehmm.nl/event-slug', pulled from the
@@ -104,7 +110,7 @@ export default {
 <template>
   <body
     :id="[ $id( $route.name )]"
-    :class="{ mobile, ...access }"
+    :class="{ mobile, ...access, ...misc }"
     :style="{ ...accent }"
   >
 
@@ -208,5 +214,22 @@ body#savepage main {
   height: unset;
 }
 
+
+body main  {
+  animation: rotate 30s linear forwards;
+  animation-play-state: paused;
+}
+body.rotate main  {
+  animation-play-state: running;
+}
+
+@keyframes rotate {
+    0% {
+        transform: perspective(1000px) rotateY(0deg);
+    }
+    100% {
+        transform: perspective(1000px) rotateY(360deg);
+    }
+}
 
 </style>

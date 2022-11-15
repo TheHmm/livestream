@@ -155,6 +155,14 @@ module.exports = server => {
   }
 
 
+  // any other miscellaneous functions
+
+  function socket_misc( data ) {
+    io.emit( 'misc', data )
+  }
+
+
+
   // Live stuff !!!
 
   function socket_connect( socket ) {
@@ -205,6 +213,7 @@ module.exports = server => {
 
   }
 
+
   io.on( 'connection', socket_connect )
 
   io.socket_connect       = socket_connect
@@ -216,6 +225,7 @@ module.exports = server => {
   io.socket_interm        = socket_interm
   io.socket_final         = socket_final
   io.socket_clear_CC      = socket_clear_CC
+  io.socket_misc          = socket_misc
 
 
 

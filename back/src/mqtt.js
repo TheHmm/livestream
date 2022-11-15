@@ -1,6 +1,8 @@
 // MQTT ; using this protocol to communicate with the ESP32
 // devices that are sometimes in the sapce.
 
+let rotate = false
+
 module.exports = ({ HOST, TOPIC }) => {
 
 
@@ -68,6 +70,26 @@ module.exports = ({ HOST, TOPIC }) => {
       })
     },
 
+
+    // rotate website
+
+    rotate : function( sender ) {
+      rotate = !rotate
+      strapi.io.socket_misc({ rotate })
+    }
+
+
+    // set accent color for the entire event
+
+
+    // make the donate button bounce
+
+
+    // change volume
+
+
+    // ...
+
   }
 
 
@@ -82,6 +104,12 @@ module.exports = ({ HOST, TOPIC }) => {
     const [ sender, action, data ] = payload.toString().split( ':' )
     console.log( `${ sender }:${ action }:${ data }` )
 
+    // if the server itself (or the chat audience) is the
+    // sender, don't run the command
+
+    if ( sender == 'server' ) {
+      return
+    }
 
     // if the action is defined as a method in our actions,
     // we call the method, passing the sender and payload,
