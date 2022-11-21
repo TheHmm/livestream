@@ -41,5 +41,8 @@ export default {
 <style scoped>
 header {
   max-height : var(--header-height);
+  width      : 100%;
+  position   : fixed;
+  top        : 0;
 }
 </style>
