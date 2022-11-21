@@ -102,7 +102,7 @@ li.event section {
   width            : 100%;
   transition       : all var(--fast) ease;
   padding-top      : 0.5rem;
-  max-height       : 3rem;
+  max-height       : 2rem;
   overflow         : hidden;
 }
 
@@ -112,7 +112,7 @@ li:last-of-type section {
 
 li.event:hover section {
   padding-bottom   : 10rem;
-  max-height       : 12rem;
+  max-height       : 10rem;
 }
 
 
@@ -135,7 +135,18 @@ li.event a {
   font-style       : unset;
 }
 
+li.event h1,
+li.event .summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow         : hidden;
+  text-overflow    : ellipsis;
+}
 li.event h1 {
+  flex-basis       : 60%;
+}
+li.event .summary {
   flex-basis       : 30%;
 }
 li.event h1,
@@ -148,17 +159,6 @@ li.event .time {
   text-align       : right;
   flex-shrink      : 0;
 }
-
-
-li.event .summary {
-  flex-basis       : 50%;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow         : hidden;
-  text-overflow    : ellipsis;
-}
-
 
 .mobile li.event header {
   display: block;

@@ -166,6 +166,7 @@ body main {
   position         : relative;
   flex-grow        : 1;
   z-index          : 2;
+  padding-top      : var(--header-height);
 }
 
 
