@@ -33,8 +33,8 @@ export default {
   >
     <Marquee />
     <Banner />
-    <Network />
     <Viewers />
+    <Network />
   </header>
 </template>
 

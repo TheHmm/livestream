@@ -121,6 +121,7 @@ table {
   line-height     : 1;
   opacity         : 0;
   animation       : fade_in var(--enter) ease calc( 0.4s + var(--n) * 0.1s ) forwards;
+  z-index         : 1;
 }
 table tr td {
   padding         : 0;
