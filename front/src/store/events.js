@@ -22,7 +22,7 @@ export default {
 
     get_events : state => {
       return Object.values( state.events ).sort( ( a , b ) => {
-        return new Date( a.starts ) > new Date( b.starts )
+        return new Date( a.starts ) < new Date( b.starts )
       })
     },
 
