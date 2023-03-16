@@ -42,7 +42,7 @@ export default {
 header {
   max-height : var(--header-height);
   width      : 100%;
-  position   : fixed;
+  position   : sticky;
   top        : 0;
 }
 </style>
