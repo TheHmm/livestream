@@ -1,6 +1,6 @@
-import api   from '@/api'
+import api from '@/api'
+import $log from '@/utils/log'
 import $time from '@/utils/time'
-import $log  from '@/utils/log'
 
 export default {
 
@@ -93,7 +93,11 @@ export default {
 
       const sender_id = message.sender?.data?.id || message.sender
       message.sender = function() {
-        return getters.viewer_by_id( sender_id )
+        const sender = getters.viewer_by_id( sender_id )
+        if ( !sender ) {
+          console.log( "VIEWER NOT FOUND: ", sender_id )
+        }
+        return sender
       }
 
       commit( 'SET_MESSAGE', message )
