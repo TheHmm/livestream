@@ -132,6 +132,7 @@ table tr td * {
   background-color: var(--fore);
   color: var(--back);
   padding: 0 0.25rem;
+  transition      : all var(--enter) ease;
 }
 table tr td.value {
   text-align      : right;
