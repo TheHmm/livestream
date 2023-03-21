@@ -54,7 +54,7 @@ label {
   text-align              : center;
   border-radius           : inherit;
   font-size               : var(--size-m);
-
+  display                 : inline-block;
   /* background-color     : transparent !important; */
 }
 
