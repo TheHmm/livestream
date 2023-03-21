@@ -113,7 +113,7 @@ table {
   --fore          : var(--accent);
   color           : var(--accent);
   position        : absolute;
-  bottom: 1rem;
+  top             : calc( 1rem + var(--marquee-height) );
   right           : 1rem;
   border-collapse : collapse;
   font-family     : 'not-courier-sans', monospace;
@@ -122,6 +122,7 @@ table {
   opacity         : 0;
   animation       : fade_in var(--enter) ease calc( 0.4s + var(--n) * 0.1s ) forwards;
   z-index         : 1;
+  pointer-events  : none;
 }
 table tr td {
   padding         : 0;
