@@ -81,7 +81,8 @@ export default {
 
 #chat_container >>> #chat .contents:focus-within,
 #chat_container >>> #chat.expanded .contents {
-  --height         : calc( 100vh - 18rem );
+  /* --height         : calc( 100vh - 18rem ); OLD */
+  --height         : calc( 100vh - ( var(--header-height) + var(--footer-height) ));
 }
 
 
