@@ -1,6 +1,6 @@
-import api   from '@/api'
+import api from '@/api'
+import $log from '@/utils/log'
 import $time from '@/utils/time'
-import $log  from '@/utils/log'
 
 export default {
 
@@ -73,7 +73,7 @@ export default {
 
     // Process and set message
 
-    set_message( { commit, getters }, message ) {
+    async set_message( { commit, getters, dispatch }, message ) {
 
       const event_id = message.event?.data?.id || message.event
       if ( event_id && event_id != getters.current_event_id ) {
@@ -92,8 +92,18 @@ export default {
       }
 
       const sender_id = message.sender?.data?.id || message.sender
+
       message.sender = function() {
         return getters.viewer_by_id( sender_id )
+      }
+
+      if ( !message.sender() ) {
+        $log.warn( 'API', `Message belons to this event but it's sender (${ sender_id }) doesn't.` )
+        try {
+          await dispatch( 'get_viewer', sender_id, { root: true } )
+        } catch ( error ) {
+          $log.error( error )
+        }
       }
 
       commit( 'SET_MESSAGE', message )
@@ -107,9 +117,9 @@ export default {
         api
         .messages
         .get_by_event( event_id )
-        .then( messages => {
+        .then( async messages => {
           for ( const message of messages ) {
-            dispatch( 'set_message', message )
+            await dispatch( 'set_message', message )
           }
           resolve( messages )
         } )
@@ -126,9 +136,9 @@ export default {
         api
         .messages
         .get_all_event_messages( event_id )
-        .then( messages => {
+        .then( async messages => {
           for ( const message of messages ) {
-            dispatch( 'set_message', message )
+            await dispatch( 'set_message', message )
           }
           resolve( messages )
         } )
@@ -165,7 +175,7 @@ export default {
       }
       if ( getters.blocked ) {
         message.time = (new Date).toString()
-        dispatch( 'set_message', message )
+        await dispatch( 'set_message', message )
         return message
       }
       return new Promise( ( resolve, reject ) => {
@@ -205,9 +215,9 @@ export default {
 
     // Receive messages in real time
 
-    socket_message( { dispatch }, message ) {
+    async socket_message( { dispatch }, message ) {
       $log.info( 'SOCKET', `Message ${ message.body }` )
-      dispatch( 'set_message', message )
+      await dispatch( 'set_message', message )
     },
 
   }

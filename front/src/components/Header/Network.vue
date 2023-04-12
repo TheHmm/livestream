@@ -70,16 +70,16 @@ export default {
         aria-label="Last bytes sent"
         :class="[ 'last', { has_changed: sent_has_changed } ]"
       >
-        {{ `sent ${ format_bytes( last_bytes_sent?.bytes ) } to ${ last_bytes_sent?.to } ↑` }}
+        <span>{{ `sent ${ format_bytes( last_bytes_sent?.bytes ) } to ${ last_bytes_sent?.to } ↑` }}</span>
       </td>
       <td
         class="value"
         aria-label="Total bytes sent"
       >
-        {{ format_bytes( total_bytes_sent ) }}
+        <span>{{ format_bytes( total_bytes_sent ) }}</span>
       </td>
       <td aria-hidden="true">
-        sent
+        <span>sent</span>
       </td>
     </tr>
 
@@ -89,16 +89,16 @@ export default {
         aria-label="Last bytes received"
         :class="[ 'last', { has_changed: received_has_changed } ]"
       >
-        {{ `received ${ format_bytes( last_bytes_received?.bytes ) } from ${ last_bytes_received?.from } ↓` }}
+        <span>{{ `received ${ format_bytes( last_bytes_received?.bytes ) } from ${ last_bytes_received?.from } ↓` }} </span>
       </td>
       <td
         class="value"
         aria-label="Total bytes received"
       >
-        {{ format_bytes( total_bytes_received ) }}
+        <span>{{ format_bytes( total_bytes_received ) }}</span>
       </td>
       <td aria-hidden="true">
-        received
+        <span>received</span>
       </td>
     </tr>
 
@@ -111,9 +111,9 @@ export default {
 table {
   --n             : 6;
   --fore          : var(--accent);
-  color           : var(--fore);
+  color           : var(--accent);
   position        : absolute;
-  top             : calc(var(--marquee-height) + 1rem);
+  top             : calc( 1rem + var(--marquee-height) );
   right           : 1rem;
   border-collapse : collapse;
   font-family     : 'not-courier-sans', monospace;
@@ -121,16 +121,24 @@ table {
   line-height     : 1;
   opacity         : 0;
   animation       : fade_in var(--enter) ease calc( 0.4s + var(--n) * 0.1s ) forwards;
+  z-index         : 1;
+  pointer-events  : none;
 }
 table tr td {
   padding         : 0;
   white-space     : pre;
 }
+table tr td * {
+  background-color: var(--fore);
+  color: var(--back);
+  padding: 0 0.25rem;
+  transition      : all var(--enter) ease;
+}
 table tr td.value {
   text-align      : right;
 }
 table tr td.last {
-  padding-right   : 0.25rem;
+ /* padding-right   : 0.25rem; */
   text-align      : right;
   overflow        : visible;
   opacity         : 0;

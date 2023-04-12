@@ -65,14 +65,15 @@ export default {
           // this.request_registration = true
           this.set_request_registration( true )
         }
-        this.sending = false
-      } catch ( error ) {
+       } catch ( error ) {
         $log.error( 'AUTH', error )
         // this.request_registration = true
         this.set_request_registration( true )
-        this.sending = false
       }
-
+      this.sending = false
+      setTimeout( () => {
+        this.$refs.message.focus()
+      }, 100)
     }
 
   }
@@ -95,6 +96,7 @@ export default {
   >
     <input
       type="text"
+      ref="message"
       name="message"
       id="message"
       tabindex="0"

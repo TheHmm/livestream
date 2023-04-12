@@ -1,7 +1,10 @@
-import { v4 as uuid } from 'uuid'
-import api            from '@/api'
-import $log           from '@/utils/log'
-import $time          from '@/utils/time'
+import {
+  v4       as uuid_v4,
+  validate as uuid_validate
+}            from 'uuid'
+import api   from '@/api'
+import $log  from '@/utils/log'
+import $time from '@/utils/time'
 
 export default {
 
@@ -14,7 +17,7 @@ export default {
 
   state: {
     viewers              : {},
-    uuid                 : localStorage.uuid || uuid(),
+    uuid                 : localStorage.uuid || uuid_v4(),
     authenticated        : false,
     request_registration : false,
   },
@@ -163,13 +166,19 @@ export default {
     },
 
 
-    // Fetch viewer by uuid
+    // check if uuid or just normal strapi id then use the
+    // appropriate api getter function for it.
 
     fetch_viewer( { dispatch }, uuid ) {
+      let getter
+      if ( uuid_validate( uuid ) ) {
+        getter = 'get_by_uuid'
+      } else {
+        getter = 'get_by_id'
+      }
       return new Promise( ( resolve, reject ) =>
         api
-        .viewers
-        .get( uuid )
+        .viewers[getter]( uuid )
         .then( viewer => {
           dispatch( 'set_viewer', viewer )
           resolve( viewer )
@@ -179,15 +188,19 @@ export default {
     },
 
 
-    // Get viewer by uuid.
+    // Get viewer by uuid. Set to root for access elsehwere,
+    // namely in the message area for when a sender is not
+    // found in the current event.
 
-    async get_viewer( { getters, dispatch }, uuid ) {
-      return (
-        getters.get_viewer(  uuid ) ||
-        await dispatch( 'fetch_viewer', uuid )
-      )
+    get_viewer: {
+      root: true,
+      async handler( { getters, dispatch }, uuid ) {
+        return (
+          getters.get_viewer(  uuid ) ||
+          await dispatch( 'fetch_viewer', uuid )
+        )
+      }
     },
-
 
     // Create a viewer.
 

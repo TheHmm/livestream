@@ -5,8 +5,8 @@ import $log    from '@/utils/log'
 export default {
 
 
-  get( uuid ) {
-    $log.info( `API`, `Fetching viewer ${ uuid }.` )
+  get_by_uuid( uuid ) {
+    $log.info( `API`, `Fetching viewer by uuid ${ uuid }.` )
     return new Promise( ( resolve, reject ) =>
       axios
       .get( `${ config.api_url }/viewers`, { params: {
@@ -22,6 +22,30 @@ export default {
       }})
       .then( result => {
         const viewer = result.data.data[0]
+        if ( viewer ) {
+          resolve( viewer)
+        } else {
+          throw new Error( '404' )
+        }
+      })
+      .catch( error => {
+        reject( error )
+      } )
+    )
+  },
+
+  get_by_id( id ) {
+    $log.info( `API`, `Fetching viewer by id ${ id }.` )
+    return new Promise( ( resolve, reject ) =>
+      axios
+      .get( `${ config.api_url }/viewers/${ id }`, { params: {
+        fields: '*',
+        populate: [
+          'events'
+        ]
+      }})
+      .then( result => {
+        const viewer = result.data.data
         if ( viewer ) {
           resolve( viewer)
         } else {
