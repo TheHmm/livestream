@@ -86,6 +86,7 @@ export default {
         <input
           type="radio"
           :name="label"
+          :aria-label="amount + ' euros'"
           :value="amount"
           :id="id( amount )"
           v-model="selected"
