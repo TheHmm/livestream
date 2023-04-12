@@ -62,7 +62,7 @@ module.exports = ({ HOST, TOPIC }) => {
       })
       setTimeout( () => {
         strapi.io.socket_disconnect( uuid )
-      }, 10 * 60 * 1000 )
+      }, 4 * 60 * 60 * 1000 ) // 4 hours
     },
 
 
