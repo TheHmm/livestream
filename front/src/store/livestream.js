@@ -52,7 +52,7 @@ export default {
       const current_event_default_mode =
         rootGetters['events/current_event_default_mode'] ||
         state.absolute_default_mode
-      console.log( `DEFAULT MODE: ${ current_event_default_mode }.` )
+      // console.log( `DEFAULT MODE: ${ current_event_default_mode }.` )
       return state.modes[current_event_default_mode]
     },
     current_mode   : ( state, getters ) => self => (
