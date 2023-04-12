@@ -83,7 +83,7 @@ module.exports = ({ HOST, TOPIC }) => {
     rotate : function( sender ) {
       rotate = !rotate
       strapi.io.socket_misc({ rotate })
-    }
+    },
 
 
     // set accent color for the entire event
@@ -96,6 +96,61 @@ module.exports = ({ HOST, TOPIC }) => {
 
 
     // ...
+
+  }
+
+
+  mqtt.hmmosphere = {
+
+
+    // permitted trigger emojis
+
+    TRIGGERS : [
+      'nose',
+      'sniffing',
+      'hmmosphere'
+    ],
+
+    DURATION: 10 * 1000,    // 10 seconds
+
+
+    // the JS timeout to be able to send a deploy command
+    // again.
+
+    ACTIVE: false,
+
+    // handle emoji event
+
+    handler : function( emoji ) {
+      if ( this.TRIGGERS.includes( emoji.emoji ) ) {
+        if ( !this.ACTIVE ) {
+          this.deploy()
+        }
+      }
+    },
+
+
+    // deploy scent: First, enable the smell and light and
+    // block incoming emojis. Then, when the DURATION time
+    // has passed, disable the smell alone, leaving the light
+    // on to indicate that currently it is blocking emojis.
+    // After the DURATION passes again, then disable the light
+    // diasble the block and allow for more emotes
+
+    deploy : function() {
+      this.ACTIVE = true
+      mqtt.send( `server:scent:smell-on` )
+      mqtt.send( `server:scent:light-on` )
+      setTimeout(() => {
+        mqtt.send( `server:scent:smell-off` )
+        setTimeout(() => {
+          mqtt.send( `server:scent:light-off` )
+          this.ACTIVE = false
+        }, this.DURATION )
+      }, this.DURATION)
+    }
+
+
 
   }
 
