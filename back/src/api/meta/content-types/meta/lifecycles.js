@@ -21,13 +21,14 @@ const
     // vocabulary' is a component field, we have to query the
     // DB for the correct data.
 
-    const {
-      transcription_vocabulary,
-      transcription_vocabulary_id
-    } = await strapi.service('api::meta.meta').find({
+    const result = await strapi.service('api::meta.meta').find({
       fields   : [ 'transcription_vocabulary_id' ],
       populate : [ 'transcription_vocabulary' ]
     })
+
+    const
+      transcription_vocabulary    = result.transcription_vocabulary,
+      transcription_vocabulary_id = result.transcription_vocabulary_id
 
 
     // Our transcription vocabulary name is a constant, and
