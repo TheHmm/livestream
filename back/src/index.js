@@ -86,11 +86,11 @@ module.exports = {
 
 
     // If either of the three were not initialized properly,
-    // we stop here and return an error
+    // we stop here and return an error. MQTT is optional
 
-    if ( !mux || !mollie || !io || !mqtt ) {
+    if ( !mux || !mollie || !io ) {
       throw new Error(
-        'MUX, MOLLIE, IO, or MQTT were not initialized.'
+        'MUX, MOLLIE or IO were not initialized.'
       )
     }
 

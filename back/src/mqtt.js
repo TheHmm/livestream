@@ -5,6 +5,13 @@ let rotate = false
 
 module.exports = ({ HOST, TOPIC }) => {
 
+  // If no HOST or TOPIC is provided we warn that MQTT env vars
+  // are not defined and return
+
+  if ( !HOST || !TOPIC ) {
+    console.warn[ 'MQTT variables are undefined, continuing without MQTT connectivity.' ]
+    return
+  }
 
   // We initialize mqtt client with strapi
 

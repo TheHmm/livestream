@@ -54,11 +54,13 @@ const
         console.log(error)
       }
     }
-    let body = message.body
-    if ( body?.startsWith( "/" ) ) {
-      body = body.slice( 1 )
-      const [ action, data ] = body.split(':')
-      strapi.mqtt.send( `server:${ action }:${ data?.trim() }` )
+    if ( strapi.mqtt ) {
+      let body = message.body
+      if ( body?.startsWith( "/" ) ) {
+        body = body.slice( 1 )
+        const [ action, data ] = body.split(':')
+        strapi.mqtt.send( `server:${ action }:${ data?.trim() }` )
+      }
     }
   },
 
