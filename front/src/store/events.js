@@ -49,6 +49,10 @@ export default {
       return getters.current_event?.id
     },
 
+    current_event_default_mode : ( state, getters ) => {
+      return getters.current_event?.default_player_mode
+    },
+
     highlight_donate: ( state, getters ) => {
       return getters.current_event?.highlightDonateButton
     },

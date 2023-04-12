@@ -27,6 +27,7 @@ export default {
 
   state: {
     livestream : null,
+    absolute_default_mode : 'video',
     modes      : DEFAULT_MODES(),
     cc_interim : null,
     cc         : [],
@@ -47,7 +48,13 @@ export default {
   getters: {
     get_livestream : ( state ) => state.livestream,
     modes          : ( state ) => state.modes,
-    default_mode   : ( state ) => state.modes['video'],
+    default_mode   : ( state, getters, rootState, rootGetters ) => {
+      const current_event_default_mode =
+        rootGetters['events/current_event_default_mode'] ||
+        state.absolute_default_mode
+      console.log( `DEFAULT MODE: ${ current_event_default_mode }.` )
+      return state.modes[current_event_default_mode]
+    },
     current_mode   : ( state, getters ) => self => (
       self.$route.query?.mode &&
       state.modes[self.$route.query.mode] ||
