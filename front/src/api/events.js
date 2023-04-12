@@ -44,7 +44,7 @@ export default {
           'ends',
           'accent',
           'info',
-          'mux_recording'
+          'mux_recording',
         ],
       } } )
       .then( result => resolve( result.data.data ) )

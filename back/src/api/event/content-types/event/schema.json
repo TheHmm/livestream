@@ -79,6 +79,16 @@
     },
     "mux_recording": {
       "type": "json"
+    },
+    "default_player_mode": {
+      "type": "enumeration",
+      "enum": [
+        "video",
+        "audio",
+        "thumbs",
+        "transcript"
+      ],
+      "default": "video"
     }
   }
 }

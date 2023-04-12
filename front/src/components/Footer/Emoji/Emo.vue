@@ -36,12 +36,12 @@ export default {
     :class="[ $id(), { is_default_emoji } ]"
     role="button"
     tabindex="0"
-    :title="caption || name"
+    :title="name || caption"
   >
     <img
       v-if="img_url"
       :src="img_url"
-      :alt="caption"
+      :alt="name || caption"
     >
     <span v-else>
       {{ emo.name }}

@@ -70,7 +70,7 @@ export default {
 <template>
   <ul
     role="menu"
-    aria-label="Choose from several available livestream viewing modes"
+    aria-label="Choose from several available livestream consumption modes"
   >
     <li
       v-for="mode in modes"

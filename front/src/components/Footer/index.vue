@@ -56,9 +56,9 @@ export default {
         },
         {
           name       : 'modes',
-          label      : 'View modes',
+          label      : 'Stream modes',
           comp       : 'Modes',
-          aria_label : 'View modes',
+          aria_label : 'Livestream player modes',
         },
         {
           name       : 'emoji',
