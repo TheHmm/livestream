@@ -21,47 +21,53 @@ const
     // vocabulary' is a component field, we have to query the
     // DB for the correct data.
 
-    const {
-      transcription_vocabulary,
-      transcription_vocabulary_id
-    } = await strapi.service('api::meta.meta').find({
+    const result = await strapi.service('api::meta.meta').find({
       fields   : [ 'transcription_vocabulary_id' ],
       populate : [ 'transcription_vocabulary' ]
     })
 
+    if ( result ) {
 
-    // Our transcription vocabulary name is a constant, and
-    // the vocaulary itself is converted sanitize
-
-    const
-      name    = 'The Hmm Transcription Vocabulary',
-      phrases = transcription_vocabulary.map( p => p.phrase )
+      const
+      transcription_vocabulary    = result.transcription_vocabulary,
+      transcription_vocabulary_id = result.transcription_vocabulary_id
 
 
-    // It's possible that there aren't any phrases yet, so
-    // we only move forward with requests to MUX if we have
-    // phrases to update.
+      // Our transcription vocabulary name is a constant, and
+      // the vocaulary itself is converted sanitize
 
-    if ( phrases.length ) {
-      const res = await create_or_update_mux_vocabulary(
-        transcription_vocabulary_id,
-        { name, phrases }
-      )
+      const
+        name    = 'The Hmm Transcription Vocabulary',
+        phrases = transcription_vocabulary?.map( p => p.phrase )
 
 
-      // If a new transcription vocabulary has been created,
-      // we receive an id back, and add it to as a field in
-      // our meta object.
+      // It's possible that there aren't any phrases yet, so
+      // we only move forward with requests to MUX if we have
+      // phrases to update.
 
-      event.params.data.transcription_vocabulary_id = res.id
-      strapi.log.info(`[ * UPDATED TRANSCRIPTION VOCABULARY * ]`)
+      if ( phrases.length ) {
+        const res = await create_or_update_mux_vocabulary(
+          transcription_vocabulary_id,
+          { name, phrases }
+        )
 
 
-      // Last, we need to add the transcruption vocabulary
-      // id to our livestream.
+        // If a new transcription vocabulary has been created,
+        // we receive an id back, and add it to as a field in
+        // our meta object.
 
-      await update_livestream_with_vocabulary_id( res.id )
+        event.params.data.transcription_vocabulary_id = res.id
+        strapi.log.info(`[ * UPDATED TRANSCRIPTION VOCABULARY * ]`)
+
+
+        // Last, we need to add the transcruption vocabulary
+        // id to our livestream.
+
+        await update_livestream_with_vocabulary_id( res.id )
+      }
+
     }
+
 
   },
 
