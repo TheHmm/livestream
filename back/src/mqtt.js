@@ -3,6 +3,8 @@
 
 let rotate = false
 
+const wait = ms => new Promise(res => setTimeout(res, ms));
+
 module.exports = ({ HOST, TOPIC }) => {
 
   // If no HOST or TOPIC is provided we warn that MQTT env vars
@@ -112,6 +114,7 @@ module.exports = ({ HOST, TOPIC }) => {
     ],
 
     DURATION: 10 * 1000,    // 10 seconds
+    COMMAND_BEAT: 0.5 * 1000, // half a second
 
 
     // the JS timeout to be able to send a deploy command
@@ -137,18 +140,19 @@ module.exports = ({ HOST, TOPIC }) => {
     // After the DURATION passes again, then disable the light
     // diasble the block and allow for more emotes
 
-    deploy : function() {
+    deploy : async function() {
       this.ACTIVE = true
       mqtt.send( `server:scent_power:on` )        // activate power relay
+      await wait( this.COMMAND_BEAT )
       mqtt.send( `server:scent:on` )              // activate scent diffuser
+      await wait( this.COMMAND_BEAT )
       mqtt.send( `server:scent:long` )            // activate light
+      await wait( this.COMMAND_BEAT )
       mqtt.send( `server:scent:long` )            // activate light colorful
-      setTimeout(() => {
-        mqtt.send( `server:scent_power:on` )      // deactivate power relay
-        setTimeout(() => {
-          this.ACTIVE = false                     // allow people to send again
-        }, this.DURATION )
-      }, this.DURATION)
+      await wait( this.DURATION )
+      mqtt.send( `server:scent_power:off` )       // deactivate power relay
+      await wait( this.DURATION )
+      this.ACTIVE = false                         // allow people to send again
     }
 
 
