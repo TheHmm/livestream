@@ -139,13 +139,14 @@ module.exports = ({ HOST, TOPIC }) => {
 
     deploy : function() {
       this.ACTIVE = true
-      mqtt.send( `server:scent:smell-on` )
-      mqtt.send( `server:scent:light-on` )
+      mqtt.send( `server:scent_power:on` )        // activate power relay
+      mqtt.send( `server:scent:on` )              // activate scent diffuser
+      mqtt.send( `server:scent:long` )            // activate light
+      mqtt.send( `server:scent:long` )            // activate light colorful
       setTimeout(() => {
-        mqtt.send( `server:scent:smell-off` )
+        mqtt.send( `server:scent_power:on` )      // deactivate power relay
         setTimeout(() => {
-          mqtt.send( `server:scent:light-off` )
-          this.ACTIVE = false
+          this.ACTIVE = false                     // allow people to send again
         }, this.DURATION )
       }, this.DURATION)
     }
