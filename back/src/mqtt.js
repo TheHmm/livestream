@@ -113,8 +113,8 @@ module.exports = ({ HOST, TOPIC }) => {
       'hmmosphere'
     ],
 
-    DURATION: 30 * 1000,    // 10 seconds
-    COMMAND_BEAT: 1.5 * 1000, // half a second
+    DURATION: 3 * 60 * 1000,    // 3 mionutes
+    COMMAND_BEAT: 2 * 1000, // 2 seconds
 
 
     // the JS timeout to be able to send a deploy command
