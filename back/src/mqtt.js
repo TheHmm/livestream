@@ -149,7 +149,7 @@ module.exports = ({ HOST, TOPIC }) => {
       mqtt.send( `server:scent:on` )              // activate scent diffuser
       await wait( this.COMMAND_BEAT )
       mqtt.send( `server:scent:long` )            // activate light
-      await wait( 10 * this.COMMAND_BEAT )
+      await wait( 12 * this.COMMAND_BEAT )
       mqtt.send( `server:scent:long` )            // activate light colorful
       await wait( this.DURATION )
       mqtt.send( `server:scent_power:off` )       // deactivate power relay
