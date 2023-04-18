@@ -113,8 +113,8 @@ module.exports = ({ HOST, TOPIC }) => {
       'hmmosphere'
     ],
 
-    DURATION: 1 * 60 * 1000,    // 3 mionutes
-    COMMAND_BEAT: 0.5 * 1000, // 2 seconds
+    DURATION: 0.5 * 60 * 1000,    // 3 mionutes
+    COMMAND_BEAT: 0.25 * 1000, // 2 seconds
 
 
     // the JS timeout to be able to send a deploy command
@@ -149,7 +149,7 @@ module.exports = ({ HOST, TOPIC }) => {
       mqtt.send( `server:scent:on` )              // activate scent diffuser
       await wait( this.COMMAND_BEAT )
       mqtt.send( `server:scent:long` )            // activate light
-      await wait( 7 * this.COMMAND_BEAT )
+      await wait( 10 * this.COMMAND_BEAT )
       mqtt.send( `server:scent:long` )            // activate light colorful
       await wait( this.DURATION )
       mqtt.send( `server:scent_power:off` )       // deactivate power relay
