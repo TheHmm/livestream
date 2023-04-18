@@ -114,7 +114,7 @@ module.exports = ({ HOST, TOPIC }) => {
     ],
 
     DURATION: 10 * 1000,    // 3 mionutes
-    COMMAND_BEAT: 0.25 * 1000, // 2 seconds
+    COMMAND_BEAT: 0.3 * 1000, // 2 seconds
 
 
     // the JS timeout to be able to send a deploy command
