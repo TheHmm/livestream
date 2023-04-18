@@ -47,9 +47,13 @@ export default {
       if ( !this.can_send_emoji ) {
         return
       }
+      let timeout = 5000
+      if ( emoji == 'hmmosphere' ) {
+        timeout = 6 * timeout
+      }
       this.emoji_timeout = setTimeout(() => {
         this.emoji_timeout = null
-      }, 5000)
+      }, timeout)
       this.$socket.client.emit( 'emoji', {
         group,
         emoji,

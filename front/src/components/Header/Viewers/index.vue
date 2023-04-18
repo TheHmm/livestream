@@ -41,21 +41,18 @@ export default {
 
 
 <template>
-  <!-- <section
-  > -->
-    <transition-group
-      tag="sectiion"
-      :id="$id()"
+  <transition-group
+    tag="sectiion"
+    :id="$id()"
     :aria-label="`Area with dots representing the number of connected viewers. Currently: ${ connected_viewers.length  }`"
-
-      name="dot">
-      <Viewer
-        v-for="viewer in viewers"
-        :key="viewer.uuid"
-        :viewer="viewer"
-      />
-    </transition-group>
-  <!-- </section> -->
+    name="dot"
+  >
+    <Viewer
+      v-for="viewer in viewers"
+      :key="viewer.uuid"
+      :viewer="viewer"
+    />
+  </transition-group>
 </template>
 
 
