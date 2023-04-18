@@ -142,6 +142,8 @@ module.exports = ({ HOST, TOPIC }) => {
 
     deploy : async function() {
       this.ACTIVE = true
+      mqtt.send( `server:scent_power:off` )       // activate power relay
+      await wait( this.COMMAND_BEAT )
       mqtt.send( `server:scent_power:on` )        // activate power relay
       await wait( this.COMMAND_BEAT )
       mqtt.send( `server:scent:on` )              // activate scent diffuser
@@ -151,7 +153,7 @@ module.exports = ({ HOST, TOPIC }) => {
       mqtt.send( `server:scent:long` )            // activate light colorful
       await wait( this.DURATION )
       mqtt.send( `server:scent_power:off` )       // deactivate power relay
-      // await wait( this.DURATION )
+      await wait( this.DURATION )
       this.ACTIVE = false                         // allow people to send again
     }
 
