@@ -385,12 +385,16 @@ export default {
         uuid,
         emoji: getters.get_emoji( group, emoji )
       })
+      let timeout = 5000
+      if ( emoji == 'hmmosphere' ) {
+        timeout = 3 * timeout
+      }
       setTimeout( () => {
         dispatch( 'set_viewer', {
           uuid,
           emoji: null
         })
-      }, 5000 )
+      }, timeout )
     },
 
 
