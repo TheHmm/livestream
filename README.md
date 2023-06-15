@@ -6,7 +6,6 @@ Second version of the Hmm Livestream website with:
 - a revamped stylesheet
 - multiple view modes for livestreams
 - an attempt at closed captions
-
  
 ## Development
 ### Project Structure
