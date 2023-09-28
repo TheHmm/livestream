@@ -21,6 +21,7 @@ export default {
 
   props: {
     livestream : Object,
+    event: Object,
   },
 
   data() {
@@ -30,6 +31,7 @@ export default {
       image_data   : null,
       interval     : null,
       reload_every : 15 * 1000,
+      recording_playback_thumb_time: 0,
     }
   },
 
@@ -42,7 +44,9 @@ export default {
     },
     playing() {
       return this.interval !== null
-    }
+    },
+
+
 
   },
 
@@ -87,7 +91,14 @@ export default {
     },
 
     get_cur_time() {
-      return mux.get_cur_time( this.livestream )
+      let curr_time
+      if ( this.event.is_in_past ) {
+        curr_time = this.recording_playback_thumb_time
+        this.recording_playback_thumb_time += this.reload_every / 1000
+      } else {
+        curr_time =  mux.get_cur_time( this.livestream, this.event )
+      }
+      return curr_time
     },
 
   }

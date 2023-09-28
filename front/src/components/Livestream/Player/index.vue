@@ -148,6 +148,7 @@ export default {
     <Component
       :is="player"
       :livestream="livestream"
+      :event="event"
       :mode="mode"
       :muted="muted"
     />
