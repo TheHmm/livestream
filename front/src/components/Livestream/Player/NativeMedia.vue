@@ -22,12 +22,33 @@ export default {
     },
     source_url() {
       return mux.source_url( this.playback_id, this.mode.name )
+    },
+    desired_time() {
+      const t = this.$route.query.time
+      if ( t ) {
+        this.set_time( t )
+      }
+      return t
+    }
+  },
+
+  mounted() {
+    if ( this.desired_time ) {
+      this.set_time( this.desired_time )
     }
   },
 
   beforeUnmount() {
     this.$el.src = undefined
   },
+
+  methods: {
+    set_time( t ) {
+      console.log( `Setting time to ${ t } seconds.` )
+      this.$el.currentTime = t
+      this.$router.push( { query: { ...this.$route.query, ...{ time: undefined } } } )
+    },
+  }
 
 
 }

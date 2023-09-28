@@ -105,9 +105,7 @@ export default {
     set_time( t ) {
       console.log( `Setting time to ${ t } seconds.` )
       this.$refs.media.currentTime = t
-      // setTimeout(() => {
       this.$router.push( { query: { ...this.$route.query, ...{ time: undefined } } } )
-      // }, 5000 );
     },
 
     destroy() {
