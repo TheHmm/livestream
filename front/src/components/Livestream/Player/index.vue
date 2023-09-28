@@ -41,6 +41,10 @@ export default {
       return this.$store.getters['livestream/current_mode']( this )
     },
 
+
+    // livestream object, either an active livestream or the
+    // event recording or neither
+
     livestream()  {
       return this.event?.livestream() || this.event?.recording
     },
@@ -53,9 +57,11 @@ export default {
       return this.$store.state.meta.muted
     },
 
+
+    // when to show the unmute button
+
     show_unmute() {
       return this.muted && ( this.mode.video || this.mode.name == 'audio' )
-      // return this.muted
     },
 
   },

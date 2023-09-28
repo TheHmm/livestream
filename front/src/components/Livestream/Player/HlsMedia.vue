@@ -39,6 +39,13 @@ export default {
     source_url() {
       return mux.source_url( this.playback_id, this.mode.name )
     },
+    desired_time() {
+      const t = this.$route.query.time
+      if ( t ) {
+        this.set_time( t )
+      }
+      return t
+    }
   },
 
   watch: {
@@ -75,6 +82,9 @@ export default {
           this.levels_to_modes( data.levels )
         }
         this.play()
+        if ( this.desired_time ) {
+          this.set_time( this.desired_time )
+        }
       })
       this.hls.on( Hls.Events.SUBTITLE_TRACKS_UPDATED, ( event, data ) => {
         this.captions_ready = true
@@ -90,6 +100,14 @@ export default {
     pause() {
       this.playing = false
       this.$refs.media.pause()
+    },
+
+    set_time( t ) {
+      console.log( `Setting time to ${ t } seconds.` )
+      this.$refs.media.currentTime = t
+      // setTimeout(() => {
+      this.$router.push( { query: { ...this.$route.query, ...{ time: undefined } } } )
+      // }, 5000 );
     },
 
     destroy() {
