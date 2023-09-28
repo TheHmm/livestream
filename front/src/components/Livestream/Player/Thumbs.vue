@@ -45,12 +45,20 @@ export default {
     playing() {
       return this.interval !== null
     },
-
-
+    desired_time() {
+      const t = this.$route.query.time
+      if ( t ) {
+        this.set_time( t )
+      }
+      return t
+    }
 
   },
 
   created() {
+    if ( this.desired_time ) {
+      this.set_time( this.desired_time )
+    }
     this.play()
   },
 
@@ -99,6 +107,12 @@ export default {
         curr_time =  mux.get_cur_time( this.livestream, this.event )
       }
       return curr_time
+    },
+
+    set_time( t ) {
+      console.log( `Setting time to ${ t } seconds.` )
+      this.recording_playback_thumb_time = +t
+      this.$router.push( { query: { ...this.$route.query, ...{ time: undefined } } } )
     },
 
   }
