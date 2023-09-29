@@ -23,17 +23,14 @@ export default {
         anchors
         .filter( a => {
           const url = new URL( a.href )
-          if (
-            url.hostname == location.hostname &&
-            url.pathname == location.pathname
-          ) {
-              return a
+          if ( url.hostname == location.hostname &&
+               url.pathname == location.pathname ) {
+            return a
           }
         })
         .map( a => a.onclick = e => {
           e.preventDefault()
           const parsed_route = this.get_route( a.href )
-          console.log( parsed_route )
           this.$router.push({
             path: parsed_route.path,
             query: { ...this.$route.query, ...parsed_route.query }

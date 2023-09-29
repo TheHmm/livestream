@@ -29,11 +29,7 @@ export default {
       return this.livestream?.status == 'ready'
     },
     desired_time() {
-      const t = this.$route.query.time
-      if ( t ) {
-        this.set_time( t )
-      }
-      return t
+      return this.$route.query.time
     }
 
   },
@@ -53,6 +49,14 @@ export default {
         this.scroll_to_bottom()
       }
     },
+
+    desired_time: {
+      deep: true,
+      immediate: true,
+      handler( t ) {
+        this.set_time( t )
+      }
+    }
 
   },
 
@@ -109,24 +113,27 @@ export default {
     },
 
     set_time( t ) {
-      console.log( `Setting time to ${ t } seconds.` )
-      setTimeout(() => {
-        if ( this.cc.length ) {
-          const start_times = this.cc.map( cc => cc.startTime )
-          if ( start_times ) {
-            const nearest_start = start_times.reduce( (prev, curr) => {
-              return ( Math.abs( curr - t ) < Math.abs( prev - t ) ? curr : prev);
-            })
-            if ( nearest_start ) {
-              const nearest_element = document.getElementById( `t${ nearest_start }` )
-              if ( nearest_element ) {
-                nearest_element.scrollIntoView({ behavior: 'smooth' })
+      if ( t ) {
+        console.log( `Setting time to ${ t } seconds.` )
+        setTimeout(() => {
+          if ( this.cc.length ) {
+            const start_times = this.cc.map( cc => cc.startTime )
+            if ( start_times ) {
+              const nearest_start = start_times.reduce( (prev, curr) => {
+                return ( Math.abs( curr - t ) < Math.abs( prev - t ) ? curr : prev);
+              })
+              if ( nearest_start ) {
+                const nearest_element = document.getElementById( `t${ nearest_start }` )
+                if ( nearest_element ) {
+                  nearest_element.scrollIntoView({ behavior: 'smooth' })
+                }
               }
             }
           }
-        }
-        this.$router.push( { query: { ...this.$route.query, ...{ time: undefined } } } )
-      }, 1000 )
+          this.$router.push( { query: { ...this.$route.query, ...{ time: undefined } } } )
+        }, 500 )
+      }
+
     },
 
 

@@ -46,11 +46,7 @@ export default {
       return this.interval !== null
     },
     desired_time() {
-      const t = this.$route.query.time
-      if ( t ) {
-        this.set_time( t )
-      }
-      return t
+      return this.$route.query.time
     }
 
   },
@@ -64,6 +60,16 @@ export default {
 
   beforeUnmount() {
     this.pause()
+  },
+
+  watch: {
+    desired_time: {
+      deep: true,
+      immediate: true,
+      handler( t ) {
+        this.set_time( t )
+      }
+    }
   },
 
   methods: {
@@ -110,9 +116,13 @@ export default {
     },
 
     set_time( t ) {
-      console.log( `Setting time to ${ t } seconds.` )
-      this.recording_playback_thumb_time = +t
-      this.$router.push( { query: { ...this.$route.query, ...{ time: undefined } } } )
+      if ( t ) {
+        console.log( `Setting time to ${ t } seconds.` )
+        this.recording_playback_thumb_time = +t
+        this.$router.push( { query: { ...this.$route.query, ...{ time: undefined } } } )
+        this.pause()
+        this.play()
+      }
     },
 
   }

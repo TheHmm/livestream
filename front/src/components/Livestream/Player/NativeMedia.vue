@@ -24,11 +24,7 @@ export default {
       return mux.source_url( this.playback_id, this.mode.name )
     },
     desired_time() {
-      const t = this.$route.query.time
-      if ( t ) {
-        this.set_time( t )
-      }
-      return t
+      return this.$route.query.time
     }
   },
 
@@ -42,11 +38,23 @@ export default {
     this.$el.src = undefined
   },
 
+  watch: {
+    desired_time: {
+      deep: true,
+      immediate: true,
+      handler( t ) {
+        this.set_time( t )
+      }
+    }
+  },
+
   methods: {
     set_time( t ) {
-      console.log( `Setting time to ${ t } seconds.` )
-      this.$el.currentTime = t
-      this.$router.push( { query: { ...this.$route.query, ...{ time: undefined } } } )
+      if ( t && this.$el ) {
+        console.log( `Setting time to ${ t } seconds.` )
+        this.$el.currentTime = t
+        this.$router.push( { query: { ...this.$route.query, ...{ time: undefined } } } )
+      }
     },
   }
 
