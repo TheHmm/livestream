@@ -15,13 +15,19 @@ renderer.link = ( href, title, text ) => {
     is_local = href.startsWith( `${location.protocol}//${location.hostname}` ),
     html     = link_renderer.call( renderer, href, title, text )
 
-  return is_local ? html : html.replace(/^<a /, `
-    <a
-      target="_blank"
-      title="${ title || href }"
-      rel="noreferrer noopener nofollow"
-    `
-  )
+  if ( !is_local ) {
+    html.replace(/^<a /, `
+      <a
+        target="_blank"
+        title="${ title || href }"
+        rel="noreferrer noopener nofollow"
+      `
+    )
+  } else {
+    // html = html.replace()
+  }
+
+  return html
 }
 
 

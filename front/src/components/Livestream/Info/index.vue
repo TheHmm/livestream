@@ -8,9 +8,53 @@ export default {
   props: { event: Object },
   computed: {
     title()     { return this.event?.title },
-    body()      { return this.event?.info || '' },
+    body()      { return this.$md( this.event?.info || '' ) },
     starts()    { return this.event?.starts },
     timestamp() { return this.starts && this.$time.short_date_format( this.starts ) }
+  },
+  mounted() {
+    this.routerify_links()
+  },
+  methods: {
+
+    routerify_links() {
+      setTimeout(() => {
+        const anchors = Array.from( document.querySelectorAll( '#info a' ) )
+        anchors
+        .filter( a => {
+          const url = new URL( a.href )
+          if (
+            url.hostname == location.hostname &&
+            url.pathname == location.pathname
+          ) {
+              return a
+          }
+        })
+        .map( a => a.onclick = e => {
+          e.preventDefault()
+          const parsed_route = this.get_route( a.href )
+          console.log( parsed_route )
+          this.$router.push({
+            path: parsed_route.path,
+            query: { ...this.$route.query, ...parsed_route.query }
+          })
+        })
+      }, 500)
+    },
+
+    get_route( url ) {
+      url = new URL( url )
+      const path = url.pathname
+      const query_string = url.search.substr(1)
+      const query = {}
+      query_string.split( "&" ).forEach( part => {
+        if ( part ) {
+          const item = part.split("=")
+          query[item[0]] = decodeURIComponent(item[1])
+        }
+      })
+      return { path, query }
+    }
   }
 }
 </script>
@@ -44,7 +88,7 @@ export default {
     <div
       v-if="body"
       aria-label="event summary"
-      v-html="$md( body )"
+      v-html="body"
     >
     </div>
   </div>

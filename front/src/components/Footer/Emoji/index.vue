@@ -33,6 +33,7 @@ export default {
     },
     can_send_emoji() {
       return (
+        this.event &&
         this.emoji_allowed &&
         !this.emoji_timeout &&
         !this.event.is_in_past
