@@ -216,12 +216,8 @@ body#savepage main {
 }
 
 
-body main  {
-  animation: rotate 30s linear forwards;
-  animation-play-state: paused;
-}
 body.rotate main  {
-  animation-play-state: running;
+  animation: rotate 30s linear forwards;
 }
 
 @keyframes rotate {
