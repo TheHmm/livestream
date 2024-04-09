@@ -30,9 +30,7 @@ const
     const body = event.params.data.body
     if ( body ) {
       // set time based on universal agreement
-      console.log( event.params.data.time )
       event.params.data.time  = new Date().getTime()
-      console.log( event.params.data.time )
       event.params.data.links = get_links( body )
       event.params.data.emoji = get_emoji( body )
     }
