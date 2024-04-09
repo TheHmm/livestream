@@ -28,7 +28,7 @@ export default {
 
     sorted_messages : ( state, getters ) => {
       return getters.messages_array.sort( ( a, b ) => {
-        return new Date(a.time) > new Date(b.time)
+        return new Date(a.time) - new Date(b.time)
       })
     },
 
