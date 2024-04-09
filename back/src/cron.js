@@ -2,7 +2,7 @@ const random_animal_name = require("random-anonymous-animals")
 
 module.exports = {
 
-  '0 0 * * *': async ({ strapi }) => { // every day at midnight
+  '0 6 * * *': async ({ strapi }) => { // every day at 06:00
 
     strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
     strapi.log.info(`[ * * * NIGHTLY CRON JOB STARTING * * * ]`)
@@ -127,6 +127,7 @@ async function event_post_processor( strapi, now ) {
     // will return undefined if called again on this day.
 
     const current_max_count = get_max_count( strapi )
+    console.log( 'GOT MAX COUNT: ', current_max_count )
 
 
     // We get all our past events from strapi in descending

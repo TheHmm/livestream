@@ -169,6 +169,9 @@ module.exports = server => {
 
     let uuid // soocket's uuid, client-generated.
 
+    io.count( socket ) // get a new count
+
+
     // When a socket connect for the first time, we send
     // it our array of connected sockets' uuids.
 
@@ -189,6 +192,7 @@ module.exports = server => {
     })
 
     socket.on( 'disconnect', () => {
+      io.count( socket ) // get a new count
       socket_disconnect( uuid )
     })
 
