@@ -12,7 +12,7 @@ export default {
 
 <template>
   <ul aria-label="Event archive">
-    <transition-group name="fly">
+    <transition-group name="switch" mode="out-in" >
       <Event
         v-for="( event, index ) in events"
         :key="event.slug"

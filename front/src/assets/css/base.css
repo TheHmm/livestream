@@ -230,6 +230,8 @@ body {
   width            : 100%;
   display          : flex;
   transition       :
+    padding-top var(--slow) ease,
+    max-height var(--slow) ease,
     transform var(--slow) ease,
     background-color var(--slow) ease
   ;
@@ -316,26 +318,64 @@ li::before {
 }
 
 
-/* .fallback.fly-enter-active, */
-.fly-enter-active li.event,
-.event.fly-enter-active {
-  animation        : fly var(--enter) ease calc( 0.1s * var(--n) ) both;
+/* when switching years and rotating events */
+.event.switch-enter-active {
+  animation : switch var(--enter) ease calc( 0.1s * var(--n) ) both;
 }
-/* .fallback.fly-leave-active, */
-.fly-leave-active li.event,
-.event.fly-leave-active {
-  animation        : fly var(--enter) ease calc( 0.1s * var(--i) ) reverse both;
+.event.switch-leave-active {
+  animation : switch var(--enter) ease calc( 0.1s * var(--i) ) reverse both;
 }
-@keyframes fly {
-  from { transform : translateY( 100vh ) }
-  to   { transform : translateY(0) }
+@keyframes switch {
+  from {
+    max-height : 0rem;
+    padding-top: 0;
+  }
+  to {
+    max-height : 10rem;
+    padding-top: var(--size-s);
+  }
 }
 
-.fallback.fly-enter-active,
-.fallback.fly-leave-active {
+/* main component switching between index, livestream and fallback */
+.flyall-enter-active {
+  animation : flyall var(--enter) ease both;
+}
+.flyall-leave-active {
+  animation : flyall var(--enter) ease reverse both;
+}
+@keyframes flyall {
+  from {
+    transform : translateY( 100vh );
+  }
+  to   {
+    transform : translateY( 0 );
+  }
+}
+
+/* event list items behaviour during component switching */
+.flyall-enter-active li.event {
+  /* animation : flyaway var(--enter) ease calc( 0.1s * var(--n) ) both; */
+}
+.flyall-leave-active li.event {
+  animation : flyaway var(--enter) ease calc( 0.1s * var(--i) ) reverse both;
+}
+@keyframes flyaway {
+  from {
+    transform: translateY(100vh);
+  }
+  to {
+    transform: translateY(0vh);
+  }
+}
+
+
+
+.fallback.flyall-enter-active,
+.fallback.flyall-leave-active {
   transition: opacity var(--very-fast) ease;
 }
-.fallback.fl-enter-from,
-.fallback.fly-leave-to {
+.fallback.flyall-enter-from,
+.fallback.flyall-leave-to {
   opacity: 0;
+  transition: opacity var(--very-fast) ease;
 }

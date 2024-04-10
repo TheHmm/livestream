@@ -95,6 +95,7 @@ li.event {
   display: flex;
   flex-direction: column;
   padding-bottom: 0;
+  max-height: 10rem;
 }
 
 li.event section {
@@ -118,6 +119,7 @@ li.event:hover section {
 
 li.event section img {
   width : 100%;
+  min-height: 10rem;
 }
 
 li.event header {

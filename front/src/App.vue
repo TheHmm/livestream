@@ -118,7 +118,7 @@ export default {
 
     <main :aria-label="`${ $route.name } page`">
       <router-view v-slot="{ Component }">
-        <transition name="fly" mode="out-in" appear >
+        <transition name="flyall" mode="out-in" type="animation" appear >
           <suspense :timeout="0">
             <template #default>
               <Component :is="Component" />
