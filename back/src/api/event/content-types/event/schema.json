@@ -89,6 +89,10 @@
         "transcript"
       ],
       "default": "video"
+    },
+    "later_visits": {
+      "type": "integer",
+      "min": 0
     }
   }
 }

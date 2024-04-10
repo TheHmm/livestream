@@ -78,6 +78,23 @@ export default {
         reject( error )
       } )
     } )
-  }
+  },
+
+
+  // Log event visit in custom strapi route /log-visit
+
+  log_visit( slug ) {
+    $log.info( `API`, `Logging visit for event ${ slug }.` )
+    return new Promise( ( resolve, reject ) => {
+      axios
+      .patch( `${ config.api_url }/events/${ slug }/visit` )
+      .then( result => resolve( result.data ) )
+      .catch( error => {
+        $log.error( 'API', error )
+        reject( error )
+      } )
+    } )
+  },
+
 
 }

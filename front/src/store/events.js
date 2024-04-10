@@ -137,6 +137,19 @@ export default {
     },
 
 
+    // Inform strapi of visit to log total number of them
+
+    log_event_visit( { dispatch }, slug ) {
+      return new Promise( ( resolve, reject ) =>
+        api
+        .events
+        .log_visit(slug)
+        .then( result => resolve( result ) )
+        .catch( error => reject( error ) )
+      )
+    },
+
+
     // Get all events; always fetches event count from
     // Strapi to check if we have all of them. If not,
     // we fetch them.

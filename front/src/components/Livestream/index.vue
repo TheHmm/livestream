@@ -38,6 +38,7 @@ export default {
   // in the store. Please refer to: @/store/events/sanitize
 
   computed : {
+    is_in_past()  { return this.event?.is_in_past },
     livestream()  { return this.event?.livestream() || this.event?.recording },
     playback_id() { return this.livestream?.playbackId },
     status()      { return this.livestream?.status || 'unavailable' },
@@ -48,6 +49,25 @@ export default {
       )
     )}
   },
+
+  methods: {
+    async log_event_visit() {
+      return await this.$store.dispatch(
+        'events/log_event_visit',
+        this.$route.params.slug
+      )
+    }
+  },
+
+
+  // If the visit happens in the future, after the event is
+  // over, we inform strapi.
+
+  created() {
+    if ( this.is_in_past ) {
+      this.log_event_visit()
+    }
+  }
 
 }
 

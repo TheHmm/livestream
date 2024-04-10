@@ -60,4 +60,25 @@ module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
   },
 
 
+  // log nubmer of views, called in the component mounted hook
+
+  async log_visit( ctx ) {
+
+    const { slug } = ctx.params;
+    try {
+      const event = await strapi.query('api::event.event').findOne({ where: { slug } })
+      event.later_visits += 1
+      await strapi.service( "api::event.event" ).update(
+        event.id,
+        { data: { later_visits: event.later_visits } }
+      )
+      return ctx.send({ success: true, visits: event.later_visits })
+    } catch (error) {
+      console.error(error)
+      return ctx.send({ success: false })
+    }
+
+  }
+
+
 }))
