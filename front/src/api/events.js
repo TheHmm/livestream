@@ -46,6 +46,9 @@ export default {
           'info',
           'mux_recording',
         ],
+        pagination: {
+          pageSize: 100,
+        }
       } } )
       .then( result => resolve( result.data.data ) )
       .catch( error => {
