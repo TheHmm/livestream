@@ -5,6 +5,7 @@ import Captions             from './Captions.vue'
 import Thumbs               from './Thumbs.vue'
 import HlsMedia             from './HlsMedia.vue'
 import NativeMedia          from './NativeMedia.vue'
+import AudioThumbs          from './AudioThumbs.vue'
 import Unmute               from './Unmute.vue'
 
 
@@ -24,6 +25,7 @@ export default {
     Thumbs,
     HlsMedia,
     NativeMedia,
+    AudioThumbs,
     Unmute,
   },
 
@@ -103,6 +105,14 @@ export default {
         this.player = 'Captions'
 
 
+      // In addition to loading the audio, this player will load 
+      // a thumbnail every X seconds as well as subscribe to a 
+      // subtitle stream from Marco.
+
+      } else if ( this.mode.name == 'audio_th' ) {
+        this.player = 'AudioThumbs'
+
+
       // The image player will load a thumbnail every X seconds
       // as well as subscribe to a subtitle stream from Marco.
 
@@ -177,6 +187,7 @@ export default {
 
 #player.transcript,
 #player.thumbs,
+#player.audio_th,
 #player.audio {
   --border        : var(--dash) var(--fore);
   border          : var(--border);
@@ -223,6 +234,7 @@ video::cue {
 }
 
 .mobile #player.transcript,
+.mobile #player.audio_th,
 .mobile #player.thumbs {
   min-height: 60%;
   max-height: 70%;

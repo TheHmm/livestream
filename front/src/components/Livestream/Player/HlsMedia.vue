@@ -84,7 +84,7 @@ export default {
         if (this.mode.name == 'video') {
           this.levels_to_modes( data.levels )
         }
-        this.play()
+        this.$refs.media.play()
       })
       this.hls.on( Hls.Events.SUBTITLE_TRACKS_UPDATED, ( event, data ) => {
         this.captions_ready = true
@@ -94,12 +94,18 @@ export default {
 
     play() {
       this.playing = true
-      this.$refs.media.play()
+      this.$emit('play')
     },
 
     pause() {
       this.playing = false
-      this.$refs.media.pause()
+      this.$emit('pause')
+    },
+
+    seeked() {
+      const desired = this.$refs.media.currentTime
+      this.$emit('seeked', desired)
+      console.log( desired )
     },
 
     set_time( t ) {
@@ -164,6 +170,9 @@ export default {
       ref="media"
       aria-label="audio player"
       :src="source_url"
+      @play="play"
+      @pause="pause"
+      @seeked="seeked"
     >
     </audio>
   </section>
