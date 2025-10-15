@@ -89,13 +89,12 @@ export default {
       }
     },
     touchmove(e) {
-      e = e
-      this.own_position = { 
-        x: e.clientX / window.innerWidth,
-        y: e.clientY / window.innerHeight
-      }
+      this.set_position( e.touches[0] )
     },
     mousemove(e) {
+      this.set_position(e)
+    },
+    set_position(e) {
       this.own_position = { 
         x: e.clientX / window.innerWidth,
         y: e.clientY / window.innerHeight
