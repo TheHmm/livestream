@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       shaking: false,
-      position_throttle: 500,
+      position_throttle: 250,
       own_position: { x: 0.1, y: 0.1 },
     }
   },
@@ -74,6 +74,9 @@ export default {
 
   methods: {
     shake() {
+      if ( this.is_me ) {
+        return
+      }
       this.shaking = true
       setTimeout(() => {
         this.shaking = false
@@ -153,9 +156,8 @@ export default {
   display         : flex;
   justify-content : center;
   align-items     : center;
-  margin-left     : calc( var(--n) * var(--size-s));
-  /* transform       : scale(1); */
-  scale: 1;
+  left            : calc( var(--n) * var(--size-s));
+  scale           : 1;
   transition      : all var(--slow) ease;
 }
 
