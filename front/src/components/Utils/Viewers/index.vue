@@ -79,8 +79,9 @@ export default {
 }
 
 #viewers.is_free {
-  max-height: unset;
-  pointer-events: none;
+  max-height: 0%;
+  overflow: visible;
+  /* pointer-events: none; */
 }
 
 .mobile #viewers {

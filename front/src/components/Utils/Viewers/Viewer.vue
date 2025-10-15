@@ -16,9 +16,9 @@ export default {
 
   data() {
     return {
-      position_throttle: 500,
       shaking: false,
-      own_position: { x: 0, y: 0 }
+      position_throttle: 500,
+      own_position: { x: 10, y: 250 },
     }
   },
 
@@ -28,6 +28,7 @@ export default {
   computed: {
     uuid()    { return this.viewer.uuid },
     name()    { return this.viewer.name || 'unnamed viewer' },
+    mobile()  {  return this.$store.state.meta.mobile },
     is_me()   { return this.$store.getters['viewers/is_me']( this.viewer ) },
     nick()    { return this.is_me && this.name + ' (you)' || this.name },
     emoji()   { return this.viewer.emoji },
@@ -79,10 +80,19 @@ export default {
       }, 1500)
     },
     follow_cursor() {
-      document.addEventListener( "mousemove", this.set_position)
-      document.addEventListener( "mousemove", this.$throttle( 
-        this.send_position, this.position_throttle
-      ))
+      if ( this.mobile ) {
+        this.$el.addEventListener( "touchmove", this.touchmove)
+        this.$el.addEventListener( "touchmove", this.$throttle( this.send_position, this.position_throttle ))
+      } else {
+        document.addEventListener( "mousemove", this.mousemove)
+        document.addEventListener( "mousemove", this.$throttle( this.send_position, this.position_throttle ))
+      }
+    },
+    touchmove(e) {
+      this.set_position( e.touches[0] )
+    },
+    mousemove(e) {
+      this.set_position(e)
     },
     set_position(e) {
       this.own_position = { 
@@ -97,8 +107,13 @@ export default {
       })
     },
     unfollow_cursor() {
-      document.removeEventListener('mousemove', this.set_position )
-      document.removeEventListener('mousemove', this.$throttle )
+      if ( this.mobile ) {
+        this.$el.removeEventListener( "touchmove", this.touchmove)
+        this.$el.removeEventListener( "touchmove", this.$throttle)
+      } else {
+        document.removeEventListener('mousemove', this.mousemove )
+        document.removeEventListener('mousemove', this.$throttle )
+      }
     }
 
   },
@@ -110,7 +125,7 @@ export default {
 <template>
   <div
     :title="nick"
-    :class="[ $id(), 'dot', { shaking, emoji, is_free, is_me } ]"
+    :class="[ $id(), 'dot', { shaking, emoji, is_free, is_me, mobile } ]"
     :style="{ '--n': n, '--x': pos.x, '--y': pos.y }"
     :aria-label="`Dot for viewer ${ name }`"
     tabindex="-1"
@@ -181,6 +196,11 @@ export default {
 
 .viewer.is_free.is_me {
   transition: top 0s ease, left 0s ease;
+  pointer-events: none;
+}
+.viewer.is_free.is_me.mobile {
+  pointer-events: all;
+  --size           : 1.5rem;
 }
 
 .viewer >>> .emo {
