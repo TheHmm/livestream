@@ -18,7 +18,7 @@ export default {
     return {
       shaking: false,
       position_throttle: 500,
-      own_position: { x: 10, y: 250 },
+      own_position: { x: 0.1, y: 0.1 },
     }
   },
 
@@ -89,12 +89,13 @@ export default {
       }
     },
     touchmove(e) {
-      this.set_position( e.touches[0] )
+      e = e
+      this.own_position = { 
+        x: e.clientX / window.innerWidth,
+        y: e.clientY / window.innerHeight
+      }
     },
     mousemove(e) {
-      this.set_position(e)
-    },
-    set_position(e) {
       this.own_position = { 
         x: e.clientX / window.innerWidth,
         y: e.clientY / window.innerHeight
