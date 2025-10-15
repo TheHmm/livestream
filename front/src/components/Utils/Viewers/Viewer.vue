@@ -28,7 +28,7 @@ export default {
   computed: {
     uuid()    { return this.viewer.uuid },
     name()    { return this.viewer.name || 'unnamed viewer' },
-    mobile()  {  return this.$store.state.meta.mobile },
+    mobile()  { return this.$store.state.meta.mobile },
     is_me()   { return this.$store.getters['viewers/is_me']( this.viewer ) },
     nick()    { return this.is_me && this.name + ' (you)' || this.name },
     emoji()   { return this.viewer.emoji },
@@ -96,8 +96,8 @@ export default {
     },
     set_position(e) {
       this.own_position = { 
-        x: e.clientX,
-        y: e.clientY
+        x: e.clientX / window.innerWidth,
+        y: e.clientY / window.innerHeight
       }
     },
     send_position() {
@@ -190,8 +190,8 @@ export default {
 .viewer.is_free {
   margin-left: 0;
   position: fixed;
-  top: calc( var(--y) * 1px - 0.5 * var(--size));
-  left: calc( var(--x) * 1px - 0.5 * var(--size));
+  top: calc( var(--y) * 100vh - 0.5 * var(--size));
+  left: calc( var(--x) * 100vw - 0.5 * var(--size));
 }
 
 .viewer.is_free.is_me {
