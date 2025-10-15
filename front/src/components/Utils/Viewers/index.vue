@@ -20,6 +20,9 @@ export default {
       'connected_viewers',
       'viewers_array',
     ]),
+    is_free() { 
+      return this.$store.getters[ 'events/release_dots' ] 
+    },
     event() {
       return this.$store.getters[ 'events/get_event' ](
         this.$route.params.slug
@@ -44,6 +47,7 @@ export default {
   <transition-group
     tag="sectiion"
     :id="$id()"
+    :class="{ is_free }"
     :aria-label="`Area with dots representing the number of connected viewers. Currently: ${ connected_viewers.length  }`"
     name="dot"
   >
@@ -60,9 +64,11 @@ export default {
 
 #viewers {
   top             : var(--marquee-height);
-  position        : absolute;
+  left            : 0;
+  position        : fixed;
   width           : 100%;
   height          : 100%;
+  max-height      : calc( var(--header-height) - 2 * var(--marquee-height));
   padding         : 0.5rem;
   display         : flex;
   align-items     : flex-start;
@@ -70,6 +76,11 @@ export default {
   align-content   : flex-start;
   flex-wrap       : wrap;
   z-index         : 1;
+}
+
+#viewers.is_free {
+  max-height: unset;
+  pointer-events: none;
 }
 
 .mobile #viewers {

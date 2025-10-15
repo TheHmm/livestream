@@ -398,6 +398,16 @@ export default {
     },
 
 
+    // set x, y position
+
+    socket_position( { dispatch }, { uuid, position } ) {
+      dispatch( 'set_viewer', {
+        uuid,
+        position
+      })
+    }
+
+
   }
 
 }

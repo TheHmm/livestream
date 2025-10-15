@@ -16,7 +16,9 @@ export default {
 
   data() {
     return {
+      position_throttle: 500,
       shaking: false,
+      own_position: { x: 0, y: 0 }
     }
   },
 
@@ -24,12 +26,49 @@ export default {
   // Basic viewer properties
 
   computed: {
-    uuid()  { return this.viewer.uuid },
-    name()  { return this.viewer.name || 'unnamed viewer' },
-    is_me() { return this.$store.getters['viewers/is_me']( this.viewer ) },
-    nick()  { return this.is_me && this.name + ' (you)' || this.name },
-    emoji() { return this.viewer.emoji },
-    n()     { return this.uuid[ this.uuid.length-1 ] },
+    uuid()    { return this.viewer.uuid },
+    name()    { return this.viewer.name || 'unnamed viewer' },
+    is_me()   { return this.$store.getters['viewers/is_me']( this.viewer ) },
+    nick()    { return this.is_me && this.name + ' (you)' || this.name },
+    emoji()   { return this.viewer.emoji },
+    n()       { return this.uuid[ this.uuid.length-1 ] },
+    is_free() { return this.$store.getters[ 'events/release_dots' ] },
+    pos() {
+      if ( this.is_free ) {
+        if ( this.is_me ) {
+          return this.own_position
+        } else {
+          return {
+            x: this.viewer.position?.x || 0,
+            y: this.viewer.position?.y || 0
+          } 
+        }
+      } else {
+        return { x: 0, y:0 }
+      }
+    }
+  },
+
+  mounted() {
+    if ( this.is_free && this.is_me ) {
+      this.follow_cursor()
+    }
+  },
+
+  beforeUnmount() {
+    if ( this.is_free && this.is_me ) {  
+      this.unfollow_cursor()
+    }  
+  },
+
+  watch: {
+    is_free() {
+      if ( this.is_free && this.is_me ) {
+        this.follow_cursor()
+      } else {
+        this.unfollow_cursor()
+      }
+    }
   },
 
   methods: {
@@ -38,7 +77,30 @@ export default {
       setTimeout(() => {
         this.shaking = false
       }, 1500)
+    },
+    follow_cursor() {
+      document.addEventListener( "mousemove", this.set_position)
+      document.addEventListener( "mousemove", this.$throttle( 
+        this.send_position, this.position_throttle
+      ))
+    },
+    set_position(e) {
+      this.own_position = { 
+        x: e.clientX,
+        y: e.clientY
+      }
+    },
+    send_position() {
+      this.$socket.client.emit( 'position', {
+        uuid : this.uuid,
+        position: this.pos
+      })
+    },
+    unfollow_cursor() {
+      document.removeEventListener('mousemove', this.set_position )
+      document.removeEventListener('mousemove', this.$throttle )
     }
+
   },
 
 }
@@ -48,8 +110,8 @@ export default {
 <template>
   <div
     :title="nick"
-    :class="[ $id(), 'dot', { shaking, emoji } ]"
-    :style="{ '--n': n }"
+    :class="[ $id(), 'dot', { shaking, emoji, is_free, is_me } ]"
+    :style="{ '--n': n, '--x': pos.x, '--y': pos.y }"
     :aria-label="`Dot for viewer ${ name }`"
     tabindex="-1"
     @click="shake"
@@ -82,6 +144,7 @@ export default {
   transition      : all var(--slow) ease;
 }
 
+
 .viewer.dot-enter-active,
 .viewer.dot-leave-active,
 .viewer.dot-move {
@@ -107,6 +170,17 @@ export default {
   --shadow-size   : 0.5rem;
   opacity         : 1;
   z-index         : 1;
+}
+
+.viewer.is_free {
+  margin-left: 0;
+  position: fixed;
+  top: calc( var(--y) * 1px - 0.5 * var(--size));
+  left: calc( var(--x) * 1px - 0.5 * var(--size));
+}
+
+.viewer.is_free.is_me {
+  transition: top 0s ease, left 0s ease;
 }
 
 .viewer >>> .emo {

@@ -57,6 +57,10 @@ export default {
       return getters.current_event?.highlightDonateButton
     },
 
+    release_dots: ( state, getters ) => {
+      return getters.current_event?.releaseDots
+    },
+
     emoji_allowed : ( state, getters ) => {
      return getters.current_event?.allowEmoji
     },

@@ -78,6 +78,15 @@ module.exports = {
       new_event.highlightDonateButton = false
     }
 
+    // we disable the cursor movement after a period of 
+    // 5 minutes as a safety guard.
+
+    // if ( diff.releaseDots === true ) {
+    //   setTimeout(() => {
+    //     new_event.releaseDots = false
+    //   })
+    // }
+
     // We inform connected sockets.
 
     strapi.io.emit( 'event_update', diff )
