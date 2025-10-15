@@ -18,7 +18,7 @@ export default {
     return {
       shaking: false,
       position_throttle: 250,
-      own_position: { x: 0.1, y: 0.1 },
+      local_position: { x: 0, y: 0 },
     }
   },
 
@@ -35,19 +35,22 @@ export default {
     n()       { return this.uuid[ this.uuid.length-1 ] },
     is_free() { return this.$store.getters[ 'events/release_dots' ] },
     pos() {
-      if ( this.is_free ) {
-        if ( this.is_me ) {
-          return this.own_position
-        } else {
-          return {
-            x: this.viewer.position?.x || 0,
-            y: this.viewer.position?.y || 0
-          } 
-        }
-      } else {
-        return { x: 0, y:0 }
+      let position = {
+        x: this.local_position.x,
+        y: this.local_position.y
       }
+      if ( this.is_free && !this.is_me && this.viewer.position ) {
+        position = {
+          x: this.viewer.position.x,
+          y: this.viewer.position.y
+        } 
+      }
+      return position
     }
+  },
+
+  created() {
+    this.set_position( this.get_random_position() )
   },
 
   mounted() {
@@ -91,14 +94,31 @@ export default {
         document.addEventListener( "mousemove", this.$throttle( this.send_position, this.position_throttle ))
       }
     },
+    unfollow_cursor() {
+      this.save_current_position()
+      if ( this.mobile ) {
+        this.$el.removeEventListener( "touchmove", this.touchmove)
+        this.$el.removeEventListener( "touchmove", this.$throttle)
+      } else {
+        document.removeEventListener('mousemove', this.mousemove )
+        document.removeEventListener('mousemove', this.$throttle )
+      }
+    },
     touchmove(e) {
       this.set_position( e.touches[0] )
     },
     mousemove(e) {
       this.set_position(e)
     },
+    save_current_position() {
+      const rect = this.$el.getBoundingClientRect()
+      this.set_position({ 
+        clientX: rect.left + 14, 
+        clientY: rect.top + 14 
+      })
+    },  
     set_position(e) {
-      this.own_position = { 
+      this.local_position = { 
         x: e.clientX / window.innerWidth,
         y: e.clientY / window.innerHeight
       }
@@ -109,15 +129,17 @@ export default {
         position: this.pos
       })
     },
-    unfollow_cursor() {
-      if ( this.mobile ) {
-        this.$el.removeEventListener( "touchmove", this.touchmove)
-        this.$el.removeEventListener( "touchmove", this.$throttle)
-      } else {
-        document.removeEventListener('mousemove', this.mousemove )
-        document.removeEventListener('mousemove', this.$throttle )
+    get_random_position() {
+      const header = document.querySelector('header')
+      const max_x = header.offsetWidth
+      const min_x = header.offsetLeft
+      const max_y = header.offsetHeight
+      const min_y = header.offsetTop + 14
+      return { 
+        clientX: Math.random() * (max_x - min_x) + min_x,
+        clientY: Math.random() * (max_y - min_y) + min_y
       }
-    }
+    }, 
 
   },
 
@@ -190,14 +212,13 @@ export default {
 }
 
 .viewer.is_free {
-  margin-left: 0;
   position: fixed;
   top: calc( var(--y) * 100vh - 0.5 * var(--size));
   left: calc( var(--x) * 100vw - 0.5 * var(--size));
 }
 
 .viewer.is_free.is_me {
-  transition: top 0s ease, left 0s ease;
+  /* transition: top 0s ease, left 0s ease; */
   pointer-events: none;
 }
 .viewer.is_free.is_me.mobile {
