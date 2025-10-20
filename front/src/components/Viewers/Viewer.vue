@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       shaking: false,
+      transition: false,
       position_throttle: 250,
       local_position: { x: 0, y: 0 },
     }
@@ -93,6 +94,8 @@ export default {
         document.addEventListener( "mousemove", this.mousemove)
         document.addEventListener( "mousemove", this.$throttle( this.send_position, this.position_throttle ))
       }
+      this.transitioning = true
+      setTimeout(() => this.transitioning = false, 500)
     },
     unfollow_cursor() {
       this.save_current_position()
@@ -150,7 +153,7 @@ export default {
 <template>
   <div
     :title="nick"
-    :class="[ $id(), 'dot', { shaking, emoji, is_free, is_me, mobile } ]"
+    :class="[ $id(), 'dot', { shaking, transitioning, emoji, is_free, is_me, mobile } ]"
     :style="{ '--n': n, '--x': pos.x, '--y': pos.y }"
     :aria-label="`Dot for viewer ${ name }`"
     tabindex="-1"
@@ -178,7 +181,7 @@ export default {
   display         : flex;
   justify-content : center;
   align-items     : center;
-  left            : calc( var(--n) * var(--size-s));
+  margin-left            : calc( var(--n) * var(--size-s));
   scale           : 1;
   transition      : all var(--slow) ease;
 }
@@ -205,7 +208,8 @@ export default {
 
 .viewer:hover,
 .viewer:focus,
-.viewer.emoji {
+.viewer.emoji
+.viewer.is_free {
   --shadow-size   : 0.5rem;
   opacity         : 1;
   z-index         : 1;
@@ -213,12 +217,14 @@ export default {
 
 .viewer.is_free {
   position: fixed;
+  margin-left: 0;
   top: calc( var(--y) * 100vh - 0.5 * var(--size));
   left: calc( var(--x) * 100vw - 0.5 * var(--size));
+  outline: var(--focus);
 }
 
-.viewer.is_free.is_me {
-  transition: top 0s ease, left 0s ease;
+.viewer.is_free.is_me:not(.transitioning) {
+  transition: top 0s, left 0s;
   pointer-events: none;
 }
 .viewer.is_free.is_me.mobile {
