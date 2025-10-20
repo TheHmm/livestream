@@ -75,7 +75,7 @@ export default {
   justify-content : flex-start;
   align-content   : flex-start;
   flex-wrap       : wrap;
-  z-index         : 1;
+  z-index         : 3;
 }
 
 #viewers.is_free {

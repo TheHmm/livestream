@@ -8,7 +8,6 @@
 import { useRoute }  from 'vue-router'
 import store         from '@/store'
 import _throw        from '@/utils/throw'
-import Viewers       from '@/components/Utils/Viewers/index.vue'
 import Announcements from '@/components/Utils/Announcements/index.vue'
 
 export default {
@@ -16,7 +15,6 @@ export default {
   name : 'EventPage',
 
   components : {
-    Viewers,
     Announcements,
   },
 
@@ -127,7 +125,6 @@ export default {
         :event="event"
       />
     </router-view>
-    <Viewers />
     <Announcements />
   </section>
 </template>

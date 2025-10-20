@@ -1,5 +1,5 @@
 <script>
-import Emo from '../../Footer/Emoji/Emo.vue'
+import Emo from '@/components/Footer/Emoji/Emo.vue'
 
 
 // Viewer dot, will mount an emoji if a user has made that
@@ -218,7 +218,7 @@ export default {
 }
 
 .viewer.is_free.is_me {
-  /* transition: top 0s ease, left 0s ease; */
+  transition: top 0s ease, left 0s ease;
   pointer-events: none;
 }
 .viewer.is_free.is_me.mobile {
