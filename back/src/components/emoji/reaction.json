@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_emoji_reactions",
+  "info": {
+    "displayName": "Reaction"
+  },
+  "options": {},
+  "attributes": {
+    "Emoji": {
+      "type": "component",
+      "repeatable": false,
+      "component": "emoji.emoji"
+    },
+    "sender": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::viewer.viewer"
+    }
+  }
+}
