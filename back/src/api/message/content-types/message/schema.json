@@ -39,6 +39,11 @@
     },
     "emoji": {
       "type": "json"
+    },
+    "in_response_to": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::message.message"
     }
   }
 }

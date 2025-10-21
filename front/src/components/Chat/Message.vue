@@ -13,16 +13,19 @@ export default {
 
   components: {
     Options,
-    Links
+    Links,
+    Message: this
   },
 
 
   // If the chat view mode is set to links only then we only
-  // Show messagges with links in them
+  // Show messages with links in them
 
   props: {
     message    : Object,
     links_only : Boolean,
+    selected   : Boolean,
+    is_response: Boolean,
   },
 
   computed: {
@@ -45,6 +48,7 @@ export default {
     time_l() { return this.$time.long_date_format( this.time ) },
     body()   { return this.$mdi( this.message.body || '' ) },
     links()  { return this.message.links },
+    censored()  { return this.message.censored },
 
 
     // We always get the sender details from the store since
@@ -52,7 +56,11 @@ export default {
 
     sender() { return this.message.sender() },
     name()   { return this.sender?.name || 'unknown' },
-    mine()   { return this.sender?.uuid == this.uuid }
+    mine()   { return this.sender?.uuid == this.uuid },
+
+    // if message is a resposnse to another message
+
+    in_response_to() { return this.message.in_response_to && this.message.in_response_to() }
 
   },
 
@@ -68,23 +76,24 @@ export default {
 
 <template>
   <article
-    :class="[ $id(), { censored: message.censored } ]"
+    :class="[ $id(), { censored, selected, is_response, mine } ]"
     tabindex="0"
     :aria-label="`Message from ${ name }`"
     v-if="links_only ? links : true"
   >
 
+    <Message
+      v-if="in_response_to && !selected && !is_response"
+      :id="`responded_message_${ in_response_to.id }`"
+      :message="in_response_to"
+      :links_only="links_only"
+      :is_response="true"
+    />
+
     <div
       class="header"
       aria-label="Message meta-data"
-    >
-      <time
-        class="time"
-        :datetime="time"
-        :title="time_l"
-      >
-        {{ time_s }}
-      </time>
+    > 
       <span
         class="sender"
       >
@@ -102,11 +111,20 @@ export default {
           {{ name }}
         </span>
       </span>
+      <time
+        class="time"
+        :datetime="time"
+        :title="time_l"
+      >
+        {{ time_s }}
+      </time>
       <Options
         :moderator="moderator"
         :mine="mine"
         :message="message"
         :sender="sender"
+        :selected="selected"
+        :is_response="is_response"
       />
     </div>
 
@@ -142,10 +160,14 @@ export default {
   background-color    : var(--back);
   max-width           : 100%;
   /* margin              : 2px; */
-  padding             : 0.5rem 0.5rem;
+  padding             : 0.5rem;
   margin-top          : 0.5rem;
   pointer-events      : none;
   transition          : background-color var(--fast) ease;
+}
+
+.message:not(.message.is_response) {
+  max-width           : calc( 100% - 1rem );
 }
 
 .message:first-of-type {
@@ -165,17 +187,21 @@ export default {
 }
 
 .message .header .sender {
-  margin-left         : 0.5rem;
   white-space         : nowrap;
   overflow            : hidden;
   text-overflow       : ellipsis;
+  font-style: normal;
 }
 .message .header .sender u {
   cursor              : pointer;
 }
 
 .message .header .time {
-  margin-right        : auto;
+  font-size: 0.8rem;
+  /* margin-left         : 0.5rem; */
+  /* margin-right        : auto; */
+  margin-right: auto;
+
 }
 
 .message .body {
@@ -195,6 +221,19 @@ export default {
   font-style          : italic;
   font-size           : 0.8rem;
   opacity             : 0.6;
+}
+
+.message.mine {
+  align-self: flex-end;
+}
+
+.message.selected {
+  --back : var(--accent-lighter);
+}
+
+.message.is_response {
+  --back : var(--accent-lighter);
+  
 }
 
 

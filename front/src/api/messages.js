@@ -6,7 +6,6 @@ let pageSize = 20
 let page = 0
 let current_event_id = null
 
-
 export default {
 
   get_by_event( event_id ) {
@@ -37,10 +36,14 @@ export default {
           },
         },
         fields: '*',
-        populate: [
-          'sender',
-          'event'
-        ],
+        populate: {
+          sender: { fields: '*' },
+          event: { fields: '*' },
+          in_response_to: { fields: '*' },
+          // in_response_to: {
+            // populate: [ 'sender' ]
+          // }
+        },
       } } )
       .then( result => resolve( result.data.data ) )
       .catch( error => {
@@ -66,11 +69,37 @@ export default {
             }
           },
         },
-        fields: '*',
-        populate: [
-          'sender'
-        ],
+        populate: {
+          sender: { fields: '*' },
+          in_response_to: { fields: '*' },
+          // in_response_to: {
+          //   populate: [ 'sender' ]
+          // }
+        },
       } } )
+      .then( result => resolve( result.data.data ) )
+      .catch( error => {
+        $log.error( 'API', error )
+        reject( error )
+      } )
+    } )
+  },
+
+  get( id ) {
+    $log.info( `API`, `Fetching message ${ id }.` )
+    return new Promise( ( resolve, reject ) => {
+      axios
+      .get(
+        `${ config.api_url }/messages/${ id }`, { params: {
+          fields: '*',
+          populate: {
+          sender: { fields: '*' },
+          in_response_to: { fields: '*' },
+          // in_response_to: {
+          //   populate: [ 'sender' ]
+          // }
+        },
+        } } )
       .then( result => resolve( result.data.data ) )
       .catch( error => {
         $log.error( 'API', error )

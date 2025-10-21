@@ -1,7 +1,8 @@
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex'
+import { mapActions, mapMutations, mapGetters, mapState } from 'vuex'
 import $log from '@/utils/log'
 import Register from './Register.vue'
+import Message from './Message.vue'
 
 
 // Message input area
@@ -11,7 +12,8 @@ export default {
   name: 'Input',
 
   components: {
-    Register
+    Register,
+    Message
   },
 
   props: {
@@ -31,7 +33,16 @@ export default {
   computed: {
     ...mapState( 'viewers', [
       'request_registration',
+    ]),
+    ...mapGetters( 'messages', [
+      'selected_message'
     ])
+  },
+
+  watch: {
+    selected_message() {
+      this.$refs.message.focus()
+    }
   },
 
 
@@ -48,7 +59,8 @@ export default {
       'authenticate'
     ]),
     ...mapActions( 'messages', [
-      'create_message'
+      'create_message',
+      'unselect_message'
     ]),
 
     async send( e ) {
@@ -69,6 +81,9 @@ export default {
         $log.error( 'AUTH', error )
         // this.request_registration = true
         this.set_request_registration( true )
+      }
+      if ( this.selected_message ) {
+        this.unselect_message( this.selected_message )
       }
       this.sending = false
       setTimeout( () => {
@@ -94,24 +109,38 @@ export default {
     method="post"
     :onsubmit="send"
   >
-    <input
-      type="text"
-      ref="message"
-      name="message"
-      id="message"
-      tabindex="0"
-      :disabled="sending || request_registration || is_in_past"
-      placeholder ="Type your message and hit enter"
-      v-model.trim="message"
+  
+  <section
+    v-if="selected_message"
+    class="reply_to"
+  >
+    <span v-if="selected_message" class="">replying to</span>
+
+    <Message 
+      :message="selected_message" 
+      :selected="true"
     />
-    <input
-      type="submit"
-      class="circle"
-      :disabled="sending || request_registration || is_in_past"
-      title="Send your message to all other viewers."
-      aria-label="Send your message to all other viewers."
-      value="˃"
-    />
+   </section>
+    <section class="row">
+      <input
+        type="text"
+        ref="message"
+        name="message"
+        id="message"
+        tabindex="0"
+        :disabled="sending || request_registration || is_in_past"
+        placeholder ="Type your message and hit enter"
+        v-model.trim="message"
+      />
+      <input
+        type="submit"
+        class="circle"
+        :disabled="sending || request_registration || is_in_past"
+        title="Send your message to all other viewers."
+        aria-label="Send your message to all other viewers."
+        value="˃"
+      />
+    </section>
   </form>
 
 </template>
@@ -122,11 +151,33 @@ export default {
 #message_form {
   z-index         : 1;
   flex-shrink     : 0;
+  display         : flex;
+  flex-direction  : column;
+  /* justify-content : stretch; */
+  align-items: flex-start;
+  padding         : 2px calc( 0.5rem + 2px);
+}
+#message_form .reply_to {
+  padding         : 2px;
+  margin-block: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  /* align-items     : flex-end; */
+  /* background-color:; */
+  outline          : var(--focus);
+}
+#message_form .reply_to > span {
+  font-weight: bold;
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-left: 0.25rem;
+}
+#message_form .row {
   height          : var(--base-height);
   display         : flex;
   justify-content : stretch;
   align-items     : center;
-  padding         : 2px calc( 0.5rem + 2px);
 }
 #message_form input[type="text"] {
   flex-grow       : 1;

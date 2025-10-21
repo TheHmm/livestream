@@ -226,6 +226,7 @@ export default {
           <Message
             v-for="( message, i ) in sorted_messages"
             :key="i"
+            :id="`original_message_${ message.id }`"
             :style="{ '--n': sorted_messages.length - i - 1 }"
             :message="message"
             :links_only="links_only"

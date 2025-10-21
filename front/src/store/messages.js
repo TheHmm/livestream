@@ -13,7 +13,7 @@ export default {
   mutations: {
     SET_MESSAGES   : ( state, messages ) => { state.messages = messages },
     SET_MESSAGE    : ( state, message ) => { state.messages[message.time] = message },
-    DELETE_MESSAGE : ( state, message ) => { delete state.messages[message.time] }
+    DELETE_MESSAGE : ( state, message ) => { delete state.messages[message.time] },
   },
 
   getters: {
@@ -21,9 +21,13 @@ export default {
     get_messages : state => {
       return state.messages
     },
-
+    
     messages_array : state => {
       return Object.values( state.messages )
+    },
+    
+    message_by_id : ( state, getters ) => id => {
+      return getters.messages_array.find( e => e.id == id )
     },
 
     sorted_messages : ( state, getters ) => {
@@ -66,6 +70,10 @@ export default {
       return rootGetters['meta/censor_message']
     },
 
+    selected_message : ( state, getters ) => {
+      return getters.messages_array.find( m => m.selected )
+    }
+
   },
 
   actions: {
@@ -91,19 +99,52 @@ export default {
         message.emoji = null
       }
 
-      const sender_id = message.sender?.data?.id || message.sender
+      const sender_id = message.sender?.data?.id || message.sender?.id || message.sender
 
       message.sender = function() {
         return getters.viewer_by_id( sender_id )
       }
 
       if ( !message.sender() ) {
-        $log.warn( 'API', `Message belons to this event but it's sender (${ sender_id }) doesn't.` )
+        $log.warn( 'API', `Message belongs to this event but it's sender (${ sender_id }) doesn't.` )
         try {
           await dispatch( 'get_viewer', sender_id, { root: true } )
         } catch ( error ) {
           $log.error( error )
         }
+      }
+
+      let in_response_to_id = null
+
+      if ( message.in_response_to ) {
+        if ( !isNaN(message.in_response_to) ) {
+          in_response_to_id = message.in_response_to
+        } else if ( message.in_response_to.id ) {
+          in_response_to_id = message.in_response_to.id
+        } else if ( message.in_response_to.data ) {
+          in_response_to_id = message.in_response_to.data.id
+        }
+        message.in_response_to = null
+      }
+
+      if ( in_response_to_id ) {
+        message.in_response_to = function() {
+          return getters.message_by_id( in_response_to_id )
+        }
+
+        // delay check/fetch for a few milliseconds until all messages are loaded
+
+        setTimeout(async () => {
+          if ( !message.in_response_to() ) {
+            $log.warn( 'API', `Trigger message (${ in_response_to_id }) wasn't found locally, fetching.` )
+            try {
+              await dispatch( 'get_message', in_response_to_id )
+            } catch ( error ) {
+              $log.error( error )
+            }
+          }
+        }, 250)
+
       }
 
       commit( 'SET_MESSAGE', message )
@@ -149,6 +190,33 @@ export default {
     },
 
 
+    // fetch single message by id
+
+    fetch_message( { dispatch }, id ) {
+      return new Promise( ( resolve, reject ) =>
+        api
+        .messages
+        .get(id)
+        .then( message => {
+          dispatch( 'set_message', message )
+          resolve( message )
+        } )
+        .catch( error => reject( error ) )
+      )
+    },
+
+
+    // Get message by id.
+
+    async get_message( { getters, dispatch }, id ) {
+      const message = getters.message_by_id( id )
+      if ( message ) {
+        return message
+      } else {
+        return await dispatch( 'fetch_message', id )
+      }
+    },
+
 
     // Get messages by event id.
 
@@ -158,7 +226,6 @@ export default {
       } else {
         return getters.get_messages
       }
-
     },
 
 
@@ -171,7 +238,8 @@ export default {
         body   : body,
         time   : $time.now(),
         sender : getters.my_id,
-        event  : getters.current_event_id
+        event  : getters.current_event_id,
+        in_response_to : getters.selected_message?.id 
       }
       if ( getters.blocked ) {
         message.time = (new Date).toString()
@@ -210,6 +278,24 @@ export default {
       } catch ( error ) {
         throw error
       }
+    },
+
+
+    // select message to reply to it
+    
+    select_message( { commit, getters, dispatch }, message ) {
+      const selected_message = getters.selected_message
+      if ( selected_message ) {
+        dispatch( 'unselect_message', selected_message )
+      }
+      commit( 'SET_MESSAGE', { ...message, ...{ selected: true } } )
+    },
+
+
+    // unselect message to reply to it
+    
+    unselect_message( { commit }, message ) {
+      commit( 'SET_MESSAGE', { ...message, ...{ selected: false } } )
     },
 
 

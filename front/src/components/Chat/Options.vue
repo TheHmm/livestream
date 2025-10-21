@@ -16,6 +16,8 @@ export default {
     sender    : Object,
     moderator : Boolean,
     mine      : Boolean,
+    selected  : Boolean,
+    is_response: Boolean
   },
 
 
@@ -32,19 +34,51 @@ export default {
   methods: {
     ...mapActions( 'messages', [
       'censor_message',
-      'delete_message'
+      'delete_message',
+      'select_message',
+      'unselect_message',
     ]),
     ...mapActions( 'viewers', [
       'block_viewer'
-     ] )
+    ]),
+    view_message( id ) {
+      const original_message = document.getElementById( `original_message_${ id }` )
+      if ( original_message ) {
+        original_message.scrollIntoView({ behavior: 'smooth' })
+        setTimeout( () => { original_message.focus() }, 250 )
+      } else {
+        console.log( 'original message not found or loaded' )
+      }
+
+    }
   }
 }
 </script>
 
 <template>
 
+  <span 
+    v-if="is_response"
+    role="menu"
+    :class="$id()"
+  >
+    <span @click="view_message( message.id )">
+      view
+    </span>
+  </span>
+
+  <span 
+    v-else-if="selected"
+    role="menu"
+    :class="$id()"
+  >
+    <span @click="unselect_message( message )">
+      cancel
+    </span>
+  </span>
+
   <span
-    v-if="moderator"
+    v-else-if="moderator"
     role="menu"
     :class="$id()"
   >
@@ -67,7 +101,6 @@ export default {
       delete
     </span>
   </span>
-
   <span
     v-else-if="mine"
     role="menu"
@@ -75,6 +108,15 @@ export default {
   >
     <span @click="delete_message( message )">
       delete
+    </span>
+  </span>
+  <span
+    v-if="!is_response && !selected"
+    role="menu"
+    class="options"
+  >
+    <span @click="select_message( message )">
+      reply
     </span>
   </span>
 </template>
@@ -85,13 +127,15 @@ export default {
 .options {
   display         : flex;
   align-items     : center;
-  margin-left     : auto;
+  /* margin-left     : auto; */
 }
-.options span {
+.options span  {
   font-size       : 0.6rem;
   text-decoration : underline;
-  margin-left     : 0.5rem;
   cursor          : pointer;
+  margin-left: 0.5rem;
 }
-
+.options span:first-of-type {
+  margin-left: 0;
+}
 </style>
