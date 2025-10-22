@@ -693,50 +693,6 @@ export interface ApiViewerViewer extends Schema.CollectionType {
   };
 }
 
-export interface PluginAwesomeHelpHelp extends Schema.CollectionType {
-  collectionName: 'helps';
-  info: {
-    displayName: 'help';
-    pluralName: 'helps';
-    singularName: 'help';
-  };
-  options: {
-    comment: '';
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
-  };
-  attributes: {
-    componentName: Attribute.String;
-    containerType: Attribute.String;
-    contentType: Attribute.String;
-    createdAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'plugin::awesome-help.help',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    fieldName: Attribute.String;
-    helpContent: Attribute.String;
-    path: Attribute.String;
-    updatedAt: Attribute.DateTime;
-    updatedBy: Attribute.Relation<
-      'plugin::awesome-help.help',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    zoneName: Attribute.String;
-  };
-}
-
 export interface PluginContentReleasesRelease extends Schema.CollectionType {
   collectionName: 'strapi_releases';
   info: {
@@ -1181,7 +1137,6 @@ declare module '@strapi/types' {
       'api::meta.meta': ApiMetaMeta;
       'api::mux-hook.mux-hook': ApiMuxHookMuxHook;
       'api::viewer.viewer': ApiViewerViewer;
-      'plugin::awesome-help.help': PluginAwesomeHelpHelp;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
