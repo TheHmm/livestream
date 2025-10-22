@@ -1,15 +1,15 @@
-import type { Schema, Attribute } from '@strapi/strapi';
+import type { Attribute, Schema } from '@strapi/strapi';
 
 export interface EmojiEmoji extends Schema.Component {
   collectionName: 'components_emoji_emojis';
   info: {
+    description: '';
     displayName: 'emoji';
     icon: 'angry';
-    description: '';
   };
   attributes: {
+    image: Attribute.Media<'images'>;
     name: Attribute.String & Attribute.Required;
-    image: Attribute.Media;
   };
 }
 
