@@ -1,6 +1,6 @@
-import type { Attribute, Schema } from '@strapi/strapi';
+import type { Schema, Struct } from '@strapi/strapi';
 
-export interface EmojiEmoji extends Schema.Component {
+export interface EmojiEmoji extends Struct.ComponentSchema {
   collectionName: 'components_emoji_emojis';
   info: {
     description: '';
@@ -8,25 +8,25 @@ export interface EmojiEmoji extends Schema.Component {
     icon: 'angry';
   };
   attributes: {
-    image: Attribute.Media<'images'>;
-    name: Attribute.String & Attribute.Required;
+    image: Schema.Attribute.Media<'images'>;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
-export interface PhrasesPhrase extends Schema.Component {
+export interface PhrasesPhrase extends Struct.ComponentSchema {
   collectionName: 'components_phrases_phrases';
   info: {
     displayName: 'phrase';
     icon: 'microphone';
   };
   attributes: {
-    phrase: Attribute.String & Attribute.Required;
+    phrase: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
-declare module '@strapi/types' {
-  export module Shared {
-    export interface Components {
+declare module '@strapi/strapi' {
+  export module Public {
+    export interface ComponentSchemas {
       'emoji.emoji': EmojiEmoji;
       'phrases.phrase': PhrasesPhrase;
     }

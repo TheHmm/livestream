@@ -13,19 +13,17 @@
   "dependencies": {
     "@mollie/api-client": "^3.6.0",
     "@mux/mux-node": "^6.2.0",
-    "@strapi/plugin-i18n": "4.25.24",
-    "@strapi/plugin-users-permissions": "4.25.24",
-    "@strapi/strapi": "4.25.24",
-    "better-sqlite3": "7.4.6",
+    "@strapi/plugin-users-permissions": "5.29.0",
+    "@strapi/strapi": "5.29.0",
+    "better-sqlite3": "11.3.0",
     "mqtt": "^4.3.7",
     "random-anonymous-animals": "^1.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-router-dom": "5.3.4",
-    "styled-components": "5.3.3",
+    "react-router-dom": "^6.0.0",
+    "styled-components": "^6.0.0",
     "slugify": "^1.6.5",
-    "socket.io": "^4.4.1",
-    "strapi-plugin-transformer": "^1.0.3"
+    "socket.io": "^4.4.1"
   },
   "author": {
     "name": "Karl Moubarak"
