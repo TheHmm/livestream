@@ -82,8 +82,8 @@ export default {
     // Process and set message
 
     async set_message( { commit, getters, dispatch }, message ) {
-
-      const event_id = message.event?.data?.id || message.event
+      
+      const event_id = message.event?.data?.id || message.event?.id || message.event
       if ( event_id && event_id != getters.current_event_id ) {
         return
       }
@@ -113,7 +113,7 @@ export default {
           $log.error( error )
         }
       }
-
+      
       let in_response_to_id = null
 
       if ( message.in_response_to ) {
@@ -131,9 +131,7 @@ export default {
         message.in_response_to = function() {
           return getters.message_by_id( in_response_to_id )
         }
-
         // delay check/fetch for a few milliseconds until all messages are loaded
-
         setTimeout(async () => {
           if ( !message.in_response_to() ) {
             $log.warn( 'API', `Trigger message (${ in_response_to_id }) wasn't found locally, fetching.` )
@@ -144,9 +142,27 @@ export default {
             }
           }
         }, 250)
-
       }
 
+      if (message.Reactions?.length) { 
+        message.Reactions.map(async r => {
+          if (r.Emoji.image && r.Emoji.image.data) {
+            r.Emoji.image = r.Emoji.image.data
+          }
+          const reactor_id = r.sender?.data?.id || r.sender?.id || r.sender
+          r.sender = getters.viewer_by_id( reactor_id )
+          if ( !r.sender ) {
+            $log.warn( 'API', `Message belongs to this event but it's sender (${ reactor_id }) doesn't.` )
+            try {
+              await dispatch( 'get_viewer', reactor_id, { root: true } )
+            } catch ( error ) {
+              $log.error( error )
+            }
+          }
+          return r  
+        })
+      }
+ 
       commit( 'SET_MESSAGE', message )
     },
 
@@ -253,6 +269,20 @@ export default {
         .then( message => resolve( message ) )
         .catch( error => reject( error ) )
       })
+    },
+
+
+    // update message, eg when sending an emoji reaction
+    async update_message( { getters, dispatch }, message ) {
+      return new Promise( ( resolve, reject ) =>
+        api
+        .messages
+        .put( message.id, message )
+        .then( message => {
+          resolve( message )
+        })
+        .catch( error => reject( error ) )
+      )
     },
 
 

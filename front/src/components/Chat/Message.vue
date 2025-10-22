@@ -3,6 +3,7 @@
 import { mapGetters, mapMutations } from 'vuex'
 import Options from './Options.vue'
 import Links from './Links.vue'
+import Reactions from './Reactions/index.vue'
 
 
 // Chat message
@@ -14,6 +15,7 @@ export default {
   components: {
     Options,
     Links,
+    Reactions,
     Message: this
   },
 
@@ -60,7 +62,11 @@ export default {
 
     // if message is a resposnse to another message
 
-    in_response_to() { return this.message.in_response_to && this.message.in_response_to() }
+    in_response_to() { return this.message.in_response_to && this.message.in_response_to() },
+
+    // received emoji reactions
+
+    received_reactions() { return this.message.Reactions }
 
   },
 
@@ -141,6 +147,16 @@ export default {
       :name="name"
     />
 
+    <div 
+      v-if="!selected && !is_response && !links_only"
+    >
+      <Reactions 
+        :message="message"
+        :received_reactions="received_reactions"
+      />
+    </div>
+
+
   </article>
 </template>
 
@@ -164,9 +180,10 @@ export default {
   margin-top          : 0.5rem;
   pointer-events      : none;
   transition          : background-color var(--fast) ease;
+  /* overflow: visible; */
 }
 
-.message:not(.message.is_response) {
+.message:not(.is_response, .selected) {
   max-width           : calc( 100% - 1rem );
 }
 
@@ -233,7 +250,10 @@ export default {
 
 .message.is_response {
   --back : var(--accent-lighter);
-  
+}
+
+.message:has(.emoji) {
+  margin-bottom: 0.5rem;
 }
 
 

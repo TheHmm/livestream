@@ -40,9 +40,7 @@ export default {
           sender: { fields: '*' },
           event: { fields: '*' },
           in_response_to: { fields: '*' },
-          // in_response_to: {
-            // populate: [ 'sender' ]
-          // }
+          Reactions: { populate: [ 'Emoji', 'Emoji.image', 'sender' ] }
         },
       } } )
       .then( result => resolve( result.data.data ) )
@@ -72,9 +70,7 @@ export default {
         populate: {
           sender: { fields: '*' },
           in_response_to: { fields: '*' },
-          // in_response_to: {
-          //   populate: [ 'sender' ]
-          // }
+          Reactions: { populate: [ 'Emoji', 'Emoji.image', 'sender' ] }
         },
       } } )
       .then( result => resolve( result.data.data ) )
@@ -95,9 +91,7 @@ export default {
           populate: {
           sender: { fields: '*' },
           in_response_to: { fields: '*' },
-          // in_response_to: {
-          //   populate: [ 'sender' ]
-          // }
+          Reactions: { populate: [ 'Emoji', 'Emoji.image', 'sender' ] }
         },
         } } )
       .then( result => resolve( result.data.data ) )

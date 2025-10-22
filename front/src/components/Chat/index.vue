@@ -83,8 +83,10 @@ export default {
   // or message update from strapi.
 
   sockets: {
-    message() {
-      this.scroll_to_end( )
+    message( message ) {
+      if ( message.is_new ) {
+        this.scroll_to_end()
+      }
     }
   },
 

@@ -6,6 +6,7 @@
 import axios          from 'axios'
 import socket         from 'socket.io-client'
 import VueSocketIOExt from 'vue-socket.io-extended'
+import vClickOutside  from 'v-click-outside'
 
 import { createApp }  from 'vue'
 import App            from './App.vue'
@@ -46,7 +47,7 @@ app.config.globalProperties = { $log, $time, $id, $md, $mdi }
 
 
 // & attach our extensions to our app
-app.use( store ).use( router ).use( VueSocketIOExt, io, { store } )
+app.use( store ).use( router ).use( VueSocketIOExt, io, { store } ).use( vClickOutside )
 
 
 // & finally mount after the router is ready

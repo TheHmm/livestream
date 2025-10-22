@@ -44,7 +44,40 @@ const
   // that from our db.
 
   after_create_or_update = async event => {
-    const message = { ...event.params.data, ...event.result }
+    let message
+    if ( event.action == 'afterCreate' ) {
+      message = { ...event.params.data, ...event.result }
+      message.is_new = true
+    } else if ( event.action == 'afterUpdate' ) {
+    // new solution is much slower but includes all emoji reactions:
+      message = await strapi.entityService.findOne( 'api::message.message', event.params.data.id, {
+        fields: '*',
+        populate: {
+          sender: {},
+          event: {},
+          in_response_to: { fields: '*' },
+          Reactions: { populate: [ 'Emoji', 'Emoji.image', 'sender' ] }
+        },
+      })
+      // const message = await strapi.entityService.findOne( 'api::message.message', event.params.data.id, {
+      //   fields: '*',
+      //   populate: {
+      //     sender: true,
+      //     event: true,
+      //     in_response_to: true,
+      //     Reactions: { 
+      //       populate: {
+      //         Emoji:  { 
+      //           populate: {
+      //             image: true
+      //           }
+      //         },
+      //         sender: true
+      //       }
+      //     }
+      //   },
+      // })
+    }
     strapi.io.emit( 'message', message )
     if ( message.emoji ) {
       try {
