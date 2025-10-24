@@ -98,7 +98,7 @@ export default {
         this.loading = 'loading...'
         const messages = await this.$store.dispatch(
           'messages/fetch_messages',
-          this.event.id
+          this.event.documentId
         )
         if ( messages.length >= 20 ) {
           this.loading = 'load more messages'

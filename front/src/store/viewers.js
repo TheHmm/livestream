@@ -53,7 +53,7 @@ export default {
     },
 
     get_viewer_by_id : ( state, getters ) => id => {
-      return getters.viewers_array.find( v => v.id == id )
+      return getters.viewers_array.find( v => v.documentId == id )
     },
 
     uuid : state => {
@@ -65,7 +65,7 @@ export default {
     },
 
     my_id : state => {
-      return state.viewers[ state.uuid ].id
+      return state.viewers[ state.uuid ].documentId
     },
 
     is_me : state => viewer => {
@@ -128,7 +128,7 @@ export default {
       // returinng ids and other times it gives objects. We
       // normalize to ids : [ '1 , '2', '3', ... ]
 
-      viewer.events = viewer.events?.data?.map( e => e.id ) || viewer.events
+      viewer.events = viewer.events?.map( e => e.documentId ) || viewer.events
 
       commit( 'SET_VIEWER', viewer )
 
@@ -284,8 +284,8 @@ export default {
         // we update this in the server.
 
         if ( !getters.has_been_to_current_event ) {
-          $log.info('AUTH', 'You havent been to this event.')
-          await api.viewers.put( getters.me.id, {
+          $log.info('AUTH', "You haven't been to this event.")
+          await api.viewers.put( getters.my_id, {
             events: [
               ...getters.my_events,
               getters.current_event_id
@@ -323,7 +323,7 @@ export default {
 
     async block_viewer( {}, viewer ) {
       try {
-        await api.viewers.put( viewer.id, {
+        await api.viewers.put( viewer.documentId, {
           blocked: !viewer.blocked,
         })
       } catch ( error ) {

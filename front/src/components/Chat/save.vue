@@ -34,7 +34,7 @@ export default {
     try {
       this.messages_array = await this.$store.dispatch(
         'messages/fetch_all_event_messages',
-        this.event.id
+        this.event.documentId
       )
     } catch ( error ) {
       _throw( error )

@@ -69,7 +69,7 @@ export default {
         },
         filters: {
           events: {
-            id: {
+            documentId: {
               $eq: event_id
             }
           },

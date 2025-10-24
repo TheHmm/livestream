@@ -36,17 +36,13 @@ export default {
       return state.events[ slug ]
     },
 
-    event_bv_id : ( state, getters ) => id => {
-      return getters.get_events.find( e => e.id == id )
-    },
-
     current_event : ( state, getters ) => {
-      const id = router.currentRoute._value.params.slug
-      return getters.get_event( id )
+      const slug = router.currentRoute._value.params.slug
+      return getters.get_event( slug )
     },
 
     current_event_id : ( state, getters ) => {
-      return getters.current_event?.id
+      return getters.current_event?.documentId
     },
 
     current_event_default_mode : ( state, getters ) => {
@@ -208,7 +204,6 @@ export default {
 
 function sanitize ( event, getters, rootGetters, dispatch ) {
 
-
   // If the event exists in our store, than this
   // function was called to update it. We merge.
 
@@ -222,20 +217,6 @@ function sanitize ( event, getters, rootGetters, dispatch ) {
 
   if ( event.accent && typeof event.accent == "string" ) {
     event.accent = color.hsl_to_css_vars(event.accent)
-  }
-
-
-  // Clean up dirty strapi component structure in response
-
-  if ( event.emoji_groups && !Array.isArray( event.emoji_groups ) ) {
-    if ( event.emoji_groups.data ) {
-      event.emoji_groups.data.map( g => {
-        g.emoji.map( e => e.image = e.image?.data )
-      })
-      event.emoji_groups = event.emoji_groups.data
-    } else {
-      delete event.emoji_groups
-    }
   }
 
 

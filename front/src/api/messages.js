@@ -21,6 +21,7 @@ export default {
       page = 1
     }
     current_event_id = event_id
+    console.log( event_id )
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/messages`, { params: {
@@ -31,7 +32,7 @@ export default {
         },
         filters: {
           event: {
-            id: {
+            documentId: {
               $eq: event_id
             }
           },
@@ -61,7 +62,7 @@ export default {
         },
         filters: {
           event: {
-            id: {
+            documentId: {
               $eq: event_id
             }
           },
