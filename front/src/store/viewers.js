@@ -106,7 +106,6 @@ export default {
 
     set_viewer( { commit, getters }, viewer ) {
 
-
       // We can only follow throough with viewers that
       // have UUID. THe rest cause errors.
 
@@ -119,6 +118,7 @@ export default {
       // function was called to update it. We merge.
 
       const found = getters.get_viewer(viewer.uuid)
+
       if ( found ) {
         viewer = { ...found, ...viewer }
       }
@@ -128,7 +128,7 @@ export default {
       // returinng ids and other times it gives objects. We
       // normalize to ids : [ '1 , '2', '3', ... ]
 
-      viewer.events = viewer.events?.map( e => e.documentId ) || viewer.events
+      viewer.events = viewer.events?.map( e => e && e.documentId ) || viewer.events
 
       commit( 'SET_VIEWER', viewer )
 
@@ -350,7 +350,7 @@ export default {
     // 2. a viewer has been created / updated in the DB
 
     socket_viewer( { dispatch }, viewer ) {
-      $log.info( 'SOCKET', `Viewer ${ viewer.name || 'anonymous' }` )
+      $log.info( 'SOCKET', `Viewer ${ viewer.name || 'anonymous' }, ${ viewer.uuid }` )
       dispatch( 'set_viewer', viewer )
     },
 

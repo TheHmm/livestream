@@ -12,10 +12,11 @@ export default {
         sort: 'publishedAt:asc',
         filters: {
           events: {
-            id: {
+            documentId: {
               $eq: event_id
             }
           },
+          show: true
         },
         fields: '*',
       } } )

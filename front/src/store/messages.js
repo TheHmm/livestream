@@ -12,8 +12,8 @@ export default {
 
   mutations: {
     SET_MESSAGES   : ( state, messages ) => { state.messages = messages },
-    SET_MESSAGE    : ( state, message ) => { state.messages[message.time] = message },
-    DELETE_MESSAGE : ( state, message ) => { delete state.messages[message.time] }
+    SET_MESSAGE    : ( state, message ) => { state.messages[message.documentId] = message },
+    DELETE_MESSAGE : ( state, message ) => { delete state.messages[message.documentId] }
   },
 
   getters: {

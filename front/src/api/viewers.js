@@ -75,6 +75,7 @@ export default {
           },
         },
         fields: '*',
+        populate: ['events']
       } } )
       .then( result => {
         const viewers = result.data.data

@@ -440,7 +440,7 @@ export interface ApiAnnouncementAnnouncement
     singularName: 'announcement';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     body: Schema.Attribute.RichText;
@@ -456,6 +456,7 @@ export interface ApiAnnouncementAnnouncement
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    show: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     slug: Schema.Attribute.UID<'title'>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
