@@ -12,8 +12,8 @@ export default {
 
   mutations: {
     SET_MESSAGES   : ( state, messages ) => { state.messages = messages },
-    SET_MESSAGE    : ( state, message ) => { state.messages[message.time] = message },
-    DELETE_MESSAGE : ( state, message ) => { delete state.messages[message.time] },
+    SET_MESSAGE    : ( state, message ) => { state.messages[message.documentId] = message },
+    DELETE_MESSAGE : ( state, message ) => { delete state.messages[message.documentId] }
   },
 
   getters: {
@@ -27,7 +27,7 @@ export default {
     },
     
     message_by_id : ( state, getters ) => id => {
-      return getters.messages_array.find( e => e.id == id )
+      return getters.messages_array.find( e => e.documentId == id )
     },
 
     sorted_messages : ( state, getters ) => {
@@ -82,8 +82,8 @@ export default {
     // Process and set message
 
     async set_message( { commit, getters, dispatch }, message ) {
-      
-      const event_id = message.event?.data?.id || message.event?.id || message.event
+
+      const event_id = message.event?.documentId || message.event
       if ( event_id && event_id != getters.current_event_id ) {
         return
       }
@@ -99,7 +99,7 @@ export default {
         message.emoji = null
       }
 
-      const sender_id = message.sender?.data?.id || message.sender?.id || message.sender
+      const sender_id = message.sender?.documentId || message.sender
 
       message.sender = function() {
         return getters.viewer_by_id( sender_id )
@@ -119,10 +119,8 @@ export default {
       if ( message.in_response_to ) {
         if ( !isNaN(message.in_response_to) ) {
           in_response_to_id = message.in_response_to
-        } else if ( message.in_response_to.id ) {
-          in_response_to_id = message.in_response_to.id
-        } else if ( message.in_response_to.data ) {
-          in_response_to_id = message.in_response_to.data.id
+        } else if ( message.in_response_to.documentId ) {
+          in_response_to_id = message.in_response_to.documentId
         }
         message.in_response_to = null
       }
@@ -146,10 +144,7 @@ export default {
 
       if (message.Reactions?.length) { 
         message.Reactions.map(async r => {
-          if (r.Emoji.image && r.Emoji.image.data) {
-            r.Emoji.image = r.Emoji.image.data
-          }
-          const reactor_id = r.sender?.data?.id || r.sender?.id || r.sender
+          const reactor_id =  r.sender?.documentId || r.sender
           r.sender = getters.viewer_by_id( reactor_id )
           if ( !r.sender ) {
             $log.warn( 'API', `Message belongs to this event but it's sender (${ reactor_id }) doesn't.` )
@@ -255,7 +250,7 @@ export default {
         time   : $time.now(),
         sender : getters.my_id,
         event  : getters.current_event_id,
-        in_response_to : getters.selected_message?.id 
+        in_response_to : getters.selected_message?.documentId 
       }
       if ( getters.blocked ) {
         message.time = (new Date).toString()
@@ -277,7 +272,7 @@ export default {
       return new Promise( ( resolve, reject ) =>
         api
         .messages
-        .put( message.id, message )
+        .put( message.documentId, message.data )
         .then( message => {
           resolve( message )
         })
@@ -290,9 +285,9 @@ export default {
 
     async censor_message( {}, message ) {
       try {
-        await api.messages.put( message.id, {
+        await api.messages.put( message.documentId, {
           censored: !message.censored,
-          sender: message.sender().id,
+          sender: message.sender().documentId,
         })
       } catch ( error ) {
         throw error
@@ -304,7 +299,7 @@ export default {
 
     async delete_message( {}, message ) {
       try {
-        await api.messages.delete( message.id )
+        await api.messages.delete( message.documentId )
       } catch ( error ) {
         throw error
       }

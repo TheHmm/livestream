@@ -23,11 +23,11 @@ export default {
     const { dispatch } = store
     try {
       await dispatch( 'livestream/get_livestream' )
-      const { id } = await dispatch( 'events/get_event', slug )
-      await dispatch( 'viewers/get_viewers', id )
-      await dispatch( 'messages/get_messages', id )
-      await dispatch( 'announcements/get_announcements', id )
-      return { id }
+      const { documentId } = await dispatch( 'events/get_event', slug )
+      await dispatch( 'viewers/get_viewers', documentId )
+      await dispatch( 'messages/get_messages', documentId )
+      await dispatch( 'announcements/get_announcements', documentId )
+      return { documentId }
     } catch ( error ) {
       _throw( error )
       throw error

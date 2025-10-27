@@ -1,8 +1,8 @@
 module.exports = ({ env }) => ({
-  'transformer': {
-     enabled: true,
-     config: {
-       prefix: '/api/'
-     }
-   },
+  // 'transformer': {
+  //    enabled: true,
+  //    config: {
+  //      prefix: '/api/'
+  //    }
+  //  },
  });

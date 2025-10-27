@@ -62,7 +62,7 @@ export default {
     role="menu"
     :class="$id()"
   >
-    <span @click="view_message( message.id )">
+    <span @click="view_message( message.documentId )">
       view
     </span>
   </span>

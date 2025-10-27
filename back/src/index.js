@@ -1,5 +1,12 @@
 'use strict';
 
+const { viewer_hooks } = require('./hooks/viewer')
+const { event_hooks } = require('./hooks/event')
+const { announcement_hooks } = require('./hooks/announcement')
+const { livestream_hooks } = require('./hooks/livestream')
+const { message_hooks } = require('./hooks/message')
+const { meta_hooks } = require('./hooks/meta')
+
 module.exports = {
 
 
@@ -10,8 +17,21 @@ module.exports = {
    * This gives you an opportunity to extend code.
    */
 
+  register({ strapi }) {
 
-  register(/*{ strapi }*/) {},
+
+    // register lifecycle hooks for all routes and queries
+
+    [
+      viewer_hooks,
+      event_hooks,
+      announcement_hooks,
+      livestream_hooks,
+      message_hooks,
+      meta_hooks
+    ].forEach( middleware => strapi.documents.use(middleware()))
+
+  },
 
   /**
    * An asynchronous bootstrap function that runs before
@@ -103,6 +123,22 @@ module.exports = {
     strapi.mollie = mollie
     strapi.io     = io
     strapi.mqtt   = mqtt
+
+
+    try {
+      // Run a raw SQL query to update the 'folder_path' field in the 'files' table
+      await strapi.db.connection.raw(`
+        UPDATE public.files 
+        SET folder_path = '/' 
+        WHERE folder_path IS NULL;
+      `);
+
+      // Log success message
+      strapi.log.info('Successfully updated folder_path in files table where it was null.');
+    } catch (error) {
+      // Log error message in case of failure
+      strapi.log.error('Error updating folder_path in files table: ', error);
+    }
 
 
     // Our livestream initialization.

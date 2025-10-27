@@ -251,7 +251,7 @@ async function event_post_processor( strapi, now ) {
       // We only update the event in Strapi if its changed.
 
       if ( changed ) {
-        await event_service.update( event.id , { data: event } )
+        await event_service.update( event.documentId , { data: event } )
       }
 
       strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)

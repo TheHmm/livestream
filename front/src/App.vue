@@ -3,6 +3,7 @@
 import _throw   from '@/utils/throw'
 import Header   from '@/components/Header/index.vue'
 import Footer   from '@/components/Footer/index.vue'
+import Viewers  from '@/components/Viewers/index.vue'
 import Fallback from '@/views/Fallback.vue'
 
 
@@ -18,6 +19,7 @@ export default {
     Header,
     Footer,
     Fallback,
+    Viewers,
   },
 
 
@@ -130,6 +132,8 @@ export default {
         </transition>
       </router-view>
     </main>
+
+    <Viewers v-if="event" />
 
     <Footer />
 

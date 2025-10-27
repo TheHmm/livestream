@@ -1,3 +1,5 @@
+
+
 const
 
 
@@ -17,11 +19,11 @@ const
 
   // Custom MUX livestream making interface
 
-  before_create_or_update_handler = async event => {
+  before_create_or_update = async context => {
 
     // we get the event payload
 
-    const data = event.params.data
+    const data = context.params.data
 
     let livestream
 
@@ -49,7 +51,7 @@ const
     // we conserve the old event payload here because it
     // contains strapi-generated metadata like "dateCreated"
 
-    event.params.data = {
+    context.params.data = {
       ... data,
       ... sanitize_livestream( livestream )
     }
@@ -66,17 +68,29 @@ const
   // We inform all connected socket clients of this new info.
   // the frontend of this project hanndles the rest.
 
-  after_update_handler = event => {
-    strapi.io.emit( 'stream_update', event.result.publicData )
+  after_update = result => {
+    strapi.io.emit( 'stream_update', result.publicData )
   }
 
 
 
-
 module.exports = {
+  livestream_hooks() {
+    return async ( context, next ) => {
 
-  beforeCreate : before_create_or_update_handler,
-  beforeUpdate : before_create_or_update_handler,
-  afterUpdate  : after_update_handler,
-
+      // before create or update 
+      const { uid, action } = context
+      if (uid == 'api::livestream.livestream' && [ 'create', 'update' ].includes( action )) {
+        await before_create_or_update( context )
+      }
+    
+      // after update 
+      let result = await next()
+      if (uid == 'api::livestream.livestream' && [ 'update' ].includes( action )) {
+        await after_update( result )
+      }
+      
+      return result
+    }
+  }
 }

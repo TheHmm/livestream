@@ -11,28 +11,26 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@exfabrica/strapi-plugin-awesome-help": "^1.0.8",
     "@mollie/api-client": "^3.6.0",
     "@mux/mux-node": "^6.2.0",
-    "@strapi/plugin-i18n": "4.11.1",
-    "@strapi/plugin-users-permissions": "4.11.1",
-    "@strapi/strapi": "4.11.1",
-    "better-sqlite3": "7.4.6",
+    "@strapi/plugin-users-permissions": "5.29.0",
+    "@strapi/strapi": "5.29.0",
+    "better-sqlite3": "11.3.0",
     "mqtt": "^4.3.7",
-    "node": "14.21.3",
     "random-anonymous-animals": "^1.0.0",
-    "react-color": "^2.19.3",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "styled-components": "^6.0.0",
     "slugify": "^1.6.5",
-    "socket.io": "^4.4.1",
-    "strapi-helper-plugin": "^3.6.8",
-    "strapi-plugin-transformer": "^1.0.3"
+    "socket.io": "^4.4.1"
   },
   "author": {
     "name": "Karl Moubarak"
   },
   "strapi": {},
   "engines": {
-    "node": ">=12.x.x <=16.x.x",
+    "node": ">=18.x.x <=20.x.x",
     "npm": ">=6.0.0"
   },
   "license": "MIT"

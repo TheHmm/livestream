@@ -100,7 +100,7 @@ export default {
         this.loading = 'loading...'
         const messages = await this.$store.dispatch(
           'messages/fetch_messages',
-          this.event.id
+          this.event.documentId
         )
         if ( messages.length >= 20 ) {
           this.loading = 'load more messages'
@@ -227,8 +227,8 @@ export default {
           </div>
           <Message
             v-for="( message, i ) in sorted_messages"
-            :key="i"
-            :id="`original_message_${ message.id }`"
+            :id="`original_message_${ message.documentId }`"
+            :key="message.documentId"
             :style="{ '--n': sorted_messages.length - i - 1 }"
             :message="message"
             :links_only="links_only"

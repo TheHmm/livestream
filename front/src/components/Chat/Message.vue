@@ -44,7 +44,7 @@ export default {
 
     // Basic message details.
 
-    id()     { return this.message.id },
+    id()     { return this.message.documentId },
     time()   { return this.message.time },
     time_s() { return this.$time.time_format( this.time ) },
     time_l() { return this.$time.long_date_format( this.time ) },
@@ -90,7 +90,7 @@ export default {
 
     <Message
       v-if="in_response_to && !selected && !is_response"
-      :id="`responded_message_${ in_response_to.id }`"
+      :id="`responded_message_${ in_response_to.documentId }`"
       :message="in_response_to"
       :links_only="links_only"
       :is_response="true"

@@ -93,6 +93,10 @@
     "later_visits": {
       "type": "integer",
       "min": 0
+    },
+    "releaseDots": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

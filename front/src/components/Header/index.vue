@@ -3,18 +3,16 @@
 import Marquee from './Marquee.vue'
 import Banner  from './Banner.vue'
 import Network from './Network.vue'
-import Viewers from './Viewers/index.vue'
 
 
 // Our Header component; contains all status indicators
-// such as the title, viewer dots, and network info.
+// such as the title and network info.
 
 export default {
   name: 'Header',
   components: {
     Marquee,
     Banner,
-    Viewers,
     Network,
   },
   computed: {
@@ -33,7 +31,6 @@ export default {
   >
     <Marquee />
     <Banner />
-    <Viewers />
     <Network />
   </header>
 </template>

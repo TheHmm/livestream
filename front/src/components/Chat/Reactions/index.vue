@@ -16,7 +16,7 @@ export default {
   },
 
   props: {
-    received_reactions: Array,
+    received_reactions: { type: Array, default: [] },
     message: Object
   },
 
@@ -87,7 +87,7 @@ export default {
 
     handle_received_reaction_click( emoji ) {
       const found_reaction = this.received_reactions.find( r => {
-        return r.sender.id == this.me.id && r.Emoji.name == emoji.name 
+        return r.sender.documentId == this.me.documentId && r.Emoji.name == emoji.name 
       })
       if ( found_reaction ) {
         this.unsend_reaction( found_reaction ) 
@@ -126,7 +126,7 @@ export default {
             name: r.Emoji.name,
             image: r.Emoji.image?.id || null,
           }, 
-          sender: r.sender.id,
+          sender: r.sender.documentId,
         }
         if ( r.id ) {
           reaction.id = r.id
@@ -137,8 +137,8 @@ export default {
       try {
         if ( await this.authenticate() ) {
           await this.update_message({ 
-            id: this.message.id, 
-            Reactions: reactions_to_send 
+            documentId: this.message.documentId, 
+            data: { Reactions: reactions_to_send } 
           })
         } else {
           this.set_request_registration( true )

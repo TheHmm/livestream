@@ -69,12 +69,13 @@ export default {
         },
         filters: {
           events: {
-            id: {
+            documentId: {
               $eq: event_id
             }
           },
         },
         fields: '*',
+        populate: ['events']
       } } )
       .then( result => {
         const viewers = result.data.data

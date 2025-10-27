@@ -22,6 +22,7 @@ import {
   $id,             // generate id / class from comp name
   $md,             // markdown parser
   $mdi,            // inline markdown parser
+  $throttle,       // throttle functions
   _throw           // custom error thrower
 } from './utils'
 
@@ -43,7 +44,7 @@ const app = createApp( App )
 
 
 // & register extensions and mount app.
-app.config.globalProperties = { $log, $time, $id, $md, $mdi }
+app.config.globalProperties = { $log, $time, $id, $md, $mdi, $throttle }
 
 
 // & attach our extensions to our app

@@ -91,6 +91,12 @@ module.exports = server => {
   }
 
 
+  // Position proxy
+
+  function socket_position( position ) {
+    io.emit( 'position', position )
+  }
+
   // When a viewer disconnect, we remove their uuid
   // from our array of connected viewers' uuids and
   // inform the rest.
@@ -191,6 +197,10 @@ module.exports = server => {
       }
     })
 
+    socket.on( 'position', ( position ) => {
+      socket_position( position )
+    })
+
     socket.on( 'disconnect', () => {
       io.count( socket ) // get a new count
       socket_disconnect( uuid )
@@ -226,6 +236,7 @@ module.exports = server => {
   io.socket_connect       = socket_connect
   io.socket_viewer        = socket_viewer
   io.socket_emoji         = socket_emoji
+  io.socket_position      = socket_position
   io.socket_disconnect    = socket_disconnect
   io.socket_join_CC_room  = socket_join_CC_room
   io.socket_leave_CC_room = socket_leave_CC_room
