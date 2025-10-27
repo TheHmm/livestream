@@ -8,7 +8,7 @@
     "description": "Annunncements that show up on the top-left corner of the website."
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -32,6 +32,10 @@
     "expires": {
       "type": "integer",
       "default": 90
+    },
+    "show": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

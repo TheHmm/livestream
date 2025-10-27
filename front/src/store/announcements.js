@@ -14,10 +14,10 @@ export default {
       state.announcements = announcements
     },
     SET_ANNOUNCEMENT : ( state, announcement ) => {
-      state.announcements[announcement.id] = announcement
+      state.announcements[announcement.documentId] = announcement
     },
     DELETE_ANNOUNCEMENT : ( state, announcement ) => {
-      delete state.announcements[announcement.id]
+      delete state.announcements[announcement.documentId]
     },
   },
 
@@ -36,7 +36,7 @@ export default {
     // Process and set announcement
 
     set_announcement( { commit, getters }, announcement ) {
-      if ( !announcement.publishedAt || announcement.deleted ) {
+      if ( !announcement.show || announcement.deleted ) {
         commit( 'DELETE_ANNOUNCEMENT', announcement )
       } else {
         commit( 'SET_ANNOUNCEMENT', announcement )

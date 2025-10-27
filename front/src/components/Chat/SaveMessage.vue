@@ -38,7 +38,7 @@ export default {
 
     // Basic message details.
 
-    id()     { return this.message.id },
+    id()     { return this.message.documentId },
     time()   { return this.message.time },
     time_s() { return this.$time.time_format( this.time ) },
     time_l() { return this.$time.long_date_format( this.time ) },

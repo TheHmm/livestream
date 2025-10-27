@@ -1,5 +1,12 @@
 'use strict';
 
+const { viewer_hooks } = require('./hooks/viewer')
+const { event_hooks } = require('./hooks/event')
+const { announcement_hooks } = require('./hooks/announcement')
+const { livestream_hooks } = require('./hooks/livestream')
+const { message_hooks } = require('./hooks/message')
+const { meta_hooks } = require('./hooks/meta')
+
 module.exports = {
 
 
@@ -10,8 +17,21 @@ module.exports = {
    * This gives you an opportunity to extend code.
    */
 
+  register({ strapi }) {
 
-  register(/*{ strapi }*/) {},
+
+    // register lifecycle hooks for all routes and queries
+
+    [
+      viewer_hooks,
+      event_hooks,
+      announcement_hooks,
+      livestream_hooks,
+      message_hooks,
+      meta_hooks
+    ].forEach( middleware => strapi.documents.use(middleware()))
+
+  },
 
   /**
    * An asynchronous bootstrap function that runs before

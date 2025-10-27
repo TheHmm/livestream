@@ -20,6 +20,8 @@ const
         return this.thumb_src( playback_id, curr_time )
       } else if ( mode == 'audio' ) {
         return this.audio_src( playback_id )
+      } else if ( mode == 'audio_th' ) {
+        return this.thumb_src( playback_id, curr_time ) && this.audio_src( playback_id )
       } else {
         return this.video_src( playback_id )
       }

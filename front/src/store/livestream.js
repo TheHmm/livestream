@@ -15,8 +15,9 @@ import $log from '@/utils/log'
 // the URL parameter 'mode' to the mode name (uncommitted)
 
 function DEFAULT_MODES() { return {
-  transcript : { id: -3, name: 'transcript', label: 'text' },
-  thumbs     : { id: -2, name: 'thumbs',     label: 'low-low-res' },
+  transcript : { id: -4, name: 'transcript', label: 'text' },
+  thumbs     : { id: -3, name: 'thumbs',     label: 'low-low-res' },
+  audio_th   : { id: -2, name: 'audio_th',   label: 'low-res' },
   audio      : { id: -1, name: 'audio',      label: 'audio' },
   video      : { id:  0, name: 'video',      label: 'video', video: true,},
 }}

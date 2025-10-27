@@ -31,7 +31,7 @@ export default {
         },
         filters: {
           event: {
-            id: {
+            documentId: {
               $eq: event_id
             }
           },
@@ -61,7 +61,7 @@ export default {
         },
         filters: {
           event: {
-            id: {
+            documentId: {
               $eq: event_id
             }
           },

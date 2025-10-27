@@ -79,7 +79,7 @@ export default {
       class="group"
       v-for="group in emoji_groups"
       :aria-label="`Emoji group ${ group.name }`"
-      :key="group.id"
+      :key="group.documentId"
     >
       <label> {{ group.name }}</label>
       <li

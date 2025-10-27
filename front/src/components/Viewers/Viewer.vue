@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       shaking: false,
-      transition: false,
+      transitioning: false,
       position_throttle: 250,
       local_position: { x: 0, y: 0 },
     }

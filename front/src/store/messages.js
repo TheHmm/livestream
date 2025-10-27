@@ -12,8 +12,8 @@ export default {
 
   mutations: {
     SET_MESSAGES   : ( state, messages ) => { state.messages = messages },
-    SET_MESSAGE    : ( state, message ) => { state.messages[message.time] = message },
-    DELETE_MESSAGE : ( state, message ) => { delete state.messages[message.time] }
+    SET_MESSAGE    : ( state, message ) => { state.messages[message.documentId] = message },
+    DELETE_MESSAGE : ( state, message ) => { delete state.messages[message.documentId] }
   },
 
   getters: {
@@ -75,7 +75,7 @@ export default {
 
     async set_message( { commit, getters, dispatch }, message ) {
 
-      const event_id = message.event?.data?.id || message.event
+      const event_id = message.event?.documentId || message.event
       if ( event_id && event_id != getters.current_event_id ) {
         return
       }
@@ -91,7 +91,7 @@ export default {
         message.emoji = null
       }
 
-      const sender_id = message.sender?.data?.id || message.sender
+      const sender_id = message.sender?.documentId || message.sender
 
       message.sender = function() {
         return getters.viewer_by_id( sender_id )
@@ -192,9 +192,9 @@ export default {
 
     async censor_message( {}, message ) {
       try {
-        await api.messages.put( message.id, {
+        await api.messages.put( message.documentId, {
           censored: !message.censored,
-          sender: message.sender().id,
+          sender: message.sender().documentId,
         })
       } catch ( error ) {
         throw error
@@ -206,7 +206,7 @@ export default {
 
     async delete_message( {}, message ) {
       try {
-        await api.messages.delete( message.id )
+        await api.messages.delete( message.documentId )
       } catch ( error ) {
         throw error
       }

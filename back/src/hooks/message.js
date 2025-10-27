@@ -1,3 +1,5 @@
+
+
 const
 
 
@@ -26,13 +28,13 @@ const
   // Extract links and emoji from message boy and add them
   // as their own fields.
 
-  before_create_or_update = event => {
-    const body = event.params.data.body
+  before_create_or_update = context => {
+    const body = context.params.data.body
     if ( body ) {
       // set time based on universal agreement
-      event.params.data.time  = new Date().getTime()
-      event.params.data.links = get_links( body )
-      event.params.data.emoji = get_emoji( body )
+      context.params.data.time  = new Date().getTime()
+      context.params.data.links = get_links( body )
+      context.params.data.emoji = get_emoji( body )
     }
   },
 
@@ -43,12 +45,15 @@ const
   // uuid is what is attached to the emoji, so we have to pull
   // that from our db.
 
-  after_create_or_update = async event => {
-    const message = { ...event.params.data, ...event.result }
+  after_create_or_update = async result => {
+    const message = await strapi.documents('api::message.message').findOne({
+      documentId: result.documentId,
+      fields: '*', populate: ['sender', 'event' ]
+    })
     strapi.io.emit( 'message', message )
     if ( message.emoji ) {
       try {
-        const { uuid } = await strapi.service('api::viewer.viewer').findOne( message.sender )
+        const { uuid } = message.sender
         const group    = '__DEFAULT__'
         const emoji    = message.emoji[0]
         strapi.io.emit( 'emoji', { group, emoji, uuid })
@@ -69,22 +74,39 @@ const
 
   // Inform sockets of deletion
 
-  after_delete = event => {
+  after_delete = result => {
     strapi.io.emit( 'message', {
-      time    : event.result.time,
+      documentId : result.documentId,
       deleted : true
     })
   }
 
-
-
-
 module.exports = {
+  message_hooks() {
+    return async ( context, next ) => {
 
-  beforeCreate : before_create_or_update,
-  beforeUpdate : before_create_or_update,
-  afterCreate  : after_create_or_update,
-  afterUpdate  : after_create_or_update,
-  afterDelete  : after_delete,
+      // before create or update 
+      const { uid, action } = context
 
+      if (uid == 'api::message.message' && [ 'create', 'update' ].includes( action )) {
+        await before_create_or_update( context )
+      }
+    
+      let result = await next()
+
+      if (uid == 'api::message.message') {
+        if ([ 'create', 'update' ].includes( action )) {
+          
+          // after create or update 
+          await after_create_or_update( result )
+        } else if ( action == 'delete' ) {
+
+          // after delete
+          await after_delete( result )
+        }
+      }
+      
+      return result
+    }
+  }
 }
