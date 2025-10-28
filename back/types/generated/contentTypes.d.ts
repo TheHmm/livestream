@@ -435,7 +435,7 @@ export interface ApiAnnouncementAnnouncement
   collectionName: 'announcements';
   info: {
     description: 'Annunncements that show up on the top-left corner of the website.';
-    displayName: 'announcement';
+    displayName: 'Announcements';
     pluralName: 'announcements';
     singularName: 'announcement';
   };
@@ -469,7 +469,7 @@ export interface ApiEmojiGroupEmojiGroup extends Struct.CollectionTypeSchema {
   collectionName: 'emoji_groups';
   info: {
     description: 'Groups of emojis that can be used together and linked in an event.';
-    displayName: 'emojiGroup';
+    displayName: 'Emoji Groups';
     pluralName: 'emoji-groups';
     singularName: 'emoji-group';
   };
@@ -501,7 +501,7 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
   collectionName: 'events';
   info: {
     description: 'The Hmm livestream events';
-    displayName: 'event';
+    displayName: 'Events';
     pluralName: 'events';
     singularName: 'event';
   };
@@ -561,7 +561,7 @@ export interface ApiLivestreamLivestream extends Struct.SingleTypeSchema {
   collectionName: 'livestreams';
   info: {
     description: 'The current MUX livestream object.';
-    displayName: 'livestream';
+    displayName: 'Livestream';
     pluralName: 'livestreams';
     singularName: 'livestream';
   };
@@ -594,7 +594,7 @@ export interface ApiMessageMessage extends Struct.CollectionTypeSchema {
   collectionName: 'messages';
   info: {
     description: 'Chat messages';
-    displayName: 'message';
+    displayName: 'Messages';
     pluralName: 'messages';
     singularName: 'message';
   };
@@ -733,7 +733,7 @@ export interface ApiViewerViewer extends Struct.CollectionTypeSchema {
   collectionName: 'viewers';
   info: {
     description: '';
-    displayName: 'viewer';
+    displayName: 'Viewers';
     pluralName: 'viewers';
     singularName: 'viewer';
   };
