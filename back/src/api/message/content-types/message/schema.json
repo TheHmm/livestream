@@ -4,7 +4,7 @@
   "info": {
     "singularName": "message",
     "pluralName": "messages",
-    "displayName": "message",
+    "displayName": "Messages",
     "description": "Chat messages"
   },
   "options": {
@@ -47,8 +47,8 @@
     },
     "Reactions": {
       "type": "component",
-      "repeatable": true,
-      "component": "emoji.reaction"
+      "component": "emoji.reaction",
+      "repeatable": true
     }
   }
 }

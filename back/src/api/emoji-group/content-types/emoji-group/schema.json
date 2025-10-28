@@ -4,7 +4,7 @@
   "info": {
     "singularName": "emoji-group",
     "pluralName": "emoji-groups",
-    "displayName": "emojiGroup",
+    "displayName": "Emoji Groups",
     "description": "Groups of emojis that can be used together and linked in an event."
   },
   "options": {
@@ -22,8 +22,8 @@
     },
     "emoji": {
       "type": "component",
-      "repeatable": true,
-      "component": "emoji.emoji"
+      "component": "emoji.emoji",
+      "repeatable": true
     },
     "events": {
       "type": "relation",

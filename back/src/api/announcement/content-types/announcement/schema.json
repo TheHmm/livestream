@@ -4,7 +4,7 @@
   "info": {
     "singularName": "announcement",
     "pluralName": "announcements",
-    "displayName": "announcement",
+    "displayName": "Announcements",
     "description": "Annunncements that show up on the top-left corner of the website."
   },
   "options": {
