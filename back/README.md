@@ -30,7 +30,7 @@ In a production environment, start Strapi with autoReload disabled.
 npm run start
 ```
 
-Strapi will start on the port configured in the .env file. If any errors occur with initializing mux or mollie clients, it will throw an error and exit.
+Strapi will start on the port configured in the .env file. If any errors occur with initializing mux client, it will throw an error and exit.
 
 ## Apache / Nginx Configuration
 

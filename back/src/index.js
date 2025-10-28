@@ -57,12 +57,6 @@ module.exports = {
         SECRET       : process.env.MUX_TOKEN_SECRET
       },
 
-      MOLLIE_CONFIG  = {
-        KEY          : process.env.MOLLIE_API_KEY,
-        REDIRECT_URL : process.env.MOLLIE_REDIRECT_URL,
-        WEBHOOK_URL  : process.env.MOLLIE_WEBHOOK_URL
-      },
-
       MQTT_COFNIG    = {
         HOST         : process.env.MQTT_HOST,
         TOPIC        : process.env.MQTT_TOPIC,
@@ -81,18 +75,6 @@ module.exports = {
     }
 
 
-    // We can only initialize Mollie if the key is provided;
-    // else, we stop here and ask for it.
-
-    if (
-        !MOLLIE_CONFIG.KEY ||
-        !MOLLIE_CONFIG.REDIRECT_URL ||
-        !MOLLIE_CONFIG.WEBHOOK_URL
-    ) {
-      throw new Error( 'MOLLIE API CONFIG NOT PROVIDED!' )
-    }
-
-
     // We import and initialize our MUX, MOLLIE & IO modules.
     // These files contain the respecitve configurations and
     // methods of these objects.
@@ -100,7 +82,6 @@ module.exports = {
     const
 
       mux    = require( './mux' )( MUX_CONFIG ),
-      mollie = require( './mollie' )( MOLLIE_CONFIG ),
       io     = require( './io'  )( strapi.server.httpServer ),
       mqtt   = require( './mqtt' )( MQTT_COFNIG )
 
@@ -108,9 +89,9 @@ module.exports = {
     // If either of the three were not initialized properly,
     // we stop here and return an error. MQTT is optional
 
-    if ( !mux || !mollie || !io ) {
+    if ( !mux || !io ) {
       throw new Error(
-        'MUX, MOLLIE or IO were not initialized.'
+        'MUX or IO were not initialized.'
       )
     }
 
@@ -120,7 +101,6 @@ module.exports = {
     // lifecycle hooks (eg. strapi.mux.get_start_time).
 
     strapi.mux    = mux
-    strapi.mollie = mollie
     strapi.io     = io
     strapi.mqtt   = mqtt
 

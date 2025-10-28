@@ -16,7 +16,6 @@ export default [
       desired_tabs : [
         'about',
         'access',
-        'donate',
         'year',
       ]
     },
@@ -25,11 +24,6 @@ export default [
     path: '/error',
     name: 'Error',
     component: () => import( '@/views/Fallback.vue' )
-  },
-  {
-    path: '/donated',
-    name: 'Donated',
-    component: () => import( '@/views/Donated.vue' ),
   },
   {
     path: '/:slug',
@@ -44,7 +38,6 @@ export default [
           desired_tabs : [
             'about',
             'access',
-            'donate',
             'modes',
             'emoji',
           ]
@@ -74,7 +67,6 @@ export default [
           desired_tabs : [
             'about',
             'access',
-            'donate',
             'emoji',
           ]
         },

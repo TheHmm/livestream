@@ -529,8 +529,6 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
       'api::emoji-group.emoji-group'
     >;
     ends: Schema.Attribute.DateTime & Schema.Attribute.Required;
-    highlightDonateButton: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
     info: Schema.Attribute.RichText;
     later_visits: Schema.Attribute.Integer &
       Schema.Attribute.SetMinMax<

@@ -20,19 +20,4 @@ export default {
     )
   },
 
-  // Donate to the Hmm. Custom strapi api endpoint.
-
-  donate({ amount, description, from }) {
-    $log.info( `API`, `Donating ${ amount } euros.` )
-    return new Promise( ( resolve, reject ) =>
-      axios
-      .post( `${ config.api_url }/meta/donate`, { amount, description, from } )
-      .then( result => resolve( result.data.data ) )
-      .catch( error => {
-        $log.error( 'API', error )
-        reject( error )
-      })
-    )
-  }
-
 }

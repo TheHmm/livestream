@@ -81,7 +81,6 @@ An event will have the following fields:
 - **info**: short event information
 - **accent**: the event accent color in HSL format ( e.g. hsl(23, 100%, 50%) ). If you are not familiar with this format, please use a color picker
 - **allowEmoji**: wether emojis are allowed
-- **highlightDonateButton**: toggle to make the donate button jump
 - **count**: the total number of visitors for this event. automatically generated.
 - **recording**: the event recording. This is a JSON object that is automatically retreived from MUX after the event has ended. Do not edit
 
@@ -98,10 +97,6 @@ The homepage will only ever show events that happened in the past, so you are we
 ###### Editing an event
 
 Any edits you make on the event itself while the event is taking place will always be sent immediately to everyone watching when you click save. So you can change the accent color or even info and it updates for everyone.
-
-###### Highlighting the donate button
-
-If you want to highlight the donate button on the frontend, you can turn the toggle  **highlightDonateButton** on and click save. Strapi will freeze for a few seconds while it animates on the front-end and then resume to back to off.
 
 ###### Post-processing an event
 

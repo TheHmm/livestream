@@ -3,7 +3,6 @@
 import Title  from './Title.vue'
 import About  from './About.vue'
 import Access from './Access.vue'
-import Donate from './Donate.vue'
 import Year   from './Year.vue'
 import Modes  from './Modes.vue'
 import Emoji  from './Emoji/index.vue'
@@ -21,7 +20,6 @@ export default {
     Title,
     About,
     Access,
-    Donate,
     Year,
     Modes,
     Emoji
@@ -41,12 +39,6 @@ export default {
           label      : 'Accessibility',
           comp       : 'Access',
           aria_label : 'Accessibility options',
-        },
-        {
-          name       : 'donate',
-          label      : 'Donate',
-          comp       : 'Donate',
-          aria_label : 'Donate to the Hmm'
         },
         {
           name       : 'year',
@@ -95,10 +87,6 @@ export default {
       return Math.max.apply( null, this.tabs.map( t => t.label.length ) )
     },
 
-    highlight_donate() {
-      return this.$store.getters[ 'events/highlight_donate' ]
-    }
-
   },
 
 
@@ -117,7 +105,6 @@ export default {
 <template>
   <footer
     aria-label="Accessibility, viewing and donation options."
-    :class="{ highlight_donate }"
     v-if="tabs.length"
   >
     <transition-group
@@ -332,14 +319,6 @@ footer .tab#about.expanded:focus-within .contents {
 .mobile.chatpage footer .tab:focus-within ,
 .mobile.chatpage footer .tab:hover {
  margin-left    : calc( -1.5 * var(--n) * var(--size-s));
-}
-
-footer.highlight_donate #donate .contents {
-  animation: hop 0.25s ease infinite alternate;
-}
-footer.highlight_donate #donate:hover .contents,
-footer.highlight_donate #donate:focus-within .contents {
-  animation: none;
 }
 
 @keyframes hop {

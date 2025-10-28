@@ -20,7 +20,7 @@ All pages on the website have the following layout:
 |                                                 |
 |                                                 |
 | footer                                          |
-| | about | accessibility | donate | ...          |
+| | about | accessibility | ...                   |
 +-------------------------------------------------+
 ```
 Below a brief description of all the components in this layout
@@ -38,7 +38,6 @@ Below a brief description of all the components in this layout
 - **footer**: the control area for the user. displays several different tabs that change per route. For example, a chat will be here in an event page but not on the home page. Important persistent tabs include:
   - **about**: an informative dialog about the organization and this website.
   - **accessibility**: the website's accessibility options, changes the behaviour and display of the entire website.
-  - **donate**: displays 3 different options to donate to the organization.
 
 Below are the different routes of the website and instructions on how to use each of them.
 

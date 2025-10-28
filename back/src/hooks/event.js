@@ -61,15 +61,6 @@ const before_update = async context => {
   diff.slug = slug
 
 
-  // If the update was meant to trigger a one off func
-  // in the front end (e.g. highlighting donate button)
-  // we switch it back off in Strapi.
-
-  if ( diff.highlightDonateButton === true ) {
-    new_event.highlightDonateButton = false
-  }
-
-
   // We inform connected sockets.
   // TODO: not working
 

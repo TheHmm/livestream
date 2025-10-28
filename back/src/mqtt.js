@@ -91,9 +91,6 @@ module.exports = ({ HOST, TOPIC }) => {
     // set accent color for the entire event
 
 
-    // make the donate button bounce
-
-
     // change volume
 
 

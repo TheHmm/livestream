@@ -49,10 +49,6 @@ export default {
       return getters.current_event?.default_player_mode
     },
 
-    highlight_donate: ( state, getters ) => {
-      return getters.current_event?.highlightDonateButton
-    },
-
     release_dots: ( state, getters ) => {
       return getters.current_event?.releaseDots
     },
@@ -223,19 +219,6 @@ function sanitize ( event, getters, rootGetters, dispatch ) {
     event.accent = color.hsl_to_css_vars(event.accent)
   }
 
-
-  // Un/Highlighting the donate tab. This is done already in
-  // Strapi, but just doing it again artificially in the front
-  // end ensures no annoying jumping donate button.
-
-  if ( event.highlightDonateButton === true ) {
-    setTimeout(() => {
-      dispatch( 'set_event', {
-        slug : event.slug,
-        highlightDonateButton : false,
-      })
-    }, 5 * 1000)
-  }
 
   if ( !event.recording ) {
     event.recording = event.mux_recording

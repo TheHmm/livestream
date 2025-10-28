@@ -24,7 +24,6 @@ Second version of the Hmm Livestream website with:
 - a node process manager to handle updates like `pm2`
 - enough RAM / CPU cores / network bandwidth to handle 100+ active socket connections
 - a mux account and API token
-- a mollie account and API token
 
 ### Installation & Deployment
 
