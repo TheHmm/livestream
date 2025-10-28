@@ -537,6 +537,10 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
         },
         number
       >;
+    livestream: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::livestream.livestream'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::event.event'> &
       Schema.Attribute.Private;
@@ -557,11 +561,11 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiLivestreamLivestream extends Struct.SingleTypeSchema {
-  collectionName: 'livestreams';
+export interface ApiLivestreamLivestream extends Struct.CollectionTypeSchema {
+  collectionName: 'livestream';
   info: {
-    description: 'The current MUX livestream object.';
-    displayName: 'Livestream';
+    description: 'MUX livestream objects.';
+    displayName: 'Livestreams';
     pluralName: 'livestreams';
     singularName: 'livestream';
   };
@@ -572,17 +576,18 @@ export interface ApiLivestreamLivestream extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    events: Schema.Attribute.Relation<'oneToMany', 'api::event.event'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::livestream.livestream'
     > &
       Schema.Attribute.Private;
+    Name: Schema.Attribute.String & Schema.Attribute.Required;
     privateData: Schema.Attribute.JSON & Schema.Attribute.Private;
     publicData: Schema.Attribute.JSON;
     publishedAt: Schema.Attribute.DateTime;
-    requestNewLivestream: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
+    slug: Schema.Attribute.UID<'Name'> & Schema.Attribute.Required;
     stream_key: Schema.Attribute.String & Schema.Attribute.Private;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

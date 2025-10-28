@@ -17,50 +17,26 @@ const
   },
 
 
-  // Custom MUX livestream making interface
-
-  before_create_or_update = async context => {
-
-    // we get the event payload
-
-    const data = context.params.data
-
-    let livestream
-
-
-    // We use the requestNewLivestream property to make a
-    // request for a new livestream from MUX, this way we
-    // can create a new livestream without needing to re-
-    // boot the server
-
-    if ( data.requestNewLivestream === true ) {
-      livestream = await strapi.mux.create_livestream()
-      data.requestNewLivestream = false
-
-
-    // Else, we keep the event payload as the livestream
-    // Here, the payload is carried different from different
-    // events, create or update...
-
-    } else {
-      livestream = data.livestream || data.privateData
+  before_create = async context => {
+    const livestream = await strapi.mux.create_livestream()
+    context.params.data = {
+      ... context.params.data,
+      ... sanitize_livestream( livestream )
     }
+  },
 
 
-    // we merge the old "data" with the new sanitized one.
+  before_update = async context => {
+    // we get the event payload
+    const data = context.params.data
+    const livestream = data.livestream || data.privateData
+    // we merge the old "data"; with the new sanitized one.
     // we conserve the old event payload here because it
     // contains strapi-generated metadata like "dateCreated"
-
     context.params.data = {
       ... data,
       ... sanitize_livestream( livestream )
     }
-
-
-    // we log the STREAM-KEY to be able to access it
-
-    strapi.log.info(`[ * STREAM KEY: ${livestream.stream_key} ]`)
-
   },
 
 
@@ -70,6 +46,7 @@ const
 
   after_update = result => {
     strapi.io.emit( 'stream_update', result.publicData )
+    strapi.log.info(`[ * STREAM KEY: ${result.stream_key} ]`)
   }
 
 
@@ -80,8 +57,11 @@ module.exports = {
 
       // before create or update 
       const { uid, action } = context
-      if (uid == 'api::livestream.livestream' && [ 'create', 'update' ].includes( action )) {
-        await before_create_or_update( context )
+
+      if (uid == 'api::livestream.livestream' && action == 'create' ) {
+        await before_create( context )
+      } else if (uid == 'api::livestream.livestream' && action == 'update' ) {
+        await before_update( context )
       }
     
       // after update 

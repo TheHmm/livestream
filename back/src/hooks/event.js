@@ -1,6 +1,15 @@
 
 const { difference } = require('../utils')
 
+const before_create = async context => {
+  // link to livestream if not yet set
+  if ( !context.params.data.livestream ) {
+    const found = await strapi.documents( 'api::livestream.livestream' ).findFirst()
+    if ( found ) {
+      context.params.data.livestream = found.documentId
+    }
+  }
+}
 
 const before_update = async context => {
   const params    = context.params
@@ -83,6 +92,8 @@ module.exports = {
       const { uid, action } = context
       if (uid == 'api::event.event' && action == 'update' ) {
         await before_update( context )
+      } else if (uid == 'api::event.event' && action == 'create' ) {
+        await before_create( context )
       }
       
       return next()

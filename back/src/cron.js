@@ -105,8 +105,8 @@ async function event_post_processor( strapi, now ) {
 
   strapi.log.info(`[ * => EVENT POST PROCESSOR * * * * * * ]`)
 
-  const livestream_service = strapi.service('api::livestream.livestream')
-  const event_service      = strapi.service('api::event.event')
+  const livestream_service = strapi.documents('api::livestream.livestream')
+  const event_service      = strapi.documents('api::event.event')
 
   try {
 
@@ -115,7 +115,7 @@ async function event_post_processor( strapi, now ) {
     // If this is not yet defined then we stop here as it's
     // not important to run this function.
 
-    const { privateData: livestream } = await livestream_service.find()
+    const { privateData: livestream } = await livestream_service.findFirst()
 
     if ( !livestream ) {
       return

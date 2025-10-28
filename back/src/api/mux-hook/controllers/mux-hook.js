@@ -59,12 +59,13 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
     try {
 
-      const { privateData: livestream } = (
-        await strapi
-        .service( 'api::livestream.livestream' )
-        .find()
-      )
+      const livestream = await strapi.documents( 'api::livestream.livestream' ).find({
+        where: {
+          // privateData.playbackId == data.playbackId
+        }
+      })
 
+      const { documentId, privateData } = livestream
 
       // We proess the event video.asset.ready, which contains
       // the start time of our livestream. Viewers would need
@@ -82,8 +83,8 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
           return 'Thanks MUX!'
         }
 
-        livestream.status     = 'active'
-        livestream.start_time = strapi.mux.get_start_time( data )
+        privateData.status     = 'active'
+        privateData.start_time = strapi.mux.get_start_time( data )
 
 
       // We proccess the livestream.active and livestream.idle
@@ -96,20 +97,19 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
         type == 'video.live_stream.idle'   ||
         type == 'video.live_stream.updated'
       ) {
-        livestream.status              = data.status
-        livestream.active_asset_id     = data.active_asset_id
-        livestream.recent_asset_ids    = data.recent_asset_ids
-        livestream.generated_subtitles = data.generated_subtitles
+        privateData.status              = data.status
+        privateData.active_asset_id     = data.active_asset_id
+        privateData.recent_asset_ids    = data.recent_asset_ids
+        privateData.generated_subtitles = data.generated_subtitles
       }
 
 
       // Finally, we update the 'livestream' entry in Strapi
       // with this new information.
 
-      await strapi
-      .service( 'api::livestream.livestream' )
-      .createOrUpdate({
-        data: { livestream }
+      await strapi.documents( 'api::livestream.livestream' ).update({
+        documentId,
+        data: { privateData }
       })
 
     } catch ( error ) {

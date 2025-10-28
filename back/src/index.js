@@ -128,27 +128,36 @@ module.exports = {
       livestream
 
 
-    // First we get the 'livestream' entry from Strapi.
+    // First we get the first 'livestream' from Strapi.
     // This entry will contain these two JSON feilds:
     // (1) privateData: livestream that we create with MUX
     // (2) publicData: a public-safe version of it
 
     try {
-      found = await
-      strapi
-      .service( 'api::livestream.livestream' )
-      .find()
+      found = await strapi.documents( 'api::livestream.livestream' ).findMany()
 
 
       // If the entry has already been created before, then
       // pull the livestream ID and request from the MUX API
       // the latest information about the stream.
 
-      const id = found ?.privateData ?.id
+      if ( found.length ) {
 
-      if ( id ) {
-        strapi.log.info( 'Found existing livestream.' )
-        livestream = await mux.get_livestream( id )
+        strapi.log.info( 'Found existing livestreams. Updating them.' )
+
+        found.map( async f => {
+          const id = f.privateData.id
+          const livestream = await mux.get_livestream( id )
+                    
+          // Then, we update the 'livestream' entry in Strapi
+          // with the new or updated livestream object.
+
+          await strapi.documents( 'api::livestream.livestream' ).update({
+            documentId: f.documentId, 
+            data: { livestream } 
+          })
+
+        })
 
 
       // Else, we request from the MUX API to create a new
@@ -157,17 +166,9 @@ module.exports = {
 
       } else {
         strapi.log.info( 'Requesting new livestream.' )
-        livestream = await mux.create_livestream()
+        return await strapi.documents( 'api::livestream.livestream' ).create()
+
       }
-
-
-      // Then, we update the 'livestream' entry in Strapi
-      // with the new or updated livestream object.
-
-      return await
-        strapi
-        .service( 'api::livestream.livestream' )
-        .createOrUpdate({ data: { livestream } })
 
 
     // It's possible something went wrong with MUX or

@@ -1,17 +1,26 @@
 {
-  "kind": "singleType",
-  "collectionName": "livestreams",
+  "kind": "collectionType",
+  "collectionName": "livestream",
   "info": {
     "singularName": "livestream",
     "pluralName": "livestreams",
-    "displayName": "Livestream",
-    "description": "The current MUX livestream object."
+    "displayName": "Livestreams",
+    "description": "MUX livestream objects."
   },
   "options": {
     "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
+    "Name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "Name",
+      "required": true
+    },
     "privateData": {
       "type": "json",
       "private": true
@@ -23,9 +32,11 @@
       "type": "string",
       "private": true
     },
-    "requestNewLivestream": {
-      "type": "boolean",
-      "default": false
+    "events": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::event.event",
+      "mappedBy": "livestream"
     }
   }
 }

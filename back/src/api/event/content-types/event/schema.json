@@ -93,6 +93,12 @@
     "releaseDots": {
       "type": "boolean",
       "default": false
+    },
+    "livestream": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::livestream.livestream",
+      "inversedBy": "events"
     }
   }
 }
