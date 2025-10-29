@@ -31,6 +31,7 @@ export default {
 
   props: {
     event : Object,
+    livestream : Object
   },
 
   computed: {
@@ -41,14 +42,6 @@ export default {
 
     mode() {
       return this.$store.getters['livestream/current_mode']( this )
-    },
-
-
-    // livestream object, either an active livestream or the
-    // event recording or neither
-
-    livestream()  {
-      return this.event?.livestream() || this.event?.recording
     },
 
 

@@ -25,13 +25,11 @@ export default {
         && this.event.recording.status == 'ready'
         ) {
         cover = livestream.mux.thumb_src( this.event.recording.playbackId, 10, 1920 )
-       } else if (
-           this.event.livestream
-        && this.event.livestream()
-        && this.event.livestream().status == 'active'
-        && this.event.livestream().playbackId
-        ) {
-        cover = livestream.mux.thumb_src( this.event.livestream().playbackId, 0, 1920 )
+       } else {
+        const event_livestream = this.$store.getters['livestream/get_livestream_by_event'](this.event.documentId)
+        if ( event_livestream?.status == 'active' ) {
+          cover = livestream.mux.thumb_src( current_livestream.playbackId, 0, 1920 )
+        }
       }
       return cover
     }

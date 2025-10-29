@@ -22,8 +22,8 @@ export default {
     const slug = useRoute().params.slug
     const { dispatch } = store
     try {
-      await dispatch( 'livestream/get_livestream' )
       const { documentId } = await dispatch( 'events/get_event', slug )
+      await dispatch( 'livestream/get_livestream_by_event', documentId )
       await dispatch( 'viewers/get_viewers', documentId )
       await dispatch( 'messages/get_messages', documentId )
       await dispatch( 'announcements/get_announcements', documentId )

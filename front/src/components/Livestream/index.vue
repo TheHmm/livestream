@@ -39,7 +39,7 @@ export default {
 
   computed : {
     is_in_past()  { return this.event?.is_in_past },
-    livestream()  { return this.event?.livestream() || this.event?.recording },
+    livestream()  { return this.$store.getters[ 'livestream/current_livestream' ] },
     playback_id() { return this.livestream?.playbackId },
     status()      { return this.livestream?.status || 'unavailable' },
     show_player() { return (
@@ -76,7 +76,7 @@ export default {
 
 <template>
   <Info :event="event" />
-  <Player v-if="show_player" :event="event" />
+  <Player v-if="show_player" :event="event" :livestream="livestream" />
   <Status v-else :status="status" />
   <Chat :event="event" />
 </template>

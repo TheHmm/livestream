@@ -202,7 +202,7 @@ export default {
 
 // Sanitizing 'events' type received from Strapi.
 
-function sanitize ( event, getters, rootGetters, dispatch ) {
+function sanitize ( event, getters ) {
 
   // If the event exists in our store, than this
   // function was called to update it. We merge.
@@ -219,7 +219,6 @@ function sanitize ( event, getters, rootGetters, dispatch ) {
     event.accent = color.hsl_to_css_vars(event.accent)
   }
 
-
   if ( !event.recording ) {
     event.recording = event.mux_recording
   }
@@ -228,11 +227,6 @@ function sanitize ( event, getters, rootGetters, dispatch ) {
   // event has ended.
 
   event.is_in_past = $time.is_in_past( event.ends )
-  if ( event.is_in_past ) {
-    event.livestream = () => undefined
-  } else {
-    event.livestream = () => rootGetters[ 'livestream/get_livestream' ]
-  }
 
   return event
 }

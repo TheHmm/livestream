@@ -25,7 +25,7 @@ export default {
     },
 
     animate() {
-      return this.event?.livestream?.status !== 'active'
+      return this.$store.getters[ 'livestream/current_livestream' ] ?.status !== 'active'
     },
 
     marquee() {

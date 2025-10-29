@@ -27,7 +27,7 @@ export default {
   namespaced: true,
 
   state: {
-    livestream : null,
+    livestreams : {},
     absolute_default_mode : 'video',
     modes      : DEFAULT_MODES(),
     cc_interim : null,
@@ -35,7 +35,7 @@ export default {
   },
 
   mutations: {
-    SET_LIVESTREAM : ( state, livestream ) => state.livestream = livestream,
+    SET_LIVESTREAM : ( state, livestream ) => state.livestreams[livestream.documentId] = livestream,
     SET_CC_INTERIM : ( state, cue ) => state.cc_interim = cue,
     SET_CC         : ( state, cc ) => state.cc = cc,
     ADD_CUE        : ( state, cue ) => state.cc.push ( cue ),
@@ -47,16 +47,22 @@ export default {
   },
 
   getters: {
-    get_livestream : ( state ) => state.livestream,
-    modes          : ( state ) => state.modes,
-    default_mode   : ( state, getters, rootState, rootGetters ) => {
+    get_livestreams : state => Object.values( state.livestreams ),
+    get_livestream :  state => documentId => state.livestreams[documentId],
+    get_livestream_by_event :  (state, getters) => event_id => {
+      return getters.get_livestreams.find(s => s.events.includes( event_id ) )
+    },
+    current_livestream : ( state, getters, rootState, rootGetters ) => {
+      return getters.get_livestream_by_event(rootGetters['events/current_event_id'])
+    },
+    modes : ( state ) => state.modes,
+    default_mode : ( state, getters, rootState, rootGetters ) => {
       const current_event_default_mode =
         rootGetters['events/current_event_default_mode'] ||
         state.absolute_default_mode
-      // console.log( `DEFAULT MODE: ${ current_event_default_mode }.` )
       return state.modes[current_event_default_mode]
     },
-    current_mode   : ( state, getters ) => self => (
+    current_mode : ( state, getters ) => self => (
       self.$route.query?.mode &&
       state.modes[self.$route.query.mode] ||
       getters.default_mode
@@ -66,15 +72,43 @@ export default {
   actions: {
 
 
+    set_livestream( { commit, getters, rootGetters }, livestream ) {
+
+      if ( !livestream ) {
+        const current_event = rootGetters['events/current_event']
+        if ( current_event ) {
+          livestream = { ...current_event.recording }
+          livestream.documentId = 'livestream_' + current_event.documentId
+          livestream.events = [ current_event.documentId ]
+        }
+
+      } else {
+
+        const found = getters.get_livestream( livestream.documentId )
+        if ( found ) {
+          livestream = { ...found, ...livestream }
+        }
+        
+        livestream.events = livestream.events.map( e => e.documentId )
+        
+        for ( const [key, value] of Object.entries(livestream.publicData)) {
+          livestream[key] = value
+        }
+        delete livestream.publicData
+        
+      }
+      commit( 'SET_LIVESTREAM', livestream )
+    },
+
     // Fetch livestream object, only the public data
 
-    fetch_livestream( { commit } ) {
+    fetch_livestream( { dispatch }, event_id ) {
       return new Promise( ( resolve, reject ) =>
         api
         .livestream
-        .get()
+        .get_by_event( event_id )
         .then( livestream => {
-          commit( 'SET_LIVESTREAM', livestream )
+          dispatch( 'set_livestream', livestream )
           resolve( livestream )
         } )
         .catch( error => reject( error ) )
@@ -84,10 +118,10 @@ export default {
 
     // Get livestream
 
-    async get_livestream( { getters, dispatch } ) {
+    async get_livestream_by_event( { getters, dispatch }, event_id ) {
       return (
-        getters.get_livestream ||
-        await dispatch( 'fetch_livestream' )
+        getters.get_livestream_by_event( event_id ) ||
+        await dispatch( 'fetch_livestream', event_id )
       )
     },
 
@@ -116,8 +150,8 @@ export default {
     // Receiving livestream updates from Strapi via the custom
     // Socket server and committing the changes to store.
 
-    socket_streamUpdate( { commit }, data ) {
-      commit( 'SET_LIVESTREAM', data )
+    socket_streamUpdate( { dispatch }, data ) {
+      dispatch( 'set_livestream', data )
       $log.info( `SOCKET`, `Got livestream update: ${ data.status }` )
     },
 
