@@ -74,6 +74,8 @@ export default {
 
     set_livestream( { commit, getters, rootGetters }, livestream ) {
 
+      console.log(livestream)
+
       if ( !livestream ) {
         const current_event = rootGetters['events/current_event']
         if ( current_event ) {
