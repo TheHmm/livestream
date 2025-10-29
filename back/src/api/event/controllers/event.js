@@ -33,8 +33,8 @@ module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
     if ( slug == 'count' ) {
 
       return strapi
-      .query( 'api::event.event' )
-      .count( { where: query } )
+      .documents( 'api::event.event' )
+      .count( { params } )
 
     } else {
 
@@ -43,13 +43,12 @@ module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
 
       const
         entity = await strapi
-        .db
-        .query( 'api::event.event' )
-        .findOne( {
-          where    : { slug },
-          select   : query.fields,
+        .documents( 'api::event.event' )
+        .findFirst({
+          filters : { slug },
+          fields : query.fields,
           populate : query.populate
-        } )
+        })
 
       // We return the entity, transformed into a response.
 
@@ -66,12 +65,12 @@ module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
 
     const { slug } = ctx.params;
     try {
-      const event = await strapi.query('api::event.event').findOne({ where: { slug } })
+      const event = await strapi.documents('api::event.event').findFirst({ filters: { slug } })
       event.later_visits += 1
-      await strapi.service( "api::event.event" ).update(
-        event.id,
-        { data: { later_visits: event.later_visits } }
-      )
+      await strapi.documents( "api::event.event" ).update({ 
+        documentId: event.documentId,
+        data: { later_visits: event.later_visits } 
+      })
       return ctx.send({ success: true, visits: event.later_visits })
     } catch (error) {
       console.error(error)
