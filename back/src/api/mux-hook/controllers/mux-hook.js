@@ -64,7 +64,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
     try {
 
-      const livestream = await strapi.documents( 'api::livestream.livestream' ).findOne({
+      const livestream = await strapi.documents( 'api::livestream.livestream' ).findFirst({
         filter: {
           privateData: {
             id: {
@@ -74,6 +74,8 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
           }
         }
       )
+
+      console.log( livestream )
 
       const { documentId, privateData } = livestream
 
