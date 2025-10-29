@@ -74,8 +74,6 @@ export default {
 
     set_livestream( { commit, getters, rootGetters }, livestream ) {
 
-      console.log(livestream)
-
       if ( !livestream ) {
         const current_event = rootGetters['events/current_event']
         if ( current_event ) {
@@ -88,14 +86,10 @@ export default {
 
         const found = getters.get_livestream( livestream.documentId )
         if ( found ) {
-          console.log('found')
+          console.log('found', found)
           livestream = { ...found, ...livestream }
-        } else {
-          console.log( getters.get_livestreams )
         }
         
-        console.log(livestream)
-
         livestream.events = livestream.events.map( e => e.documentId )
         
         for ( const [key, value] of Object.entries(livestream.publicData)) {
@@ -104,6 +98,8 @@ export default {
         delete livestream.publicData
         
       }
+      console.log(livestream)
+
       commit( 'SET_LIVESTREAM', livestream )
     },
 
