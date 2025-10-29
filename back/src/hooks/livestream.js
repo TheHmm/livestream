@@ -45,7 +45,7 @@ const
   // the frontend of this project hanndles the rest.
 
   after_update = result => {
-    strapi.io.emit( 'stream_update', result.publicData )
+    strapi.io.emit( 'stream_update', result )
     strapi.log.info(`[ * STREAM KEY: ${result.stream_key} ]`)
   }
 
