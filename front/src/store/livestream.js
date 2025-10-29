@@ -86,7 +86,7 @@ export default {
 
         const found = getters.get_livestream( livestream.documentId )
         if ( found ) {
-          console.log('found', found)
+          console.log('found', found.events, livestream.events)
           livestream = { ...found, ...livestream }
         }
         
