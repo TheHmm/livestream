@@ -88,9 +88,14 @@ export default {
 
         const found = getters.get_livestream( livestream.documentId )
         if ( found ) {
+          console.log('found')
           livestream = { ...found, ...livestream }
+        } else {
+          console.log( getters.get_livestreams )
         }
         
+        console.log(livestream)
+
         livestream.events = livestream.events.map( e => e.documentId )
         
         for ( const [key, value] of Object.entries(livestream.publicData)) {
