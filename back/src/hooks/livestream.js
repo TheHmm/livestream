@@ -46,7 +46,6 @@ const
 
   after_update = result => {
     const livestream = { ... result }
-    livestream.events = livestream.events || []
     delete livestream.privateData
     delete livestream.stream_key
     strapi.io.emit( 'stream_update', livestream)
