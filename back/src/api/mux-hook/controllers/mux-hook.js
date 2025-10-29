@@ -75,8 +75,6 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
         }
       )
 
-      console.log( livestream )
-
       const { documentId, privateData } = livestream
 
       // We proess the event video.asset.ready, which contains
