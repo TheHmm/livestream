@@ -54,16 +54,26 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     strapi.log.info(`[ PROCESSING MUX HOOK: ${ type } ]`)
 
 
+    // We fetch the linked livestream id of the event so that
+    // we can fetch the appropriate livestream from strapi.
+
+    console.log(event)
+
     // We get the current livestream from Strapi, which is the
     // pirvateData property of the livestream entry in Strapi.
 
     try {
 
       const livestream = await strapi.documents( 'api::livestream.livestream' ).find({
-        where: {
-          // privateData.playbackId == data.playbackId
+        filter: {
+          privateData: {
+            playbackId: {
+                $eq: data.playbackId
+              }
+            } 
+          }
         }
-      })
+      )
 
       const { documentId, privateData } = livestream
 
