@@ -93,7 +93,7 @@ export default {
         console.log(livestream.events)
         
         if (livestream.events) {
-          livestream.events = livestream.events.map( e => e.documentId )
+          livestream.events = livestream.events.map( e => e.documentId ? e.documentId : e )
         }
         
         for ( const [key, value] of Object.entries(livestream.publicData)) {
