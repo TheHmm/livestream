@@ -86,12 +86,9 @@ export default {
 
         const found = getters.get_livestream( livestream.documentId )
         if ( found ) {
-          console.log('found', found.events, livestream.events)
           livestream = { ...found, ...livestream }
         }
 
-        console.log(livestream.events)
-        
         if (livestream.events) {
           livestream.events = livestream.events.map( e => e.documentId ? e.documentId : e )
         }
@@ -102,7 +99,6 @@ export default {
         delete livestream.publicData
         
       }
-      console.log(livestream)
 
       commit( 'SET_LIVESTREAM', livestream )
     },
@@ -159,7 +155,7 @@ export default {
 
     socket_streamUpdate( { dispatch }, data ) {
       dispatch( 'set_livestream', data )
-      $log.info( `SOCKET`, `Got livestream update: ${ data.status }` )
+      $log.info( `SOCKET`, `Got livestream update: ${ data.publicData?.status }` )
     },
 
 
