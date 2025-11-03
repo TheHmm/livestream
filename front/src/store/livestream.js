@@ -89,6 +89,8 @@ export default {
           console.log('found', found.events, livestream.events)
           livestream = { ...found, ...livestream }
         }
+
+        console.log(livestream.events)
         
         if (livestream.events) {
           livestream.events = livestream.events.map( e => e.documentId )
