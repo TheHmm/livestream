@@ -33,6 +33,7 @@ const
     // we merge the old "data"; with the new sanitized one.
     // we conserve the old event payload here because it
     // contains strapi-generated metadata like "dateCreated"
+    console.log(data)
     context.params.data = {
       ... data,
       ... sanitize_livestream( livestream )
