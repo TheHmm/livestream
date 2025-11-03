@@ -46,11 +46,6 @@ const
 
   after_update = result => {
     const livestream = { ... result }
-    console.log( result, livestream )
-    // const livestream = await strapi.documents('api::livesteam.livestream').findOne({
-    //   documentId: result.documentId,
-    //   fields: '*', populate: { events: { fields: 'documentId' }}
-    // })
     strapi.log.info(`[ * STREAM KEY: ${livestream.stream_key} ]`)
     delete livestream.privateData
     delete livestream.stream_key
