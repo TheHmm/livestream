@@ -33,7 +33,6 @@ const
     // we merge the old "data"; with the new sanitized one.
     // we conserve the old event payload here because it
     // contains strapi-generated metadata like "dateCreated"
-    console.log(data)
     context.params.data = {
       ... data,
       ... sanitize_livestream( livestream )
@@ -47,6 +46,11 @@ const
 
   after_update = result => {
     const livestream = { ... result }
+    console.log( result, livestream )
+    // const livestream = await strapi.documents('api::livesteam.livestream').findOne({
+    //   documentId: result.documentId,
+    //   fields: '*', populate: [ 'events' ]
+    // })
     delete livestream.privateData
     delete livestream.stream_key
     strapi.io.emit( 'stream_update', livestream)
