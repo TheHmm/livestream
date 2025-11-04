@@ -131,9 +131,6 @@ async function event_post_processor( strapi, now ) {
         livestream: {
           $notNull: true,
         },
-        mux_recording: {
-          $null: true,
-        }
       },
       populate: {
         viewers: { fields: [ 'documentId' ] },
@@ -155,37 +152,40 @@ async function event_post_processor( strapi, now ) {
 
       console.log( event ) 
 
+      if ( !event.mux_recording ) {
 
-      // We get the most recent asset from the livestream
-      // object in Strapi. This is likely the asset of the
-      // most recent event that took place. We try and get
-      // the asset details from MUX and set them to the event
-      // recording data. This officially marks our event as
-      // recorded, since the status of the asset will be
-      // "ready" as opposed to "active" or "idle".
+        
+        // We get the most recent asset from the livestream
+        // object in Strapi. This is likely the asset of the
+        // most recent event that took place. We try and get
+        // the asset details from MUX and set them to the event
+        // recording data. This officially marks our event as
+        // recorded, since the status of the asset will be
+        // "ready" as opposed to "active" or "idle".
 
-      const asset_id = most_recent_asset_id( event.livestream.privateData )
-      strapi.log.info(`[ * Asset ID: ${ asset_id }`)
-      if ( asset_id ) {
-        try {
-          const asset = await strapi.mux.get_asset( asset_id )
-          event.mux_recording = strapi.mux.get_public_asset_details( asset )
-          strapi.log.info(`[ * Playback ID: ${ event.mux_recording.playbackId }`)
-        } catch ( err ) {
-          console.error(err)
+        const asset_id = most_recent_asset_id( event.livestream.privateData )
+        strapi.log.info(`[ * Asset ID: ${ asset_id }`)
+        if ( asset_id ) {
+          try {
+            const asset = await strapi.mux.get_asset( asset_id )
+            event.mux_recording = strapi.mux.get_public_asset_details( asset )
+            strapi.log.info(`[ * Playback ID: ${ event.mux_recording.playbackId }`)
+          } catch ( err ) {
+            console.error(err)
+            event.mux_recording = {
+              message: "Got MUX error; please set asset_id below:",
+              asset_id: null,
+              error: err,
+            }
+          }
+        } else {
           event.mux_recording = {
-            message: "Got MUX error; please set asset_id below:",
+            error: "Could not automatically fetch MUX recording, please set asset_id below:",
             asset_id: null,
-            error: err,
           }
         }
-      } else {
-        event.mux_recording = {
-          error: "Could not automatically fetch MUX recording, please set asset_id below:",
-          asset_id: null,
-        }
+        
       }
-
 
 
       if ( !event.count ) {
