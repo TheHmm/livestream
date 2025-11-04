@@ -18,7 +18,7 @@
   
     before_create_or_update = async context => {
       const viewer = context.params.data
-      if ( viewer.name && !viewer.uuid ) {
+      if ( viewer?.name && !viewer?.uuid ) {
         context.params.data.uuid = await create_uuid( viewer, strapi )
       }
     },

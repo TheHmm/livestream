@@ -2,7 +2,8 @@ const random_animal_name = require("random-anonymous-animals")
 
 module.exports = {
 
-  '0 6 * * *': async ({ strapi }) => { // every day at 06:00
+  // '0 6 * * *': async ({ strapi }) => { // every day at 06:00
+  '* * * * *': async ({ strapi }) => { // every day at 06:00
 
     strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
     strapi.log.info(`[ * * * NIGHTLY CRON JOB STARTING * * * ]`)
@@ -36,25 +37,24 @@ module.exports = {
 async function viewer_anonymization( strapi, now ) {
 
   strapi.log.info(`[ * => VIEWER ANONYMIZATION * * * * * * ]`)
-  const viewer_service = strapi.service('api::viewer.viewer')
+  const viewer_service = strapi.documents('api::viewer.viewer')
 
 
   // First, we get all viewers that expire before today. This
   // filter returns only valid dates that are less than today.
 
   try {
-    const { results: viewers } = await viewer_service.find({
+    const viewers = await viewer_service.findMany({
       pagination: {
         start: 0,
-        limit: 500,
+        limit: 1000,
       },
       filters: {
         expires: {
-          $lt: now.toISOString(),
+          $lt: now,
         }
       }
     })
-
 
     // We iterate over the list of viewers, creating a new
     // anonymous animal name for each one that wanted to be
@@ -68,14 +68,16 @@ async function viewer_anonymization( strapi, now ) {
     // This is good, since the UUID in the viewer's browser
     // is then forgotten by Strapi.
 
-    for ( const { name, id } of viewers ) {
+    for ( const { name, documentId } of viewers ) {
       const new_name = random_animal_name()
       strapi.log.info(`[ * ${ name } -> ${ new_name }`)
-      await viewer_service.update( id, { data: {
-        name    : new_name,
-        expires : null
-      } } )
-    }
+      await viewer_service.update({
+        documentId,
+        data: {
+          name    : new_name,
+          expires : null
+        } } )
+      }
 
     strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
 
@@ -105,36 +107,18 @@ async function event_post_processor( strapi, now ) {
 
   strapi.log.info(`[ * => EVENT POST PROCESSOR * * * * * * ]`)
 
-  const livestream_service = strapi.documents('api::livestream.livestream')
+  // const livestream_service = strapi.documents('api::livestream.livestream')
   const event_service      = strapi.documents('api::event.event')
 
   try {
 
 
-    // We first get our current livestream config from Strapi.
-    // If this is not yet defined then we stop here as it's
-    // not important to run this function.
-
-    const { privateData: livestream } = await livestream_service.findFirst()
-
-    if ( !livestream ) {
-      return
-    }
-
-
-    // Then we get the current max number of connected socks
-    // from strapi and clear the array, meaning this function
-    // will return undefined if called again on this day.
-
-    const current_max_count = get_max_count( strapi )
-    console.log( 'GOT MAX COUNT: ', current_max_count )
-
-
     // We get all our past events from strapi in descending
     // order. This lets us to iterate over them starting with
-    // the last event.
+    // the last event. Exclude events where mux_recording has 
+    // been alreadt set, that means it's been processed.
 
-    const { results: events } = await event_service.find({
+    const events = await event_service.findMany({
       sort: 'starts:desc',
       pagination: {
         start: 0,
@@ -142,12 +126,19 @@ async function event_post_processor( strapi, now ) {
       },
       filters: {
         ends: {
-          $lt: now.toISOString(),
+          $lt: now,
+        },
+        livestream: {
+          $notNull: true,
+        },
+        mux_recording: {
+          $null: true,
         }
       },
-      populate: [
-        'viewers'
-      ],
+      populate: {
+        viewers: { fields: [ 'documentId' ] },
+        livestream: { fields: '*' }
+      },
     })
 
 
@@ -158,61 +149,68 @@ async function event_post_processor( strapi, now ) {
 
     for ( let i = 0; i < events.length; i++ ) {
 
-      const is_last = i == 0
-      const event   = events[i]
+      const event = events[i]
 
       strapi.log.info(`[ * Processing event: ${ event.title }`)
 
-      let changed
+      console.log( event ) 
+
+      // We get the most recent asset from the livestream
+      // object in Strapi. This is likely the asset of the
+      // most recent event that took place. We try and get
+      // the asset details from MUX and set them to the event
+      // recording data. This officially marks our event as
+      // recorded, since the status of the asset will be
+      // "ready" as opposed to "active" or "idle".
+
+      const asset_id = most_recent_asset_id( event.livestream )
+      strapi.log.info(`[ * Asset ID: ${ asset_id }`)
+      if ( asset_id ) {
+        try {
+          const asset = await strapi.mux.get_asset( asset_id )
+          event.mux_recording = strapi.mux.get_public_asset_details( asset )
+          strapi.log.info(`[ * Playback ID: ${ event.mux_recording.playbackId }`)
+        } catch ( err ) {
+          console.error(err)
+          event.mux_recording = {
+            message: "Got MUX error; please set asset_id below:",
+            asset_id: null,
+            error: err,
+          }
+        }
+      } else {
+        event.mux_recording = {
+          error: "Could not automatically fetch MUX recording, please set asset_id below:",
+          asset_id: null,
+        }
+      }
 
 
-      // Processing last event.
 
-      if ( is_last ) {
+      if ( !event.count ) {
 
 
         // We set the event count to the current max_count
         // from Strapi. In case there is none, we go for the
         // viewers array length.
+        
 
-        if ( !event.count ) {
-          event.count = current_max_count || event.viewers.length
-          strapi.log.info(`[ * Count: ${ event.count }`)
-          changed = true
-        }
+        // if ( !event.count ) {
+
+        //   // Then we get the current max number of connected socks
+        //   // from strapi and clear the array, meaning this function
+        //   // will return undefined if called again on this day.
+
+        //   const current_max_count = get_max_count( strapi )
+        //   console.log( 'GOT MAX COUNT: ', current_max_count )
+
+        //   event.count = current_max_count || event.viewers.length
+        //   strapi.log.info(`[ * Count: ${ event.count }`)
+        //   changed = true
+        // }
 
 
-        // We get the most recent asset from the livestream
-        // object in Strapi. This is likely the asset of the
-        // most recent event that took place. We try and get
-        // the asset details from MUX and set them to the event
-        // recording data. This officially marks our event as
-        // recorded, since the status of the asset will be
-        // "ready" as opposed to "active" or "idle".
-
-        if ( !event.mux_recording ) {
-          const asset_id = most_recent_asset_id( livestream )
-          strapi.log.info(`[ * Asset ID: ${ asset_id }`)
-          if ( asset_id ) {
-            try {
-              const asset = await strapi.mux.get_asset( asset_id )
-              event.mux_recording = strapi.mux.get_public_asset_details( asset )
-              strapi.log.info(`[ * Playback ID: ${ event.mux_recording.playbackId }`)
-            } catch ( err ) {
-              console.error(err)
-              event.mux_recording = {
-                error: err,
-                asset_id: null,
-              }
-            }
-          } else {
-            event.mux_recording = {
-              error: "Could not automatically fetch mux_recording, please set asset_id below:",
-              asset_id: null,
-            }
-          }
-          changed = true
-        }
+        
 
 
       // Processing all other events
@@ -226,33 +224,18 @@ async function event_post_processor( strapi, now ) {
         // reserved for the most recent event and has been
         // cleared already.
 
-        if ( !event.count ) {
-          event.count = event.viewers.length
-          strapi.log.info(`[ * Count: ${ event.count }`)
-          changed = true
-        }
-
-
-        // if the event has not got mux_recording defined, we request it:
-
-        if ( !event.mux_recording ) {
-          event.mux_recording = {
-            error: "Could not automatically fetch mux_recording, please set asset_id below:",
-            asset_id: null,
-          }
-          strapi.log.warn(`[ * Event has no mux_recording, please set manually`)
-          changed = true
-        }
-
+        // if ( !event.count ) {
+        //   event.count = event.viewers.length
+        //   strapi.log.info(`[ * Count: ${ event.count }`)
+        //   changed = true
+        // }
 
       }
 
 
       // We only update the event in Strapi if its changed.
 
-      if ( changed ) {
-        await event_service.update( event.documentId , { data: event } )
-      }
+      await event_service.update({ documentId: event.documentId, data: event })
 
       strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
 
