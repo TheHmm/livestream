@@ -62,8 +62,6 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     // We get the current livestream from Strapi, which is the
     // pirvateData property of the livestream entry in Strapi.
 
-    console.log( livestream_id )
-
     try {
 
       const livestream = await strapi.documents( 'api::livestream.livestream' ).findFirst({
@@ -74,8 +72,6 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
           }
         }
       )
-
-      console.log( livestream )
 
       const { documentId, privateData } = livestream
 
