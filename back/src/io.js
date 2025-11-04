@@ -28,13 +28,12 @@ module.exports = server => {
     // 'room_event_slug': []
   }
 
-  io.count = (room, socket) => {
+  io.count = room => {
     if ( !io.counts[room] ) {
       io.counts[room] = []
     }
-    // IO_TODO
-    //  io.in(room).fetchSockets();
-    const count = socket.client.conn.server.clientsCount
+    const clients = io.sockets.adapter.rooms.get(room)
+    const count = clients ? clients.size : 0
     io.counts[room].push( count )
     return count
   }
@@ -87,17 +86,17 @@ module.exports = server => {
   // handling joining room 
 
   function socket_join_room( room, socket ) {
-    io.count( room, socket )
     socket.join( room )
     socket.emit( 'confirm_join_room', { room } )
     socket.emit( 'viewers', io.uuids[room] || [])
+    io.count( room )
   }
 
 
   // handling leaving the room 
 
   function socket_leave_room( room, uuid, socket ) {  
-    io.count( room, socket )
+    io.count( room )
     socket.leave( room )
     socket.emit('confirm_leave_room', { room })
     io.rm_uuid( room, uuid ) 

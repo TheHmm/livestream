@@ -2,8 +2,7 @@ const random_animal_name = require("random-anonymous-animals")
 
 module.exports = {
 
-  // '0 6 * * *': async ({ strapi }) => { // every day at 06:00
-  '* * * * *': async ({ strapi }) => { // every day at 06:00
+  '0 6 * * *': async ({ strapi }) => { // every day at 06:00
 
     strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
     strapi.log.info(`[ * * * NIGHTLY CRON JOB STARTING * * * ]`)
@@ -107,8 +106,7 @@ async function event_post_processor( strapi, now ) {
 
   strapi.log.info(`[ * => EVENT POST PROCESSOR * * * * * * ]`)
 
-  // const livestream_service = strapi.documents('api::livestream.livestream')
-  const event_service      = strapi.documents('api::event.event')
+  const event_service = strapi.documents('api::event.event')
 
   try {
 
@@ -150,8 +148,6 @@ async function event_post_processor( strapi, now ) {
 
       strapi.log.info(`[ * Processing event: ${ event.title }`)
 
-      console.log( event ) 
-
       if ( !event.mux_recording ) {
 
         
@@ -186,47 +182,21 @@ async function event_post_processor( strapi, now ) {
         }
         
       }
-
-
+      
       if ( !event.count ) {
+        
+        // We get the current max number of connected socks
+        // from strapi and clear the array, meaning this function
+        // will return undefined if called again on this day.
 
+        const current_max_count = get_max_count( strapi, event.slug )
 
         // We set the event count to the current max_count
         // from Strapi. In case there is none, we go for the
         // viewers array length.
-        
 
-        // if ( !event.count ) {
-
-        //   // Then we get the current max number of connected socks
-        //   // from strapi and clear the array, meaning this function
-        //   // will return undefined if called again on this day.
-
-        //   const current_max_count = get_max_count( strapi )
-        //   console.log( 'GOT MAX COUNT: ', current_max_count )
-
-        //   event.count = current_max_count || event.viewers.length
-        //   strapi.log.info(`[ * Count: ${ event.count }`)
-        //   changed = true
-        // }
-
-
-      // Processing all other events
-
-      } else {
-
-
-        // In case the event viewer count has not been set,
-        // we skip the strapi socket count and go directly to
-        // the event viewer count. The strapi socket count is
-        // reserved for the most recent event and has been
-        // cleared already.
-
-        // if ( !event.count ) {
-        //   event.count = event.viewers.length
-        //   strapi.log.info(`[ * Count: ${ event.count }`)
-        //   changed = true
-        // }
+        event.count = current_max_count || event.viewers.length
+        strapi.log.info(`[ * Count: ${ event.count }`)
 
       }
 
@@ -257,11 +227,13 @@ async function event_post_processor( strapi, now ) {
  * @returns highest count of conncurrent sockets for the day.
  */
 
-function get_max_count( strapi ) {
+function get_max_count( strapi, room ) {
   let count
-  if ( strapi.io.counts.length ) {
-    count = Math.max.apply( null, strapi.io.counts )
-    strapi.io.counts.length = 0
+  if ( !strapi.io.counts[room] ) {
+    count = undefined
+  } else if ( strapi.io.counts[room].length ) {
+    count = Math.max.apply( null, strapi.io.counts[room] )
+    strapi.io.counts[room].length = 0
   }
   return count
 }
