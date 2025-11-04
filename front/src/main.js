@@ -4,7 +4,6 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 import axios          from 'axios'
-import socket         from 'socket.io-client'
 import VueSocketIOExt from 'vue-socket.io-extended'
 import vClickOutside  from 'v-click-outside'
 
@@ -23,6 +22,7 @@ import {
   $md,             // markdown parser
   $mdi,            // inline markdown parser
   $throttle,       // throttle functions
+  $socket,         // our socket io client instance
   _throw           // custom error thrower
 } from './utils'
 
@@ -31,12 +31,8 @@ import {
 $log.intro( config )
 
 
-// & instantiate socket cient
-const io = socket.io( config.socket_url, { autoConnect: false } )
-
-
 // & instantiate networking scripts
-networking.init( axios, io )
+networking.init( axios, $socket )
 
 
 // & create vue app
@@ -48,7 +44,7 @@ app.config.globalProperties = { $log, $time, $id, $md, $mdi, $throttle }
 
 
 // & attach our extensions to our app
-app.use( store ).use( router ).use( VueSocketIOExt, io, { store } ).use( vClickOutside )
+app.use( store ).use( router ).use( VueSocketIOExt, $socket, { store } ).use( vClickOutside )
 
 
 // & finally mount after the router is ready

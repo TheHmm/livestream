@@ -1,9 +1,17 @@
 
 const
 
-  after_create_or_update = async (context, result) => {
-    const announcement = { ...context.params.data, ...result }
-    strapi.io.emit( 'announcement', announcement )
+  after_create_or_update = async result => {
+    const documentId = result.documentId
+    const announcement = await strapi.documents('api::announcement.announcement').findOne({ 
+      documentId, fields: '*', populate: { events: { fields: 'slug' } } 
+    })
+    if ( !announcement ) {
+      return
+    }
+    for ( const event of announcement.events ) {
+      strapi.io.to(event.slug).emit( 'announcement', announcement )
+    }
     if ( 
         announcement.show &&
         announcement.expires 
@@ -11,12 +19,8 @@ const
       console.log('setting timeout', announcement.documentId)
       setTimeout( async () => {
         try {
-          await strapi
-          .documents('api::announcement.announcement')
-          .update({ 
-            documentId: announcement.documentId,
-            data: { show: false } 
-          })
+          await strapi.documents('api::announcement.announcement').update({ 
+            documentId, data: { show: false } })
         } catch ( error ) {
           console.log(error)
         }
@@ -24,21 +28,12 @@ const
     }
   },
 
-  after_delete = result => {
+  after_delete = async result => {
     strapi.io.emit( 'announcement', {
-      documentId: result.documentId,
-      deleted: true
+      documentId : result.documentId,
+      deleted : true
     })
   }
-
-
-  // 
-//   afterCreate: after_create_or_update,
-//   afterUpdate: after_create_or_update,
-// 
-//   afterDelete: after_delete,
-// 
-
 
 module.exports = {
   announcement_hooks() {
@@ -50,7 +45,7 @@ module.exports = {
       if (uid == 'api::announcement.announcement') {
         // after create or update 
         if ( ['create', 'update'].includes(action) ) {  
-          await after_create_or_update( context, result )
+          await after_create_or_update( result )
         } else if ( action == 'delete' ) {
           await after_delete( result )
         } 

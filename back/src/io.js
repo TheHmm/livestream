@@ -24,28 +24,43 @@ module.exports = server => {
   // We save the count to an array of counts for reference.
   // NOTE: this array is emptied in the cron job.
 
-  io.counts = []
+  io.counts = {
+    // 'room_event_slug': []
+  }
 
-  io.count = socket => {
+  io.count = (room, socket) => {
+    if ( !io.counts[room] ) {
+      io.counts[room] = []
+    }
+    // IO_TODO
+    //  io.in(room).fetchSockets();
     const count = socket.client.conn.server.clientsCount
-    io.counts.push( count )
+    io.counts[room].push( count )
     return count
   }
 
-  // We create a an array to hold connected viewers'
+  // We create an array to hold connected viewers'
   // uuids and attach methods to add/rm uuid.
 
-  io.uuids = []
+  io.uuids = {
+    // 'room_event_slug': []
+  }
 
-  io.add_uuid = uuid => {
-    if ( io.uuids.indexOf( uuid ) < 0 ) {
-      io.uuids.push( uuid )
+  io.add_uuid = (room, uuid) => {
+    if ( !io.uuids[room] ) {
+      io.uuids[room] = []
+    }
+    if ( io.uuids[room].indexOf( uuid ) < 0 ) {
+      io.uuids[room].push( uuid )
     }
   }
 
-  io.rm_uuid = uuid => {
-    if ( io.uuids.indexOf( uuid ) > -1 ) {
-      io.uuids.splice( io.uuids.indexOf( uuid ), 1 )
+  io.rm_uuid = (room, uuid) => {
+    if ( !io.uuids[room] ) {
+      io.uuids[room] = []
+    }
+    if ( io.uuids[room].indexOf( uuid ) > -1 ) {
+      io.uuids[room].splice( io.uuids[room].indexOf( uuid ), 1 )
     }
   }
 
@@ -54,6 +69,7 @@ module.exports = server => {
   // attach methods to add/rm cues.
 
   io.cc = []
+  // IO_TODO
 
   io.add_cue = cue => {
     if ( io.cc.indexOf( cue ) < 0 ) {
@@ -68,15 +84,39 @@ module.exports = server => {
   }
 
 
+  // handling joining room 
+
+  function socket_join_room( room, socket ) {
+    io.count( room, socket )
+    socket.join( room )
+    socket.emit( 'confirm_join_room', { room } )
+    socket.emit( 'viewers', io.uuids[room] || [])
+  }
+
+
+  // handling leaving the room 
+
+  function socket_leave_room( room, uuid, socket ) {  
+    io.count( room, socket )
+    socket.leave( room )
+    socket.emit('confirm_leave_room', { room })
+    io.rm_uuid( room, uuid ) 
+    io.to(room).emit( 'viewer', {
+      uuid,
+      connected: false,
+    })
+  }
+
+
   // When a socket sends us the viewer event, it will
   // only contain the socket's uuid and its connected
   // status. We save the uuid to our array and inform
   // the rest. Note: io.emit( 'viewer' ) is also called
   // in the viewers after create/update hooks.
 
-  function socket_viewer( viewer ) {
-    io.add_uuid( viewer.uuid )
-    io.emit( 'viewer', {
+  function socket_viewer( room, viewer ) {
+    io.add_uuid( room, viewer.uuid )
+    io.to(room).emit( 'viewer', {
       uuid      : viewer.uuid,
       name      : viewer.name,
       connected : true
@@ -86,27 +126,15 @@ module.exports = server => {
 
   // Emoji proxy
 
-  function socket_emoji( emoji ) {
-    io.emit( 'emoji', emoji )
+  function socket_emoji( room, emoji ) {
+    io.to(room).emit( 'emoji', emoji )
   }
 
 
   // Position proxy
 
-  function socket_position( position ) {
-    io.emit( 'position', position )
-  }
-
-  // When a viewer disconnect, we remove their uuid
-  // from our array of connected viewers' uuids and
-  // inform the rest.
-
-  function socket_disconnect( uuid ) {
-    io.rm_uuid( uuid )
-    io.emit( 'viewer', {
-      uuid,
-      connected: false,
-    })
+  function socket_position( room, position ) {
+    io.to(room).emit( 'position', position )
   }
 
 
@@ -163,8 +191,8 @@ module.exports = server => {
 
   // any other miscellaneous functions
 
-  function socket_misc( data ) {
-    io.emit( 'misc', data )
+  function socket_misc( room, data ) {
+    io.to(room).emit( 'misc', data )
   }
 
 
@@ -175,35 +203,48 @@ module.exports = server => {
 
     let uuid // soocket's uuid, client-generated.
 
-    io.count( socket ) // get a new count
+    let room // socjet's room, also client generated.
 
+    // When a socket joins event room, we confirm and send
+    // it our array of connected sockets' uuids in the room.
 
-    // When a socket connect for the first time, we send
-    // it our array of connected sockets' uuids.
+    socket.on('join_room', desired_room => {
+      if ( desired_room ) {
+        room = desired_room
+        socket_join_room( room, socket )
+      }
+    })
 
-    socket.emit( 'viewers', io.uuids )
+    socket.on('leave_room', () => {
+      if ( room ) {
+        socket_leave_room( room, uuid, socket )
+        room = null
+      }
+    })
+
+    socket.on( 'disconnect', () => {
+      if ( room ) {
+        socket_leave_room( room, uuid, socket )
+        room = null
+      }
+    })
 
     socket.on( 'viewer', ( viewer ) => {
       if ( viewer.uuid ) {
         uuid = viewer.uuid
-        socket_viewer( viewer )
+        socket_viewer( room, viewer )
       }
     })
 
     socket.on( 'emoji', ( emoji ) => {
-      socket_emoji( emoji )
+      socket_emoji( room, emoji )
       if ( strapi.mqtt ) {
         strapi.mqtt.hmmosphere.handler( emoji )
       }
     })
 
     socket.on( 'position', ( position ) => {
-      socket_position( position )
-    })
-
-    socket.on( 'disconnect', () => {
-      io.count( socket ) // get a new count
-      socket_disconnect( uuid )
+      socket_position( room, position )
     })
 
     socket.on( 'join_CC_room', () => {
@@ -237,7 +278,6 @@ module.exports = server => {
   io.socket_viewer        = socket_viewer
   io.socket_emoji         = socket_emoji
   io.socket_position      = socket_position
-  io.socket_disconnect    = socket_disconnect
   io.socket_join_CC_room  = socket_join_CC_room
   io.socket_leave_CC_room = socket_leave_CC_room
   io.socket_interm        = socket_interm

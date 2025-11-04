@@ -46,20 +46,24 @@ const
   // that from our db.
 
   after_create_or_update = async (context, result) => {
+    const documentId = result.documentId
     const message = await strapi.documents('api::message.message').findOne({
-      documentId: result.documentId,
+      documentId,
       fields: '*', populate: [ 'sender', 'event', 'in_response_to', 'Reactions', "Reactions.Emoji", "Reactions.Emoji.image", "Reactions.sender" ]
     })
+    if ( !message ) {
+      return
+    }
     if ( context.action == 'create' ) {
       message.is_new = true
     }
-    strapi.io.emit( 'message', message )
+    strapi.io.to(message.event.slug).emit( 'message', message )
     if ( message.emoji ) {
       try {
         const { uuid } = message.sender
         const group    = '__DEFAULT__'
         const emoji    = message.emoji[0]
-        strapi.io.emit( 'emoji', { group, emoji, uuid })
+        strapi.io.to(message.event.slug).emit( 'emoji', { group, emoji, uuid })
       } catch ( error ) {
         console.log(error)
       }

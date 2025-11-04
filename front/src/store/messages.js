@@ -83,13 +83,13 @@ export default {
 
     async set_message( { commit, getters, dispatch }, message ) {
 
-      const event_id = message.event?.documentId || message.event
-      if ( event_id && event_id != getters.current_event_id ) {
+      if ( message.deleted ) {
+        commit( 'DELETE_MESSAGE', message )
         return
       }
 
-      if ( message.deleted ) {
-        commit( 'DELETE_MESSAGE', message )
+      const event_id = message.event?.documentId || message.event
+      if ( event_id && event_id != getters.current_event_id ) {
         return
       }
 

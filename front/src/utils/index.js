@@ -4,7 +4,7 @@ import $id           from "./id"
 import { $md, $mdi } from "./markdown"
 import _throw        from "./throw"
 import $throttle     from "./throttle"
-
+import $socket       from "./socket"
 
 export {
   $log,
@@ -13,5 +13,6 @@ export {
   $md,
   $mdi,
   $throttle,
+  $socket,
   _throw
 }

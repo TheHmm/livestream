@@ -31,26 +31,6 @@ export default {
     return { meta: null }
   },
 
-
-  // This is first request to the Strapi API that we make.
-  // If this throws an error, than it's likely something is
-  // wrohg with Strapi. We indicate this by routing to the
-  // error page.
-
-  async created() {
-    this.$store.dispatch( 'meta/handle_mobile' )
-    try {
-      this.meta = await this.$store.dispatch( 'meta/get_meta' )
-    } catch ( error ) {
-      _throw( error )
-      this.$router.push({
-        name:'Error',
-        query: { type: error.message }
-      })
-      throw error
-    }
-  },
-
   computed: {
 
 
@@ -103,6 +83,40 @@ export default {
 
 
 
+  },
+
+
+  // This is first request to the Strapi API that we make.
+  // If this throws an error, than it's likely something is
+  // wrohg with Strapi. We indicate this by routing to the
+  // error page.
+
+  async created() {
+    this.$store.dispatch( 'meta/handle_mobile' )
+    try {
+      this.meta = await this.$store.dispatch( 'meta/get_meta' )
+      this.$socket.client.connect()
+    } catch ( error ) {
+      _throw( error )
+      this.$router.push({
+        name:'Error',
+        query: { type: error.message }
+      })
+      throw error
+    }
+  },
+
+  beforeUnmount() {
+    this.$socket.client.disconnect()
+  },
+
+  sockets: {
+    connect() {
+      this.$log.info( 'SOCKET', 'Connected.' )
+    },
+    disconnect() {
+      this.$log.info( 'SOCKET', 'Disconnected.' )
+    }
   },
 
 }

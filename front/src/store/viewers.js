@@ -5,6 +5,7 @@ import {
 import api   from '@/api'
 import $log  from '@/utils/log'
 import $time from '@/utils/time'
+import $socket from '@/utils/socket'
 
 export default {
 
@@ -345,17 +346,31 @@ export default {
     },
 
 
+    // Once we get confirmation of joining the room, we inform 
+    // other people of our uuid, even if the viewer hasn't
+    // been stored to the database, this way, all visitors
+    // can see each other and send emoji.
+
+    async socket_confirmJoinRoom({ state, dispatch }, { room }) {
+      $log.info( 'SOCKET', `Confirm join room ${ room }.` )
+      $socket.emit('viewer', {
+        uuid: state.uuid,
+      })
+      await dispatch( 'authenticate' )
+    },
+
+
     // This event is received in two different cases :
     // 1. a veiwer connected to the socket server
     // 2. a viewer has been created / updated in the DB
 
     socket_viewer( { dispatch }, viewer ) {
-      $log.info( 'SOCKET', `Viewer ${ viewer.name || 'anonymous' }, ${ viewer.uuid }` )
+      $log.info( 'SOCKET', `Viewer ${ viewer.uuid }` )
       dispatch( 'set_viewer', viewer )
     },
 
 
-    // After a user has connected to the socket server,
+    // After a user has joined to the socket event-room,
     // they are sent an array of UUIDs that correspond to
     // all the connected sockets.
 
@@ -372,6 +387,13 @@ export default {
           connected: true,
         })
       }
+    },
+
+
+    // Confirmation that we left the room
+
+    async socket_confirmLeaveRoom({ }, { room }) {
+      $log.info( 'SOCKET', `Confirm leave room ${ room }.` )
     },
 
 

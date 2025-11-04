@@ -23,9 +23,18 @@
       }
     },
   
-    after_create_or_update = result => {
-      result.connected = true
-      strapi.io.emit( 'viewer', result )
+    after_create_or_update = async result => {
+      const documentId = result.documentId
+      const viewer = await strapi.documents('api::viewer.viewer').findOne({ 
+        documentId, fields: '*', populate: { events: { fields: 'slug' } } 
+      })
+      if ( !viewer ) {
+        return
+      }
+      viewer.connected = true
+      for ( const event of viewer.events ) {
+        strapi.io.to(event.slug).emit( 'viewer', viewer )
+      }
     }
 
 module.exports = {

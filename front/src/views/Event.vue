@@ -51,25 +51,12 @@ export default {
   },
 
 
-  // Authenticate on load, this wayt you can send messages
-  // immediately
-
-  methods: {
-    async authenticate() {
-      return await this.$store.dispatch(
-        'viewers/authenticate'
-      )
-    }
-  },
-
-
-  // We only need to connect to our socket server when we
-  // enter the event page. In all other routes, socket
-  // networking is unnecessary.
+  // We only need to connect to our event-room when we
+  // enter the event page.
 
   created() {
     if ( !this.is_in_past ) {
-      this.$socket.client.connect()
+      this.$socket.client.emit('join_room', this.event.slug )
     }
   },
 
@@ -79,33 +66,14 @@ export default {
 
   beforeUnmount() {
     if ( !this.is_in_past ) {
-      this.$socket.client.disconnect()
+      this.$socket.client.emit('leave_room')
     }
     const { commit } = this.$store
     commit( 'messages/SET_MESSAGES', {} )
     commit( 'viewers/SET_VIEWERS', {} )
     commit( 'announcements/SET_ANNOUNCEMENTS', {} )
     commit( 'livestream/SET_CC', [] )
-  },
-
-
-  // When we connect to the socket server, we need to
-  // send everyone our uuid, even if the viewer hasn't
-  // been stored to the database, this way, all visitors
-  // can see each other and send emoji.
-
-  sockets: {
-    async connect() {
-      this.$log.info( 'SOCKET', 'Connected.' )
-      this.$socket.client.emit('viewer', {
-        uuid: this.$store.state.viewers.uuid,
-      })
-      await this.authenticate()
-    },
-    disconnect() {
-      this.$log.info( 'SOCKET', 'Disconnected.' )
-    }
-  },
+  }
 
 
 }
