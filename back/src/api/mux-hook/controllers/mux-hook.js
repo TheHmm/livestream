@@ -57,7 +57,7 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
     // We fetch the linked livestream id of the event so that
     // we can fetch the appropriate livestream from strapi.
 
-    const livestream_id = data.id
+    const livestream_id = data.live_stream_id || data.id
 
     // We get the current livestream from Strapi, which is the
     // pirvateData property of the livestream entry in Strapi.
