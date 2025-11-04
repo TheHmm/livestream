@@ -155,6 +155,7 @@ async function event_post_processor( strapi, now ) {
 
       console.log( event ) 
 
+
       // We get the most recent asset from the livestream
       // object in Strapi. This is likely the asset of the
       // most recent event that took place. We try and get
@@ -163,7 +164,7 @@ async function event_post_processor( strapi, now ) {
       // recorded, since the status of the asset will be
       // "ready" as opposed to "active" or "idle".
 
-      const asset_id = most_recent_asset_id( event.livestream )
+      const asset_id = most_recent_asset_id( event.livestream.privateData )
       strapi.log.info(`[ * Asset ID: ${ asset_id }`)
       if ( asset_id ) {
         try {
@@ -210,9 +211,6 @@ async function event_post_processor( strapi, now ) {
         // }
 
 
-        
-
-
       // Processing all other events
 
       } else {
@@ -250,10 +248,6 @@ async function event_post_processor( strapi, now ) {
 
 
 
-
-
-
-
 /**
  * Gets highest count of concurrent socket connections saved
  * in the strapi io.counts array and clears the array. Should
@@ -271,9 +265,6 @@ function get_max_count( strapi ) {
   }
   return count
 }
-
-
-
 
 
 
