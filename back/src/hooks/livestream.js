@@ -44,12 +44,20 @@ const
   // We inform all connected socket clients of this new info.
   // the frontend of this project hanndles the rest.
 
-  after_update = result => {
-    const livestream = { ... result }
+  after_update = async result => {
+    const livestream = await strapi.documents('api::livestream.livestream').findOne({
+      documentId: result.documentId,
+      fields: '*', populate: { events: { fields: 'slug' } } 
+    })
+    if ( !livestream ) {
+      return
+    }
     strapi.log.info(`[ * STREAM KEY: ${livestream.stream_key} ]`)
     delete livestream.privateData
     delete livestream.stream_key
-    strapi.io.emit( 'stream_update', livestream)
+    for ( const event of livestream.events ) {
+      strapi.io.to(event.slug).emit( 'stream_update', livestream )
+    }
   }
 
 
