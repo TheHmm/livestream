@@ -12,7 +12,8 @@ const
     return {
       privateData : livestream,
       publicData  : strapi.mux.get_public_stream_details(livestream),
-      stream_key  : livestream.stream_key
+      mux_id      : livestream.id,
+      stream_key  : livestream.stream_key,
     }
   },
 

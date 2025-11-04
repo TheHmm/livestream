@@ -66,10 +66,8 @@ module.exports = createCoreController('api::mux-hook.mux-hook', ({ strapi }) => 
 
       const livestream = await strapi.documents( 'api::livestream.livestream' ).findFirst({
         filter: {
-          privateData: {
-            id: {
-                $eq: livestream_id
-              }
+          mux_id: {
+              $eq: livestream_id
             } 
           }
         }

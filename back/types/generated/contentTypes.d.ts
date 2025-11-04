@@ -583,6 +583,7 @@ export interface ApiLivestreamLivestream extends Struct.CollectionTypeSchema {
       'api::livestream.livestream'
     > &
       Schema.Attribute.Private;
+    mux_id: Schema.Attribute.UID;
     Name: Schema.Attribute.String & Schema.Attribute.Required;
     privateData: Schema.Attribute.JSON & Schema.Attribute.Private;
     publicData: Schema.Attribute.JSON;

@@ -37,6 +37,9 @@
       "relation": "oneToMany",
       "target": "api::event.event",
       "mappedBy": "livestream"
+    },
+    "mux_id": {
+      "type": "uid"
     }
   }
 }
