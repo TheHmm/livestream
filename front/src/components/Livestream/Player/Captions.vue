@@ -88,7 +88,7 @@ export default {
         this.hls.subtitleTrack = 0
       } else {
         if ( this.active ) {
-          this.$socket.client.emit('join_CC_room')
+          this.$socket.client.emit('join_CC_room', this.livestream.slug )
         }
       }
     },
@@ -98,7 +98,7 @@ export default {
         this.hls.subtitleTrack = -1
       } else {
         if ( this.active ) {
-          this.$socket.client.emit('leave_CC_room')
+          this.$socket.client.emit('leave_CC_room', this.livestream.slug )
         }
       }
     },
