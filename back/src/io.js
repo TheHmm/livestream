@@ -67,18 +67,25 @@ module.exports = server => {
   // We create a an array to hold closed captions cues and
   // attach methods to add/rm cues.
 
-  io.cc = []
-  // IO_TODO
+  io.cc = {
+    // 'room_stream_slug': []
+  }
 
-  io.add_cue = cue => {
-    if ( io.cc.indexOf( cue ) < 0 ) {
-      io.cc.push( cue )
+  io.add_cue = (room, cue) => {
+    if ( !io.cc[room] ) {
+      io.cc[room] = []
+    }
+    if ( io.cc[room].indexOf( cue ) < 0 ) {
+      io.cc[room].push( cue )
     }
   }
 
-  io.rm_cue = cue => {
-    if ( io.cc.indexOf( cue ) > -1 ) {
-      io.cc.splice( io.cc.indexOf( cue ), 1 )
+  io.rm_cue = (room, cue) => {
+    if ( !io.cc[room] ) {
+      io.cc[room] = []
+    }
+    if ( io.cc[room].indexOf( cue ) > -1 ) {
+      io.cc[room].splice( io.cc[room].indexOf( cue ), 1 )
     }
   }
 
@@ -150,13 +157,13 @@ module.exports = server => {
   // Viewers joining 'cc' room will get the captions that
   // have been previously recorded.
 
-  function socket_join_CC_room( socket ) {
-    socket.join( 'cc' )
-    socket.emit( 'confirm_join_CC', io.cc )
+  function socket_join_CC_room( socket, room ) {
+    socket.join( `cc_${ room }` )
+    socket.emit( 'confirm_join_CC', io.cc[room] )
   }
 
-  function socket_leave_CC_room( socket ) {
-    socket.leave( 'cc' )
+  function socket_leave_CC_room( socket, room ) {
+    socket.leave( `cc_${ room }` )
     socket.emit( 'confirm_leave_CC' )
   }
 
@@ -165,7 +172,7 @@ module.exports = server => {
   // update in real time.
 
   function socket_interm( cue ) {
-    io.to( 'cc' ).emit( 'interm', cue )
+    io.to( `cc_${ cue.room }` ).emit( 'interm', cue )
   }
 
 
@@ -174,17 +181,17 @@ module.exports = server => {
   // the 'cc' room and the srt is for the 'srt' room.
 
   function socket_final( cue ) {
-    io.add_cue( cue )
-    io.to( 'cc' ).emit( 'final', cue )
+    io.add_cue( cue.room, cue )
+    io.to( `cc_${ cue.room }` ).emit( 'final', cue )
   }
 
 
   // This is so that Marco can clear the icrememnting cc
   // array when the livestream is over.
 
-  function socket_clear_CC() {
-    io.cc.length = 0
-    io.to( 'cc' ).emit( 'clear_CC', io.cc )
+  function socket_clear_CC( room ) {
+    io.cc[room].length = 0
+    io.to( `cc_${ room }` ).emit( 'clear_CC', io.cc[room] )
   }
 
 
@@ -246,12 +253,12 @@ module.exports = server => {
       socket_position( room, position )
     })
 
-    socket.on( 'join_CC_room', () => {
-      socket_join_CC_room( socket )
+    socket.on( 'join_CC_room', ( room ) => {
+      socket_join_CC_room( socket, room )
     })
 
-    socket.on( 'leave_CC_room', () => {
-      socket_leave_CC_room( socket )
+    socket.on( 'leave_CC_room', ( room ) => {
+      socket_leave_CC_room( socket, room )
     })
 
     socket.on( 'interm', ( cue ) => {
@@ -262,8 +269,8 @@ module.exports = server => {
       socket_final( cue )
     })
 
-    socket.on( 'clear_CC', () => {
-      socket_clear_CC()
+    socket.on( 'clear_CC', ( room ) => {
+      socket_clear_CC( room )
     })
 
 

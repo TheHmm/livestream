@@ -68,10 +68,29 @@
 			-webkit-filter: invert(100%);
 		}
 
-		#clear {
+		menu {
 			position: absolute;
-			top: 20px;
-			left: 0;
+			top:0.5rem;
+			margin: 0.5rem;
+			padding: 0;
+		}
+		#livestreams {
+			margin-top: 0.5rem;
+		}
+		#livestreams .livestream {
+			border: 1px solid black;
+			margin-top: 0.5rem;
+			padding: 0.5rem;
+			background-color: lightgrey;
+			white-space: pre;
+			font-family: monospace;
+			cursor: pointer;
+		}
+		#livestreams .livestream.active {
+			background-color: limegreen;
+		}
+		#livestreams .livestream.idle {
+			background-color: rgb(255, 84, 84);
 		}
 	</style>
 </head>
@@ -94,13 +113,18 @@
 	More options and details <a href='https://github.com/steveseguin/captionninja'>on Github <span class="github"></span></a></span></font><br /><br /></div>
 
 	<div id="output" class="output"></div>
-	<button
-		id="clear"
-		name="clear"
-	>
-		clear transcription
-	</button>
 
+	<menu>
+		<button
+			id="clear"
+			name="clear"
+		>
+			clear transcription
+		</button>
+		<div id="livestreams">
+			<span>Choose a livestream to push closed captions to:</span>
+		</div>
+	</menu>
 
 	<script>
 
@@ -212,6 +236,12 @@
 	})(window);
 	var urlParams = new URLSearchParams(window.location.search);
 
+	function update_livestream_innerHTML( livestream ) {
+		return `_SLUG_: ${ livestream.slug }` + '\n' +
+					 `MUX_ID: ${ livestream.mux_id }` + '\n' +
+					 `STATUS: ${ livestream.publicData.status }` + '\n' +
+					 `STARTS: ${ livestream.publicData.start_time }` 
+	} 
 
 	function generateStreamID(){
 		var text = "";
@@ -249,6 +279,7 @@
 	var timestamp_intern  = null;
 	var caption_start = null
 	var logcounter=0;
+	let livestream_slug = null
 
 	var counter=0;
 
@@ -267,11 +298,6 @@
 					};
 					button.dataset.key = oldSaves[i];
 					button.innerHTML = "Download saved transcription file: "+oldSaves[i];
-
-				//	button.style.position = "fixed";
-				//	button.style.top = "0";
-				//	button.style.left = "0";
-
 					document.body.prepend(button);
 				}catch(e){console.error(e);}
 			}
@@ -281,72 +307,97 @@
 	document.getElementById("shareLink").href= url+"/overlay?room="+roomID;
 	document.getElementById("shareLink").innerHTML = url+"/overlay?room="+roomID;
 
-	navigator.clipboard.writeText(url+"/overlay?room="+roomID).then(() => {
-      /* clipboard successfully set */
-    }, () => {
-      /* clipboard write failed */
-    });
+	const io_url = 'https://api.live.thehmm.karls.computer';
+	// const io_url = 'https://live.thehmm.nl';
+	const socket = io( io_url )
 
-
-  const io_url = 'https://live.thehmm.nl';
-	// const io_url = 'https://api.live.thehmm.karls.computer';
-	const socket = io( io_url );
-
-	const clear_button = document.getElementById('clear')
-
-	clear_button.onclick = clear
-
-	function clear() {
+	document.getElementById('clear').onclick = () => {
 		console.log( 'clearing captions' )
-		socket.emit( 'clear_CC' )
+		socket.emit( 'clear_CC', livestream_slug )
 		window.location.reload()
 	}
 
-	// var apiKey = false;
-  //	if (urlParams.has("pie")){
+	socket.on('connect', () => { console.log('connected to ', io_url)	})
+	socket.on('confirm_join_CC', () => { console.log('Joined closed caption room.') })
+	socket.on('confirm_leave_CC', () => { console.log('Left closed caption room.') })
 
-	//	var apiKey = urlParams.get("pie") || "0khtlN7R7ISHZzFiyfK49Q9zAm93Wti5xpbW9qjg";  // get an API key from https://www.piesocket.com/ for a free API server of your own
-	//	socket = new WebSocket("wss://free3.piesocket.com/v3/"+roomID+"?api_key="+apiKey);
-
-	//	document.getElementById("shareLink").href= url+"/overlay?room="+roomID+"&pie="+apiKey;
-	//	document.getElementById("shareLink").innerHTML = url+"/overlay?room="+roomID+"&pie="+apiKey;
-//	}
-
- //	socket.onclose = function (){
- // 	setTimeout(function(){window.location.reload(true);},100);
- //	};
-
-	// socket.onopen = function (){
-	socket.on('connect', () => {
-		console.log('connected to ', io_url)
-		socket.emit('join_CC_room')
-		//socket.send(JSON.stringify({"join":roomID}));
-	})
-
-	socket.on('confirm_join_CC', () => {
-		console.log('Joined closed caption room.')
-	})
-	socket.on('confirm_leave_CC', () => {
-		console.log('Left closed caption room.')
-	})
 	socket.on('stream_update', livestream => {
 		console.log('Got livetream update', livestream)
-		if ( livestream?.status == 'active' && livestream.start_time ) {
-			timestamp_start = (new Date(livestream.start_time)).getTime()
-			document.body.style.background = 'limegreen'
-		} else {
-			document.body.style.background = 'red'
+		if ( livestream.slug ) { 
+			const livestream_element = document.getElementById( 'livestream_' + livestream.slug ) 
+			if ( livestream_element ) {
+				const { publicData } = livestream
+				if ( publicData.status == 'active' && publicData.start_time ) {
+					timestamp_start = publicData.start_time
+				}
+				livestream_element.innerHTML = update_livestream_innerHTML( livestream )
+		 	}
 		}
 	})
+
+	const livestreams_list = document.getElementById('livestreams')
+
+	// fetch livestreams
+
+		fetch('https://api.live.thehmm.karls.computer/api/livestreams')
+		// fetch('https://live.thehmm.nl/api/livestreams')
+		.then( response => response.json()).then( ({ data: livestreams }) => {
+			console.log('Got livetreams', livestreams)
+			
+			// add a links the document to choose livestream
+			for ( const livestream of livestreams ) {
+				const livestream_element = document.createElement( 'div')
+				livestream_element.classList.add('livestream')
+				livestream_element.classList.add(livestream.publicData.status)
+				livestream_element.id = 'livestream_' + livestream.slug
+				livestream_element.innerHTML = update_livestream_innerHTML( livestream )
+				livestream_element.addEventListener('click', () => setup( livestream ))
+				livestreams_list.appendChild(livestream_element)
+			}
+		}).catch( err => {
+			document.body.style.background = 'red'
+			console.error('strapi error', err)
+		})
+
 
 
 	var final_transcript = '';
 	var interim_transcript = "";
 	var final_transcript_raw = "";
 	var idle = null;
-	setup();
-	function setup(){
+	// setup( livestream );
+
+
+
+	async function setup( livestream ){
 		if ('webkitSpeechRecognition' in window){
+
+			const { mux_id, slug, publicData } = livestream
+			const { start_time, status } = publicData
+
+			livestream_slug = slug
+
+			// remove other elements
+
+			livestreams_list.querySelectorAll('.livestream').forEach( el => {
+				if (el.id !== 'livestream_' + slug ) {
+					livestreams_list.removeChild(el)
+				}
+			})
+
+			// join CC room for this element
+
+			socket.emit('join_CC_room', slug)
+
+			timestamp_start = +start_time
+			if ( status == 'active' && start_time ) {
+				document.body.style.background = 'limegreen'
+			} else {
+				document.body.style.background = 'red'
+			}
+			console.log(timestamp_start, 'livestream start time')
+			console.log(Date.now(), 'current time')
+
 			var recognition = new webkitSpeechRecognition();
 			if (myLang){
 				recognition.lang = myLang;
@@ -357,28 +408,6 @@
 
 			recognition.onstart = async function() {
 				console.log("started transcription");
-
-				try {
-					const
-						// response = await fetch('https://api.live.thehmm.karls.computer/api/livestream'),
-						response = await fetch('https://live.thehmm.nl/api/livestream'),
-						json_data = await response.json(),
-						livestream = json_data.data.publicData
-					timestamp_start = (new Date(livestream.start_time)).getTime()
-					console.log('Got livetream', livestream)
-					if ( livestream?.status == 'active' && livestream.start_time ) {
-						timestamp_start = (new Date(livestream.start_time)).getTime()
-						document.body.style.background = 'limegreen'
-					} else {
-						document.body.style.background = 'red'
-					}
-					console.log(timestamp_start, 'livestream start time')
-					console.log(Date.now(), 'current time')
-				} catch (err) {
-					document.body.style.background = 'red'
-					console.error('strapi error', err)
-				}
-
 			};
 			recognition.onerror = function(event){
 				console.log(event);
@@ -386,7 +415,7 @@
 			recognition.onend = function(e){
 				// console.log(e);
 				console.log("Stopped transcription");
-				setup();
+				setup( livestream );
 			};
 			recognition.onresult = function(event){
 				counter+=1;
@@ -473,6 +502,7 @@
 							id    : counter,
 							time  : new Date().getTime(),
 							text  : final_transcript_raw,
+							room  : livestream_slug
 						});
 						final_transcript="";
 						interim_transcript="";
@@ -495,6 +525,7 @@
 							id   : counter,
 							time : new Date().getTime(),
 							text : interim_transcript,
+							room  : livestream_slug
 						});
 					} catch(e){
 						console.error(e);
@@ -516,7 +547,9 @@
 
 			//recognition.lang = 'en-US';
 			recognition.start();
+
 		}
+
 	}
 	</script>
 	</body>
