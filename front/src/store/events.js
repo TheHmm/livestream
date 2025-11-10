@@ -20,10 +20,16 @@ export default {
 
   getters: {
 
-    get_events : state => {
-      return Object.values( state.events ).sort( ( a , b ) => {
-        return new Date( a.starts ) < new Date( b.starts )
-      })
+    get_past_events : state => {
+      return Object.values( state.events )
+      .filter( e => new Date( e.ends < new Date() ) )  
+      .sort( ( a , b ) => new Date( a.starts ) < new Date( b.starts ))
+    },
+
+    get_future_events : state => {
+      return Object.values( state.events )
+      .filter( e => new Date( e.starts > new Date() ) )  
+      .sort( ( a , b ) => new Date( a.starts ) < new Date( b.starts ))
     },
 
     years : ( state, getters ) => {
@@ -101,11 +107,29 @@ export default {
 
     // Fetch all events
 
-    fetch_events( { dispatch } ) {
+    fetch_past_events( { dispatch } ) {
       return new Promise( ( resolve, reject ) =>
         api
         .events
-        .getAll()
+        .getPast()
+        .then( events => {
+          for ( const event of events ) {
+            dispatch( 'set_event', event )
+          }
+          resolve( events )
+        } )
+        .catch( error => reject( error ) )
+      )
+    },
+
+    
+    // Fetch future events
+
+    fetch_future_events( { dispatch } ) {
+      return new Promise( ( resolve, reject ) =>
+        api
+        .events
+        .getFuture()
         .then( events => {
           for ( const event of events ) {
             dispatch( 'set_event', event )
@@ -150,8 +174,8 @@ export default {
     // Strapi to check if we have all of them. If not,
     // we fetch them.
 
-    async get_events( { getters, dispatch } ) {
-      const local_count = getters.get_events.length
+    async get_past_events( { getters, dispatch } ) {
+      const local_count = getters.get_past_events.length
       let remote_count
       try {
         remote_count = await dispatch( 'fetch_events_count' )
@@ -159,9 +183,20 @@ export default {
         remote_count = local_count
       }
       if ( remote_count > local_count ) {
-        return await dispatch( 'fetch_events' )
+        return await dispatch( 'fetch_past_events' )
       } else {
-        return getters.get_events
+        return getters.get_past_events
+      }
+    },
+
+
+    // Get future events
+
+    async get_future_events( { getters, dispatch } ) {
+      if ( !getters.get_future_events.length ) {
+        return await dispatch( 'fetch_future_events' )
+      } else {
+        return getters.get_future_events
       }
     },
 

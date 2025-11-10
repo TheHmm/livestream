@@ -99,6 +99,10 @@
       "relation": "manyToOne",
       "target": "api::livestream.livestream",
       "inversedBy": "events"
+    },
+    "show_in_agenda": {
+      "type": "boolean",
+      "default": true
     }
   }
 }

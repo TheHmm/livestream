@@ -26,7 +26,7 @@ export default {
   // Fetch all events; sort in reverse chronological
   // order (i.e. most recent event first).
 
-  getAll() {
+  getPast() {
     $log.info( `API`, `Fetching events.` )
     return new Promise( ( resolve, reject ) => {
       axios
@@ -45,6 +45,46 @@ export default {
           'accent',
           'info',
           'mux_recording',
+        ],
+        pagination: {
+          pageSize: 100,
+        }
+      } } )
+      .then( result => resolve( result.data.data ) )
+      .catch( error => {
+        $log.error( 'API', error )
+        reject( error )
+      } )
+    } )
+  },
+
+
+  // Fetch futuer events; sort in reverse chronological
+  // order (i.e. most recent event first).
+
+  getFuture() {
+    $log.info( `API`, `Fetching future events.` )
+    return new Promise( ( resolve, reject ) => {
+      axios
+      .get( `${ config.api_url }/events`, { params: {
+        sort: 'starts:asc',
+        filters: {
+          starts: {
+            $gte: $time.now(),
+          },
+          show_in_agenda: {
+            $eq: true,
+          }
+        },
+        fields: [
+          'title',
+          'slug',
+          'starts',
+          'ends',
+          'accent',
+          'info',
+          'mux_recording',
+          'show_in_agenda',
         ],
         pagination: {
           pageSize: 100,

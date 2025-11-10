@@ -10,13 +10,21 @@ export default [
 
   {
     path: '/',
-    name: 'Home',
-    component: () => import( '@/views/Home.vue' ),
+    name: 'Agenda',
+    component: () => import( '@/views/Agenda.vue' ),
     meta: {
       desired_tabs : [
-        'about',
         'access',
-        'year',
+      ]
+    },
+  },
+  {
+    path: '/archive',
+    name: 'Archive',
+    component: () => import( '@/views/Archive.vue' ),
+    meta: {
+      desired_tabs : [
+        'access',
       ]
     },
   },
@@ -36,7 +44,6 @@ export default [
         component: () => import( '@/components/Livestream/index.vue' ),
         meta: {
           desired_tabs : [
-            'about',
             'access',
             'modes',
             'emoji',
@@ -65,7 +72,6 @@ export default [
         component: () => import( '@/components/Chat/index.vue' ),
         meta: {
           desired_tabs : [
-            'about',
             'access',
             'emoji',
           ]

@@ -10,13 +10,13 @@ import EventList from '../components/Event/List.vue'
 
 export default {
 
-  name: 'HomePage',
+  name: 'Archive',
 
   components: { EventList },
 
   async setup() {
     try {
-      const res = await store.dispatch( 'events/get_events' )
+      const res = await store.dispatch( 'events/get_past_events' )
       return { res }
     } catch ( error ) {
       _throw( error )
@@ -38,7 +38,7 @@ export default {
 
     events() {
       return store
-      .getters[ 'events/get_events' ]
+      .getters[ 'events/get_past_events' ]
       .filter( e => {
         if ( this.year ) {
           return (
