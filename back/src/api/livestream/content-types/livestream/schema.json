@@ -13,13 +13,11 @@
   "pluginOptions": {},
   "attributes": {
     "Name": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "slug": {
       "type": "uid",
-      "targetField": "Name",
-      "required": true
+      "targetField": "Name"
     },
     "privateData": {
       "type": "json",

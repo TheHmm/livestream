@@ -537,6 +537,10 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
         },
         number
       >;
+    livestream: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::livestream.livestream'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::event.event'> &
       Schema.Attribute.Private;
@@ -557,11 +561,11 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiLivestreamLivestream extends Struct.SingleTypeSchema {
-  collectionName: 'livestreams';
+export interface ApiLivestreamLivestream extends Struct.CollectionTypeSchema {
+  collectionName: 'livestream';
   info: {
-    description: 'The current MUX livestream object.';
-    displayName: 'Livestream';
+    description: 'MUX livestream objects.';
+    displayName: 'Livestreams';
     pluralName: 'livestreams';
     singularName: 'livestream';
   };
@@ -572,17 +576,19 @@ export interface ApiLivestreamLivestream extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    events: Schema.Attribute.Relation<'oneToMany', 'api::event.event'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::livestream.livestream'
     > &
       Schema.Attribute.Private;
+    mux_id: Schema.Attribute.UID;
+    Name: Schema.Attribute.String;
     privateData: Schema.Attribute.JSON & Schema.Attribute.Private;
     publicData: Schema.Attribute.JSON;
     publishedAt: Schema.Attribute.DateTime;
-    requestNewLivestream: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
+    slug: Schema.Attribute.UID<'Name'>;
     stream_key: Schema.Attribute.String & Schema.Attribute.Private;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -690,6 +696,39 @@ export interface ApiMuxHookMuxHook extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     status: Schema.Attribute.String;
     streamID: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiOrganisationOrganisation
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'organisations';
+  info: {
+    displayName: 'Organisations';
+    pluralName: 'organisations';
+    singularName: 'organisation';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    events: Schema.Attribute.Relation<'oneToMany', 'api::event.event'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::organisation.organisation'
+    > &
+      Schema.Attribute.Private;
+    Logo: Schema.Attribute.Media<'images' | 'files'> &
+      Schema.Attribute.Required;
+    Name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'Name'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1248,6 +1287,7 @@ declare module '@strapi/strapi' {
       'api::message.message': ApiMessageMessage;
       'api::meta.meta': ApiMetaMeta;
       'api::mux-hook.mux-hook': ApiMuxHookMuxHook;
+      'api::organisation.organisation': ApiOrganisationOrganisation;
       'api::viewer.viewer': ApiViewerViewer;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
