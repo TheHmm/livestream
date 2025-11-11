@@ -134,10 +134,10 @@ export default {
     },
     get_random_position() {
       const header = document.querySelector('header')
-      const max_x = header.offsetWidth
-      const min_x = header.offsetLeft
-      const max_y = header.offsetHeight
-      const min_y = header.offsetTop + 14
+      const max_x = header?.offsetWidth || Math.random() * 1000
+      const min_x = header?.offsetLeft || Math.random() * 1000
+      const max_y = header?.offsetHeight || Math.random() * 1000 
+      const min_y = header ? header.offsetTop + 16 : Math.random() * 1000
       return { 
         clientX: Math.random() * (max_x - min_x) + min_x,
         clientY: Math.random() * (max_y - min_y) + min_y

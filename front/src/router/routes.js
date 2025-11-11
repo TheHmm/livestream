@@ -87,6 +87,15 @@ export default [
         }
       },
       {
+        path: 'placeholder',
+        name: 'Placeholder',
+        component: () => import( '@/components/Utils/Placeholder.vue' ),
+        meta: {
+          hide_header: true,
+          desired_tabs: []
+        }
+      },
+      {
         path: 'accent',
         name: 'Accent',
         component: () => import( '@/components/Utils/Accent.vue' )
