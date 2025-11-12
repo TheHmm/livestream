@@ -11,6 +11,25 @@
   ;
 }
 
+@font-face {
+  font-family: 'karrik';
+  src:
+    url('../fonts/Karrik-Italic.otf')
+    format("opentype")
+  ;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'karrik';
+  src:
+    url('../fonts/Karrik-Regular.otf')
+    format("opentype")
+  ;
+  font-style: normal;
+}
+
+
 :root {
 
 
@@ -162,7 +181,7 @@ body {
   margin           : 0;
   height           : 100%;
   width            : 100%;
-  font-family      : Arial, Helvetica, sans-serif;
+  font-family      : karrik, Arial, Helvetica, sans-serif;
   font-size        : 18px;
 
   --size-s         : 1rem;
@@ -338,10 +357,10 @@ li::before {
 
 /* main component switching between index, livestream and fallback */
 .flyall-enter-active {
-  animation : flyall var(--enter) ease both;
+  /* animation : flyall var(--enter) ease both; */
 }
 .flyall-leave-active {
-  animation : flyall var(--enter) ease reverse both;
+  /* animation : flyall var(--enter) ease reverse both; */
 }
 @keyframes flyall {
   from {

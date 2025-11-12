@@ -2,9 +2,10 @@
 export default { 
   name : 'The Inbetween Banner', 
   mounted() {
-    const dots = Array.from( document.querySelectorAll('#the_inbetween_banner .dot') )
+    const dots = Array.from( document.querySelectorAll('#the_inbetween_banner .dot.on') )
     dots.forEach( dot => {
-      dot.style.setProperty(`--r`, Math.random())
+      dot.style.setProperty(`--r`, Math.random() * ( 1 - -1 ) + -1 )
+      dot.style.setProperty(`--r2`, Math.random() * ( 1 - -1 ) + -1 )
       dot.addEventListener( 'click', e => {
         e.target.classList.add('shaking')
         setTimeout(() => {
@@ -23,7 +24,6 @@ export default {
   --space-width: calc( 3 * var(--size) );
   --full-height: min(10rem, 40vh);
   --full-width: min(80rem, 100vw);
-  /* --dot-height: calc( 0.95 * var(--size)); */
   --dot-height: calc( var(--full-height) / ( 1.3 * 7 ) );
   --dot-width: calc( var(--full-width) / ( 18 * 7 ) );
   display: flex;
@@ -31,16 +31,17 @@ export default {
   width: var(--full-width);
   margin-inline: auto;
   margin-top: 5rem;
+  z-index: 1;
 }
 .word {
   display: flex;  
   align-items: stretch;
   /* filter: drop-shadow(0 0 0.5px rgb(0, 0, 0)); */
   filter: 
-    drop-shadow( 0.5px  0px 0px black) 
-    drop-shadow(-0.5px  0px 0px black)
-    drop-shadow( 0px  0.5px 0px black) 
-    drop-shadow( 0px -0.5px 0px black);
+    drop-shadow( 1px  0px 0px black) 
+    drop-shadow(-1px  0px 0px black)
+    drop-shadow( 0px  1px 0px black) 
+    drop-shadow( 0px -1px 0px black);
 }
 .word.the {
   margin-right: var(--space-width);
@@ -78,24 +79,27 @@ export default {
   min-width: calc( 1 * var(--size));
   min-height: calc( 1 * var(--size));
   background-color: var(--accent);
-  scale: 0;
-  animation: blob linear 3s forwards;
+  /* scale: 0; */
+  animation: blob cubic-bezier(0.36, 0.07, 0.19, 0.97) 2s forwards;
 }
-.on {
-  /* opacity: 1; */
-  scale: 1;
+dot:hover::after {
+  scale: calc( 1.5 * var(--r) );
 }
-.off {
-  /* opacity: 0; */
-  scale: 0
+.dot.on::after {
+  opacity: 1;
+}
+.dot.off::after {
+  opacity: 0;
 }
 @keyframes blob {
-  0% { scale: 0; }
-  20% { scale: calc( 2 * var(--r)); }
-  40% { scale: calc( 3 * var(--r) * var(--r)); }
-  60% { scale: calc( 3 * ( 1 - var(--r))); }
-  80% { scale: calc( 1 * var(--r)); }
-  100% { scale: 1; }
+  0%  { scale: 0; transform: translate3d(calc( 8rem * var(--r)), calc( 8rem * var(--r2)) , 0); }
+  15%  { scale: 1; transform: translate3d(calc( 5rem * var(--r)), calc( 5rem * var(--r2)) , 0); }
+  /* 30%  { transform: translate3d(calc( 7rem * var(--r)), calc( 7rem * var(--r2)), 0); } */
+  /* 80%  { transform: translate3d(calc( 5rem * var(--r2) * var(--r)), calc( 5rem * var(--r2) * var(--r)), 0); } */
+  /* 70%  { transform: translate3d(calc( 1.5rem * ( var(--r2) - var(--r))), calc( 1.5rem * ( var(--r) - var(--r2))), 0); } */
+  /* 90%  { transform: translate3d(calc( 1rem * var(--r)), calc( 1rem * var(--r2)), 0); } */
+  100% { transform: translate3d(calc( 0rem * var(--r)), calc( 0rem * var(--r2)), 0); }
+  /* 100% { transform: translate3d(0, 0, 0); } */
 }
 .dot.shaking {
   animation        : shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
@@ -109,7 +113,17 @@ export default {
 }
 
 .mobile #the_inbetween_banner {
-  /* --size: 0.65rem; */
+  --size:0.65rem;
+  --letter-height: calc( 7 * var(--size) );
+  --space-width: calc( 0 * var(--size) );
+  --full-height: min(10rem, 60vh);
+  --full-width: min(100rem, 100vw);
+  --dot-height: calc( var(--full-height) / ( 2.6 * 7 ) );
+  --dot-width: calc( var(--full-width) / ( 14 * 7 ) );
+  flex-wrap: wrap;
+}
+.mobile .letter {
+  margin-right: calc(3* var(--dot-width));
 }
 </style>
 
