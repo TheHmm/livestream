@@ -34,6 +34,9 @@ export default {
     about: state => {
       return state.meta?.about
     },
+    tagline: state => {
+      return state.meta?.tagline
+    },
     censor_message: state => {
       return state.meta?.censorMessage
     },

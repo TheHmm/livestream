@@ -544,9 +544,6 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::event.event'> &
       Schema.Attribute.Private;
-    marquee: Schema.Attribute.RichText &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'The Hmm || '>;
     messages: Schema.Attribute.Relation<'oneToMany', 'api::message.message'>;
     mux_recording: Schema.Attribute.JSON;
     publishedAt: Schema.Attribute.DateTime;
@@ -659,6 +656,7 @@ export interface ApiMetaMeta extends Struct.SingleTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::meta.meta'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    tagline: Schema.Attribute.Text;
     transcription_vocabulary: Schema.Attribute.Component<
       'phrases.phrase',
       true

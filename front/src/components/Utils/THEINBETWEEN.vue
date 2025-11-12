@@ -1,10 +1,12 @@
 <script>
-import Letter from './Letter.vue'
+import Letter from '@/components/Utils/Letter.vue'
 import letters from '@/utils/letters.js'
+import DynamicLogo from '@/components/Utils/DynamicLogo.vue'
 export default { 
   name : 'The Inbetween Banner',
   components : {
     Letter,
+    DynamicLogo
   },
   data() {
     return {
@@ -22,7 +24,7 @@ export default {
       <Letter :letter="letters.E" class="E" />
     </div>
     <!-- Viewers -->
-    <!-- Dynamic Logo -->
+    <DynamicLogo />
     <!-- Viewers -->
     <div class="word imbetween">
       <Letter :letter="letters.I" class="I" />

@@ -16,21 +16,26 @@
       "type": "richtext",
       "required": true
     },
+    "defaultMarquee": {
+      "type": "richtext",
+      "required": true
+    },
     "censorMessage": {
       "type": "richtext",
       "required": true
-
     },
     "transcription_vocabulary": {
-      "displayName": "phrase",
       "type": "component",
-      "repeatable": true,
+      "private": true,
       "component": "phrases.phrase",
-      "private": true
+      "repeatable": true
     },
     "transcription_vocabulary_id": {
       "type": "string",
       "private": true
+    },
+    "tagline": {
+      "type": "text"
     }
   }
 }

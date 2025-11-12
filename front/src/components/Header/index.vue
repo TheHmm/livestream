@@ -27,9 +27,6 @@ export default {
     aria-label="Banner and network information"
   >
     <THEINBETWEEN />
-    <!-- viewers -->
-    <!-- logo -->
-     <!-- viewers -->
     <section>
       <nav></nav>
       <Network />
