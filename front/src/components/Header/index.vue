@@ -1,6 +1,5 @@
 <script>
 
-import Marquee from './Marquee.vue'
 import Banner  from './Banner.vue'
 import Network from './Network.vue'
 
@@ -11,7 +10,6 @@ import Network from './Network.vue'
 export default {
   name: 'Header',
   components: {
-    Marquee,
     Banner,
     Network,
   },
@@ -29,7 +27,6 @@ export default {
     v-if="!hide_header"
     aria-label="Banner, viewer dots, and network information"
   >
-    <Marquee />
     <Banner />
     <Network />
   </header>

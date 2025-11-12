@@ -29,18 +29,41 @@
       "type": "datetime",
       "required": true
     },
-    "marquee": {
-      "type": "richtext",
-      "required": true,
-      "default": "The Hmm || "
+    "livestream": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::livestream.livestream",
+      "inversedBy": "events"
     },
-    "info": {
-      "type": "richtext"
+    "default_player_mode": {
+      "type": "enumeration",
+      "default": "video",
+      "enum": [
+        "video",
+        "audio",
+        "thumbs",
+        "transcript"
+      ]
     },
     "accent": {
       "type": "string",
       "default": "hsl(240, 100%, 50%)",
       "regex": "[Hh][Ss][Ll][\\(](((([\\d]{1,3}|[\\d\\%]{2,4})[\\,]{0,1})[\\s]*){3})[\\)]"
+    },
+    "show_in_agenda": {
+      "type": "boolean",
+      "default": true
+    },
+    "releaseDots": {
+      "type": "boolean",
+      "default": false
+    },
+    "allowEmoji": {
+      "type": "boolean",
+      "default": true
+    },
+    "info": {
+      "type": "richtext"
     },
     "messages": {
       "type": "relation",
@@ -66,43 +89,15 @@
       "target": "api::emoji-group.emoji-group",
       "inversedBy": "events"
     },
-    "allowEmoji": {
-      "type": "boolean",
-      "default": true
+    "mux_recording": {
+      "type": "json"
     },
     "count": {
       "type": "integer"
     },
-    "mux_recording": {
-      "type": "json"
-    },
-    "default_player_mode": {
-      "type": "enumeration",
-      "default": "video",
-      "enum": [
-        "video",
-        "audio",
-        "thumbs",
-        "transcript"
-      ]
-    },
     "later_visits": {
       "type": "integer",
       "min": 0
-    },
-    "releaseDots": {
-      "type": "boolean",
-      "default": false
-    },
-    "livestream": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::livestream.livestream",
-      "inversedBy": "events"
-    },
-    "show_in_agenda": {
-      "type": "boolean",
-      "default": true
     }
   }
 }

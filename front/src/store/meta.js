@@ -31,9 +31,6 @@ export default {
     meta: state => {
       return state.meta
     },
-    default_marquee: state => {
-      return state.meta?.defaultMarquee || "The Hmm Livestream || "
-    },
     about: state => {
       return state.meta?.about
     },

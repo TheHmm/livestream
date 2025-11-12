@@ -16,10 +16,6 @@
       "type": "richtext",
       "required": true
     },
-    "defaultMarquee": {
-      "type": "richtext",
-      "required": true
-    },
     "censorMessage": {
       "type": "richtext",
       "required": true
