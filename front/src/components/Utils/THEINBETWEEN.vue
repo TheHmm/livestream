@@ -80,7 +80,7 @@ export default {
   min-height: calc( 1 * var(--size));
   background-color: var(--accent);
   /* scale: 0; */
-  animation: blob cubic-bezier(0.36, 0.07, 0.19, 0.97) 2s forwards;
+  animation: blob cubic-bezier(0.36, 0.07, 0.19, 0.97) 1s forwards;
 }
 dot:hover::after {
   scale: calc( 1.5 * var(--r) );
@@ -92,8 +92,8 @@ dot:hover::after {
   opacity: 0;
 }
 @keyframes blob {
-  0%  { scale: 0; transform: translate3d(calc( 8rem * var(--r)), calc( 8rem * var(--r2)) , 0); }
-  15%  { scale: 1; transform: translate3d(calc( 5rem * var(--r)), calc( 5rem * var(--r2)) , 0); }
+  0%  { scale: 0; transform: translate3d(calc( 6rem * var(--r)), calc( 6rem * var(--r2)) , 0); }
+  15%  { scale: 1; transform: translate3d(calc( 3rem * var(--r)), calc( 3rem * var(--r2)) , 0); }
   /* 30%  { transform: translate3d(calc( 7rem * var(--r)), calc( 7rem * var(--r2)), 0); } */
   /* 80%  { transform: translate3d(calc( 5rem * var(--r2) * var(--r)), calc( 5rem * var(--r2) * var(--r)), 0); } */
   /* 70%  { transform: translate3d(calc( 1.5rem * ( var(--r2) - var(--r))), calc( 1.5rem * ( var(--r) - var(--r2))), 0); } */
