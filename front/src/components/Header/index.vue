@@ -1,6 +1,5 @@
 <script>
-
-import Banner  from './Banner.vue'
+import THEINBETWEEN from '../Utils/THEINBETWEEN.vue'
 import Network from './Network.vue'
 
 
@@ -10,7 +9,7 @@ import Network from './Network.vue'
 export default {
   name: 'Header',
   components: {
-    Banner,
+    THEINBETWEEN,
     Network,
   },
   computed: {
@@ -25,10 +24,16 @@ export default {
 <template>
   <header
     v-if="!hide_header"
-    aria-label="Banner, viewer dots, and network information"
+    aria-label="Banner and network information"
   >
-    <Banner />
-    <Network />
+    <THEINBETWEEN />
+    <!-- viewers -->
+    <!-- logo -->
+     <!-- viewers -->
+    <section>
+      <nav></nav>
+      <Network />
+    </section>
   </header>
 </template>
 
