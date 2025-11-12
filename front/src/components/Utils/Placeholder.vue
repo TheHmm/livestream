@@ -33,6 +33,7 @@ export default {
   margin-top: 2rem;
   padding: 1rem;
   max-width: min(29rem, 100%);
+  font-size: larger;
 }
 #placeholder_page section p {  
   color: var(--black);
