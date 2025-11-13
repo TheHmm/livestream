@@ -48,6 +48,13 @@ export default {
     })
   }, // => 21:22:34
 
+  short_time_format : datetime => {
+    return new Date( datetime ).toLocaleString( 'en-GB', {
+      hour         : 'numeric',
+      minute       : 'numeric',
+    })
+  }, // => 21:22
+
 
   get_year :  timestamp => {
     return new Date( timestamp ).getFullYear()

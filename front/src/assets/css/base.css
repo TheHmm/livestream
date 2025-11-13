@@ -52,7 +52,8 @@
   --thin           : 0.5px solid;
   --solid          :   1px solid;
   --thick          :   2px solid;
-  --radius         : 0.5rem;
+  --radius         : 0.75rem;
+  --radius-s       : 0.35rem;
 
 
   /* Shadow parameters for box-shadows and drop-shadows */
@@ -81,7 +82,7 @@
   --middle-height  : calc( 100% - var(--total-header ) );
   --side-width     : 20rem;
   --main-width     : calc( 100% - var(--side-width) );
-  --footer-height  : 4rem;
+  --footer-height  : 5rem;
 
 
 }

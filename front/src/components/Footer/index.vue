@@ -164,14 +164,17 @@ export default {
 footer {
   max-height       : var(--footer-height);
   position         : fixed;
-  bottom           : 0;
+  bottom           : 1rem;
+  right: 0;
   width            : 100%;
   max-width        : calc( var(--main-width) - 1rem );
   padding          : 0 var(--size-s);
   display          : flex;
   align-items      : flex-end;
+  gap: 1rem;
   z-index          : 2;
   overflow         : visible;
+  justify-content: flex-end;
 }
 
 .mobile footer {
@@ -188,9 +191,6 @@ footer {
 
 footer .tab {
   --distance     : 5rem;
-  --radius       : calc( 2rem + var(--base-height) ) 100%;
-  border-top-left-radius  : var(--radius);
-  border-top-right-radius : var(--radius);
   background-color : var(--back);
   transform: translateY(0);
 }
@@ -205,11 +205,7 @@ footer .tab {
   to   { transform : translateY(0) }
 }
 
-footer .tab:not(:first-of-type) {
-  margin-left    : calc( -1 * var(--size-s));
-}
-
-footer .tab:focus .contents,
+  footer .tab:focus .contents,
 footer .tab:focus-within .contents,
 footer .tab:hover .contents {
   padding-bottom : 0.5rem;

@@ -4,11 +4,14 @@
 .tab {
 
   --back           : var(--yellow);
+  --fore           : var(--black);
   --base-height    : 3rem;
   --full-height    : 15rem;
   --tab-width      : 10rem;
-
-  box-shadow       : var(--shadow);
+  
+  border: var(--solid);
+  border-radius: var(--radius);
+  overflow: hidden;
 
 }
 
@@ -17,6 +20,8 @@
   height           : var(--base-height);
   padding           : 0 0.5rem;
   display          : flex;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
 }
 
 .tab .contents {
@@ -26,14 +31,16 @@
   min-height       : 0;
   max-height       : 0;
   padding          : 0;
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;  
   transition       :
-    padding     var(--fast) ease-in-out,
-    min-height  var(--fast) ease-in-out,
-    max-height  var(--fast) ease-in-out,
-    min-width   var(--fast) ease-in-out,
-    max-width   var(--fast) ease-in-out,
-    box-shadow  var(--fast) ease-in-out,
-    margin      var(--fast) ease-in-out
+    padding     var(--fast) linear,
+    min-height  var(--fast) linear,
+    max-height  var(--fast) linear,
+    min-width   var(--fast) linear,
+    max-width   var(--fast) linear,
+    box-shadow  var(--fast) linear,
+    margin      var(--fast) linear
   ;
 }
 

@@ -76,9 +76,9 @@ export default {
 
 <template>
   <Info :event="event" />
+  <Chat :event="event" />
   <Player v-if="show_player" :event="event" :livestream="livestream" />
   <Status v-else :status="status" />
-  <Chat :event="event" />
 </template>
 
 
@@ -86,7 +86,7 @@ export default {
 
 #info {
   flex-shrink      : 0;
-  margin-left      : var(--size-s);
+  margin-right     : var(--size-s);
 }
 
 #chat_container {
@@ -94,8 +94,8 @@ export default {
   --fore           : var(--black);
   width            : calc(var(--side-width));
   position         : absolute;
-  bottom           : 0;
-  right            : 0;
+  bottom           : 1rem;
+  left             : 0;
   margin           : 0 var(--size-s);
 }
 

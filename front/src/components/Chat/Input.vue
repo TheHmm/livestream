@@ -155,40 +155,42 @@ export default {
   flex-direction  : column;
   /* justify-content : stretch; */
   align-items: flex-start;
-  padding         : 2px calc( 0.5rem + 2px);
+  padding: 0.5rem;
 }
 #message_form .reply_to {
-  padding         : 2px;
+  padding         : 0.5rem;
   margin-block: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: right;
-  /* align-items     : flex-end; */
-  /* background-color:; */
-  outline          : var(--focus);
+  outline          : var(--solid);
+  background-color: var(--white);
+  border-radius: var(--radius-s);
 }
 #message_form .reply_to > span {
   font-weight: bold;
   font-size: 0.8rem;
   font-style: italic;
   margin-left: 0.25rem;
+  margin-bottom: 0.5rem;
+
 }
 #message_form .row {
+  width: 100%;
   height          : var(--base-height);
   display         : flex;
-  justify-content : stretch;
   align-items     : center;
+  gap:0.5rem  ;
 }
 #message_form input[type="text"] {
-  flex-grow       : 1;
   height          : 100%;
-  border          : none;
   font-size       : var(--size-m);
   overflow        : scroll;
-  margin-right    : 0.5rem;
+  padding-inline: 0.5rem;
+  width: 100%;
 }
 #message_form input[type="text"]::placeholder {
-  font-size       : 1.15rem;
+  font-size       : 1rem;
 }
 
 </style>

@@ -62,9 +62,6 @@ export default {
     aria-label="Event information"
   >
     <h3 aria-label="event time">
-      <time :datetime="starts">
-        {{ timestamp }}
-      </time>
       <router-link
         custom
         :to="{ path: '/', query: $route.query }"
@@ -78,6 +75,9 @@ export default {
           @click.stop="navigate"
         />
       </router-link>
+      <time :datetime="starts">
+        {{ timestamp }}
+      </time>
     </h3>
     <h1 id="event_title">
       {{ title }}
@@ -96,7 +96,6 @@ export default {
   width       : var(--side-width);
   max-width   : var(--side-width);
   height      : 100%;
-  text-align  : center;
 }
 #info input {
   /* position    : absolute;
@@ -112,8 +111,7 @@ export default {
   /* justify-content: center; */
 }
 #info h3 time {
-  margin: auto;
-  padding-left: 1rem;
+  margin-left: 1rem;
 }
 #info div {
   font-weight : lighter;

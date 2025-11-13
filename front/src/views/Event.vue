@@ -100,7 +100,7 @@ export default {
 <style scoped>
 
 .event {
-  flex-direction   : row-reverse;
+  flex-direction   : row;
   height           : 100%;
   /* animation        : enterMiddle var(--enter) ease 0.1s forwards !important; */
   padding-bottom   : var(--footer-height);

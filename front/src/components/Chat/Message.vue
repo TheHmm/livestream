@@ -46,7 +46,7 @@ export default {
 
     id()     { return this.message.documentId },
     time()   { return this.message.time },
-    time_s() { return this.$time.time_format( this.time ) },
+    time_s() { return this.$time.short_time_format( this.time ) },
     time_l() { return this.$time.long_date_format( this.time ) },
     body()   { return this.$mdi( this.message.body || '' ) },
     links()  { return this.message.links },
@@ -164,23 +164,14 @@ export default {
 <style scoped>
 
 .message {
-  --increment         : 4%;
-  --accent            : hsl(
-      var(--h),
-      var(--s),
-      min(
-        calc( var(--l) + var(--n) * var(--increment) ),
-        calc( var(--max-l) - var(--increment))
-      ) );
-  --back              : var(--accent);
+  --back              : var(--white);
   background-color    : var(--back);
+  border-radius: var(--radius-s);
+  border: var(--solid);
   max-width           : 100%;
-  /* margin              : 2px; */
   padding             : 0.5rem;
   margin-top          : 0.5rem;
   pointer-events      : none;
-  transition          : background-color var(--fast) ease;
-  /* overflow: visible; */
 }
 
 .message:not(.is_response, .selected) {
@@ -192,10 +183,10 @@ export default {
 }
 
 .message .header {
-  font-family         : monospace;
-  font-family         : 'not-courier-sans', monospace;
+  /* font-family         : monospace; */
+  /* font-family         : 'not-courier-sans', monospace; */
   font-style          : italic;
-  font-size           : 0.9rem;
+  font-size           : 0.8rem;
   display             : flex;
   gap                 : 0.5rem;
   align-items         : center;
@@ -212,46 +203,32 @@ export default {
 .message .header .sender u {
   cursor              : pointer;
 }
-
 .message .header .time {
   font-size: 0.8rem;
-  /* margin-left         : 0.5rem; */
-  /* margin-right        : auto; */
   margin-right: auto;
 
 }
-
 .message .body {
   margin-top          : 0.25rem ;
   max-width           : 30rem;
 }
-
 .message .body :deep(a) {
   word-break: break-all;
 }
-
 .expanded .message {
   pointer-events      : all;
 }
-
+.message.is_response {
+  margin-bottom: 0.5rem;
+}
 .message.censored .body {
   font-style          : italic;
   font-size           : 0.8rem;
   opacity             : 0.6;
 }
-
 .message.mine {
   align-self: flex-end;
 }
-
-.message.selected {
-  --back : var(--accent-lighter);
-}
-
-.message.is_response {
-  --back : var(--accent-lighter);
-}
-
 .message:has(.emoji) {
   margin-bottom: 0.5rem;
 }

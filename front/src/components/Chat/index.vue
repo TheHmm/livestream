@@ -177,10 +177,10 @@ export default {
               v-model="links_only"
             />
             <label
-              title="Show only URLs"
+              title="Show URLs only"
               for="links"
             >
-              Show only URLs
+              Show URLs only
             </label>
           </span>
           <input
@@ -253,7 +253,6 @@ export default {
 }
 
 #chat {
-  --back          : var(--accent-light);
   width           : 100%;
 }
 
@@ -263,7 +262,6 @@ export default {
 }
 
 #chat .title .options {
-  font-family     : 'not-courier-sans', Arial, Helvetica, sans-serif;
   width           : 100%;
   display         : flex;
   font-size       : var(--size-s);
@@ -297,7 +295,6 @@ export default {
 }
 
 #chat .contents .messages {
-  --border        : 1px solid var(--accent);
   margin          : 0 0.5rem;
   padding         : 0.5rem 0rem;
   height          : 100%;
@@ -305,8 +302,8 @@ export default {
   flex-direction  : column;
   align-items     : flex-start;
   overflow        : scroll;
-  border-top      : var(--border);
-  border-bottom   : var(--border);
+  border-top      : var(--solid);
+  border-bottom   : var(--solid);
   /* causes this to stop scrolling  */
   /* justify-content: flex-end;  */
 }

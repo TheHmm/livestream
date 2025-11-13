@@ -13,20 +13,20 @@ export default {
   computed: {
     id() { return `p_${ this.tab.name }` }
   },
-  mounted() {
+  // mounted() {
 
-    const
-      label = document.getElementById( this.id ),
-      arc   = new CircleType( label ),
-      par_w = label.parentElement.offsetHeight * 2,
-      rad   = par_w * ( this.tab.label.length + 3 ) / this.longest
+  //   const
+  //     label = document.getElementById( this.id ),
+  //     arc   = new CircleType( label ),
+  //     par_w = label.parentElement.offsetHeight * 2,
+  //     rad   = par_w * ( this.tab.label.length + 3 ) / this.longest
 
-    arc.radius( rad )
-    arc.forceHeight( false )
-    window.addEventListener( 'resize', () => {
-      arc.radius( rad )
-    })
-  }
+  //   arc.radius( rad )
+  //   arc.forceHeight( false )
+  //   window.addEventListener( 'resize', () => {
+  //     arc.radius( rad )
+  //   })
+  // }
 
 
 }
@@ -52,7 +52,6 @@ label {
   justify-content         : center;
   align-items             : center;
   text-align              : center;
-  border-radius           : inherit;
   font-size               : var(--size-m);
   display                 : inline-block;
   /* background-color     : transparent !important; */

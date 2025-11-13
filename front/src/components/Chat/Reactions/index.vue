@@ -233,6 +233,8 @@ export default {
 <style scoped>
 
 .reactions {
+  --back: var(--white);
+  --fore: var(--black);
   position: absolute;
   bottom: -1.25rem;
   right: -1rem;
@@ -248,7 +250,7 @@ export default {
   ;
   z-index: 1;
   border: 1px solid transparent;
-  box-shadow: 0 0 0 var(--shadow-color);
+  /* box-shadow: 0 0 0 var(--shadow-color); */
   display: flex;
   flex-direction: column;
 }
@@ -276,10 +278,10 @@ export default {
   max-height: 1rem;
   display: flex;
   align-items: stretch;
-  background-color: var(--accent-lighter);
-  border: 1px solid var(--accent-dark);
+  background-color: var(--back);
+  border: var(--solid);
   border-radius: 0.4rem;
-  box-shadow: 0 0 0px var(--shadow-color);
+  /* box-shadow: 0 0 0px var(--shadow-color); */
   transition: 
     max-height var(--fast) ease, 
     box-shadow var(--fast) ease
@@ -301,7 +303,7 @@ export default {
 
 .reactions:focus-within .received_reactions li,
 .reactions.show_available .received_reactions li {
-  box-shadow: var(--shadow);
+  /* box-shadow: var(--shadow); */
   max-height: 2rem;
 }
 
@@ -314,11 +316,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--accent-dark);
+  border: var(--solid);
   border-radius: 100%;
   height: 1rem;
   width: 1rem;
-  background-color: var(--accent-lighter);
+  background-color: var(--back);
   opacity: 0;
   cursor: pointer;
 }
@@ -333,10 +335,10 @@ export default {
   margin-top: 0.3rem;
   max-height: 100%;
   padding    : 0.5rem;
-  background-color: var(--accent-lighter);
-  border: 1px solid var(--accent-dark);
+  background-color: var(--back);
+  border: var(--solid);
   overflow: scroll;
-  box-shadow: var(--shadow);
+  /* box-shadow: var(--shadow); */
   border-radius: 0.4rem;
 }
 
