@@ -112,7 +112,7 @@ export default [
       {
         path: 'placeholder',
         name: 'Placeholder',
-        component: () => import( '@/components/Utils/Placeholder.vue' ),
+        component: () => import( '@/components/Header/Placeholder.vue' ),
         meta: {
           hide_header: true,
           desired_tabs: []

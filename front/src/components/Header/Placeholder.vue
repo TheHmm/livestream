@@ -1,16 +1,16 @@
 <script>
 import Viewers from '@/components/Viewers/index.vue'
-import THEINBETWEEN from '@/components/Utils/THEINBETWEEN.vue'
+import Banner from './Banner.vue'
 export default {
   name : 'Placeholder',
-  components: { Viewers, THEINBETWEEN },
+  components: { Viewers, Banner },
   props : { event: Object },
 }
 </script>
 
 <template>
   <section id="placeholder_page">
-    <THEINBETWEEN />
+    <Banner />
     <section v-if="event" v-html="$md(event.info)"></section>
     <Viewers v-if="event" />
   </section>

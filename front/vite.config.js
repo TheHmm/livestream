@@ -14,8 +14,10 @@ export default defineConfig({
   build: {
     manifest              : true,
     sourcemap             : true,
-    polyfillModulePreload : false,
     chunkSizeWarningLimit : 100,
+    modulePreload : {
+      build: false
+    },
   },
   resolve: {
     alias: {
