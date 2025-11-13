@@ -2,17 +2,17 @@
 
 // Event list
 
-import Event from './Event.vue'
+import ArchiveEvent from './ArchiveEvent.vue'
 export default {
-  name       : 'EventList',
-  components : { Event },
+  name       : 'ArchiveList',
+  components : { ArchiveEvent },
   props      : { events: Array }
 }
 </script>
 
 <template>
   <ul aria-label="Event archive">
-    <Event
+    <ArchiveEvent
       v-for="( event, index ) in events"
       :key="event.slug"
       :event="event"

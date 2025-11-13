@@ -6,18 +6,17 @@
 
 import store     from '@/store'
 import _throw    from '@/utils/throw'
-import EventList from '../components/Event/List.vue'
+import AgendaList from '../components/Event/AgendaList.vue'
 
 export default {
 
   name: 'Agenda',
 
-  components: { EventList },
+  components: { AgendaList },
 
   async setup() {
     try {
-      const res = await store.dispatch( 'events/get_future_events' )
-      return { res }
+      await store.dispatch( 'events/get_future_events' )
     } catch ( error ) {
       _throw( error )
       throw error
@@ -38,7 +37,7 @@ export default {
 
 
 <template>
-  <EventList
+  <AgendaList
     v-if="events.length"
     :events="events"
   />

@@ -6,18 +6,17 @@
 
 import store     from '@/store'
 import _throw    from '@/utils/throw'
-import EventList from '../components/Event/List.vue'
+import ArchiveList from '../components/Event/ArchiveList.vue'
 
 export default {
 
   name: 'Archive',
 
-  components: { EventList },
+  components: { ArchiveList },
 
   async setup() {
     try {
-      const res = await store.dispatch( 'events/get_past_events' )
-      return { res }
+      await store.dispatch( 'events/get_past_events' )
     } catch ( error ) {
       _throw( error )
       throw error
@@ -58,7 +57,7 @@ export default {
 
 
 <template>
-  <EventList
+  <ArchiveList
     v-if="events.length || !year"
     :events="events"
   />

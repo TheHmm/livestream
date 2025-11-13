@@ -42,7 +42,7 @@ li {
   width: 100%;
   display: flex;
   align-items: center;
-  background-color: var(--fore);
+  background-color: var(--white);
   border: var(--solid);
   color: var(--black);
   border-radius: var(--radius);

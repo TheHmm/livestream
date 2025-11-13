@@ -5,7 +5,7 @@ import livestream from '@/utils/livestream'
 // Event tab in homepage
 
 export default {
-  name: 'Event',
+  name: 'AgendaEvent',
   props: {
     event : Object,
     i     : Number,
@@ -89,14 +89,22 @@ export default {
 li::before {
   content          : unset;
 }
-li.event {
+li.agendaevent {
+  min-height: 25rem;
+  width: calc( 100% / 3 - 0.7rem);
+  /* max-width: var(--side-width); */
   display: flex;
   flex-direction: column;
-  padding-bottom: 0;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
   max-height: 10rem;
+  border: var(--solid);
+  border-radius: var(--radius);
 }
 
-li.event section {
+li.agendaevent section {
   cursor           : pointer;
   width            : 100%;
   transition       : all var(--fast) ease;

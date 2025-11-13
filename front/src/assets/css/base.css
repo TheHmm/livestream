@@ -207,7 +207,7 @@ body {
 
   --h              : 0;
   --s              : 0%;
-  --l              : 50%;
+  --l              : 100%;
 
   --increment      : 9.6%;
   --max-l          : 96%;
@@ -239,9 +239,13 @@ body {
   /* Changes with different elements */
 
   --back           : var(--accent);
-  --fore           : var(--white);
+  --fore           : var(--black);
   --focus          : var(--thick) var(--accent);
 
+}
+
+body#livestream {
+  --fore           : var(--white);
 }
 
 .event {
