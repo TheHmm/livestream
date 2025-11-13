@@ -65,8 +65,8 @@ section.is_loading {
   --accent    : var(--light-grey);
   color       : var(--accent);
 }
-section.is_loading >>> section,
-section.is_loading >>> section p {
+section.is_loading :deep(section),
+section.is_loading :deep(section p) {
   color       : inherit;
   text-align  : center;
 }
@@ -76,7 +76,7 @@ section.is_error {
   color       : var(--accent);
   font-family : monospace;
 }
-section.is_error >>> p {
+section.is_error :deep(p) {
   color       : inherit;
   text-align  : left;
 }

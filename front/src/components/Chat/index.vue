@@ -291,7 +291,7 @@ export default {
   font-size       : var(--size-s);
 }
 
-#chat .contents >>> ul li {
+#chat .contents :deep(ul li) {
   word-break      : break-all;
   padding         : 0;
 }

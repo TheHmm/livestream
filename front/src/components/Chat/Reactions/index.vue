@@ -361,11 +361,11 @@ export default {
   content: '';
 }
 
-.reactions >>> .emo {
+.reactions :deep(.emo) {
   cursor     : pointer;
 }
 
-.reactions.disabled >>> .emo {
+.reactions.disabled :deep(.emo) {
   cursor     : not-allowed;
   opacity    : 0.4;
   filter     : grayscale(1);

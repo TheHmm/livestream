@@ -37,12 +37,12 @@
   ;
 }
 
-.tab .contents >>> ul {
+.tab .contents :deep(ul) {
   list-style       : none;
   padding          : 0;
   margin           : 0;
 }
-.tab .contents >>> ul li {
+.tab .contents :deep(ul li) {
   padding          : 0.1rem 0.5rem;
 }
 

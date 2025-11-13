@@ -177,7 +177,7 @@ export default {
   max-width           : 30rem;
 }
 
-.message .body >>> a {
+.message .body :deep(a) {
   word-break: break-all;
 }
 

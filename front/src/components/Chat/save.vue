@@ -157,7 +157,7 @@ export default {
 }
 
 
-#chat >>> ul li {
+#chat :deep(ul li) {
   word-break      : break-all;
   padding         : 0;
   list-style      : none;

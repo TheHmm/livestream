@@ -28,10 +28,10 @@ export default {
   margin           : var(--size-s);
   transition       : all 0.5s ease;
 }
-.announcement >>> p:first-of-type {
+.announcement :deep(p:first-of-type) {
   margin-block-start: 0;
 }
-.announcement >>> p:last-of-type {
+.announcement :deep(p:last-of-type) {
   margin-block-end: 0;
 }
 .mobile .announcement {

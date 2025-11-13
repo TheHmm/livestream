@@ -232,18 +232,18 @@ export default {
   --size           : 1.5rem;
 }
 
-.viewer >>> .emo {
+.viewer :deep(.emo) {
   --fore          : var(--black);
   border-radius   : inherit;
   transform       : scale(1);
   transition      : transform var(--slow) ease;
 }
 
-.viewer >>> .emo img {
+.viewer :deep(.emo img) {
   border-radius   : inherit;
 }
-.viewer >>> .dot-enter-from,
-.viewer >>> .dot-leave-to {
+.viewer :deep(.dot-enter-from),
+.viewer :deep(.dot-leave-to) {
   /* transform       : scale(0); */
 }
 

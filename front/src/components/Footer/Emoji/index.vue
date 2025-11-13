@@ -122,11 +122,11 @@ export default {
   margin     : 0.2rem;
 }
 
-#emoji >>> .emo {
+#emoji :deep(.emo) {
   cursor     : pointer;
 }
 
-#emoji.disabled >>> .emo {
+#emoji.disabled :deep(.emo) {
   cursor     : not-allowed;
   opacity    : 0.4;
   filter     : grayscale(1);

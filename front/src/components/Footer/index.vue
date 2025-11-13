@@ -215,15 +215,15 @@ footer .tab:hover .contents {
   padding-bottom : 0.5rem;
 }
 
-footer .tab .contents >>> ul {
+footer .tab .contents :deep(ul) {
   margin         : auto;
 }
 
-footer .tab .contents >>> ul li {
+footer .tab .contents :deep(ul li) {
   display        : flex;
   align-items    : center;
 }
-footer .tab .contents >>> ul li::before {
+footer .tab .contents :deep(ul li::before ){
   content        : unset;
 }
 

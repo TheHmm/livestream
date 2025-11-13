@@ -63,45 +63,47 @@ export default {
     :id="$id()"
     aria-label="Network monitor"
   >
+    <tbody>
 
-    <tr aria-label="Bytes sent">
-      <td
-        role="status"
-        aria-label="Last bytes sent"
-        :class="[ 'last', { has_changed: sent_has_changed } ]"
-      >
-        <span>{{ `sent ${ format_bytes( last_bytes_sent?.bytes ) } to ${ last_bytes_sent?.to } ↑` }}</span>
-      </td>
-      <td
-        class="value"
-        aria-label="Total bytes sent"
-      >
-        <span>{{ format_bytes( total_bytes_sent ) }}</span>
-      </td>
-      <td aria-hidden="true">
-        <span>sent</span>
-      </td>
-    </tr>
+      <tr aria-label="Bytes sent">
+        <td
+          role="status"
+          aria-label="Last bytes sent"
+          :class="[ 'last', { has_changed: sent_has_changed } ]"
+        >
+          <span>{{ `sent ${ format_bytes( last_bytes_sent?.bytes ) } to ${ last_bytes_sent?.to } ↑` }}</span>
+        </td>
+        <td
+          class="value"
+          aria-label="Total bytes sent"
+        >
+          <span>{{ format_bytes( total_bytes_sent ) }}</span>
+        </td>
+        <td aria-hidden="true">
+          <span>sent</span>
+        </td>
+      </tr>
 
-    <tr aria-label="Bytes received">
-      <td
-        role="status"
-        aria-label="Last bytes received"
-        :class="[ 'last', { has_changed: received_has_changed } ]"
-      >
-        <span>{{ `received ${ format_bytes( last_bytes_received?.bytes ) } from ${ last_bytes_received?.from } ↓` }} </span>
-      </td>
-      <td
-        class="value"
-        aria-label="Total bytes received"
-      >
-        <span>{{ format_bytes( total_bytes_received ) }}</span>
-      </td>
-      <td aria-hidden="true">
-        <span>received</span>
-      </td>
-    </tr>
+      <tr aria-label="Bytes received">
+        <td
+          role="status"
+          aria-label="Last bytes received"
+          :class="[ 'last', { has_changed: received_has_changed } ]"
+        >
+          <span>{{ `received ${ format_bytes( last_bytes_received?.bytes ) } from ${ last_bytes_received?.from } ↓` }} </span>
+        </td>
+        <td
+          class="value"
+          aria-label="Total bytes received"
+        >
+          <span>{{ format_bytes( total_bytes_received ) }}</span>
+        </td>
+        <td aria-hidden="true">
+          <span>received</span>
+        </td>
+      </tr>
 
+    </tbody>
   </table>
 </template>
 

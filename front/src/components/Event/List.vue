@@ -12,15 +12,13 @@ export default {
 
 <template>
   <ul aria-label="Event archive">
-    <transition-group name="switch" mode="out-in" >
-      <Event
-        v-for="( event, index ) in events"
-        :key="event.slug"
-        :event="event"
-        :i="index"
-        :n="events.length - index"
-      />
-    </transition-group>
+    <Event
+      v-for="( event, index ) in events"
+      :key="event.slug"
+      :event="event"
+      :i="index"
+      :n="events.length - index"
+    />
   </ul>
 </template>
 

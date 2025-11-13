@@ -99,8 +99,8 @@ export default {
   margin           : 0 var(--size-s);
 }
 
-#chat_container >>> #chat .contents:focus-within,
-#chat_container >>> #chat.expanded .contents {
+#chat_container :deep(#chat .contents:focus-within),
+#chat_container :deep(#chat.expanded .contents) {
   /* --height         : calc( 100vh - 18rem ); OLD */
   --height         : calc( 100vh - ( var(--header-height) + var(--footer-height) ));
 }
@@ -125,12 +125,12 @@ export default {
   /* bottom           : var(--footer-height); */
   margin           : 0;
 }
-.mobile #chat_container >>> #chat .contents:focus-within,
-.mobile #chat_container >>> #chat.expanded .contents {
+.mobile #chat_container :deep(#chat .contents:focus-within),
+.mobile #chat_container :deep(#chat.expanded .contents) {
   /* --height         : calc( 100vh - 23rem ); */
   /* --height         : 100%; */
 }
-.mobile #chat_container >>> #chat .contents {
+.mobile #chat_container :deep(#chat .contents) {
   padding-bottom   : calc( var(--footer-height) + 1rem);
 }
 

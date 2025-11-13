@@ -74,12 +74,12 @@ label {
 
 
 label div,
-label >>> div {
+label :deep(div) {
   height                  : 100%;
   padding                 : 0.2rem var(--size-s);
 }
 
-.reduce_motion label >>> div span {
+.reduce_motion label :deep(div span) {
   font-size               : var(--size-s);
   position                : relative !important;
   left                    : unset !important;
@@ -90,7 +90,7 @@ label >>> div {
   font-size               : var(--size-s);
 }
 
-.mobile.reduce_motion label >>> div {
+.mobile.reduce_motion label :deep(div) {
   padding: 0.2rem 0;
   bottom: -0.1rem;
 }
