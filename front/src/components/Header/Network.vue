@@ -110,55 +110,53 @@ export default {
 
 table {
   --n             : 6;
-  --fore          : var(--accent);
-  color           : var(--accent);
-  position        : absolute;
-  top             : calc( 1rem + var(--marquee-height) );
-  right           : 1rem;
   border-collapse : collapse;
-  font-family     : 'not-courier-sans', monospace;
-  font-size       : 0.8rem;
+  font-family     : 'karrik', monospace;
+  font-size       : 0.7rem;
   line-height     : 1;
   opacity         : 0;
-  animation       : fade_in var(--enter) ease calc( 0.4s + var(--n) * 0.1s ) forwards;
+  animation       : fade_in var(--enter) linear calc( 0.4s + var(--n) * 0.1s ) forwards;
   z-index         : 1;
   pointer-events  : none;
+  width: var(--side-width);
+  flex-shrink: 0;
+  overflow: hidden;
 }
 table tr td {
-  padding         : 0;
-  white-space     : pre;
+  padding: 0;
+  white-space: pre;
 }
 table tr td * {
-  background-color: var(--fore);
-  color: var(--back);
+  background-color: var(--accent);
+  color: var(--fore);
   padding: 0 0.25rem;
-  transition      : all var(--enter) ease;
+  transition: all var(--enter) linear;
 }
 table tr td.value {
-  text-align      : right;
+  text-align: right;
 }
 table tr td.last {
- /* padding-right   : 0.25rem; */
-  text-align      : right;
-  overflow        : visible;
-  opacity         : 0;
-  transition      : opacity 0.5s ease-out;
+  text-align: right;
+  overflow: visible;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+table tr td.last * {
+  padding-right: 0rem;
 }
 table tr td.last.has_changed {
-  animation       : fade 2s ease-out;
-  transition      : opacity 0.5s ease-out;
+  animation: fade 2s ease-out;
+  transition: opacity 0.5s ease-out;
 }
-
 @keyframes fade {
-  0%   { opacity  : 0; }
-  5%   { opacity  : 1; }
-  90%  { opacity  : 1; }
-  100% { opacity  : 0; }
+  0%   { opacity: 0; }
+  5%   { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 @keyframes fade_in {
-  from { opacity  : 0; }
-  to   { opacity  : 1; }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
-
 </style>

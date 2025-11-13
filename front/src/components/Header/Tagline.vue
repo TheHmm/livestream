@@ -6,7 +6,7 @@ export default {
     ...mapGetters( 'meta', [ 'tagline' ]),
     ...mapGetters( 'livestream', [ 'current_livestream' ]),
     animate() {
-      return this.current_livesttream?.status !== 'active'
+      return this.current_livestream?.status !== 'active'
     },
   }
 }

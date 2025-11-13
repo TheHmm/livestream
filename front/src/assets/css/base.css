@@ -52,6 +52,7 @@
   --thin           : 0.5px solid;
   --solid          :   1px solid;
   --thick          :   2px solid;
+  --radius         : 0.5rem;
 
 
   /* Shadow parameters for box-shadows and drop-shadows */
@@ -72,7 +73,7 @@
 
   /* Default ssizes of sections of the page */
 
-  --marquee-height : 2.33rem;
+  --nav-height : 2.33rem;
   /* --header-height  : max( 23%, 10rem); */
   --header-height  : max( 23vh, 10rem);
   /* --total-header   : calc( var(--marquee-height) + var(--header-height) ); */
@@ -190,7 +191,6 @@ body {
   width            : 100%;
   font-family      : karrik, Arial, Helvetica, sans-serif;
   font-size        : 18px;
-
   --size-s         : 1rem;
   --size-m         : 1.33rem;
   --size-l         : 2.33rem;
@@ -237,30 +237,18 @@ body {
   /* Foregrounds and backgrounds */
   /* Changes with different elements */
 
-  --back           : var(--accent-light);
-  --fore           : var(--black);
-  --focus          : 2px solid var(--accent);
+  --back           : var(--accent);
+  --fore           : var(--white);
+  --focus          : var(--thick) var(--accent);
 
 }
 
 .event {
   --i              : 0;
   --n              : 0;
-  --accent         : hsl( var(--h), var(--s), var(--l) );
-  --back           : var(--accent);
-  --focus          : var(--thick) var(--accent);
-  --fore           : var(--white);
-  background-color : var(--back);
-  box-shadow       : var(--shadow);
   padding          : var(--size-s);
   width            : 100%;
   display          : flex;
-  transition       :
-    padding-top var(--slow) ease,
-    max-height var(--slow) ease,
-    transform var(--slow) ease,
-    background-color var(--slow) ease
-  ;
 }
 
 
@@ -320,7 +308,7 @@ li::before {
 /* all elements with role=status */
 
 *[role="status"] {
-  font-family      : 'not-courier-sans', monospace;
+  font-family      : 'karrik', monospace;
 }
 
 
@@ -339,7 +327,7 @@ li::before {
 .mobile {
   --side-width     : 100%;
   --footer-height  : 2rem;
-  --marquee-height : 2rem;
+  --nav-height : 2rem;
   font-size        : 11pt;
 }
 

@@ -34,6 +34,9 @@ export default {
     about: state => {
       return state.meta?.about
     },
+    renting_options: state => {
+      return state.meta?.renting_options || []
+    },
     tagline: state => {
       return state.meta?.tagline
     },

@@ -59,10 +59,10 @@ export default {
   display: flex;  
   align-items: stretch;
   filter: 
-    drop-shadow( 1px  0px 0px black) 
-    drop-shadow(-1px  0px 0px black)
-    drop-shadow( 0px  1px 0px black) 
-    drop-shadow( 0px -1px 0px black)
+    drop-shadow( 1px  0px 0px var(--fore)) 
+    drop-shadow(-1px  0px 0px var(--fore))
+    drop-shadow( 0px  1px 0px var(--fore)) 
+    drop-shadow( 0px -1px 0px var(--fore))
   ;
 }
 

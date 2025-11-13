@@ -187,6 +187,9 @@ body main {
   /* margin-top       : var(--header-height); */
 }
 
+body main > section {
+  padding-inline: 1rem;
+}
 
 
 body#chatpage.hide_input footer {

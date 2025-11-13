@@ -1,5 +1,6 @@
 <script>
 import Banner from './Banner.vue'
+import MainNav from './MainNav.vue'
 import Network from './Network.vue'
 
 
@@ -10,6 +11,7 @@ export default {
   name: 'Header',
   components: {
     Banner,
+    MainNav,
     Network,
   },
   computed: {
@@ -27,10 +29,10 @@ export default {
     aria-label="Banner and network information"
   >
     <Banner />
-    <section>
-      <nav></nav>
+    <div id="lower_header">
+      <MainNav />
       <Network />
-    </section>
+    </div>
   </header>
 </template>
 
@@ -40,5 +42,13 @@ header {
   width      : 100%;
   position   : sticky;
   top        : 0;
+}
+#lower_header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-inline: 1rem;
 }
 </style>
