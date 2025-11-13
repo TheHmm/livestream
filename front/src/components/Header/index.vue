@@ -1,5 +1,5 @@
 <script>
-import THEINBETWEEN from '../Utils/THEINBETWEEN.vue'
+import Banner from './Banner.vue'
 import Network from './Network.vue'
 
 
@@ -9,7 +9,7 @@ import Network from './Network.vue'
 export default {
   name: 'Header',
   components: {
-    THEINBETWEEN,
+    Banner,
     Network,
   },
   computed: {
@@ -26,7 +26,7 @@ export default {
     v-if="!hide_header"
     aria-label="Banner and network information"
   >
-    <THEINBETWEEN />
+    <Banner />
     <section>
       <nav></nav>
       <Network />

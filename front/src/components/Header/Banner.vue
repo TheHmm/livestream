@@ -1,59 +1,81 @@
 <script>
-export default {
-  name: 'Banner',
+import letters from '@/utils/letters.js'
+import Letter from './Letter.vue'
+import DynamicLogo from './DynamicLogo.vue'
+export default { 
+  name : 'The Inbetween Banner',
+  components : {
+    Letter,
+    DynamicLogo
+  },
+  data() {
+    return {
+      letters
+    }
+  },
 }
 </script>
 
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 -100 5098.47 915.91"
-    preserveAspectRatio="xMinYMin slice"
-    aria-label="The Hmm Banner"
-  >
-    <g id="letter-t">
-      <polygon points="499.22 218.41 715.85 218.41 715.85 30.41 7.5 30.41 7.5 218.41 225.28 218.41 225.28 892.41 499.22 892.41 499.22 218.41" >
-      </polygon>
-    </g>
-    <g id="letter-h">
-      <path d="M1152.6,892.41h287.68v-510c0-135.25-75.64-204-189.12-204-136.39,0-188,99.71-188,99.71V7.5H775.51V892.36H1063.2V375.43c0-21.77,13.75-37.82,44.7-37.82s44.7,16.05,44.7,37.82Z">
-      </path>
-    </g>
-    <g id="letter-e">
-      <path d="M1802.6,461.41V347.92c0-18.34,14.91-32.09,44.71-32.09s45.84,13.75,45.84,32.09V461.39Z">
-      </path>
-      <path
-        d="M2179.7,660.85V628.74H1893.11V736.48c0,18.34-16,32.09-45.84,32.09s-44.71-13.75-44.71-32.09V558.82h377.1V423.57C2179.66,278,2096,176,1847.27,176S1516,278,1516,423.57V660.83c0,145.57,82.53,247.58,331.25,247.58s332.39-102,332.39-247.58Z"
-      >
-      </path>
-    </g>
-    <g id="letter-h">
-      <polygon points="2941.2 892.38 3215.14 892.38 3215.14 30.43 2941.16 30.43 2941.16 366.26 2779.55 366.26 2779.55 30.43 2505.61 30.43 2505.61 892.36 2779.55 892.36 2779.55 555.36 2941.16 555.36 2941.2 892.38">
-      </polygon>
-    </g>
-    <g id="letter-mm">
-      <path d="M5091,892.84v-510c0-135.25-75.64-204-189.12-204-136.4,0-193.7,99.72-200.58,110-19.49-68.77-81.38-110-176.52-110-136.39,0-196,99.72-196,99.72L4322,289.41c-27.45-73.62-90.35-111-173.89-111-136.39,0-193.7,99.71-200.58,110-19.48-68.77-81.38-110-176.51-110-136.4,0-196,99.71-196,99.71l8-86H3295.28V892.36H3583V375.43c0-21.77,13.75-37.82,44.7-37.82s44.7,16.05,44.7,37.82V892.36h287.69V370.84c1.15-19.48,16-33.23,44.7-33.23,30.95,0,44.7,16.05,44.7,37.82V892.36h287.69v-510c0-2.86-.22-5.51-.29-8.31.8-20.78,14.52-35.93,44.55-35.93,30.94,0,44.7,16.05,44.7,37.82V892.82h287.68V371.3c1.15-19.48,16.05-33.23,44.71-33.23,30.95,0,44.7,16.05,44.7,37.82V892.82Z">
-      </path>
-    </g>
-  </svg>
+  <div id="the_inbetween_banner">
+    <div class="word the">
+      <Letter :letter="letters.T" class="T" />
+      <Letter :letter="letters.H" class="H" />
+      <Letter :letter="letters.E" class="E" />
+    </div>
+    <!-- Viewers -->
+    <DynamicLogo />
+    <!-- Viewers -->
+    <div class="word imbetween">
+      <Letter :letter="letters.I" class="I" />
+      <Letter :letter="letters.N" class="N" />
+      <Letter :letter="letters.B" class="B" />
+      <Letter :letter="letters.E" class="E" />
+      <Letter :letter="letters.T" class="T" />
+      <Letter :letter="letters.W" class="W" />
+      <Letter :letter="letters.E" class="E" />
+      <Letter :letter="letters.E" class="E" />
+      <Letter :letter="letters.N" class="N" />
+    </div>
+  </div>
 </template>
 
 <style scoped>
-svg {
-  display        : block;
-  margin         : auto;
-  overflow       : visible;
-  width          : 95%;
-  max-width      : 95%;
-  fill           : none;
-  stroke         : var(--accent);
-  stroke-width   : 0.5rem;
-  opacity        : 0;
-  transition     : stroke var(--very-slow) ease;
-  animation      : enter var(--very-slow) ease forwards;
+#the_inbetween_banner {
+  --size:1.2rem;
+  --letter-height: calc( 7 * var(--size) );
+  --space-width: calc( 3 * var(--size) );
+  --full-height: min(10rem, 40vh);
+  --full-width: min(100vw);
+  --dot-height: calc( var(--full-height) / ( 1.3 * 7 ) );
+  --dot-width: calc( var(--full-width) / ( 18 * 7 ) );
+  display: flex;
+  justify-content: center;
+  width: var(--full-width);
+  margin-top: 1.5rem;
+  z-index: 1;
 }
-@keyframes enter {
-  from { opacity : 0; }
-  to   { opacity : 1; }
+.word {
+  display: flex;  
+  align-items: stretch;
+  filter: 
+    drop-shadow( 1px  0px 0px black) 
+    drop-shadow(-1px  0px 0px black)
+    drop-shadow( 0px  1px 0px black) 
+    drop-shadow( 0px -1px 0px black)
+  ;
 }
+
+.mobile #the_inbetween_banner {
+  --size:0.65rem;
+  --letter-height: calc( 7 * var(--size) );
+  --space-width: calc( 0 * var(--size) );
+  --full-height: min(10rem, 60vh);
+  --full-width: min(100rem, 100vw);
+  --dot-height: calc( var(--full-height) / ( 2.6 * 7 ) );
+  --dot-width: calc( var(--full-width) / ( 14 * 7 ) );
+  flex-wrap: wrap;
+}
+
 </style>
+
