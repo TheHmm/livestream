@@ -170,11 +170,11 @@ footer {
   max-width        : calc( var(--main-width) - 1rem );
   padding          : 0 var(--size-s);
   display          : flex;
+  flex-direction: row-reverse;
   align-items      : flex-end;
   gap: 1rem;
   z-index          : 2;
   overflow         : visible;
-  justify-content: flex-end;
 }
 
 .mobile footer {
