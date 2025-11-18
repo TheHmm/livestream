@@ -1,19 +1,16 @@
 <script>
-
-
-// Event archive page. Async component, loads passt events list
-// in setup.
-
 import store     from '@/store'
 import _throw    from '@/utils/throw'
 import ArchiveList from '../components/Event/ArchiveList.vue'
-
+import OrganisationBar from '../components/Event/OrganisationBar.vue'
+import Preview from '../components/Event/Preview.vue'
 export default {
-
   name: 'Archive',
-
-  components: { ArchiveList },
-
+  components: { 
+    OrganisationBar,
+    Preview,
+    ArchiveList,
+  },
   async setup() {
     try {
       await store.dispatch( 'events/get_past_events' )
@@ -22,53 +19,70 @@ export default {
       throw error
     }
   },
-
   computed: {
-
-
-    // Filter events by year.
-
     year() {
       return this.$route.query.year
     },
-
-
-    // Get events, filter by year, sort reverse-chrono.
-
+    desired_org() {
+      return this.$route.query.org
+    },
     events() {
-      return store
-      .getters[ 'events/get_past_events' ]
-      .filter( e => {
-        if ( this.year ) {
-          return (
-            this.$time.get_year( e.starts ) ==
-            this.$time.get_year( this.year )
-          )
+      return store.getters[ 'events/get_past_events' ].filter( e => {
+        if ( this.desired_org ) {
+          return e.organisation && e.organisation.slug == this.desired_org
         } else {
           return true
         }
       })
-    }
+    },
+    events_by_year() {
+      const events_by_year = []
+      this.events.map( e => {
+        const year = this.$time.get_year( e.starts )
+        const group = events_by_year.find( g => g.year == year )
+        if ( group ) {
+          group.events.push( e )
+        } else {
+          events_by_year.push({ year, events: [ e ] })
+        }
+      })
+      return events_by_year.sort( ( a, b ) => a.year < b.year )
+    },
   },
-
 }
-
 </script>
-
-
 <template>
-  <ArchiveList
-    v-if="events.length || !year"
-    :events="events"
-  />
-  <p class="fallback" v-else>
-    No events found for year {{ year }}.
-  </p>
+  <section :id="$id()">
+    <header id="subheader">
+      <OrganisationBar />
+      <Preview />
+    </header>
+    <section v-for="{ events, year } of events_by_year">
+      <h2>{{  year  }}</h2>
+      <ArchiveList
+        :events="events"
+      />
+    </section>
+  </section>
 </template>
-
-
 <style scoped>
-p.fallback {
-  margin: 1rem;
+h2 {
+  font-size: 10rem;
+  font-weight: lighter;
+  margin: 0;
+}
+section:first-of-type > h2 {
+  padding-top: calc( 100vh - ( var(--header-height) + 5ch ) );
+}
+#archive {
+}
+#subheader {
+  padding-block: 0.5rem;
+  position: sticky;
+  top: var(--header-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 4;
 }
 </style>

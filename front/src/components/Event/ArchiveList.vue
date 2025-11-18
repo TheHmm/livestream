@@ -1,7 +1,4 @@
 <script>
-
-// Event list
-
 import ArchiveEvent from './ArchiveEvent.vue'
 export default {
   name       : 'ArchiveList',

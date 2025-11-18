@@ -31,10 +31,10 @@ module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
     // https://forum.strapi.io/t/how-to-count-in-rest-api-in-v4/14765
 
     if ( slug == 'count' ) {
-
+      
       return strapi
       .documents( 'api::event.event' )
-      .count( { params } )
+      .count( query )
 
     } else {
 

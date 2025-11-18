@@ -183,8 +183,6 @@ export default {
 }
 
 .message .header {
-  /* font-family         : monospace; */
-  /* font-family         : 'not-courier-sans', monospace; */
   font-style          : italic;
   font-size           : 0.8rem;
   display             : flex;

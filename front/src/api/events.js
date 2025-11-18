@@ -9,11 +9,28 @@ export default {
   // This method counts our events before fetching them
   // See: back/src/api/event/controllers/event.js
 
-  count() {
+  count( time ) {
     $log.info( `API`, `Counting events.` )
+    let filters
+    if ( time == 'past' ) {
+      filters = {
+        ends: {
+          $lt: $time.now()
+        },
+      }
+    } else {
+      filters = {
+        starts: {
+          $gte: $time.now(),
+        },
+        show_in_agenda: {
+          $eq: true,
+        }
+      }
+    }
     return new Promise( ( resolve, reject ) => {
       axios
-      .get( `${ config.api_url }/events/count` )
+      .get( `${ config.api_url }/events/count`, { params: { filters } } )
       .then( result => resolve( result.data ) )
       .catch( error => {
         $log.error( 'API', error )
@@ -27,7 +44,7 @@ export default {
   // order (i.e. most recent event first).
 
   getPast() {
-    $log.info( `API`, `Fetching events.` )
+    $log.info( `API`, `Fetching past events.` )
     return new Promise( ( resolve, reject ) => {
       axios
       .get( `${ config.api_url }/events`, { params: {
@@ -45,6 +62,10 @@ export default {
           'accent',
           'info',
           'mux_recording',
+        ],
+        populate: [
+          'organisation',
+          'organisation.Logo',
         ],
         pagination: {
           pageSize: 100,
@@ -85,6 +106,9 @@ export default {
           'info',
           'mux_recording',
           'show_in_agenda',
+        ],
+        populate: [
+          'organisation',
         ],
         pagination: {
           pageSize: 100,

@@ -1,9 +1,6 @@
 <script>
-import livestream from '@/utils/livestream'
-
-
-// Event tab in homepage
-
+import config from '@/config'
+import { mapActions } from 'vuex'
 export default {
   name: 'ArchiveEvent',
   props: {
@@ -17,23 +14,19 @@ export default {
     starts() { return this.event?.starts && this.$time.short_date_format( this.event.starts )},
     accent() { return this.event?.accent },
     info()   { return this.event?.info || "" },
-    query()  { return this.$route.query },
-    cover()  {
-      let cover
-      if ( this.event.recording
-        && this.event.recording.status
-        && this.event.recording.status == 'ready'
-        ) {
-        cover = livestream.mux.thumb_src( this.event.recording.playbackId, 10, 1920 )
-       } else {
-        const event_livestream = this.$store.getters['livestream/get_livestream_by_event'](this.event.documentId)
-        if ( event_livestream?.status == 'active' ) {
-          cover = livestream.mux.thumb_src( current_livestream.playbackId, 0, 1920 )
-        }
-      }
-      return cover
-    }
+    org() { return this.event.organisation },
+    org_logo_src() { return config.api_img_url + this.org?.Logo?.formats?.thumbnail?.url },
+    query()  { return this.$route.query },    
   },
+  created() {
+    this.mousemove = this.$throttle( this.set_preview_time, 125 )
+  },  
+  methods: {
+    ...mapActions( 'events', [
+      'set_preview_event',
+      'set_preview_time'
+    ])
+  }
 }
 </script>
 
@@ -47,39 +40,32 @@ export default {
       '--n': n,
     }"
   >
-    <router-link
-      custom
+    <router-link 
       :to="{ path: slug, query }"
-      v-slot="{ navigate }"
+      @mouseenter.prevent="set_preview_event( slug )"
+      @mouseleave.prevent="set_preview_event( undefined )"
+      @mousemove="mousemove"
     >
-      <header
-        :title="title"
-        @click="navigate"
+      <span
+        aria-hidden="true"
+        class="organisation_logo"
       >
-        <h1> {{ title }} </h1>
-        <p
-          aria-label="event summary"
-          class="summary"
-          v-html="$mdi(info).replaceAll('<br>', ' ')"
-        />
-        <time
-          aria-label="event start time"
-          class="time"
-          :datetime="starts"
-        >
-          {{ starts }}
-        </time>
-      </header>
-      <section
-        :title="title"
-        @click="navigate"
+        <img :src="org_logo_src" />
+      </span>
+      <span
+        aria-label="event organiser"
+        class="organisation_name"
       >
-        <img
-          v-if="cover"
-          :src="cover"
-          :alt="`Still from livestream ${ title }`"
-        />
-      </section>
+        {{ org.Name }}
+      </span>
+      <span class="event_title"> {{ title }} </span>
+      <time
+        aria-label="event start time"
+        class="time"
+        :datetime="starts"
+      >
+        {{ starts }}
+      </time>
     </router-link>
   </li>
 </template>
@@ -87,95 +73,70 @@ export default {
 <style scoped >
 
 li::before {
-  content          : unset;
+  content: unset;
 }
-li.event {
+li {
+  --accent: hsl( var(--h), var(--s), var(--l) );
+}
+li a {
+  background-color: var(--back);
+  width: 100%;
+  padding: 0.5rem;
+  max-height: 4rem;
+  overflow: hidden;
   display: flex;
-  flex-direction: column;
-  padding-bottom: 0;
-  max-height: 10rem;
+  align-items: center;
+  gap: 0.5rem;
+  font-style: unset;
 }
-
-li.event section {
-  cursor           : pointer;
-  width            : 100%;
-  transition       : all var(--fast) ease;
-  padding-top      : 0.5rem;
-  max-height       : 2rem;
-  overflow         : hidden;
+li a .organisation_logo {
+  border-radius: 3rem;
+  height: 3rem;
+  max-width: 3rem;
 }
-
-li:last-of-type section {
-  padding-bottom   : var(--footer-height);
+li a .organisation_logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-
-li.event:hover section {
-  padding-bottom   : 10rem;
-  max-height       : 10rem;
+li a .organisation_name {
+  max-width: 15rem;
 }
-
-
-li.event section img {
-  width : 100%;
-  min-height: 10rem;
+li a .event_title {
+  max-width: 20rem;
 }
-
-li.event header {
-  cursor           : pointer;
-  display          : flex;
-  align-items      : baseline;
-  width            : 100%;
-  transition       : padding var(--fast) ease;
-  gap              : 0.5rem;
-}
-
-li.event p {
-}
-li.event a {
-  font-style       : unset;
-}
-
-li.event h1,
-li.event .summary {
+li span {
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
-  overflow         : hidden;
-  text-overflow    : ellipsis;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-li.event h1 {
-  flex-basis       : 60%;
+li span {
+  flex-basis: 40%;
 }
-li.event .summary {
-  flex-basis       : 30%;
-}
-li.event h1,
-li.event p {
-  margin-block     : 0;
-}
-
-li.event .time {
+li .time {
   margin-left      : auto;
   text-align       : right;
   flex-shrink      : 0;
 }
-
-.mobile li.event header {
+li:last-of-type {
+  margin-bottom: var(--footer-height);  
+}
+li:first-of-type a {
+  border-top: var(--solid);
+}
+li a:hover {
+  border-bottom: var(--solid);
+  --fore: var(--white);
+  --back: var(--accent);
+}
+.mobile li a {
   display: block;
 }
-.mobile li.event .summary {
+.mobile li a .organisation {
   display: none;
 }
 
-.mobile li:last-of-type section {
-  padding-bottom   : 4rem;
-}
-.mobile li.event:hover section {
-  padding-bottom   : unset;
-  max-height       : 3rem;
-}
-.mobile li:last-of-type:hover section {
-  padding-bottom   : 4rem;
-}
 
 </style>

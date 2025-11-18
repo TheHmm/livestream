@@ -3,7 +3,6 @@
 import Title  from './Title.vue'
 import About  from './About.vue'
 import Access from './Access.vue'
-import Year   from './Year.vue'
 import Modes  from './Modes.vue'
 import Emoji  from './Emoji/index.vue'
 
@@ -20,7 +19,6 @@ export default {
     Title,
     About,
     Access,
-    Year,
     Modes,
     Emoji
   },
@@ -39,12 +37,6 @@ export default {
           label      : 'Accessibility',
           comp       : 'Access',
           aria_label : 'Accessibility options',
-        },
-        {
-          name       : 'year',
-          label      : 'Choose a year',
-          comp       : 'Year',
-          aria_label : 'Choose a year'
         },
         {
           name       : 'modes',

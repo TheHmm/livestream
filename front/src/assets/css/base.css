@@ -1,17 +1,4 @@
 @font-face {
-  font-family: 'impact-nieuw';
-  src: url('../fonts/impact-nieuw.woff2');
-}
-
-@font-face {
-  font-family: 'not-courier-sans';
-  src:
-    url('../fonts/not-courier-sans.otf')
-    format("opentype")
-  ;
-}
-
-@font-face {
   font-family: 'karrik';
   src:
     url('../fonts/Karrik-Italic.otf')
@@ -76,7 +63,7 @@
 
   --nav-height : 2.33rem;
   /* --header-height  : max( 23%, 10rem); */
-  --header-height  : max( 23vh, 10rem);
+  --header-height  : max( 20vh, 10rem);
   /* --total-header   : calc( var(--marquee-height) + var(--header-height) ); */
   --total-header   : var(--header-height);
   --middle-height  : calc( 100% - var(--total-header ) );
@@ -266,7 +253,7 @@ a,
 a:active,
 a:visited {
   color            : var(--fore);
-  font-family      : 'Times New Roman', Times, serif;
+  /* font-family      : 'Times New Roman', Times, serif; */
   font-style       : italic;
   font-size        : 1.2em;
   text-decoration  : none;
@@ -282,11 +269,6 @@ a:hover {
 /* todo: confirm license */
 
 h1 {
-  font-family      : 'impact-nieuw',
-                     'Impact',
-                     'Haettenschweiler',
-                     'Arial Narrow Bold',
-                     'sans-serif';
   font-weight      : normal;
   font-size        : 1.8rem;
   line-height      : 1.1;

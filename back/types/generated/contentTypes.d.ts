@@ -546,6 +546,10 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     messages: Schema.Attribute.Relation<'oneToMany', 'api::message.message'>;
     mux_recording: Schema.Attribute.JSON;
+    organisation: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::organisation.organisation'
+    >;
     publishedAt: Schema.Attribute.DateTime;
     releaseDots: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     show_in_agenda: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;

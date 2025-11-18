@@ -131,7 +131,6 @@ export default {
 
 #chat .options {
   --back          : var(--accent-light);
-  font-family     : 'not-courier-sans', Arial, Helvetica, sans-serif;
   font-size       : var(--size-m);
   width           : 100%;
   display         : flex;

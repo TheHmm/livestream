@@ -1,9 +1,5 @@
 <script>
 import livestream from '@/utils/livestream'
-
-
-// Event tab in homepage
-
 export default {
   name: 'AgendaEvent',
   props: {
@@ -70,16 +66,6 @@ export default {
           {{ starts }}
         </time>
       </header>
-      <section
-        :title="title"
-        @click="navigate"
-      >
-        <img
-          v-if="cover"
-          :src="cover"
-          :alt="`Still from livestream ${ title }`"
-        />
-      </section>
     </router-link>
   </li>
 </template>
@@ -91,7 +77,8 @@ li::before {
 }
 li.agendaevent {
   min-height: 25rem;
-  width: calc( 100% / 3 - 0.7rem);
+  flex-basis: 25%;
+  /* width: calc( 100% / 4 ); */
   /* max-width: var(--side-width); */
   display: flex;
   flex-direction: column;

@@ -1,7 +1,4 @@
 <script>
-
-// Event list
-
 import AgendaEvent from './AgendaEvent.vue'
 export default {
   name       : 'AgendaList',
