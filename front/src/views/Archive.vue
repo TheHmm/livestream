@@ -77,12 +77,13 @@ section:first-of-type > h2 {
 #archive {
 }
 #subheader {
-  padding-block: 0.5rem;
+  padding-block: 1rem;
   position: sticky;
-  top: var(--header-height);
+  /* top: var(--header-height); */
+  top: 0;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  z-index: 4;
+  z-index: 3;
 }
 </style>

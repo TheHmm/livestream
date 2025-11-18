@@ -40,8 +40,8 @@ export default {
 header {
   max-height : var(--header-height);
   width      : 100%;
-  position   : sticky;
-  top        : 0;
+  /* position   : sticky;
+  top        : 0; */
 }
 #lower_header {
   width: 100%;

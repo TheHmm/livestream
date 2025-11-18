@@ -66,7 +66,8 @@ li input[type="checkbox"] + label {
   border: var(--solid);
   border-radius: var(--radius);
   padding: 0.125rem  0.5rem;
-  user-select: none
+  user-select: none;
+  background-color: var(--white);
 }
 li input[type="checkbox"]:checked + label {
   background-color: var(--yellow);
