@@ -15,7 +15,7 @@ export default {
     accent() { return this.event?.accent },
     info()   { return this.event?.info || "" },
     org() { return this.event.organisation },
-    org_logo_src() { return config.api_img_url + this.org?.Logo?.formats?.thumbnail?.url },
+    org_logo_src() { return this.org && config.api_img_url + this.org?.Logo?.formats?.thumbnail?.url },
     query()  { return this.$route.query },    
   },
   created() {
@@ -56,7 +56,7 @@ export default {
         aria-label="event organiser"
         class="organisation_name"
       >
-        {{ org.Name }}
+        {{ org?.Name }}
       </span>
       <span class="event_title"> {{ title }} </span>
       <time

@@ -17,6 +17,9 @@ export default {
         ends: {
           $lt: $time.now()
         },
+        show_in_archive: {
+          $eq: true,
+        }
       }
     } else {
       filters = {
@@ -53,6 +56,9 @@ export default {
           ends: {
             $lt: $time.now()
           },
+          show_in_archive: {
+            $eq: true,
+          }
         },
         fields: [
           'title',

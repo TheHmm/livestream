@@ -553,6 +553,7 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     releaseDots: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     show_in_agenda: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    show_in_archive: Schema.Attribute.Boolean;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     starts: Schema.Attribute.DateTime & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;

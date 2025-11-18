@@ -54,6 +54,9 @@
       "type": "boolean",
       "default": true
     },
+    "show_in_archive": {
+      "type": "boolean"
+    },
     "releaseDots": {
       "type": "boolean",
       "default": false

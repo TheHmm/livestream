@@ -22,7 +22,11 @@ export default {
       return this.mux_recording?.duration
     },
     playback_id() {
-      return this.mux_recording?.playbackId
+      if ( this.mux_recording && this.mux_recording?.tracks?.find( t => t.type == 'video' ) ) {
+        return this.mux_recording?.playbackId
+      } else {
+        return null
+      }
     },
     desired_time() {
       return this.preview_time && this.preview_time * this.duration
@@ -61,7 +65,7 @@ export default {
 <template>
   <div 
     :id="$id()"
-    v-if="mux_recording && desired_time"
+    v-if="playback_id && desired_time"
   >
     <img 
        v-if="image_data"
