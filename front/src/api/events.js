@@ -115,6 +115,7 @@ export default {
         ],
         populate: [
           'organisation',
+          'organisation.Logo',
         ],
         pagination: {
           pageSize: 100,
@@ -143,6 +144,8 @@ export default {
             'emoji_groups',
             'emoji_groups.emoji',
             'emoji_groups.emoji.image',
+            'organisation',
+            'organisation.Logo',
           ]
         } } )
       .then( result => resolve( result.data.data ) )

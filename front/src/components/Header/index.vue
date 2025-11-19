@@ -38,8 +38,14 @@ export default {
 
 <style scoped>
 header {
-  max-height : var(--header-height);
-  width      : 100%;
+  --size:1.2rem;
+  --padding: 0.5rem;
+  --dot-height: var(--size);
+  --dot-width: var(--size);
+  --gap: calc( 1 * var(--dot-width) );
+  max-height: var(--header-height);
+  height: 100%;
+  width: 100%;
   /* position   : sticky;
   top        : 0; */
 }
@@ -48,7 +54,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding-inline: 1rem;
+  gap: var(--gap);
+  padding-inline: var(--padding);
 }
 </style>

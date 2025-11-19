@@ -16,7 +16,7 @@ export default {
 <template>
   <div class="letter">
     <div 
-      v-for="row in letter.split(/\n/)" 
+      v-for="row in letter.split(/\n/).slice(1,8)" 
       class="row"
     > 
       <div
@@ -34,41 +34,50 @@ export default {
 
 <style scoped>
 .letter {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  min-width: 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  align-items: stretch;
-  height: var(--letter-height);
   overflow: visible;
-  margin-right: calc(2 * var(--dot-width));
+  filter: 
+    drop-shadow( 1px  0px 0px var(--fore)) 
+    drop-shadow(-1px  0px 0px var(--fore))
+    drop-shadow( 0px  1px 0px var(--fore)) 
+    drop-shadow( 0px -1px 0px var(--fore))
+  ;
+  margin-right: var(--gap);
+}
+.letter:last-of-type {
+  margin-right: unset;
 }
 .letter .row {
+  height: 100%;
+  width: 100%;
   display: flex;
-  justify-content: flex-start;
-  align-items: stretch;
 }
 .dot {
-  height: var(--dot-height);
-  min-width: var(--dot-width);
-  flex-grow: 1;
+  max-height: var(--dot-height);
+  /* max-height: calc( 0.9 * var(--dot-height)); */
+  max-width: var(--dot-width);
   width: 100%;
+  height: 100%;
+  /* background-color: red; */
 }
 .dot::after {
   content: '';
   display: block;
   position: absolute;
-  border-radius: 30rem;
-  top: calc( -0.5 * var(--dot-height));
-  left: calc( -0.5 * var(--dot-width) - 0.25rem);
+  top: 0; left: 0;
+  /* top: calc( -0.5 * var(--dot-height)); */
+  /* left: calc( -0.5 * var(--dot-width) - 0.25rem); */
   min-width: calc( 1 * var(--size));
   min-height: calc( 1 * var(--size));
+  border-radius: 30rem;
   background-color: var(--accent);
-  transition: background-color var(--fast) linear ;
-  animation: blob cubic-bezier(0.36, 0.07, 0.19, 0.97) 1s forwards;
-}
-dot:hover::after {
-  scale: calc( 1.5 * var(--r) );
+  transition: background-color var(--slow) linear ;
+  /* animation: blob cubic-bezier(0.36, 0.07, 0.19, 0.97) 1s forwards; */
 }
 .dot.on::after {
   opacity: 1;

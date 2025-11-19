@@ -75,12 +75,14 @@ section:first-of-type > h2 {
   padding-top: calc( 100vh - ( var(--header-height) + 5ch ) );
 }
 #archive {
+  padding: 0;
 }
 #subheader {
-  padding-block: 1rem;
+  margin-inline: 0.5rem;
+  /* padding-block: 0.5rem; */
   position: sticky;
   /* top: var(--header-height); */
-  top: 0;
+  top: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;

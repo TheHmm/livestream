@@ -101,10 +101,10 @@ export default {
       this.save_current_position()
       if ( this.mobile ) {
         this.$el.removeEventListener( "touchmove", this.touchmove)
-        this.$el.removeEventListener( "touchmove", this.$throttle)
+        this.$el.removeEventListener( "touchmove", this.$throttle( this.send_position, this.position_throttle ))
       } else {
         document.removeEventListener('mousemove', this.mousemove )
-        document.removeEventListener('mousemove', this.$throttle )
+        document.removeEventListener('mousemove', this.$throttle( this.send_position, this.position_throttle ))
       }
     },
     touchmove(e) {
@@ -174,16 +174,17 @@ export default {
 @import '@/assets/css/dot.css';
 
 .viewer {
-  --fore          : var(--accent-lighter);
-  --back          : var(--accent-light);
+  --fore          : var(--white);
+  --back          : var(--accent);
   position        : relative;
-  opacity         : 0.8;
   display         : flex;
   justify-content : center;
   align-items     : center;
-  margin-left            : calc( var(--n) * var(--size-s));
+  margin-left: calc( var(--n) * var(--size-xs));
+  margin-top: -0.08rem;
   scale           : 1;
   transition      : all var(--slow) ease;
+  flex: 0 1 auto;  
 }
 
 
@@ -191,6 +192,7 @@ export default {
 .viewer.dot-leave-active,
 .viewer.dot-move {
   transition      : all var(--slow) ease;
+  transition-delay: calc( var(--n) * 500ms );
 }
 .dot-enter-to,
 .dot-leave-from {
@@ -200,6 +202,11 @@ export default {
 .dot-leave-to {
   /* transform       : scale(0); */
   scale: 0;
+  margin-top: 0;
+  margin-left: 0;
+  /* max-width: 0; */
+  min-width: 0;
+  min-height: 0;
   /* transition      : all var(--slow) ease; */
 }
 .viewer.dot-leave-active {

@@ -179,6 +179,7 @@ body {
   width            : 100%;
   font-family      : karrik, Arial, Helvetica, sans-serif;
   font-size        : 18px;
+  --size-xs        : 0.25rem;
   --size-s         : 1rem;
   --size-m         : 1.33rem;
   --size-l         : 2.33rem;

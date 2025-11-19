@@ -147,7 +147,7 @@ export default {
       </router-view>
     </main>
 
-    <Viewers v-if="event" />
+    <!-- <Viewers v-if="event" /> -->
 
     <Footer />
 

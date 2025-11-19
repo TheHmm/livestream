@@ -35,7 +35,7 @@ nav {
 }
 ul {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 li {
   flex-basis: 1;

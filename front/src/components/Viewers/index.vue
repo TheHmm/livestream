@@ -63,22 +63,21 @@ export default {
 <style scoped>
 
 #viewers {
-  top             : var(--marquee-height);
-  left            : 0;
-  position        : fixed;
-  width           : 100%;
   height          : 100%;
   max-height      : calc( var(--header-height) - 2 * var(--marquee-height));
-  padding         : 0.5rem;
   display         : flex;
+  /* flex-direction: column; */
   align-items     : flex-start;
   justify-content : flex-start;
-  align-content   : flex-start;
+  align-content: flex-start;
   flex-wrap       : wrap;
   z-index         : 3;
 }
 
 #viewers.is_free {
+  top: 0; 
+  left            : 0;
+  position        : fixed;
   max-height: 0%;
   overflow: visible;
   /* pointer-events: none; */

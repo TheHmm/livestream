@@ -3,8 +3,8 @@
   background-color : var(--back);
 
   --shadow-size    : 1rem;
-  --size           : 1.5rem;
-  box-shadow       : 0 0 var(--shadow-size) 0 var(--shadow-color);
+  --size           : 1.2rem;
+  /* box-shadow       : 0 0 var(--shadow-size) 0 var(--shadow-color); */
 
   min-width        : var(--size);
   min-height       : var(--size);
@@ -13,7 +13,7 @@
   overflow         : hidden;
 
   border-radius    : 30rem;
-  border           : var(--thin);
+  border           : 1.8px solid;
 
   /* transition       :
     background-color var(--very-slow) ease,

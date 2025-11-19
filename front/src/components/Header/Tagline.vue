@@ -8,6 +8,7 @@ export default {
     animate() {
       return this.current_livestream?.status !== 'active'
     },
+
   }
 }
 </script>
@@ -19,7 +20,7 @@ export default {
     :class="[ 'text-ring', { animate } ]" 
     :style="{ 
       '--total': tagline.length,
-      '--radius': 1 / Math.sin( ( 360 / tagline.length ) / (180 / Math.PI))
+      '--radius': 1 / Math.sin( ( 360 / ( tagline.length + 0 ) ) / (180 / Math.PI))
     }"
   >
     <div aria-hidden="true">
@@ -37,10 +38,7 @@ export default {
 <style scoped>
 .text-ring {
   position: relative;
-  top: calc( 1ch * var(--radius) - 1.5ch );
-  left: -2ch;
-  /* min-height: calc( 2 * 1ch * var(--radius) - 0ch ); */
-  min-width: calc( 2 * 1ch * var(--radius) - 0ch );
+  min-width: calc( 2 * 1ch * var(--radius) - 2ch );
   animation: spin 18s linear 0s infinite;
 }
 .text-ring [style*=--index] {
@@ -48,15 +46,13 @@ export default {
   font-style: italic;
   font-family: monospace;
   text-transform: uppercase;
-  font-size: smaller;
-  padding-left: 1ch;
+  font-size: 0.6rem;
   position: absolute;
-  top: 50%;
   left: 50%;
   transform:
     translate(-50%, -50%)
     rotate(calc(360deg / var(--total) * var(--index)))
-    translateY(calc(var(--radius, 5) * -1ch));
+    translateY(calc(var(--radius, 5) * -1.5ch));
 }
 .text-ring .sr-only {
   position: absolute;
