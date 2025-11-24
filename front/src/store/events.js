@@ -1,7 +1,7 @@
 import api        from "../api"
-import color      from '@/utils/color'
+import { default_colors } from '@/utils/color'
+import config from '@/config'
 import $time      from '@/utils/time'
-import livestream from '@/utils/livestream'
 import router     from '@/router'
 
 export default {
@@ -10,7 +10,8 @@ export default {
 
   state: {
     events: {},
-    preview_time: 0
+    preview_time: 0,
+    fonts: {}
   },
 
   mutations: {
@@ -19,6 +20,9 @@ export default {
     },
     SET_PREVIEW_TIME: ( state, time ) => {
       state.preview_time = time 
+    },
+    SET_FONT: ( state, font ) => {
+      state.fonts[font.name] = font.file.url
     }
   },
 
@@ -62,6 +66,10 @@ export default {
 
     preview_time: state => {
       return state.preview_time
+    },
+
+    font: state => font => {
+      return state.fonts[font.name]
     },
 
     current_event : ( state, getters ) => {
@@ -111,7 +119,7 @@ export default {
 
     set_event( { commit, getters, rootGetters, dispatch }, event ) {
       if ( event.slug ) {
-        commit( 'SET_EVENT', sanitize( event, getters ) )
+        commit( 'SET_EVENT', sanitize( event, getters, commit ) )
       }
     },
 
@@ -120,11 +128,11 @@ export default {
 
     set_preview_event({ commit, getters }, slug ) {
       if ( slug ) {
-        commit( 'SET_EVENT', sanitize( { slug, is_preview_event: true }, getters ) )
+        commit( 'SET_EVENT', sanitize( { slug, is_preview_event: true }, getters, commit ) )
       } else {
         getters.get_past_events.map( e => {
           if ( e.is_in_past ) {
-            commit( 'SET_EVENT', sanitize( { slug: e.slug, is_preview_event: false }, getters ) )
+            commit( 'SET_EVENT', sanitize( { slug: e.slug, is_preview_event: false }, getters, commit ) )
           }
         })
         commit( 'SET_PREVIEW_TIME', 0 )
@@ -289,7 +297,7 @@ export default {
 
 // Sanitizing 'events' type received from Strapi.
 
-function sanitize ( event, getters ) {
+function sanitize ( event, getters, commit ) {
 
 
   // If the event exists in our store, than this
@@ -301,10 +309,31 @@ function sanitize ( event, getters ) {
   }
 
 
-  // Convert the HSL accent string to someething digestible
+  // Define event styles
 
-  if ( event.accent && typeof event.accent == "string" ) {
-    event.accent = color.hsl_to_css_vars(event.accent)
+  event.styles = {
+    '--back': event.background_color || default_colors['--back'],
+    '--fore': event.text_color || default_colors['--fore'],
+    '--accent': event.accent_color || default_colors['--accent'],
+  }
+
+  if ( event.background_image && event.background_image.formats?.medium ) {
+    event.styles['--back-img'] = `url(${ config.api_img_url + event.background_image.formats.medium.url })`
+  }
+
+  if ( event.text_outline ) {
+    event.styles['--text-outline'] = `-1px -1px 0 ${ event.styles['--accent'] }, 1px -1px 0 ${ event.styles['--accent'] }, -1px 1px 0 ${ event.styles['--accent'] }, 1px 1px 0 ${ event.styles['--accent'] }`
+  }
+
+  if ( event.font && event.font.file ) {
+    if ( !getters.font( event.font ) ) {
+      let font = new FontFace( event.font.name, `url(${ config.api_img_url + event.font.file.url })`)
+      font.load().then(() => {
+        document.fonts.add( font )
+        commit( 'SET_FONT', event.font )
+      })
+    }
+    event.styles['--font'] = event.font.name
   }
 
   if ( !event.recording ) {

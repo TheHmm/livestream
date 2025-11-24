@@ -12,11 +12,9 @@ input[type="button"],
 input[type="submit"],
 input[type="reset"] {
   position         : relative;
-  --fore           : var(--black);
-  --back           : var(--white);
-  color            : var(--fore);
+  color: var(--fore);
+  background-color: var(--accent);
   border           : var(--solid);
-  background-color : var(--back);
   height           : var(--size-m);
 }
 
@@ -33,8 +31,8 @@ input[type="number"]:hover,
 input[type="button"]:hover,
 input[type="submit"]:hover,
 input[type="reset"]:hover {
-  --fore: var(--white);
-  --back: var(--accent);
+  background-color: var(--fore);
+  color: var(--accent)
 }
 
 
@@ -45,8 +43,8 @@ input[type="number"]:active,
 input[type="button"]:active,
 input[type="submit"]:active,
 input[type="reset"]:active {
-  --fore: var(--white);
-  --back: var(--accent);
+  background-color: var(--fore);
+  color: var(--accent)
 }
 
 
@@ -112,9 +110,9 @@ input[type="reset"] {
 input[type="radio"],
 input[type="checkbox"] {
   position         : relative;
-  border           : unset;
-  background-color : unset;
-  color            : unset;
+  /* border           : unset */
+  /* background-color : unset;
+  color            : unset; */
   padding          : 0;
   margin           : 0;
   opacity          : 0 !important;
@@ -144,8 +142,8 @@ input[type="checkbox"] + label::before {
   margin-left      : -0.66rem;
   margin-right     : 0.33rem;
   border-radius    : var(--size-s);
-  background-color : var(--white);
-  color            : var(--black);
+  /* background-color : var(--white); */
+  color            : var(--fore);
   border           : var(--solid);
 }
 
@@ -158,7 +156,7 @@ input[type="checkbox"] + label::after {
   position         : absolute;
   cursor           : inherit;
   display          : inline-block;
-  color            : var(--black);
+  /* color            : var(--black); */
   font-size        : var(--size-s);
   top              : 0.05rem;
   left             : -0.4rem;
@@ -170,8 +168,14 @@ input[type="checkbox"] + label::after {
 
 input[type="radio"]:hover + label::before,
 input[type="checkbox"]:hover + label::before {
-  background-color : var(--white);
+  background-color : var(--fore);
 }
+
+input[type="radio"]:hover + label::after,
+input[type="checkbox"]:hover + label::after {
+  color: var(--back)
+}
+
 
 
 /* Outline whenn focused */

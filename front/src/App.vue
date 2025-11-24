@@ -77,8 +77,8 @@ export default {
     // If the route points to an event, get it's accent to
     // theme the whole page
 
-    accent() {
-      return this.event?.accent
+    styles() {
+      return this.event?.styles
     },
 
 
@@ -127,7 +127,7 @@ export default {
   <body
     :id="[ $id( $route.name )]"
     :class="{ mobile, ...access, ...misc }"
-    :style="{ ...accent }"
+    :style="{ ...styles }"
   >
 
     <Header />
@@ -165,6 +165,10 @@ export default {
 body {
   opacity          : 0;
   background-color : var(--back);
+  background-image : var(--back-img);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   animation        : enter var(--enter) ease forwards;
   transition       : background-color var(--very-slow) ease;
   height           : 100%;

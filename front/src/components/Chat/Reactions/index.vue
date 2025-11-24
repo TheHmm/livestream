@@ -233,8 +233,6 @@ export default {
 <style scoped>
 
 .reactions {
-  --back: var(--white);
-  --fore: var(--black);
   position: absolute;
   bottom: -1.25rem;
   right: -1rem;

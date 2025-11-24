@@ -12,7 +12,7 @@ export default {
     title()  { return this.event?.title },
     slug()   { return this.event?.slug },
     starts() { return this.event?.starts && this.$time.short_date_format( this.event.starts )},
-    accent() { return this.event?.accent },
+    styles() { return this.event?.styles },
     info()   { return this.event?.info || "" },
     org() { return this.event.organisation },
     org_logo_src() { return this.org && config.api_img_url + this.org?.Logo?.formats?.thumbnail?.url },
@@ -35,7 +35,7 @@ export default {
     :class="$id()"
     :aria-label="title"
     :style="{
-      ...accent,
+      ...styles,
       '--i': i,
       '--n': n,
     }"
@@ -75,11 +75,10 @@ export default {
 li::before {
   content: unset;
 }
-li {
-  --accent: hsl( var(--h), var(--s), var(--l) );
-}
 li a {
   background-color: var(--back);
+  text-shadow: var(--text-outline);
+  font-family: var(--font);
   width: 100%;
   padding: 0.5rem;
   max-height: 4rem;

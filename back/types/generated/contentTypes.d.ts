@@ -511,11 +511,16 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
   attributes: {
     accent: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'hsl(240, 100%, 50%)'>;
+    accent_color: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'plugin::color-picker.color'>;
     allowEmoji: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     announcements: Schema.Attribute.Relation<
       'manyToMany',
       'api::announcement.announcement'
     >;
+    background_color: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'plugin::color-picker.color'>;
+    background_image: Schema.Attribute.Media<'images' | 'files'>;
     count: Schema.Attribute.Integer;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -529,6 +534,7 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
       'api::emoji-group.emoji-group'
     >;
     ends: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    font: Schema.Attribute.Relation<'oneToOne', 'api::font.font'>;
     info: Schema.Attribute.RichText;
     later_visits: Schema.Attribute.Integer &
       Schema.Attribute.SetMinMax<
@@ -556,11 +562,40 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     show_in_archive: Schema.Attribute.Boolean;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     starts: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    text_color: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'plugin::color-picker.color'>;
+    text_outline: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     viewers: Schema.Attribute.Relation<'manyToMany', 'api::viewer.viewer'>;
+  };
+}
+
+export interface ApiFontFont extends Struct.CollectionTypeSchema {
+  collectionName: 'fonts';
+  info: {
+    displayName: 'Fonts';
+    pluralName: 'fonts';
+    singularName: 'font';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    file: Schema.Attribute.Media<'files'> & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::font.font'> &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1286,6 +1321,7 @@ declare module '@strapi/strapi' {
       'api::announcement.announcement': ApiAnnouncementAnnouncement;
       'api::emoji-group.emoji-group': ApiEmojiGroupEmojiGroup;
       'api::event.event': ApiEventEvent;
+      'api::font.font': ApiFontFont;
       'api::livestream.livestream': ApiLivestreamLivestream;
       'api::message.message': ApiMessageMessage;
       'api::meta.meta': ApiMetaMeta;

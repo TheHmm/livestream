@@ -9,9 +9,9 @@
     "build": "strapi build",
     "strapi": "strapi"
   },
-  "devDependencies": {},
   "dependencies": {
     "@mux/mux-node": "^6.2.0",
+    "@strapi/plugin-color-picker": "^5.30.1",
     "@strapi/plugin-users-permissions": "5.29.0",
     "@strapi/strapi": "5.29.0",
     "better-sqlite3": "11.3.0",
@@ -20,9 +20,9 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
-    "styled-components": "^6.0.0",
     "slugify": "^1.6.5",
-    "socket.io": "^4.4.1"
+    "socket.io": "^4.4.1",
+    "styled-components": "^6.0.0"
   },
   "author": {
     "name": "Karl Moubarak"

@@ -11,7 +11,7 @@ export default {
     title()  { return this.event?.title },
     slug()   { return this.event?.slug },
     starts() { return this.event?.starts && this.$time.short_date_format( this.event.starts )},
-    accent() { return this.event?.accent },
+    styles() { return this.event?.styles },
     info()   { return this.event?.info || "" },
     query()  { return this.$route.query },
     cover()  {
@@ -38,7 +38,7 @@ export default {
     :class="$id()"
     :aria-label="title"
     :style="{
-      ...accent,
+      ...styles,
       '--i': i,
       '--n': n,
     }"
@@ -76,6 +76,10 @@ li::before {
   content          : unset;
 }
 li.agendaevent {
+  text-shadow: var(--text-outline);
+  background-color: var(--back);
+  font-family: var(--font);
+  color: var(--fore);
   min-height: 25rem;
   flex-basis: 25%;
   /* width: calc( 100% / 4 ); */

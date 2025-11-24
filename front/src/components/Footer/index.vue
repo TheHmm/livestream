@@ -215,38 +215,6 @@ footer .tab .contents :deep(ul li::before ){
   content        : unset;
 }
 
-footer .tab#about {
-  --back: var(--black);
-  --fore: var(--white);
-  max-width : var(--tab-width);
-}
-
-footer .tab#about header {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 0.5rem;
-  z-index: 1;
-}
-footer .tab#about.expanded header {
-  justify-content: flex-end;
-}
-
-footer .tab#about.expanded {
-  --full-height: calc( 100vh - 8rem );
-}
-
-footer .tab#about.expanded .contents,
-footer .tab#about.expanded:hover .contents,
-footer .tab#about.expanded:focus .contents,
-footer .tab#about.expanded:focus-within .contents {
-  min-height: var(--full-height);
-  min-width: calc( 100vw - 2rem );
-  max-width: calc( 100vw - 2rem );
-}
-
 .mobile footer {
   margin         : unset;
   z-index        : 3;

@@ -188,60 +188,29 @@ body {
 
 body {
 
-  /* The event accennt color is created in Strapi as a valid */
-  /* hsl() string thenn converted into the --h, --s and --l
-  /* CSS vars in the script: @/utils/colors. These values */
-  /* change per event and default to this: */
-
-  --h              : 0;
-  --s              : 0%;
-  --l              : 100%;
-
-  --increment      : 9.6%;
-  --max-l          : 96%;
-
-
-  /* We produce 5 more shades of our accent color by adding */
-  /* to the lightness of the original a defined increment */
-
-  --dark-l         : calc( var(--l) + 1 * var(--increment) );
-  --darker-l       : calc( var(--l) + 2 * var(--increment) );
-  --mid-l          : calc( var(--l) + 3 * var(--increment) );
-  --lighter-l      : calc( var(--l) + 4 * var(--increment) );
-  --light-l        : min( calc( var(--l) + 5 * var(--increment) ), var( --max-l ) );
-
-  --accent-dark    : hsl( var(--h), var(--s), var(   --dark-l) );
-  --accent-darker  : hsl( var(--h), var(--s), var( --darker-l) );
-  --accent-mid     : hsl( var(--h), var(--s), var(    --mid-l) );
-  --accent-lighter : hsl( var(--h), var(--s), var(--lighter-l) );
-  --accent-light   : hsl( var(--h), var(--s), var(  --light-l) );
-
-
-  /* The default accent color used in the entire website */
+  /* The default colors used in the entire website */
   /* This value is overidden in the .event class */
 
-  --accent         : hsl( var(--h), var(--s), var(--l) );
-
-
-  /* Foregrounds and backgrounds */
-  /* Changes with different elements */
-
-  --back           : var(--accent);
-  --fore           : var(--black);
-  --focus          : var(--thick) var(--accent);
+  --back: var(--white);
+  --fore: var(--black);
+  --accent: var(--white);
+  --focus: var(--thick) var(--accent);
 
 }
 
 body#livestream {
-  --fore           : var(--white);
+  /* --fore: var(--white); */
+  /* --back: var(--blue);
+  --fore: var(--white);
+  --accent: var(--yellow); */
 }
 
 .event {
-  --i              : 0;
-  --n              : 0;
-  padding          : var(--size-s);
-  width            : 100%;
-  display          : flex;
+  --i: 0;
+  --n: 0;
+  padding: var(--size-s);
+  width: 100%;
+  display: flex;
 }
 
 

@@ -42,9 +42,9 @@ li {
   width: 100%;
   display: flex;
   align-items: center;
-  background-color: var(--white);
+  background-color: var(--accent);
   border: var(--solid);
-  color: var(--black);
+  /* color: var(--black); */
   border-radius: var(--radius);
 }
 li::before {
@@ -58,7 +58,6 @@ a:visited {
   width: 100%;
   text-align: center;
   border-radius: inherit;
-  color: var(--black);
   border: none;
   font-family: karrik;
   font-style: normal;

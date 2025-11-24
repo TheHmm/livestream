@@ -174,7 +174,7 @@ export default {
 @import '@/assets/css/dot.css';
 
 .viewer {
-  --fore          : var(--white);
+  /* --fore          : var(--white); */
   --back          : var(--accent);
   position        : relative;
   display         : flex;

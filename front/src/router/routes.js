@@ -118,11 +118,6 @@ export default [
           desired_tabs: []
         }
       },
-      {
-        path: 'accent',
-        name: 'Accent',
-        component: () => import( '@/components/Utils/Accent.vue' )
-      }
     ]
   },
   {

@@ -164,10 +164,10 @@ export default {
 <style scoped>
 
 .message {
-  --back              : var(--white);
-  background-color    : var(--back);
+  background-color: var(--back);
   border-radius: var(--radius-s);
   border: var(--solid);
+  text-shadow: var(--text-outline);
   max-width           : 100%;
   padding             : 0.5rem;
   margin-top          : 0.5rem;
@@ -209,6 +209,7 @@ export default {
 .message .body {
   margin-top          : 0.25rem ;
   max-width           : 30rem;
+  font-family: var(--font);
 }
 .message .body :deep(a) {
   word-break: break-all;

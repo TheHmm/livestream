@@ -129,8 +129,8 @@ table tr td {
   white-space: pre;
 }
 table tr td * {
-  background-color: var(--accent);
-  color: var(--fore);
+  background-color: var(--fore);
+  color: var(--back);
   padding: 0 0.25rem;
   transition: all var(--enter) linear;
 }

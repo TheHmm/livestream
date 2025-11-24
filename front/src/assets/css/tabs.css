@@ -2,30 +2,23 @@
 /* Options and Chat tabs at the bottom :) */
 
 .tab {
-
-  --back           : var(--yellow);
-  --fore           : var(--black);
   --base-height    : 3rem;
   --full-height    : 15rem;
   --tab-width      : 10rem;
-  
   border: var(--solid);
   border-radius: var(--radius);
   overflow: hidden;
-
 }
-
 .tab label.title {
-  background-color : var(--back);
+  background-color : var(--accent);
   height           : var(--base-height);
   padding           : 0 0.5rem;
   display          : flex;
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
 }
-
 .tab .contents {
-  background       : var(--back);
+  background       : var(--accent);
   min-width        : var(--tab-width);
   max-width        : var(--tab-width);
   min-height       : 0;
@@ -43,7 +36,6 @@
     margin      var(--fast) linear
   ;
 }
-
 .tab .contents :deep(ul) {
   list-style       : none;
   padding          : 0;
@@ -52,7 +44,6 @@
 .tab .contents :deep(ul li) {
   padding          : 0.1rem 0.5rem;
 }
-
 .tab:hover .contents,
 .tab:focus .contents,
 .tab:focus-within .contents {
@@ -60,7 +51,6 @@
   max-width        : var(--tab-width);
   overflow         : scroll;
 }
-
 .mobile .tab {
   --base-height    : 2.5rem;
   --tab-width      : 8rem;

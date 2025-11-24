@@ -338,7 +338,7 @@ export default {
 
 
 #chatpage #chat_container {
-  --fore           : var(--black);
+  /* --fore           : var(--black); */
   width            : 100%;
   margin           : 0;
   height           : 100%;

@@ -95,7 +95,9 @@ export default {
 #info {
   width       : var(--side-width);
   max-width   : var(--side-width);
+  font-family: var(--font);
   height      : 100%;
+  text-shadow: var(--text-outline);
 }
 #info input {
   /* position    : absolute;

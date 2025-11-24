@@ -37,6 +37,7 @@ export default {
 
 <style scoped>
 .text-ring {
+  text-shadow: var(--text-outline);
   position: relative;
   min-width: calc( 2 * 1ch * var(--radius) - 2ch );
   animation: spin 18s linear 0s infinite;

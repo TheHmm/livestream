@@ -91,7 +91,7 @@ export default {
 
 #chat_container {
   --distance       : 5rem;
-  --fore           : var(--black);
+  /* --fore           : var(--black); */
   width            : calc(var(--side-width));
   position         : absolute;
   bottom           : 1rem;
