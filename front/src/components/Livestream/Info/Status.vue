@@ -17,8 +17,7 @@ export default {
     :id="$id()"
     aria-label="Livestream status"
   >
-    <p role="status">
-      {{ status }}
+    <p role="status" v-html="$md(status)">
     </p>
   </div>
 </template>

@@ -142,6 +142,10 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::font.font"
+    },
+    "livestream_placeholder": {
+      "type": "richtext",
+      "default": "Livestream currently not available"
     }
   }
 }

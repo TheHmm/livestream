@@ -41,7 +41,9 @@ export default {
     is_in_past()  { return this.event?.is_in_past },
     livestream()  { return this.$store.getters[ 'livestream/current_livestream' ] },
     playback_id() { return this.livestream?.playbackId },
-    status()      { return this.livestream?.status || 'unavailable' },
+    status()      { 
+      return this.livestream?.status || this.event?.livestream_placeholder || 'unavailable' 
+    },
     show_player() { return (
       this.playback_id && (
         this.status == 'active' ||

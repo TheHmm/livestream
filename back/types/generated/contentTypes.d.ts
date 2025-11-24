@@ -547,6 +547,8 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
       'manyToOne',
       'api::livestream.livestream'
     >;
+    livestream_placeholder: Schema.Attribute.RichText &
+      Schema.Attribute.DefaultTo<'Livestream currently not available'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::event.event'> &
       Schema.Attribute.Private;
