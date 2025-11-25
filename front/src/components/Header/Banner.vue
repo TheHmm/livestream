@@ -47,15 +47,20 @@ export default {
   --full-height: calc( 0.95 * var(--letter-height) + 2 * var(--padding) );
   --full-width: 100vw;
   max-width: var(--full-width);
-  max-height: var(--full-height);
-  height: 100%; width: 100%;
+  min-height: calc( 0.6 * var(--letter-height) + 2 * var(--padding) );
+  /* max-height: var(--full-height); */
+  /* height: 100%; */
+  width: 100%;
   padding: var(--padding);
   padding-right: calc( var(--padding) + var(--size) / 2 );
-  padding-bottom: calc( var(--padding) + var(--size) / 4 );
+  /* padding-bottom: calc( var(--padding) + var(--size) / 4 ); */
   display: flex;
   justify-content: center;
   /* gap: var(--gap); */
+  /* position: sticky;
+  top: 0; */
 }
+
 /* .word { */
   /* display: flex;   */
   /* gap: var(--gap); */

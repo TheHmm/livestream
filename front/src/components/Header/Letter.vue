@@ -16,8 +16,9 @@ export default {
 <template>
   <div class="letter">
     <div 
-      v-for="row in letter.split(/\n/).slice(1,8)" 
+      v-for="( row, i) in letter.split(/\n/).slice(1,8)" 
       class="row"
+      :style="{ '--n': i + 1 }"
     > 
       <div
         v-for="dot in row" 
@@ -35,7 +36,7 @@ export default {
 <style scoped>
 .letter {
   flex: 1;
-  height: 100%;
+  /* height: 100%; */
   width: 100%;
   min-width: 2rem;
   display: flex;
@@ -53,16 +54,19 @@ export default {
   margin-right: unset;
 }
 .letter .row {
-  height: 100%;
+  /* height: 100%; */
+  /* position: sticky; */
+  /* top: calc( 0.4 * var(--n) * var(--dot-height) ); */
   width: 100%;
   display: flex;
 }
+
 .dot {
   max-height: var(--dot-height);
   /* max-height: calc( 0.9 * var(--dot-height)); */
   max-width: var(--dot-width);
   width: 100%;
-  height: 100%;
+  height: var(--dot-height);
   /* background-color: red; */
 }
 .dot::after {

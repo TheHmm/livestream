@@ -120,9 +120,10 @@ table {
   animation       : fade_in var(--enter) linear calc( 0.4s + var(--n) * 0.1s ) forwards;
   z-index         : 1;
   pointer-events  : none;
-  width: var(--side-width);
+  /* width: var(--side-width); */
   flex-shrink: 0;
   overflow: hidden;
+  flex-basis: 25%;
 }
 table tr td {
   padding: 0;

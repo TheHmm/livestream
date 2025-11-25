@@ -25,13 +25,15 @@ ul {
   list-style       : none;
   padding          : 0;
   min-height       : 100%;
-  display          : flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* display          : flex;
   flex-direction   : row;
   flex-wrap: wrap;
-  justify-content  : stretch;
+  justify-content  : stretch; */
   width            : 100%;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 0.5rem;
+  padding: 0.5rem;
   transition       :
     transform var(--very-slow) ease,
     background-color var(--very-slow) ease

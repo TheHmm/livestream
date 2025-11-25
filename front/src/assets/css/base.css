@@ -63,7 +63,7 @@
 
   --nav-height : 2.33rem;
   /* --header-height  : max( 23%, 10rem); */
-  --header-height  : max( 20vh, 10rem);
+  --header-height  : max( 25vh, 10rem);
   /* --total-header   : calc( var(--marquee-height) + var(--header-height) ); */
   --total-header   : var(--header-height);
   --middle-height  : calc( 100% - var(--total-header ) );

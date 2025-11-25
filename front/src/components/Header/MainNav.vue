@@ -31,6 +31,10 @@ export default {
 
 <style scoped>
 nav {
+  /* position: sticky;
+  top: calc( 0.6 * var(--letter-height)  ); */
+  flex-basis: 75%;
+  flex-shrink: 0;
   width: 100%;
 }
 ul {

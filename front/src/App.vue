@@ -173,8 +173,8 @@ body {
   transition       : background-color var(--very-slow) ease;
   height           : 100%;
   width            : 100%;
-  display          : flex;
-  flex-direction   : column;
+  /* display          : flex; */
+  /* flex-direction   : column; */
 }
 
 @keyframes enter {
@@ -184,9 +184,11 @@ body {
 
 
 body main {
-  height           : var(--middle-height);
+  /* height           : var(--middle-height); */
   position         : relative;
-  flex-grow        : 1;
+  /* position: sticky; */
+  /* top: var(--header-height); */
+  /* flex-grow        : 1; */
   z-index          : 2;
   /* margin-top       : var(--header-height); */
 }

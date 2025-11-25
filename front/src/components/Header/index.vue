@@ -43,9 +43,10 @@ header {
   --dot-height: var(--size);
   --dot-width: var(--size);
   --gap: calc( 1 * var(--dot-width) );
-  max-height: var(--header-height);
-  height: 100%;
+  /* max-height: var(--header-height); */
+  /* height: 100%; */
   width: 100%;
+  /* overflow: ; */
   /* position   : sticky;
   top        : 0; */
 }
@@ -53,7 +54,7 @@ header {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: stretch;
   gap: var(--gap);
   padding-inline: var(--padding);
 }

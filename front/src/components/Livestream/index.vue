@@ -95,7 +95,7 @@ export default {
   --distance       : 5rem;
   /* --fore           : var(--black); */
   width            : calc(var(--side-width));
-  position         : absolute;
+  position         : fixed;
   bottom           : 1rem;
   left             : 0;
   margin           : 0 var(--size-s);
