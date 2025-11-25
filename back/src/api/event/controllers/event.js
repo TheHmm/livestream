@@ -5,23 +5,61 @@
  */
 
 const { createCoreController } = require('@strapi/strapi').factories
+const bcrypt =  require('bcryptjs')
+
+const password_protected_fields = [
+  'password',
+  'livestream',
+  'mux_recording',
+  'viewers',
+  'messages',
+  'announcements'
+]
+
+async function validate_password( password, hash ) {
+  return bcrypt.compare(password, hash)
+}
 
 module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
 
 
-  // We replace the default 'findOne' controller with
-  // our own controller that defaults to the entry's slug
-  // as it's ID (for easier front-end routing).
+  // replace core ind controller to hide password protected
+  // data from the entrie
 
-  async findOne( ctx ) {
+  async find( ctx ) {
+    const { data: entities } = await super.find( ctx )
+    for ( const entity of entities ) {
+      if ( entity.password_protected ) {
+        console.log( entity )
+        for ( const key of Object.keys( entity ) ) {
+          if ( password_protected_fields.includes( key ) ) {
+            delete entity[key]
+          }  
+        }
+      }
+    }
+
+
+    // We return the entities, transformed and sanitzed.
+
+    const sanitized = await this.sanitizeOutput( entities, ctx)
+    return this.transformResponse( sanitized )
+
+  },
+
+
+  // We cresate our own controller used to fetch individual
+  // entries using their slug, na optional password, or even
+  // just to count them
+
+  async find_one_with_password( ctx ) {
 
 
     // We get the slug and query from ctx.
 
     const
-      { params }   = ctx,
-      { id: slug } = params,
-      { query }    = ctx.request
+      { slug } = ctx.request.params,
+      { params, password } = ctx.request.body
 
 
     // Cutom "count" controller to count our events. This is used in
@@ -34,25 +72,35 @@ module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
       
       return strapi
       .documents( 'api::event.event' )
-      .count( query )
+      .count( params )
 
     } else {
 
 
       // We query the database for the given entry by its slug.
 
-      const
-        entity = await strapi
-        .documents( 'api::event.event' )
-        .findFirst({
-          filters : { slug },
-          fields : query.fields,
-          populate : query.populate
-        })
+      const entity = await strapi.documents( 'api::event.event' ).findFirst({
+        filters : { slug },
+        fields : params.fields,
+        populate : params.populate
+      })
 
-      // We return the entity, transformed into a response.
+      if ( entity.password_protected && entity.password ) {
+        if ( !password ) {
+          return ctx.forbidden('Please provide password')
+        }
+        console.log( password, entity.password )
+        const password_valid = await validate_password( password, entity.password )
+        if ( !password_valid ) {
+          return ctx.forbidden('Invalid password')
+        }
+      }
 
-      return this.transformResponse( entity )
+
+      // We return the entity, transformed and sanitzed.
+
+      const sanitized = await this.sanitizeOutput( entity, ctx)
+      return this.transformResponse( sanitized )
 
     }
 

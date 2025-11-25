@@ -16,6 +16,7 @@ export default {
     info()   { return this.event?.info || "" },
     org() { return this.event.organisation },
     org_logo_src() { return this.org && config.api_img_url + this.org?.Logo?.formats?.thumbnail?.url },
+    protected() { return this.event?.password_protected },
     query()  { return this.$route.query },    
   },
   created() {
@@ -59,6 +60,7 @@ export default {
         {{ org?.Name }}
       </span>
       <span class="event_title"> {{ title }} </span>
+      <p v-if="protected">🔒</p>
       <time
         aria-label="event start time"
         class="time"

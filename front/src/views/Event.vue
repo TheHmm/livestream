@@ -56,7 +56,7 @@ export default {
 
   created() {
     if ( !this.is_in_past ) {
-      this.$socket.client.emit('join_room', this.event.slug )
+      this.$socket.client.emit( 'join_room', this.event.slug )
     }
   },
 
@@ -66,7 +66,7 @@ export default {
 
   beforeUnmount() {
     if ( !this.is_in_past ) {
-      this.$socket.client.emit('leave_room')
+      this.$socket.client.emit( 'leave_room' )
     }
     const { commit } = this.$store
     commit( 'messages/SET_MESSAGES', {} )

@@ -33,7 +33,7 @@ export default {
     }
     return new Promise( ( resolve, reject ) => {
       axios
-      .get( `${ config.api_url }/events/count`, { params: { filters } } )
+      .post( `${ config.api_url }/events/count/password`, { params: { filters } } )
       .then( result => resolve( result.data ) )
       .catch( error => {
         $log.error( 'API', error )
@@ -71,6 +71,7 @@ export default {
           'text_outline',
           'info', 
           'mux_recording',
+          'password_protected'
         ],
         populate: [
           'font',
@@ -119,6 +120,7 @@ export default {
           'text_color',
           'text_outline',
           'info',
+          'password_protected',
           'mux_recording',
           'show_in_agenda',
         ],
@@ -149,8 +151,10 @@ export default {
     $log.info( `API`, `Fetching event ${ slug }.` )
     return new Promise( ( resolve, reject ) => {
       axios
-      .get(
-        `${ config.api_url }/events/${ slug }`, { params: {
+      .post(
+        `${ config.api_url }/events/${ slug }/password`, { 
+        password: `irdBjM8MYCj:d'"`,
+        params: {
           fields: '*',
           populate: [
             'font',
@@ -162,7 +166,8 @@ export default {
             'organisation',
             'organisation.Logo',
           ]
-        } } )
+        }
+      } )
       .then( result => resolve( result.data.data ) )
       .catch( error => {
         $log.error( 'API', error )

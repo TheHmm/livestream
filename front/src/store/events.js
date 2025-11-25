@@ -308,6 +308,8 @@ function sanitize ( event, getters, commit ) {
     event = { ...found, ...event }
   }
 
+  console.log(event)
+
 
   // Define event styles
 
@@ -316,15 +318,12 @@ function sanitize ( event, getters, commit ) {
     '--fore': event.text_color || default_colors['--fore'],
     '--accent': event.accent_color || default_colors['--accent'],
   }
-
   if ( event.background_image && event.background_image.formats?.medium ) {
     event.styles['--back-img'] = `url(${ config.api_img_url + event.background_image.formats.medium.url })`
   }
-
   if ( event.text_outline ) {
     event.styles['--text-outline'] = `-1px -1px 0 ${ event.styles['--accent'] }, 1px -1px 0 ${ event.styles['--accent'] }, -1px 1px 0 ${ event.styles['--accent'] }, 1px 1px 0 ${ event.styles['--accent'] }`
   }
-
   if ( event.font && event.font.file ) {
     if ( !getters.font( event.font ) ) {
       let font = new FontFace( event.font.name, `url(${ config.api_img_url + event.font.file.url })`)

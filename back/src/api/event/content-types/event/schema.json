@@ -146,6 +146,24 @@
     "livestream_placeholder": {
       "type": "richtext",
       "default": "Livestream currently not available"
+    },
+    "password_protected": {
+      "type": "boolean",
+      "default": false
+    },
+    "password": {
+      "type": "password",
+      "private": true,
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "password_protected"
+            },
+            true
+          ]
+        }
+      }
     }
   }
 }

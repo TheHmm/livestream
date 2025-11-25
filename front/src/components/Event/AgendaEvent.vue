@@ -13,6 +13,7 @@ export default {
     starts() { return this.event?.starts && this.$time.short_date_format( this.event.starts )},
     styles() { return this.event?.styles },
     info()   { return this.event?.info || "" },
+    protected() { return this.event?.password_protected },
     query()  { return this.$route.query },
     cover()  {
       let cover
@@ -65,6 +66,7 @@ export default {
         >
           {{ starts }}
         </time>
+        <p v-if="protected">🔒</p>
       </header>
     </router-link>
   </li>
