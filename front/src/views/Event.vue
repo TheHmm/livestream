@@ -149,7 +149,17 @@ export default {
           @click.stop="navigate"
         />
       </router-link>
+      <h1 id="event_title">
+        {{ event?.title }}
+      </h1>
       <p><label>Please enter event access code: </label></p>
+      <input
+        id="username"
+        type="text"
+        name="username"
+        :value="$route.params.slug"
+        disabled
+      />
       <input 
         type="password" 
         ref="password"
@@ -187,6 +197,16 @@ export default {
   height           : 100%;
   /* animation        : enterMiddle var(--enter) ease 0.1s forwards !important; */
   padding-bottom   : var(--footer-height);
+}
+
+#access_form {
+  max-width   : var(--side-width);
+}
+
+#access_form #username {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
 }
 
 .mobile .event {
