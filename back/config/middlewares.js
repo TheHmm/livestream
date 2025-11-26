@@ -35,6 +35,10 @@ module.exports = [
   'strapi::poweredBy',
   'strapi::query',
   'strapi::body',
+  {
+    name: 'global::sanitize-null-password',
+    config: {},
+  },
   'strapi::favicon',
   'strapi::public',
 ];
