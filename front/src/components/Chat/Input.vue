@@ -162,7 +162,7 @@ export default {
   flex-direction: column;
   justify-content: right;
   outline          : var(--solid);
-  background-color: var(--white);
+  background-color: var(--back);
   border-radius: var(--radius-s);
 }
 #message_form .reply_to > span {
