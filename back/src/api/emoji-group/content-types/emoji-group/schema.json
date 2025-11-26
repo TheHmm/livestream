@@ -8,7 +8,7 @@
     "description": "Groups of emojis that can be used together and linked in an event."
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {

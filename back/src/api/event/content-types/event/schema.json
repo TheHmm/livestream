@@ -8,7 +8,7 @@
     "description": "The Hmm livestream events"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {

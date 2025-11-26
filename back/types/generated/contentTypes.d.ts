@@ -474,7 +474,7 @@ export interface ApiEmojiGroupEmojiGroup extends Struct.CollectionTypeSchema {
     singularName: 'emoji-group';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -506,7 +506,7 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     singularName: 'event';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     accent: Schema.Attribute.String &
@@ -756,7 +756,7 @@ export interface ApiOrganisationOrganisation
     singularName: 'organisation';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
