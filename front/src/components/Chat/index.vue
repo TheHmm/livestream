@@ -98,10 +98,10 @@ export default {
     async load_more() {
       try {
         this.loading = 'loading...'
-        const messages = await this.$store.dispatch(
-          'messages/fetch_messages',
-          this.event.documentId
-        )
+        const messages = await this.$store.dispatch( 'messages/fetch_messages', {
+          event_id: this.event.documentId,
+          load_more: true, // tell api to load more and paginate
+        })
         if ( messages.length >= 20 ) {
           this.loading = 'load more messages'
         } else {

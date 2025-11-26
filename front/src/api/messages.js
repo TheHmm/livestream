@@ -8,17 +8,16 @@ let current_event_id = null
 
 export default {
 
-  get_by_event( event_id ) {
+  get_by_event( event_id, load_more ) {
     $log.info( `API`, `Fetching messages.` )
     if ( !current_event_id ) {
       current_event_id = event_id
     }
-    if ( current_event_id == event_id ) {
+    if ( load_more && current_event_id == event_id ) {
       page ++
     } else {
       page = 1
     }
-    console.log( current_event_id, event_id, page )
     current_event_id = event_id
     return new Promise( ( resolve, reject ) => {
       axios

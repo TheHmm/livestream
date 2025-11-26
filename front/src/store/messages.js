@@ -164,11 +164,11 @@ export default {
 
     // Fetch messages by event id
 
-    fetch_messages( { dispatch }, event_id ) {
+    fetch_messages( { dispatch }, { event_id, load_more }) {
       return new Promise( ( resolve, reject ) =>
         api
         .messages
-        .get_by_event( event_id )
+        .get_by_event( event_id, load_more )
         .then( async messages => {
           for ( const message of messages ) {
             await dispatch( 'set_message', message )
@@ -233,7 +233,7 @@ export default {
 
     async get_messages( { getters, dispatch }, event_id ) {
       if ( getters.count < 1 ) {
-        return await dispatch( 'fetch_messages', event_id )
+        return await dispatch( 'fetch_messages', { event_id })
       } else {
         return getters.get_messages
       }
