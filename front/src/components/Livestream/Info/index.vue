@@ -64,7 +64,7 @@ export default {
     <h3 aria-label="event time">
       <router-link
         custom
-        :to="{ path: '/', query: $route.query }"
+        :to="{ path: event.is_in_past ? '/archive' : '/', query: $route.query }"
         v-slot="{ navigate }"
       >
         <input

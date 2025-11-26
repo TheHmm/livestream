@@ -76,6 +76,7 @@ section:first-of-type > h2 {
 }
 #archive {
   padding: 0;
+  margin-top: 0.5rem;
 }
 #subheader {
   margin-inline: 0.5rem;

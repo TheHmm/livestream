@@ -61,6 +61,12 @@ export default {
     }
   },
 
+  mounted() {
+    if ( !this.view_authenticated ) {
+      this.$refs.password.focus()
+    }
+  },  
+
 
   // For the same reason, we disconnect from the socket
   // server before we leave this route.
@@ -132,7 +138,7 @@ export default {
     >
       <router-link
         custom
-        :to="{ path: '/', query: $route.query }"
+        :to="{ path: is_in_past ? '/archive' : '/', query: $route.query }"
         v-slot="{ navigate }"
       >
         <input
@@ -146,6 +152,7 @@ export default {
       <p><label>Please enter event access code: </label></p>
       <input 
         type="password" 
+        ref="password"
         v-model="password"  
         required
       />

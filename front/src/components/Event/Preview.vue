@@ -15,8 +15,8 @@ export default {
       'preview_event',
       'preview_time'
     ]),
-    accent() {
-      return this.preview_event?.accent || { '--h': 0, '--s': 0, '--l': 0 }
+    styles() {
+      return this.preview_event?.styles || { '--h': 0, '--s': 0, '--l': 0 }
     },
     mux_recording() {
       return this.preview_event?.mux_recording
@@ -72,7 +72,7 @@ export default {
   >
     <img 
        v-if="image_data"
-      :style="{ ...accent }"
+      :style="{ ...styles }"
       :src="image_data"
       :title="`Thumbnail of livestream at ${ formatted_desired_time }`"
       :alt="`Thumbnail of livestream at ${ formatted_desired_time }`"
@@ -95,7 +95,6 @@ export default {
   pointer-events: none;
 }
 #preview img {
-  --accent: hsl( var(--h), var(--s), var(--l) );
   transition: box-shadow var(--fast) linear;
   box-shadow: 0 0 15px 0px var(--accent);
 }

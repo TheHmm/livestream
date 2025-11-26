@@ -131,9 +131,7 @@ export default {
         commit( 'SET_EVENT', sanitize( { slug, is_preview_event: true }, getters, commit ) )
       } else {
         getters.get_past_events.map( e => {
-          if ( e.is_in_past ) {
-            commit( 'SET_EVENT', sanitize( { slug: e.slug, is_preview_event: false }, getters, commit ) )
-          }
+          commit( 'SET_EVENT', sanitize( { slug: e.slug, is_preview_event: false }, getters, commit ) )
         })
         commit( 'SET_PREVIEW_TIME', 0 )
       }
@@ -308,7 +306,7 @@ function sanitize ( event, getters, commit ) {
     event = { ...found, ...event }
   }
 
-  console.log(event)
+  // console.log(event)
 
 
   // Define event styles
