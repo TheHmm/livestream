@@ -28,9 +28,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters( 'viewers', [
-      'view_authenticated'
-    ]),
     event() {
       return this.$store.getters[ 'events/get_event' ](
         this.$route.params.slug
@@ -39,6 +36,9 @@ export default {
     is_in_past() {
       return this.event?.is_in_past
     },
+    password_authenticated() {
+      return this.event.password_protected ? this.event.password_authenticated : true
+    }
   },
 
 
@@ -53,7 +53,7 @@ export default {
     const slug = useRoute().params.slug
     try {
       let event = await store.dispatch( 'events/get_event', { slug })
-      if ( !event.password_protected && !event.viewers ) {
+      if ( event.password_protected ? event.password_authenticated : true ) {
         await this.authenticated_setup()
       }
       this.loading = null
@@ -96,9 +96,10 @@ export default {
     
     async authenticated_setup() {
       this.loading = "Fetching event data..."
-      const { dispatch, commit } = this.$store
-      const { documentId } = this.event
-      commit( 'viewers/SET_VIEW_AUTHENTICATED', true )
+      const { dispatch } = this.$store
+      const { documentId, slug } = this.event
+      console.log( slug, documentId )
+      dispatch( 'events/password_authenticate_event', slug )
       await dispatch( 'livestream/get_livestream_by_event', documentId )
       await dispatch( 'viewers/get_viewers', documentId )
       await dispatch( 'messages/get_messages', documentId )
@@ -115,7 +116,6 @@ export default {
       const { commit } = this.$store
       commit( 'messages/SET_MESSAGES', {} )
       commit( 'viewers/SET_VIEWERS', {} )
-      commit( 'viewers/SET_VIEW_AUTHENTICATED', false )
       commit( 'announcements/SET_ANNOUNCEMENTS', {} )
       commit( 'livestream/SET_CC', [] )
     }
@@ -139,7 +139,7 @@ export default {
     </div>
     <form 
       id="access_form"
-      v-else-if="!view_authenticated"  
+      v-else-if="!password_authenticated"  
     >
       <router-link
         custom
@@ -183,7 +183,7 @@ export default {
       ></div>
     </form>
     <router-view
-      v-if="!loading && view_authenticated && event"
+      v-if="!loading && password_authenticated && event"
       v-slot="{ Component }"
     >
       <component

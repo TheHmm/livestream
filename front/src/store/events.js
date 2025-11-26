@@ -126,12 +126,12 @@ export default {
   
     // for previewing events in arhcive page
 
-    set_preview_event({ commit, getters }, slug ) {
+    set_preview_event({ commit, dispatch, getters }, slug ) {
       if ( slug ) {
-        commit( 'SET_EVENT', sanitize( { slug, is_preview_event: true }, getters, commit ) )
+        dispatch( 'set_event', { slug, is_preview_event: true } )
       } else {
         getters.get_past_events.map( e => {
-          commit( 'SET_EVENT', sanitize( { slug: e.slug, is_preview_event: false }, getters, commit ) )
+          dispatch( 'set_event', { slug: e.slug, is_preview_event: false } )
         })
         commit( 'SET_PREVIEW_TIME', 0 )
       }
@@ -142,6 +142,14 @@ export default {
       commit( 'SET_PREVIEW_TIME', e.pageX / window.innerWidth )
     },
 
+
+    // for saving event authentication status 
+
+    password_authenticate_event({ dispatch }, slug ) {
+      if ( slug ) {
+        dispatch( 'set_event', { slug, password_authenticated: true } )
+      }
+    },
 
     // Fetch number of events
 

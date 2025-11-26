@@ -10,7 +10,6 @@ export default {
 
   get_by_event( event_id ) {
     $log.info( `API`, `Fetching messages.` )
-
     if ( !current_event_id ) {
       current_event_id = event_id
     }
@@ -19,6 +18,7 @@ export default {
     } else {
       page = 1
     }
+    console.log( current_event_id, event_id, page )
     current_event_id = event_id
     return new Promise( ( resolve, reject ) => {
       axios
