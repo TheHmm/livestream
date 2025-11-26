@@ -94,7 +94,6 @@ export default {
     },
 
     emoji_groups : ( state, getters ) => {
-      console.log( getters.current_event?.emoji_groups )
       return getters.current_event?.emoji_groups 
     },
 

@@ -203,6 +203,10 @@ export default {
   padding-bottom   : var(--footer-height);
 }
 
+#loading, #access_form {
+  font-family: var(--font);
+}
+
 #access_form {
   max-width   : var(--side-width);
 }

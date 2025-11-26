@@ -1,8 +1,8 @@
 
 const { difference } = require('../utils')
 
+// link to livestream if not yet set
 const before_create = async context => {
-  // link to livestream if not yet set
   if ( !context.params.data.livestream ) {
     const found = await strapi.documents( 'api::livestream.livestream' ).findFirst()
     if ( found ) {
@@ -11,13 +11,10 @@ const before_create = async context => {
   }
 }
 
+// fetch recording if asset_id provided
 const before_update = async context => {
   const params    = context.params
-
-  // fetch recording if asset_id provided
-
   const recording = params.data.mux_recording
-
   if ( recording ) {
     const asset_id = recording.asset_id
     const status = recording.status
@@ -35,47 +32,27 @@ const before_update = async context => {
       }
     }
   }
+}
 
-
-  // We get our new entry from event payload and our old
-  // one from Strapi.
-  
-  // const
-  //   new_event = params.data,
-  //   slug      = params.data.slug,
-  //   api       = strapi.documents( 'api::event.event' ),
-  //   old_event = await api.findOne( params )
-
-
-  // We get the updates to the entry using difference
-  // function: @/back/src/utils.js
-
-  // const diff = difference( old_event, new_event )
-
-  // We delete confused differences from our diff object.
-  // Strapi is excluding the id when we use the findOne()
-  // function as well as returning dates as a string (and
-  // not an object)
-
-  // delete diff.documentId
-  // delete diff.createdAt
-  // delete diff.publishedAt
-  // delete diff.createdBy
-  // delete diff.updatedBy
-
-  // if ( diff.emoji_groups ) {
-  //   delete diff.emoji_groups
-  // }
-
-  // diff.slug = slug
-
-
-  // We inform connected sockets.
-  // TODO: not working
-
-  // strapi.io.emit( 'event_update', diff )
-  
-
+// inform connected sockets after update
+const after_update = async result => {
+  const documentId = result.documentId
+  const event = await strapi.documents('api::event.event').findOne({
+    documentId,
+    fields: '*', 
+    populate: [ 
+      'viewers',
+      'font',
+      'font.file',
+      'background_image',
+      'emoji_groups',
+      'emoji_groups.emoji',
+      'emoji_groups.emoji.image',
+      'organisation',
+      'organisation.Logo',
+    ]
+  })
+  strapi.io.to(event.slug).emit( 'event_update', event )
 }
 
 module.exports = {
@@ -87,16 +64,17 @@ module.exports = {
 
   event_hooks() {
     return async ( context, next ) => {
-
-      // before update 
       const { uid, action } = context
       if (uid == 'api::event.event' && action == 'update' ) {
         await before_update( context )
       } else if (uid == 'api::event.event' && action == 'create' ) {
         await before_create( context )
       }
-      
-      return next()
+       let result = await next()
+       if (uid == 'api::event.event' && action == 'update' ) {
+        await after_update( result )
+       }
+      return result
     }
   }
 }

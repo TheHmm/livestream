@@ -17,10 +17,6 @@ const password_protected_fields = [
   'emoji_groups'
 ]
 
-async function validate_password( password, hash ) {
-  return bcrypt.compare(password, hash)
-}
-
 module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
 
 
@@ -87,22 +83,14 @@ module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
 
       if ( entity.password_protected ) {
         if ( !password ) {
-          console.log( 'no passowrd' )
           for ( const key of Object.keys( entity ) ) {
             if ( password_protected_fields.includes( key ) ) {
               delete entity[key]
             }  
           }
-          // return ctx.forbidden('Please provide password')
         } else {
-          const password_valid = await validate_password( password, entity.password )
-          console.log( password, entity.password, password_valid )
+          const password_valid = await bcrypt.compare( password, entity.password )
           if ( !password_valid ) {
-            // for ( const key of Object.keys( entity ) ) {
-            //   if ( password_protected_fields.includes( key ) ) {
-            //     delete entity[key]
-            //   }  
-            // }
             return ctx.forbidden('Invalid password')
           }
         }
