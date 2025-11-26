@@ -248,68 +248,6 @@ export default {
     },
 
 
-    // // We check that a user has provided password for this event 
-    // // before and can view the event
-
-    // async view_authenticate( { state, commit, getters, dispatch } ) {
-
-
-    //   // If we've previously been authenticated, no need to do
-    //   // all of this.
-
-    //   if ( state.view_authenticated ) {
-    //     return state.view_authenticated
-    //   }
-
-    //   // First, we check if the visitor has previously existed
-    //   // on this website (ie. they created a viewer). If not, 
-    //   // this is a completely new user.
-
-    //   if ( !state.uuid ) {
-    //     $log.info( 'AUTH', 'You are not registered yet.' )
-    //     return
-    //   }
-
-    //   $log.info( 'AUTH', `Found UUID: ${ state.uuid }.` )
-
-    //   // Then we fetch the viewer from the server. we do this
-    //   // to see if they exist if not, they are new and still
-    //   // need to register
-
-    //   try {
-    //     await dispatch( 'fetch_viewer', state.uuid )
-
-
-    //   // user has a uuid in their local storage but not in
-    //   // the server: they are new and not in the database,
-
-    //   } catch ( error ) {
-    //     if ( error.message == '404' ) {
-    //       $log.info( 'AUTH', `You're not in our database.` )
-    //       return
-    //     } else {
-    //       throw error
-    //     }
-    //   }
-
-
-      // If they haven't chatted to this event, then they are
-      // not authenticated
-
-      // if ( !getters.has_been_to_current_event ) {
-      //   $log.info('AUTH', "You haven't been to this event.")
-      //   return
-      // }
-
-      // // commit( 'SET_VIEW_AUTHENTICATED', true )
-      // // $log.info( 'AUTH', `You're chat-authenticated!` )
-
-      // return state.view_authenticated
-
-
-    // },
-
-
     // We check that a user exists in Strapi before they are
     // given access to sending messages.
 

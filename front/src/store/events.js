@@ -94,7 +94,8 @@ export default {
     },
 
     emoji_groups : ( state, getters ) => {
-      return getters.current_event?.emoji_groups
+      console.log( getters.current_event?.emoji_groups )
+      return getters.current_event?.emoji_groups 
     },
 
     get_emoji : ( state, getters ) => ( group, emoji ) => {
@@ -313,9 +314,6 @@ function sanitize ( event, getters, commit ) {
   if ( found ) {
     event = { ...found, ...event }
   }
-
-  // console.log(event)
-
 
   // Define event styles
 

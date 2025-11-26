@@ -98,7 +98,6 @@ export default {
       this.loading = "Fetching event data..."
       const { dispatch } = this.$store
       const { documentId, slug } = this.event
-      console.log( slug, documentId )
       dispatch( 'events/password_authenticate_event', slug )
       await dispatch( 'livestream/get_livestream_by_event', documentId )
       await dispatch( 'viewers/get_viewers', documentId )

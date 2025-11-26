@@ -5,7 +5,6 @@ import About  from './About.vue'
 import Access from './Access.vue'
 import Modes  from './Modes.vue'
 import Emoji  from './Emoji/index.vue'
-import { mapGetters } from 'vuex'
 
 
 // Our Footer component; contains all accessibility, viewing
@@ -57,9 +56,11 @@ export default {
 
   computed: {
 
-    ...mapGetters( 'events', [
-      'emoji_groups',
-    ]),
+    emoji_groups() {
+      return this.$store.getters[ 'events/get_event' ](
+        this.$route.params.slug
+      )?.emoji_groups
+    },
 
     desired_tabs() {
       return this.$route.meta.desired_tabs
