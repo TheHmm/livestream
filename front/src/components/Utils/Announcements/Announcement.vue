@@ -19,13 +19,16 @@ export default {
 <style scoped>
 
 .announcement {
-  --back           : var(--accent);
+  /* --back           : var(--accent); */
   background-color : var(--back);
-  box-shadow       : var(--shadow);
+  /* box-shadow       : var(--shadow); */
+  border: var(--solid);
+  text-shadow: var(--text-outline);
   min-width        : var(--side-width);
   max-width        : var(--side-width);
   padding          : 0.5rem;
   margin           : var(--size-s);
+  outline: var(--outline);
   transition       : all 0.5s ease;
 }
 .announcement :deep(p:first-of-type) {

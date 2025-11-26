@@ -30,8 +30,9 @@ export default {
 <style scoped>
 #announcements {
   position   : fixed;
-  top        : var(--marquee-height);
-  left       : 0;
+  /* top        : var(--marquee-height); */
+  top: 0;
+  right: calc( 1 * var(--side-width) + 2rem);
   height     : var(--header-height);
   width      : 0;
   overflow   : visible;

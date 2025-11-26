@@ -205,6 +205,7 @@ export default {
 
 #loading, #access_form {
   font-family: var(--font);
+  text-shadow: var(--text-outline);
 }
 
 #access_form {
