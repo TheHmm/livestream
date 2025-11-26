@@ -147,13 +147,13 @@ export default {
   // Fetch event by slug. Non-standard implementation
   // See: back/src/api/event/controllers/event.js
 
-  get( slug ) {
+  get({ slug, password }) {
     $log.info( `API`, `Fetching event ${ slug }.` )
     return new Promise( ( resolve, reject ) => {
       axios
       .post(
         `${ config.api_url }/events/${ slug }/password`, { 
-        password: `irdBjM8MYCj:d'"`,
+        password,
         params: {
           fields: '*',
           populate: [

@@ -9,6 +9,7 @@ import { useRoute }  from 'vue-router'
 import store         from '@/store'
 import _throw        from '@/utils/throw'
 import Announcements from '@/components/Utils/Announcements/index.vue'
+import { mapGetters } from 'vuex/dist/vuex.cjs.js'
 
 export default {
 
@@ -18,28 +19,17 @@ export default {
     Announcements,
   },
 
-  async setup() {
-    const slug = useRoute().params.slug
-    const { dispatch } = store
-    try {
-      const { documentId } = await dispatch( 'events/get_event', slug )
-      await dispatch( 'livestream/get_livestream_by_event', documentId )
-      await dispatch( 'viewers/get_viewers', documentId )
-      await dispatch( 'messages/get_messages', documentId )
-      await dispatch( 'announcements/get_announcements', documentId )
-      return { documentId }
-    } catch ( error ) {
-      _throw( error )
-      throw error
+  data() {
+    return {
+      password: null,
+      error_message: null,
     }
   },
 
-
-  // We get our event object frmm the route slug. Note that
-  // the event has already been fetched in the before_enter
-  // route guard: @/router/guards/before_enter_event
-
   computed: {
+    ...mapGetters( 'viewers', [
+      'view_authenticated'
+    ]),
     event() {
       return this.$store.getters[ 'events/get_event' ](
         this.$route.params.slug
@@ -51,12 +41,23 @@ export default {
   },
 
 
-  // We only need to connect to our event-room when we
-  // enter the event page.
+  // we first fetch the event data, initentionally leaving
+  // out the password. Strapi is configured to handle this 
+  // by sending us back the event data without the protected
+  // fields. We then check to see if the event is password
+  // protected and conditionally move on with authenticated
+  // setup.
 
-  created() {
-    if ( !this.is_in_past ) {
-      this.$socket.client.emit( 'join_room', this.event.slug )
+  async setup() {
+    const slug = useRoute().params.slug
+    try {
+      let event = await store.dispatch( 'events/get_event', { slug })
+      if ( !event.password_protected ) {
+        await this.authenticated_setup()
+      }
+    } catch ( error ) {
+      _throw( error )
+      throw error
     }
   },
 
@@ -65,14 +66,55 @@ export default {
   // server before we leave this route.
 
   beforeUnmount() {
-    if ( !this.is_in_past ) {
-      this.$socket.client.emit( 'leave_room' )
+    this.destroy()
+  },
+
+  methods: {
+
+    async fetch_with_password() {
+      if ( !this.password ) {
+        this.error_message = "Please provide an event access code."
+        return
+      }
+      this.error_message = null
+      try {
+        await this.$store.dispatch( 'events/get_event', { 
+          slug: this.$route.params.slug,
+          password: this.password
+        })
+        await this.authenticated_setup()
+      } catch ( error ) {
+        this.password = null
+        this.error_message = 'Error: Incorrect access code.' + '\n' + error.message
+        console.error( error )
+      }
+    },
+    
+    async authenticated_setup() {
+      const { dispatch, commit } = this.$store
+      const { documentId } = this.event
+      commit( 'viewers/SET_VIEW_AUTHENTICATED', true )
+      await dispatch( 'livestream/get_livestream_by_event', documentId )
+      await dispatch( 'viewers/get_viewers', documentId )
+      await dispatch( 'messages/get_messages', documentId )
+      await dispatch( 'announcements/get_announcements', documentId )
+      if ( !this.is_in_past ) {
+        this.$socket.client.emit( 'join_room', this.event.slug )
+      }
+    },
+
+    destroy() {
+      if ( !this.is_in_past ) {
+        this.$socket.client.emit( 'leave_room' )
+      }
+      const { commit } = this.$store
+      commit( 'messages/SET_MESSAGES', {} )
+      commit( 'viewers/SET_VIEWERS', {} )
+      commit( 'viewers/SET_VIEW_AUTHENTICATED', false )
+      commit( 'announcements/SET_ANNOUNCEMENTS', {} )
+      commit( 'livestream/SET_CC', [] )
     }
-    const { commit } = this.$store
-    commit( 'messages/SET_MESSAGES', {} )
-    commit( 'viewers/SET_VIEWERS', {} )
-    commit( 'announcements/SET_ANNOUNCEMENTS', {} )
-    commit( 'livestream/SET_CC', [] )
+
   }
 
 
@@ -84,8 +126,42 @@ export default {
     class="event"
     aria-labelledby="event_title"
   >
+    <form 
+      id="access_form"
+      v-if="!view_authenticated"  
+    >
+      <router-link
+        custom
+        :to="{ path: '/', query: $route.query }"
+        v-slot="{ navigate }"
+      >
+        <input
+          value="✕"
+          class="close circle"
+          name="close"
+          type="button"
+          @click.stop="navigate"
+        />
+      </router-link>
+      <p><label>Please enter event access code: </label></p>
+      <input 
+        type="password" 
+        v-model="password"  
+        required
+      />
+      <input 
+        type="submit" 
+        value="submit" 
+        @click.prevent="fetch_with_password"  
+      />
+      <div
+        v-if="error_message" 
+        class="error"
+        v-html="$md( error_message )"
+      ></div>
+    </form>
     <router-view
-      v-if="event"
+      v-if="view_authenticated && event"
       v-slot="{ Component }"
     >
       <component

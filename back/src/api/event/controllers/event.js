@@ -30,7 +30,6 @@ module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
     const { data: entities } = await super.find( ctx )
     for ( const entity of entities ) {
       if ( entity.password_protected ) {
-        console.log( entity )
         for ( const key of Object.keys( entity ) ) {
           if ( password_protected_fields.includes( key ) ) {
             delete entity[key]
@@ -85,14 +84,26 @@ module.exports = createCoreController('api::event.event', ({ strapi }) =>  ({
         populate : params.populate
       })
 
-      if ( entity.password_protected && entity.password ) {
+      if ( entity.password_protected ) {
         if ( !password ) {
-          return ctx.forbidden('Please provide password')
-        }
-        console.log( password, entity.password )
-        const password_valid = await validate_password( password, entity.password )
-        if ( !password_valid ) {
-          return ctx.forbidden('Invalid password')
+          console.log( 'no passowrd' )
+          for ( const key of Object.keys( entity ) ) {
+            if ( password_protected_fields.includes( key ) ) {
+              delete entity[key]
+            }  
+          }
+          // return ctx.forbidden('Please provide password')
+        } else {
+          const password_valid = await validate_password( password, entity.password )
+          console.log( password, entity.password, password_valid )
+          if ( !password_valid ) {
+            // for ( const key of Object.keys( entity ) ) {
+            //   if ( password_protected_fields.includes( key ) ) {
+            //     delete entity[key]
+            //   }  
+            // }
+            return ctx.forbidden('Invalid password')
+          }
         }
       }
 

@@ -68,10 +68,10 @@ export default {
   methods: {
 
     ...mapMutations( 'viewers', [
-      'set_request_registration'
+      'set_request_chat_registration'
     ]),
     ...mapActions( 'viewers', [
-      'authenticate'
+      'chat_authenticate'
     ]),
     ...mapActions( 'messages', [
       'update_message',
@@ -135,17 +135,17 @@ export default {
         return r
       })
       try {
-        if ( await this.authenticate() ) {
+        if ( await this.chat_authenticate() ) {
           await this.update_message({ 
             documentId: this.message.documentId, 
             data: { Reactions: reactions_to_send } 
           })
         } else {
-          this.set_request_registration( true )
+          this.set_request_chat_registration( true )
         }
        } catch ( error ) {
         console.error( error )
-        this.set_request_registration( true )
+        this.set_request_chat_registration( true )
       }
       this.show_available = false
     }

@@ -17,18 +17,20 @@ export default {
   // created here on the spot.
 
   state: {
-    viewers              : {},
-    uuid                 : localStorage.uuid || uuid_v4(),
-    authenticated        : false,
-    request_registration : false,
+    viewers: {},
+    uuid: localStorage.uuid || uuid_v4(),
+    view_authenticated : false,
+    chat_authenticated : false,
+    request_chat_registration : false,
   },
 
   mutations: {
-    SET_VIEWERS              : ( state, viewers ) => { state.viewers = viewers },
-    SET_VIEWER               : ( state, viewer ) => { state.viewers[viewer.uuid] = viewer },
-    SET_UUID                 : ( state, uuid ) => { state.uuid = uuid },
-    SET_AUTHENTICATED        : ( state, authenticated ) => { state.authenticated = authenticated },
-    set_request_registration : ( state, val ) => { state.request_registration = val }
+    SET_VIEWERS: ( state, viewers ) => { state.viewers = viewers },
+    SET_VIEWER: ( state, viewer ) => { state.viewers[viewer.uuid] = viewer },
+    SET_UUID: ( state, uuid ) => { state.uuid = uuid },
+    SET_VIEW_AUTHENTICATED: ( state, authenticated ) => { state.view_authenticated = authenticated },
+    SET_CHAT_AUTHENTICATED: ( state, authenticated ) => { state.chat_authenticated = authenticated },
+    set_request_chat_registration: ( state, val ) => { state.request_chat_registration = val }
   },
 
   getters: {
@@ -96,6 +98,8 @@ export default {
     has_been_to_current_event : ( state, getters ) => {
       return getters.my_events?.includes( getters.current_event_id )
     },
+
+    view_authenticated: state => state.view_authenticated
 
 
   },
@@ -248,17 +252,79 @@ export default {
     },
 
 
-    // We check that a user exists in Strapi before they are
-    // given access to sending messages.
+    // We check that a user has provided password for this event 
+    // before and can view the event
 
-    async authenticate( { state, commit, getters, dispatch } ) {
+    async view_authenticate( { state, commit, getters, dispatch } ) {
 
 
       // If we've previously been authenticated, no need to do
       // all of this.
 
-      if ( state.authenticated ) {
-        return state.authenticated
+      if ( state.view_authenticated ) {
+        return state.view_authenticated
+      }
+
+      // First, we check if the visitor has previously existed
+      // on this website (ie. they created a viewer). If not, 
+      // this is a completely new user.
+
+      if ( !state.uuid ) {
+        $log.info( 'AUTH', 'You are not registered yet.' )
+        return
+      }
+
+      $log.info( 'AUTH', `Found UUID: ${ state.uuid }.` )
+
+      // Then we fetch the viewer from the server. we do this
+      // to see if they exist if not, they are new and still
+      // need to register
+
+      try {
+        await dispatch( 'fetch_viewer', state.uuid )
+
+
+      // user has a uuid in their local storage but not in
+      // the server: they are new and not in the database,
+
+      } catch ( error ) {
+        if ( error.message == '404' ) {
+          $log.info( 'AUTH', `You're not in our database.` )
+          return
+        } else {
+          throw error
+        }
+      }
+
+
+      // If they haven't chatted to this event, then they are
+      // not authenticated
+
+      if ( !getters.has_been_to_current_event ) {
+        $log.info('AUTH', "You haven't been to this event.")
+        return
+      }
+
+      // commit( 'SET_VIEW_AUTHENTICATED', true )
+      // $log.info( 'AUTH', `You're chat-authenticated!` )
+
+      return state.view_authenticated
+
+
+    },
+
+
+    // We check that a user exists in Strapi before they are
+    // given access to sending messages.
+
+    async chat_authenticate( { state, commit, getters, dispatch } ) {
+
+
+      // If we've previously been authenticated, no need to do
+      // all of this.
+
+      if ( state.chat_authenticated ) {
+        return state.chat_authenticated
       }
 
       // First, we check if the visitor has previously sent
@@ -298,10 +364,10 @@ export default {
         // We commit this to our state so we dont have to fetch
         // everytime.
 
-        commit( 'SET_AUTHENTICATED', true )
-        $log.info( 'AUTH', `You're authenticated!` )
+        commit( 'SET_CHAT_AUTHENTICATED', true )
+        $log.info( 'AUTH', `You're chat-authenticated!` )
 
-        return state.authenticated
+        return state.chat_authenticated
 
       // The only possibile reason for the viewer to have a
       // UUID in their localStorage but it does not exist on
@@ -356,7 +422,7 @@ export default {
       $socket.emit('viewer', {
         uuid: state.uuid,
       })
-      await dispatch( 'authenticate' )
+      await dispatch( 'chat_authenticate' )
     },
 
 

@@ -40,40 +40,40 @@ const before_update = async context => {
   // We get our new entry from event payload and our old
   // one from Strapi.
   
-  const
-    new_event = params.data,
-    slug      = params.data.slug,
-    api       = strapi.documents( 'api::event.event' ),
-    old_event = await api.findOne( params )
+  // const
+  //   new_event = params.data,
+  //   slug      = params.data.slug,
+  //   api       = strapi.documents( 'api::event.event' ),
+  //   old_event = await api.findOne( params )
 
 
   // We get the updates to the entry using difference
   // function: @/back/src/utils.js
 
-  const diff = difference( old_event, new_event )
+  // const diff = difference( old_event, new_event )
 
   // We delete confused differences from our diff object.
   // Strapi is excluding the id when we use the findOne()
   // function as well as returning dates as a string (and
   // not an object)
 
-  delete diff.documentId
-  delete diff.createdAt
-  delete diff.publishedAt
-  delete diff.createdBy
-  delete diff.updatedBy
+  // delete diff.documentId
+  // delete diff.createdAt
+  // delete diff.publishedAt
+  // delete diff.createdBy
+  // delete diff.updatedBy
 
-  if ( diff.emoji_groups ) {
-    delete diff.emoji_groups
-  }
+  // if ( diff.emoji_groups ) {
+  //   delete diff.emoji_groups
+  // }
 
-  diff.slug = slug
+  // diff.slug = slug
 
 
   // We inform connected sockets.
   // TODO: not working
 
-  strapi.io.emit( 'event_update', diff )
+  // strapi.io.emit( 'event_update', diff )
   
 
 }

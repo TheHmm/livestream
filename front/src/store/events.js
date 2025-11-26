@@ -196,11 +196,11 @@ export default {
 
     // Fetch single event
 
-    fetch_event( { dispatch }, slug ) {
+    fetch_event( { dispatch }, { slug, password } ) {
       return new Promise( ( resolve, reject ) =>
         api
         .events
-        .get(slug)
+        .get({ slug, password })
         .then( event => {
           dispatch( 'set_event', event )
           resolve( event )
@@ -270,12 +270,12 @@ export default {
     // relational field on the event strapi object that is
     // not populated in the fetch_events() api call.
 
-    async get_event( { getters, dispatch }, slug ) {
+    async get_event( { getters, dispatch }, { slug, password }) {
       const event = getters.get_event( slug )
       if ( event && event.viewers ) {
         return event
       } else {
-        return await dispatch( 'fetch_event', slug )
+        return await dispatch( 'fetch_event', { slug, password } )
       }
     },
 

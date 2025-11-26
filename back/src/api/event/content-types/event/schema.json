@@ -163,7 +163,8 @@
             true
           ]
         }
-      }
+      },
+      "required": true
     }
   }
 }

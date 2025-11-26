@@ -57,7 +57,7 @@ export default {
 
   methods: {
     ...mapMutations( 'viewers', [
-      'set_request_registration'
+      'set_request_chat_registration'
     ]),
   }
 
@@ -90,7 +90,7 @@ export default {
         <span
           v-if="mine"
           :title="'Edit ' + name"
-          @click="set_request_registration( true )"
+          @click="set_request_chat_registration( true )"
         >
           {{ name }}
         </span>

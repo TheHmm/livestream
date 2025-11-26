@@ -53,10 +53,10 @@ export default {
   methods: {
 
     ...mapMutations( 'viewers', [
-      'set_request_registration'
+      'set_request_chat_registration'
     ]),
     ...mapActions( 'viewers', [
-      'authenticate'
+      'chat_authenticate'
     ]),
     ...mapActions( 'messages', [
       'create_message',
@@ -70,17 +70,15 @@ export default {
       }
       this.sending = true
       try {
-        if ( await this.authenticate() ) {
+        if ( await this.chat_authenticate() ) {
           await this.create_message( this.message )
           this.message = null
         } else {
-          // this.request_registration = true
-          this.set_request_registration( true )
+          this.set_request_chat_registration( true )
         }
        } catch ( error ) {
         $log.error( 'AUTH', error )
-        // this.request_registration = true
-        this.set_request_registration( true )
+        this.set_request_chat_registration( true )
       }
       if ( this.selected_message ) {
         this.unselect_message( this.selected_message )
@@ -100,7 +98,7 @@ export default {
 
   <Register
     v-if="request_registration"
-    @close="set_request_registration( false )"
+    @close="set_request_chat_registration( false )"
   />
 
   <form
