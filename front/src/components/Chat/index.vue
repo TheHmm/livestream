@@ -247,7 +247,6 @@ export default {
 
 #chat_container {
   /* height          : 100%; */
-  --n             : 1;
   display         : flex;
   align-items     : flex-end;
 }

@@ -93,7 +93,7 @@ export default {
       <label for="chat">
         <h1>Chat</h1>
       </label>
-      <p> Chat messages {{ links_only && 'with links' || '' }} from The Hmm Livestream event
+      <p> Chat messages {{ links_only && 'with links' || '' }} from The Inbetween event
         <b>{{ event.title }}</b>. Generated on <i><time :datetime="$time.now()"> {{ $time.long_date_format($time.now()) }}</time></i>.</p>
     </header>
 
@@ -106,7 +106,6 @@ export default {
       <SaveMessage
         v-for="( message, i ) in messages_array"
         :key="i"
-        :style="{ '--n': messages_array.length - i - 1 }"
         :message="message"
         :links_only="links_only"
       />
@@ -122,22 +121,20 @@ export default {
 
 
 #chat {
-  --back          : var(--accent-light);
-  --fore          : var(--black);
-  background      : var(--back);
+  /* --fore          : var(--black); */
+  background      : var(--accent);
   width           : 100%;
 }
 
 
 #chat .options {
-  --back          : var(--accent-light);
   font-size       : var(--size-m);
   width           : 100%;
   display         : flex;
   align-items     : center;
   gap             : 0.5rem;
   font-size       : var(--size-s);
-  background      : var(--accent-lighter);
+  background      : var(--accent);
   padding         : 0.5rem;
   position        : sticky;
   top             : 0;
@@ -163,10 +160,15 @@ export default {
 }
 
 #chat .messages {
-  min-width       : 100%;
-  width           : 100%;
-  font-size       : var(--size-s);
-  padding         : 0.5rem;
+  margin          : 0 0.5rem;
+  padding         : 0.5rem 0rem;
+  height          : 100%;
+  display         : flex;
+  flex-direction  : column;
+  align-items     : flex-start;
+  overflow        : scroll;
+  border-top      : var(--solid);
+  border-bottom   : var(--solid);
 }
 
 @media print {
