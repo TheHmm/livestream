@@ -5,6 +5,7 @@ import About  from './About.vue'
 import Access from './Access.vue'
 import Modes  from './Modes.vue'
 import Emoji  from './Emoji/index.vue'
+import { mapGetters } from 'vuex'
 
 
 // Our Footer component; contains all accessibility, viewing
@@ -51,11 +52,14 @@ export default {
           aria_label : 'Emoji reactions',
         }
       ],
-      expanded: false,
     }
   },
 
   computed: {
+
+    ...mapGetters( 'events', [
+      'emoji_groups',
+    ]),
 
     desired_tabs() {
       return this.$route.meta.desired_tabs
@@ -64,7 +68,12 @@ export default {
     tabs() {
       if ( this.desired_tabs ) {
         return this.available_tabs.filter( t => {
-          return this.desired_tabs.includes( t.name )
+          if ( this.desired_tabs.includes( t.name ) ) {
+            if ( t.name == 'emoji' ) {
+              return this.emoji_groups && this.emoji_groups.length 
+            }
+            return true
+          }
         })
       } else {
         return []
@@ -80,15 +89,6 @@ export default {
     },
 
   },
-
-
-  methods: {
-    expand( name ) {
-      if ( name == 'about' ) {
-        this.expanded = true
-      }
-    }
-  }
 
 }
 </script>
@@ -110,15 +110,11 @@ export default {
         :id="tab.name"
         :ref="tab.name"
         :aria-label="tab.aria_label"
-        :class="[
-          'tab',
-          { expanded }
-        ]"
+        class="tab"
         :style="{
           '--n': index ,
           '--i': tabs.length - index
         }"
-        @click.stop="expand( tab.name ) "
       >
 
         <Title

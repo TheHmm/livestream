@@ -157,6 +157,7 @@ export default {
         params: {
           fields: '*',
           populate: [
+            'viewers',
             'font',
             'font.file',
             'background_image',

@@ -13,7 +13,8 @@ const password_protected_fields = [
   'mux_recording',
   'viewers',
   'messages',
-  'announcements'
+  'announcements',
+  'emoji_groups'
 ]
 
 async function validate_password( password, hash ) {

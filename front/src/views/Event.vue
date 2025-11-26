@@ -23,6 +23,7 @@ export default {
     return {
       password: null,
       error_message: null,
+      loading: 'Loading...'
     }
   },
 
@@ -48,24 +49,19 @@ export default {
   // protected and conditionally move on with authenticated
   // setup.
 
-  async setup() {
+  async created() {
     const slug = useRoute().params.slug
     try {
       let event = await store.dispatch( 'events/get_event', { slug })
-      if ( !event.password_protected ) {
+      if ( !event.password_protected && !event.viewers ) {
         await this.authenticated_setup()
       }
+      this.loading = null
     } catch ( error ) {
       _throw( error )
       throw error
     }
   },
-
-  mounted() {
-    if ( !this.view_authenticated ) {
-      this.$refs.password.focus()
-    }
-  },  
 
 
   // For the same reason, we disconnect from the socket
@@ -84,6 +80,7 @@ export default {
       }
       this.error_message = null
       try {
+        this.loading = "Authenticating..."
         await this.$store.dispatch( 'events/get_event', { 
           slug: this.$route.params.slug,
           password: this.password
@@ -94,9 +91,11 @@ export default {
         this.error_message = 'Error: Incorrect access code.' + '\n' + error.message
         console.error( error )
       }
+      this.loading = null
     },
     
     async authenticated_setup() {
+      this.loading = "Fetching event data..."
       const { dispatch, commit } = this.$store
       const { documentId } = this.event
       commit( 'viewers/SET_VIEW_AUTHENTICATED', true )
@@ -132,9 +131,15 @@ export default {
     class="event"
     aria-labelledby="event_title"
   >
+    <div 
+      v-if="loading"
+      id="loading"
+    >
+      {{ loading }}
+    </div>
     <form 
       id="access_form"
-      v-if="!view_authenticated"  
+      v-else-if="!view_authenticated"  
     >
       <router-link
         custom
@@ -178,7 +183,7 @@ export default {
       ></div>
     </form>
     <router-view
-      v-if="view_authenticated && event"
+      v-if="!loading && view_authenticated && event"
       v-slot="{ Component }"
     >
       <component
