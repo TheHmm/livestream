@@ -14,7 +14,7 @@ export default {
 </script>
 
 <template>
-  <div class="letter">
+  <div class="letter" @click="$router.push('/')">
     <div 
       v-for="( row, i) in letter.split(/\n/).slice(1,8)" 
       class="row"

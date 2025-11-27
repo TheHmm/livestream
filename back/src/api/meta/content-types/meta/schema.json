@@ -16,6 +16,14 @@
       "type": "richtext",
       "required": true
     },
+    "tagline": {
+      "type": "text"
+    },
+    "renting_options": {
+      "type": "component",
+      "component": "renting-options.renting-option",
+      "repeatable": true
+    },
     "censorMessage": {
       "type": "richtext",
       "required": true
@@ -29,9 +37,6 @@
     "transcription_vocabulary_id": {
       "type": "string",
       "private": true
-    },
-    "tagline": {
-      "type": "text"
     }
   }
 }

@@ -11,7 +11,16 @@ export default {
     $log.info( `API`, `Fetching meta.` )
     return new Promise( ( resolve, reject ) =>
       axios
-      .get( `${ config.api_url }/meta`, {})
+      .get( `${ config.api_url }/meta`, { params: {
+        fields: [
+          'about',
+          'censorMessage',
+          'tagline',
+        ],
+        populate: [
+          'renting_options'
+        ]
+      }})
       .then( result => resolve( result.data.data ) )
       .catch( error => {
         $log.error( 'API', error )

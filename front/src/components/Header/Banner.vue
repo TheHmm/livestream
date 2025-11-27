@@ -20,24 +20,20 @@ export default {
 
 <template>
   <div id="the_inbetween_banner">
-    <!-- <div class="word the"> -->
-      <Letter :letter="letters.T" class="T" />
-      <Letter :letter="letters.H" class="H" />
-      <Letter :letter="letters.E" class="E" />
-    <!-- </div> -->
+    <Letter :letter="letters.T" class="T" />
+    <Letter :letter="letters.H" class="H" />
+    <Letter :letter="letters.E" class="E" />
     <DynamicLogo />
     <Viewers />
-    <!-- <div class="word inbetween"> -->
-      <Letter :letter="letters.I" class="I" />
-      <Letter :letter="letters.N" class="N" />
-      <Letter :letter="letters.B" class="B" />
-      <Letter :letter="letters.E" class="E" />
-      <Letter :letter="letters.T" class="T" />
-      <Letter :letter="letters.W" class="W" />
-      <Letter :letter="letters.E" class="E" />
-      <Letter :letter="letters.E" class="E" />
-      <Letter :letter="letters.N" class="N" />
-    <!-- </div> -->
+    <Letter :letter="letters.I" class="I" />
+    <Letter :letter="letters.N" class="N" />
+    <Letter :letter="letters.B" class="B" />
+    <Letter :letter="letters.E" class="E" />
+    <Letter :letter="letters.T" class="T" />
+    <Letter :letter="letters.W" class="W" />
+    <Letter :letter="letters.E" class="E" />
+    <Letter :letter="letters.E" class="E" />
+    <Letter :letter="letters.N" class="N" />
   </div>
 </template>
 
@@ -48,37 +44,12 @@ export default {
   --full-width: 100vw;
   max-width: var(--full-width);
   min-height: calc( 0.6 * var(--letter-height) + 2 * var(--padding) );
-  /* max-height: var(--full-height); */
-  /* height: 100%; */
   width: 100%;
   padding: var(--padding);
   padding-right: calc( var(--padding) + var(--size) / 2 );
-  /* padding-bottom: calc( var(--padding) + var(--size) / 4 ); */
   display: flex;
   justify-content: center;
-  /* gap: var(--gap); */
-  /* position: sticky;
-  top: 0; */
 }
-
-/* .word { */
-  /* display: flex;   */
-  /* gap: var(--gap); */
-  /* filter: 
-    drop-shadow( 1px  0px 0px var(--fore)) 
-    drop-shadow(-1px  0px 0px var(--fore))
-    drop-shadow( 0px  1px 0px var(--fore)) 
-    drop-shadow( 0px -1px 0px var(--fore))
-  ; */
-/* } */
-/* .word.the { 
-  flex: 1; 
-}
-.word.inbetween { 
-  flex: 3; 
-  margin-left: calc( -1 * var(--size) /2 ) ;
-} */
-
 .mobile #the_inbetween_banner {
   --size:0.65rem;
   --letter-height: calc( 7 * var(--size) );

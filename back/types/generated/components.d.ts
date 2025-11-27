@@ -35,12 +35,28 @@ export interface PhrasesPhrase extends Struct.ComponentSchema {
   };
 }
 
+export interface RentingOptionsRentingOption extends Struct.ComponentSchema {
+  collectionName: 'components_renting_options_renting_options';
+  info: {
+    displayName: 'Renting Option';
+    icon: 'connector';
+  };
+  attributes: {
+    email_link: Schema.Attribute.RichText;
+    is_add_on: Schema.Attribute.Boolean;
+    long_description: Schema.Attribute.RichText;
+    Name: Schema.Attribute.String;
+    short_description: Schema.Attribute.Text;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'emoji.emoji': EmojiEmoji;
       'emoji.reaction': EmojiReaction;
       'phrases.phrase': PhrasesPhrase;
+      'renting-options.renting-option': RentingOptionsRentingOption;
     }
   }
 }

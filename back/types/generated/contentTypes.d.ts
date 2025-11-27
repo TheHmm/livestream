@@ -702,6 +702,10 @@ export interface ApiMetaMeta extends Struct.SingleTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::meta.meta'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    renting_options: Schema.Attribute.Component<
+      'renting-options.renting-option',
+      true
+    >;
     tagline: Schema.Attribute.Text;
     transcription_vocabulary: Schema.Attribute.Component<
       'phrases.phrase',

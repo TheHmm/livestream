@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_renting_options_renting_options",
+  "info": {
+    "displayName": "Renting Option",
+    "icon": "connector"
+  },
+  "options": {},
+  "attributes": {
+    "Name": {
+      "type": "string"
+    },
+    "short_description": {
+      "type": "text"
+    },
+    "long_description": {
+      "type": "richtext"
+    },
+    "is_add_on": {
+      "type": "boolean"
+    },
+    "email_link": {
+      "type": "richtext"
+    }
+  },
+  "config": {}
+}
