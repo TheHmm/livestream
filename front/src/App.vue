@@ -170,7 +170,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   animation        : enter var(--enter) ease forwards;
-  transition       : background-color var(--very-slow) ease;
+  transition: color var(--fast) linear, background-color var(--fast) linear;
   height           : 100%;
   width            : 100%;
   /* display          : flex; */

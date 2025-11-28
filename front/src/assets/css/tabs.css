@@ -33,7 +33,9 @@
     min-width   var(--fast) linear,
     max-width   var(--fast) linear,
     box-shadow  var(--fast) linear,
-    margin      var(--fast) linear
+    margin      var(--fast) linear,
+    color var(--slow) linear, background-color var(--slow) linear;
+
   ;
 }
 .tab .contents :deep(ul) {

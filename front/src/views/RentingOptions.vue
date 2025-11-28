@@ -13,7 +13,7 @@ export default {
     <h1>Renting Options</h1>
     <ul>
       <li tabindex="0" v-for="option in renting_options">
-        <p class="name">{{ option.Name }}</p>
+        <h2 class="name">{{ option.Name }}</h2>
         <p class="desc">{{ option.short_description }}</p>
         <p v-if="option.is_add_on" class="addon">Add-on</p>
         <div class="more_info">
@@ -42,9 +42,12 @@ export default {
   background-color: lightgrey;
   border: var(--solid);
   border-radius: var(--radius);
-  max-height: 10rem;
+  max-height: 20rem;
   transition: all var(--fast) linear;
   overflow: scroll;
+}
+#rentingoptions ul li h2 {
+  font-size: 2rem;
 }
 #rentingoptions ul:has( li:focus-within ) li:not(:focus-within){
   min-width: 25%;

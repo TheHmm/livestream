@@ -71,7 +71,8 @@ export default {
           aria-label="Last bytes sent"
           :class="[ 'last', { has_changed: sent_has_changed } ]"
         >
-          <span>{{ `sent ${ format_bytes( last_bytes_sent?.bytes ) } to ${ last_bytes_sent?.to } ↑` }}</span>
+        <!-- <span>{{ `sent ${ format_bytes( last_bytes_sent?.bytes ) } to ${ last_bytes_sent?.to } ↑` }}</span> -->
+        <span>{{ `sent ${ format_bytes( last_bytes_sent?.bytes ) } ↑` }}</span>
         </td>
         <td
           class="value"
@@ -90,7 +91,8 @@ export default {
           aria-label="Last bytes received"
           :class="[ 'last', { has_changed: received_has_changed } ]"
         >
-          <span>{{ `received ${ format_bytes( last_bytes_received?.bytes ) } from ${ last_bytes_received?.from } ↓` }} </span>
+          <!-- <span>{{ `received ${ format_bytes( last_bytes_received?.bytes ) } from ${ last_bytes_received?.from } ↓` }} </span> -->
+          <span>{{ `received ${ format_bytes( last_bytes_received?.bytes ) } ↓` }} </span>
         </td>
         <td
           class="value"
@@ -123,7 +125,7 @@ table {
   /* width: var(--side-width); */
   flex-shrink: 0;
   overflow: hidden;
-  flex-basis: 25%;
+  flex-basis: calc(25% - 1rem);
 }
 table tr td {
   padding: 0;

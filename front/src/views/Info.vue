@@ -18,7 +18,8 @@ export default {
   </section>
 </template>
 <style scoped>
-#about {
+#info {
   max-width: var(--main-width);
 }
+
 </style>

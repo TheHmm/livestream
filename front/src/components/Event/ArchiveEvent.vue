@@ -77,10 +77,16 @@ export default {
 li::before {
   content: unset;
 }
+li {
+  margin: 0.5rem;
+  margin-bottom: 0;
+}
 li a {
   background-color: var(--back);
   text-shadow: var(--text-outline);
   font-family: var(--font);
+  border-radius: var(--radius);
+  border: var(--solid);
   width: 100%;
   padding: 0.5rem;
   max-height: 4rem;

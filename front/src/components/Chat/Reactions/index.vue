@@ -374,7 +374,7 @@ export default {
 .emoji-enter-active,
 .emoji-leave-active,
 .emoji-move {
-  transition      : all var(--slow) ease;
+  transition      : all var(--slow) linear;
 }
 .emoji-enter-to,
 .emoji-leave-from {

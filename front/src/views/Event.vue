@@ -208,6 +208,11 @@ export default {
   text-shadow: var(--text-outline);
 }
 
+#loading h1, #access_form h1 {
+  font-family: inherit !important;
+  font-size: 2rem;
+}
+
 #access_form {
   max-width   : var(--side-width);
 }

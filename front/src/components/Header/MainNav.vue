@@ -20,6 +20,7 @@ export default {
     <ul>
       <li
         v-for="route in nav_routes"
+        :class="{ selected: $route.name == route.name }"
       >
         <RouterLink :to="route.path">
           {{ route.name }}
@@ -31,8 +32,6 @@ export default {
 
 <style scoped>
 nav {
-  /* position: sticky;
-  top: calc( 0.6 * var(--letter-height)  ); */
   flex-basis: 75%;
   flex-shrink: 0;
   width: 100%;
@@ -48,8 +47,13 @@ li {
   align-items: center;
   background-color: var(--accent);
   border: var(--solid);
-  /* color: var(--black); */
   border-radius: var(--radius);
+  transition: color var(--fast) linear, background-color var(--fast) linear;
+}
+li.selected {
+  background-color: var(--fore);
+  color: var(--accent);
+  /* border: ; */
 }
 li::before {
   content: '';
@@ -65,5 +69,6 @@ a:visited {
   border: none;
   font-family: karrik;
   font-style: normal;
+  color: inherit;
 }
 </style>

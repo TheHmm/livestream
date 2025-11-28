@@ -53,7 +53,7 @@ export default {
         :title="title"
         @click="navigate"
       >
-        <h1> {{ title }} </h1>
+        <p class="title"> {{ title }} </p>
         <p
           aria-label="event summary"
           class="summary"
@@ -100,12 +100,18 @@ li.agendaevent {
 li.agendaevent section {
   cursor           : pointer;
   width            : 100%;
-  transition       : all var(--fast) ease;
+  transition       : all var(--slow) linear;
   padding-top      : 0.5rem;
   max-height       : 2rem;
   overflow         : hidden;
 }
 
+li.agendaevent p.title {
+  font-size: 2rem !important;
+  font-weight: bold;
+}
+
+/* 
 li:last-of-type section {
   padding-bottom   : var(--footer-height);
 }
@@ -126,9 +132,10 @@ li.event header {
   display          : flex;
   align-items      : baseline;
   width            : 100%;
-  transition       : padding var(--fast) ease;
+  transition       : padding var(--fast) linear;
   gap              : 0.5rem;
 }
+
 
 li.event p {
 }
@@ -159,7 +166,7 @@ li.event .time {
   margin-left      : auto;
   text-align       : right;
   flex-shrink      : 0;
-}
+} */
 
 .mobile li.event header {
   display: block;

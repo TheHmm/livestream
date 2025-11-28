@@ -72,7 +72,7 @@ h2 {
   margin: 0;
 }
 section:first-of-type > h2 {
-  padding-top: calc( 100vh - ( var(--header-height) + 5ch ) );
+  padding-top: calc( 100vh - ( var(--header-height) + 3ch ) );
 }
 #archive {
   padding: 0;

@@ -1,4 +1,12 @@
 @font-face {
+  font-family: 'dot';
+  src:
+    url('../fonts/dot.otf')
+    format("opentype")
+  ;
+}
+
+@font-face {
   font-family: 'karrik';
   src:
     url('../fonts/Karrik-Italic.otf')
@@ -68,6 +76,7 @@
   --total-header   : var(--header-height);
   --middle-height  : calc( 100% - var(--total-header ) );
   --side-width     : 20rem;
+  --side-width     : calc( 25vw );
   --main-width     : calc( 100% - var(--side-width) );
   --footer-height  : 5rem;
 
@@ -239,11 +248,21 @@ a:hover {
 /* todo: confirm license */
 
 h1 {
+  font-family: dot;
+  text-transform: uppercase;
   font-weight      : normal;
-  font-size        : 1.8rem;
-  line-height      : 1.1;
+  font-size        : 3rem;
+  line-height      : 1;
 }
 
+h2 {
+  font-family: dot;
+  text-transform: uppercase;
+  font-weight: normal;
+  font-size: 3rem;
+  line-height: 1;
+  margin-block-end: 0;
+}
 
 ul {
   margin           : 0;

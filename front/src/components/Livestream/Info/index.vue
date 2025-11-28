@@ -104,6 +104,10 @@ export default {
   right       : 0;
   z-index     : 0; */
 }
+#info h1, #info h2 {
+  font-family: inherit !important;
+  font-size: 2rem;
+}
 #info h2,
 #info h3 {
   margin-top  : 0;
