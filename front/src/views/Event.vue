@@ -224,6 +224,7 @@ export default {
 }
 
 .mobile .event {
+  height: unset;
   flex-direction: column-reverse;
 }
 

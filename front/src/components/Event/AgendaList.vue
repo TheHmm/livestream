@@ -40,4 +40,12 @@ ul {
     background-color var(--very-slow) ease
   ;
 }
+.mobile ul {
+  gap: 0.5rem;
+  padding: 0.5rem;
+  grid-template-columns: repeat(1, 1fr);
+}
+.mobile ul li:last-of-type {
+  margin-bottom: var(--footer-height);
+}
 </style>

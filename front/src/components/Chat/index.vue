@@ -329,6 +329,8 @@ export default {
 
 .mobile #chat_container {
   padding         : unset;
+  max-width: calc( 100% - 1rem);
+  left: 0.5rem;
 }
 
 .mobile #chat .title {

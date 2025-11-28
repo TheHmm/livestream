@@ -31,6 +31,7 @@ export default {
     meta: state => {
       return state.meta
     },
+    mobile: state => state.mobile,
     about: state => {
       return state.meta?.about
     },

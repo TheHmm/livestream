@@ -21,5 +21,7 @@ export default {
 #info {
   max-width: min( 50%, var(--main-width) );
 }
-
+.mobile #info {
+  max-width: 100%;
+}
 </style>

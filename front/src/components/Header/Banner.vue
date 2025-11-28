@@ -40,7 +40,6 @@ export default {
 <style scoped>
 #the_inbetween_banner {
   --letter-height: calc( 7 * var(--dot-height) );
-  --full-height: calc( 0.95 * var(--letter-height) + 2 * var(--padding) );
   --full-width: 100vw;
   max-width: var(--full-width);
   min-height: calc( 0.6 * var(--letter-height) + 2 * var(--padding) );
@@ -51,13 +50,7 @@ export default {
   justify-content: center;
 }
 .mobile #the_inbetween_banner {
-  --size:0.65rem;
-  --letter-height: calc( 7 * var(--size) );
-  --full-height: min(10rem, 60vh);
-  --full-width: min(100rem, 100vw);
-  --dot-height: calc( var(--full-height) / ( 2.6 * 7 ) );
-  --dot-width: calc( var(--full-width) / ( 14 * 7 ) );
-  flex-wrap: wrap;
+  /* min-height: calc( 0.6 * var(--letter-height) + 2 * var(--padding) ); */
 }
 
 </style>

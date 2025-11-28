@@ -81,13 +81,23 @@ section:first-of-type > h2 {
 }
 #subheader {
   margin-inline: 1rem;
-  /* padding-block: 0.5rem; */
   position: sticky;
-  /* top: var(--header-height); */
   top: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   z-index: 3;
+}
+.mobile #archive {
+  margin-top: 0.5rem;
+}
+.mobile #subheader {
+  top: 0.5rem;
+  margin-inline: 0.5rem;
+}
+.mobile h2 {
+  font-size: 6rem;
+  margin-inline: 0.5rem;
+  margin-top: 1rem;
 }
 </style>

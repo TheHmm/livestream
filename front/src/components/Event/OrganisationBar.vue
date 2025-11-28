@@ -47,6 +47,7 @@ export default {
 <style scoped>
 ul {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 li {
@@ -71,5 +72,8 @@ li input[type="checkbox"] + label {
 }
 li input[type="checkbox"]:checked + label {
   background-color: var(--yellow);
+}
+.mobile ul {
+  gap: 0.5rem;
 }
 </style>

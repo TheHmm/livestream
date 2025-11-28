@@ -133,7 +133,7 @@ export default {
   /* --height         : 100%; */
 }
 .mobile #chat_container :deep(#chat .contents) {
-  padding-bottom   : calc( var(--footer-height) + 1rem);
+  padding-bottom   : calc( var(--footer-height) + 0.5rem);
 }
 
 

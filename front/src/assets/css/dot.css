@@ -36,7 +36,7 @@
 }
 
 .mobile .dot {
-  --size           : 0.75rem;
+  --size           : 0.5rem;
 }
 
 @keyframes shake {

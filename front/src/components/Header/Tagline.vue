@@ -3,11 +3,18 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'Tagline',
   computed: {
-    ...mapGetters( 'meta', [ 'tagline' ]),
+    ...mapGetters( 'meta', [ 'tagline', 'mobile' ]),
     ...mapGetters( 'livestream', [ 'current_livestream' ]),
     animate() {
       return this.current_livestream?.status !== 'active'
     },
+    radius() {
+      let radius = 1 / Math.sin( ( 360 / ( this.tagline.length + 0 ) ) / (180 / Math.PI))
+      if ( this.mobile ) {
+        radius = radius * 0.6
+      }
+      return radius
+    }
 
   }
 }
@@ -20,7 +27,7 @@ export default {
     :class="[ 'text-ring', { animate } ]" 
     :style="{ 
       '--total': tagline.length,
-      '--radius': 1 / Math.sin( ( 360 / ( tagline.length + 0 ) ) / (180 / Math.PI))
+      '--radius': radius,
     }"
   >
     <div aria-hidden="true">
@@ -68,5 +75,9 @@ export default {
 }
 @keyframes spin {
   to { rotate: -360deg; }
+}
+.mobile .text-ring  [style*=--index] {
+  font-size: 0.3rem;
+  
 }
 </style>

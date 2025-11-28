@@ -18,6 +18,7 @@ export default {
     org_logo_src() { return this.org && config.api_img_url + this.org?.Logo?.formats?.thumbnail?.url },
     protected() { return this.event?.password_protected },
     query()  { return this.$route.query },    
+    mobile()  { return this.$store.state.meta.mobile },
   },
   created() {
     this.mousemove = this.$throttle( this.set_preview_time, 125 )
@@ -53,13 +54,23 @@ export default {
       >
         <img :src="org_logo_src" />
       </span>
+      <span v-if="mobile">
+        <span
+          aria-label="event organiser"
+          class="organisation_name"
+        >
+          {{ org?.Name }}
+        </span>
+        <span class="event_title"> {{ title }} </span>
+      </span>
       <span
         aria-label="event organiser"
         class="organisation_name"
+        v-if="!mobile"
       >
         {{ org?.Name }}
       </span>
-      <span class="event_title"> {{ title }} </span>
+      <span class="event_title" v-if="!mobile"> {{ title }} </span>
       <p v-if="protected">🔒</p>
       <time
         aria-label="event start time"
@@ -138,11 +149,18 @@ li a:hover {
   --fore: var(--white);
   --back: var(--accent);
 }
+.mobile li {
+  margin: 0.5rem;
+  margin-bottom: 0;
+}
 .mobile li a {
-  display: block;
+  padding: 0.25rem;
+  gap: 0.25rem;
+  /* display: block; */
+  /* flex-wrap: wrap; */
 }
 .mobile li a .organisation {
-  display: none;
+  /* display: none; */
 }
 
 

@@ -62,4 +62,10 @@ export default {
 #rentingoptions ul li:focus-within .more_info {
   display: block;
 }
+.mobile #rentingoptions ul {
+  flex-direction: column;
+}
+.mobile #rentingoptions ul li:last-of-type {
+  margin-bottom: var(--footer-height);
+}
 </style>

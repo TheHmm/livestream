@@ -43,12 +43,7 @@ header {
   --dot-height: var(--size);
   --dot-width: var(--size);
   --gap: calc( 1 * var(--dot-width) );
-  /* max-height: var(--header-height); */
-  /* height: 100%; */
   width: 100%;
-  /* overflow: ; */
-  /* position   : sticky;
-  top        : 0; */
 }
 #lower_header {
   width: 100%;
@@ -57,5 +52,13 @@ header {
   justify-content: stretch;
   gap: var(--gap);
   padding-inline: var(--padding);
+}
+
+.mobile header {
+  --size:0.4rem;
+  --padding: 0.5rem;
+}
+.mobile #lower_header {
+  flex-direction: column;
 }
 </style>

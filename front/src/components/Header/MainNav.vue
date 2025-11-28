@@ -71,4 +71,11 @@ a:visited {
   font-style: normal;
   color: inherit;
 }
+
+.mobile ul {
+  gap: 0.5rem;
+}
+.mobile li a  {
+  padding: 0.25rem;
+}
 </style>

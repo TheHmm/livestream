@@ -110,6 +110,7 @@ export default {
   40%, 60% { transform: translate3d(4px, 0, 0) }
 }
 .mobile .letter {
-  margin-right: calc(3* var(--dot-width));
+  min-width: 0.7rem;
+  /* margin-right: calc(3* var(--dot-width)); */
 }
 </style>

@@ -233,7 +233,7 @@ a:visited {
   color            : var(--fore);
   /* font-family      : 'Times New Roman', Times, serif; */
   font-style       : italic;
-  font-size        : 1.2em;
+  /* font-size        : 1rem; */
   text-decoration  : none;
   border-bottom    : 1px solid;
 }
@@ -266,7 +266,7 @@ h2 {
 ul {
   margin           : 0;
   padding          : 0;
-  font-size        : var(--size-s);
+  /* font-size        : var(--size-s); */
 }
 
 li {
@@ -302,7 +302,9 @@ li::before {
 .mobile {
   --side-width     : 100%;
   --footer-height  : 2rem;
-  font-size        : 11pt;
+  --header-height  : max( 15vh, 8rem);
+  --radius         : 0.5rem;
+  font-size        : 10pt;
 }
 
 
