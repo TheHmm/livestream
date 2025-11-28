@@ -1,4 +1,5 @@
 <script>
+import config from '@/config'
 
 // Livestream / Event info card for event page
 
@@ -10,6 +11,8 @@ export default {
     title()     { return this.event?.title },
     body()      { return this.$md( this.event?.info || '' ) },
     starts()    { return this.event?.starts },
+    org()    { return this.event?.organisation },
+    org_logo() { return this.org && config.api_img_url + this.org?.Logo?.formats?.thumbnail?.url },
     timestamp() { return this.starts && this.$time.short_date_format( this.starts ) }
   },
   mounted() {
@@ -82,6 +85,12 @@ export default {
     <h1 id="event_title">
       {{ title }}
     </h1>
+    <div 
+      v-if="org"
+      class="org"
+    >
+      <p>Presented by <img :src="org_logo" /> {{ org.Name }}</p>
+    </div>
     <div
       v-if="body"
       aria-label="event summary"
@@ -121,6 +130,17 @@ export default {
 }
 #info div {
   font-weight : lighter;
+}
+.org img {
+  width: 1rem;
+  height: 1rem;
+  object-fit: cover;
+  border-radius: 100%;
+  margin-inline: 0.25rem;
+}
+.org p:has(img) {
+  display: flex;
+  align-items: center;
 }
 .mobile #info div {
   display: none;

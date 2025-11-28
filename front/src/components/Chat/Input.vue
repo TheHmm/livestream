@@ -32,7 +32,7 @@ export default {
 
   computed: {
     ...mapState( 'viewers', [
-      'request_registration',
+      'request_chat_registration',
     ]),
     ...mapGetters( 'messages', [
       'selected_message'
@@ -97,7 +97,7 @@ export default {
 <template>
 
   <Register
-    v-if="request_registration"
+    v-if="request_chat_registration"
     @close="set_request_chat_registration( false )"
   />
 
@@ -126,14 +126,14 @@ export default {
         name="message"
         id="message"
         tabindex="0"
-        :disabled="sending || request_registration || is_in_past"
+        :disabled="sending || request_chat_registration || is_in_past"
         placeholder ="Type your message and hit enter"
         v-model.trim="message"
       />
       <input
         type="submit"
         class="circle"
-        :disabled="sending || request_registration || is_in_past"
+        :disabled="sending || request_chat_registration || is_in_past"
         title="Send your message to all other viewers."
         aria-label="Send your message to all other viewers."
         value="˃"
@@ -163,7 +163,7 @@ export default {
   justify-content: right;
   outline          : var(--solid);
   background-color: var(--back);
-  border-radius: var(--radius-s);
+  border-radius: var(--radius);
 }
 #message_form .reply_to > span {
   font-weight: bold;

@@ -19,7 +19,7 @@ export default {
 </template>
 <style scoped>
 #info {
-  max-width: var(--main-width);
+  max-width: min( 50%, var(--main-width) );
 }
 
 </style>

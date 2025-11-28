@@ -28,7 +28,7 @@ export default {
 <style scoped>
 #rentingoptions ul {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   justify-content: stretch;
   align-items: flex-start;
 }
@@ -36,7 +36,7 @@ export default {
   content: '';
 }
 #rentingoptions ul li {
-  min-width: 33.33%;
+  min-width: calc( 33.33% - 1rem);
   text-align: center;
   padding: 0.5rem;
   background-color: lightgrey;
@@ -50,10 +50,10 @@ export default {
   font-size: 2rem;
 }
 #rentingoptions ul:has( li:focus-within ) li:not(:focus-within){
-  min-width: 25%;
+  min-width: calc(25% - 1rem);
 }
 #rentingoptions ul li:focus-within {
-  min-width: 50%;
+  min-width: calc(50% - 1rem);
   max-height: 20rem;
 }
 #rentingoptions ul li .more_info {

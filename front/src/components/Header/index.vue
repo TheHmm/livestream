@@ -39,7 +39,7 @@ export default {
 <style scoped>
 header {
   --size:1.2rem;
-  --padding: 0.5rem;
+  --padding: 1rem;
   --dot-height: var(--size);
   --dot-width: var(--size);
   --gap: calc( 1 * var(--dot-width) );

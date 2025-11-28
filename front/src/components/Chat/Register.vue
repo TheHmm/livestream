@@ -244,16 +244,19 @@ export default {
 
 dialog {
   max-width        : 25rem;
-  box-shadow       : var(--shadow);
-  border           : none;
-  padding          : var(--size-s);
+  /* box-shadow       : var(--shadow); */
+  border           : var(--solid);
+  background: var(--back);
+  text-shadow: var(--text-outline);
+  border-radius: var(--radius);
+  padding          : 0.5rem;
   flex-grow        : 1;
 }
 dialog.webkit {
   position: absolute;
   top: 0;
   max-height: 100%;
-  background-color: var(--accent-light);
+  background-color: var(--accent);
   overflow: scroll;
 }
 dialog + .backdrop,

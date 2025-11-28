@@ -67,23 +67,24 @@ export default {
 </template>
 <style scoped>
 h2 {
-  font-size: 10rem;
+  font-size: 12rem;
   font-weight: lighter;
   margin: 0;
+  margin-inline: 1rem;
 }
 section:first-of-type > h2 {
-  padding-top: calc( 100vh - ( var(--header-height) + 3ch ) );
+  padding-top: calc( 100vh - ( var(--header-height) + 5rem + 1.5ch) );
 }
 #archive {
   padding: 0;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 #subheader {
-  margin-inline: 0.5rem;
+  margin-inline: 1rem;
   /* padding-block: 0.5rem; */
   position: sticky;
   /* top: var(--header-height); */
-  top: 0.5rem;
+  top: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;

@@ -78,7 +78,7 @@ li::before {
   content: unset;
 }
 li {
-  margin: 0.5rem;
+  margin:1rem;
   margin-bottom: 0;
 }
 li a {

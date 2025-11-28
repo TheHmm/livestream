@@ -184,7 +184,6 @@ body {
 
 
 body main {
-  /* height           : var(--middle-height); */
   position         : relative;
   /* position: sticky; */
   /* top: var(--header-height); */
@@ -197,6 +196,9 @@ body main > section {
   padding-inline: 1rem;
 }
 
+body#livestream main {
+  height           : var(--middle-height);
+}
 
 body#chatpage.hide_input footer {
   display          : none;

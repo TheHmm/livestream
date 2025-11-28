@@ -47,7 +47,7 @@ export default {
 <style scoped>
 ul {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 li {
   display: flex;

@@ -104,7 +104,7 @@ export default {
 #chat_container :deep(#chat .contents:focus-within),
 #chat_container :deep(#chat.expanded .contents) {
   /* --height         : calc( 100vh - 18rem ); OLD */
-  --height         : calc( 100vh - ( var(--header-height) + var(--footer-height) ));
+  --height         : calc( 100vh - ( var(--header-height) + 8rem ));
 }
 
 

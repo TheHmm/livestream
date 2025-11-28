@@ -32,8 +32,9 @@ ul {
   flex-wrap: wrap;
   justify-content  : stretch; */
   width            : 100%;
-  gap: 0.5rem;
-  padding: 0.5rem;
+  gap: 1rem;
+  /* margin: 1rem; */
+  padding: 1rem;
   transition       :
     transform var(--very-slow) ease,
     background-color var(--very-slow) ease

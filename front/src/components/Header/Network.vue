@@ -135,7 +135,7 @@ table tr td * {
   background-color: var(--fore);
   color: var(--back);
   padding: 0 0.25rem;
-  transition: all var(--enter) linear;
+  transition: all var(--fast) linear;
 }
 table tr td.value {
   text-align: right;
@@ -144,14 +144,14 @@ table tr td.last {
   text-align: right;
   overflow: visible;
   opacity: 0;
-  transition: opacity 0.5s ease-out;
+  transition: opacity var(--fast) linear;
 }
 table tr td.last * {
   padding-right: 0rem;
 }
 table tr td.last.has_changed {
   animation: fade 2s ease-out;
-  transition: opacity 0.5s ease-out;
+  transition: opacity var(--fast) linear;
 }
 @keyframes fade {
   0%   { opacity: 0; }

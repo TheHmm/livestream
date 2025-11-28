@@ -38,7 +38,7 @@ export default {
   flex: 1;
   /* height: 100%; */
   width: 100%;
-  min-width: 2rem;
+  min-width: 1.5rem;
   display: flex;
   flex-direction: column;
   overflow: visible;
