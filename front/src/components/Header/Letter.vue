@@ -37,7 +37,7 @@ export default {
 .letter {
   flex: 1;
   width: 100%;
-  min-width: 1.3rem;
+  min-width: 1.2rem;
   display: flex;
   flex-direction: column;
   overflow: visible;

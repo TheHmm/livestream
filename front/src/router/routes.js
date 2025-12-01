@@ -13,6 +13,7 @@ export default [
     name: 'Agenda',
     component: () => import( '@/views/Agenda.vue' ),
     meta: {
+      in_main_nav: true,
       desired_tabs : [
         'access',
       ]
