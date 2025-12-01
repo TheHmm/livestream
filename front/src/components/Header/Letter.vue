@@ -36,9 +36,8 @@ export default {
 <style scoped>
 .letter {
   flex: 1;
-  /* height: 100%; */
   width: 100%;
-  min-width: 1.5rem;
+  min-width: 1.3rem;
   display: flex;
   flex-direction: column;
   overflow: visible;
@@ -110,7 +109,7 @@ export default {
   40%, 60% { transform: translate3d(4px, 0, 0) }
 }
 .mobile .letter {
-  min-width: 0.7rem;
+  min-width: 0.4rem;
   /* margin-right: calc(3* var(--dot-width)); */
 }
 </style>

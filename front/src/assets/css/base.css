@@ -216,7 +216,6 @@ body#livestream {
 .event {
   --i: 0;
   --n: 0;
-  padding: var(--size-s);
   width: 100%;
   display: flex;
 }
@@ -302,7 +301,7 @@ li::before {
 .mobile {
   --side-width     : 100%;
   --footer-height  : 2rem;
-  --header-height  : max( 15vh, 8rem);
+  --header-height  : max( 10vh, 8rem);
   --radius         : 0.5rem;
   font-size        : 10pt;
 }

@@ -201,6 +201,7 @@ export default {
   height           : 100%;
   /* animation        : enterMiddle var(--enter) ease 0.1s forwards !important; */
   padding-bottom   : var(--footer-height);
+  padding: 1rem;
 }
 
 #loading, #access_form {
@@ -210,6 +211,7 @@ export default {
 
 #loading h1, #access_form h1 {
   font-family: inherit !important;
+  text-transform: unset;
   font-size: 2rem;
 }
 
@@ -224,6 +226,7 @@ export default {
 }
 
 .mobile .event {
+  padding: 0.5rem;
   height: unset;
   flex-direction: column-reverse;
 }

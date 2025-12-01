@@ -17,7 +17,8 @@ export default {
     moderator : Boolean,
     mine      : Boolean,
     selected  : Boolean,
-    is_response: Boolean
+    is_response: Boolean,
+    is_in_past: Boolean,
   },
 
 
@@ -106,7 +107,7 @@ export default {
     role="menu"
     class="options"
   >
-    <span @click="delete_message( message )">
+    <span v-if="!is_in_past" @click="delete_message( message )">
       delete
     </span>
   </span>
@@ -115,7 +116,7 @@ export default {
     role="menu"
     class="options"
   >
-    <span @click="select_message( message )">
+    <span v-if="!is_in_past" @click="select_message( message )">
       reply
     </span>
   </span>
@@ -137,5 +138,8 @@ export default {
 }
 .options span:first-of-type {
   margin-left: 0;
+}
+.hide_input .options {
+  display: none;
 }
 </style>

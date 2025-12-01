@@ -181,7 +181,7 @@ export default {
   justify-content : center;
   align-items     : center;
   margin-left: calc( var(--n) * var(--size-xs));
-  margin-top: -0.08rem;
+  /* margin-top: -0.08rem; */
   scale           : 1;
   transition      : all var(--slow) ease;
   flex: 0 1 auto;  

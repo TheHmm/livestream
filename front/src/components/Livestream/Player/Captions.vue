@@ -223,6 +223,16 @@ export default {
 #playerpage #captions p span  {
   --fore: var(--black);
 }
+.mobile #captions {
+  padding: 0.5rem;
+}
+.mobile .audio_th #captions,
+.mobile .thumbs #captions {
+  max-height: 10vh;
+}
+.mobile .transcript #captions {
+  max-height: 30vh;
+}
 .mobile  #captions p {
   margin: 0.5rem auto;
   font-size: 1rem;

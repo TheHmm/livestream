@@ -166,16 +166,7 @@ footer {
   overflow         : visible;
 }
 
-.mobile footer {
-  padding          : 0;
-  flex-direction   : row-reverse;
-  flex-wrap        : wrap;
-  max-width        : unset;
-}
 
-.mobile footer {
-  flex-direction   : column-reverse;
-}
 
 
 footer .tab {
@@ -213,6 +204,12 @@ footer .tab .contents :deep(ul li::before ){
 }
 
 .mobile footer {
+  padding          : 0;
+  flex-direction   : row-reverse;
+  flex-wrap        : wrap;
+  max-width        : unset;
+  flex-direction   : column-reverse;
+  align-items: flex-start;
   z-index        : 3;
   max-height     : var(--base-height);
   bottom: 0.5rem;

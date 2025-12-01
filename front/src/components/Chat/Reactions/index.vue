@@ -17,7 +17,8 @@ export default {
 
   props: {
     received_reactions: { type: Array, default: [] },
-    message: Object
+    message: Object,
+    is_in_past : Boolean,
   },
 
   data() {
@@ -182,14 +183,14 @@ export default {
             </span>  
           </li>
         <li
-          v-if="!show_available"
+          v-if="!is_in_past && !show_available"
           class="add_reaction"
           @click="show_available = true"
         >
           <div>+</div>
         </li>
         <li
-          v-else
+          v-if="!is_in_past && show_available"
           class="add_reaction"
           @click="show_available = false"
         >
@@ -202,7 +203,7 @@ export default {
     <!-- only show this element when we want to react -->
     <div 
       class="available_reactions"
-        v-if="show_available"
+        v-if="!is_in_past && show_available"
     >
       <ul
         role="menu"

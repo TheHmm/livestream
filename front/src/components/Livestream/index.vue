@@ -110,7 +110,7 @@ export default {
 
 
 .mobile #player {
-  max-height       : 60%;
+  max-height       : 70%;
 }
 
 .mobile #info {
@@ -126,6 +126,7 @@ export default {
 .mobile #chat_container {
   /* bottom           : var(--footer-height); */
   margin           : 0;
+  z-index: 1;
 }
 .mobile #chat_container :deep(#chat .contents:focus-within),
 .mobile #chat_container :deep(#chat.expanded .contents) {

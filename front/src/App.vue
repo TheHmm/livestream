@@ -198,6 +198,7 @@ body main > section {
 
 body#livestream main {
   height           : var(--middle-height);
+  overflow: scroll;
 }
 
 body#chatpage.hide_input footer {
@@ -231,6 +232,9 @@ body.mobile main {
   flex-grow        : 1;
   /* overflow         : scroll; */
 }
+body#livestream.mobile main {
+  height: unset;
+} 
 body.mobile #network {
   display: none;
 }

@@ -34,7 +34,7 @@ export default {
 nav {
   flex-basis: 75%;
   flex-shrink: 0;
-  width: 100%;
+  width: 100%; 
 }
 ul {
   display: flex;
@@ -70,6 +70,7 @@ a:visited {
   font-family: karrik;
   font-style: normal;
   color: inherit;
+  white-space: pre;
 }
 
 .mobile ul {

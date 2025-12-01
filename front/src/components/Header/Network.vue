@@ -116,26 +116,27 @@ table {
   --n             : 6;
   border-collapse : collapse;
   font-family     : 'karrik', monospace;
-  font-size       : 0.7rem;
+  font-size       : 0.6rem;
   line-height     : 1;
   opacity         : 0;
   animation       : fade_in var(--enter) linear calc( 0.4s + var(--n) * 0.1s ) forwards;
   z-index         : 1;
   pointer-events  : none;
-  /* width: var(--side-width); */
-  flex-shrink: 0;
+  margin-left: auto;
   overflow: hidden;
-  flex-basis: calc(25% - 1rem);
+  max-width: calc(25% - 1rem);
 }
 table tr td {
   padding: 0;
   white-space: pre;
+  overflow: hidden;
 }
 table tr td * {
   background-color: var(--fore);
   color: var(--back);
   padding: 0 0.25rem;
   transition: all var(--fast) linear;
+  overflow: hidden;
 }
 table tr td.value {
   text-align: right;
@@ -163,5 +164,11 @@ table tr td.last.has_changed {
 @keyframes fade_in {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+@media screen and (max-width: 1000px) {
+  table tr td.last {
+    display: none;
+  }
 }
 </style>

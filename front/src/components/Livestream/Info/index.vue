@@ -116,6 +116,7 @@ export default {
 #info h1, #info h2 {
   font-family: inherit !important;
   font-size: 2rem;
+  text-transform: none;
 }
 #info h2,
 #info h3 {
@@ -131,9 +132,16 @@ export default {
 #info div {
   font-weight : lighter;
 }
+.org {
+  font-size: 0.7rem;
+}
+.org p {
+  white-space: pre; 
+}
 .org img {
   width: 1rem;
   height: 1rem;
+  flex-shrink: 0;
   object-fit: cover;
   border-radius: 100%;
   margin-inline: 0.25rem;
@@ -142,13 +150,18 @@ export default {
   display: flex;
   align-items: center;
 }
-.mobile #info div {
-  display: none;
+.mobile #info div:last-of-type {
+  /* display: none; */
+  padding-bottom: calc( 4 * var(--footer-height));
 }
 .mobile #info h1 {
   margin-block: 0rem;
 }
 .mobile #info h3 {
-  margin-block: 0rem;
+  align-items: center;
+  /* margin-block: 0rem; */
+}
+.mobile #info h3 time {
+  margin-left: 0.5rem;
 }
 </style>

@@ -232,6 +232,7 @@ export default {
             :style="{ '--n': sorted_messages.length - i - 1 }"
             :message="message"
             :links_only="links_only"
+            :is_in_past="is_in_past"  
           />
         </div>
       </div>

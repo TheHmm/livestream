@@ -48,6 +48,7 @@ export default {
   padding-right: calc( var(--padding) + var(--size) / 2 );
   display: flex;
   justify-content: center;
+  overflow: hidden;
 }
 .mobile #the_inbetween_banner {
   /* min-height: calc( 0.6 * var(--letter-height) + 2 * var(--padding) ); */

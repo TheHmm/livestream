@@ -54,6 +54,7 @@ label {
   text-align              : center;
   font-size               : var(--size-m);
   display                 : inline-block;
+  white-space: pre;
   /* background-color     : transparent !important; */
 }
 

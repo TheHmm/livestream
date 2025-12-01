@@ -64,7 +64,8 @@ export default {
 
 #viewers {
   height          : 100%;
-  max-height      : calc( var(--header-height) - 2 * var(--marquee-height));
+  max-height: var(--letter-height);
+  overflow-y: scroll;
   display         : flex;
   /* flex-direction: column; */
   align-items     : flex-start;

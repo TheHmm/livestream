@@ -49,7 +49,7 @@ header {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: stretch;
+  /* justify-content: stretch; */
   gap: var(--gap);
   padding-inline: var(--padding);
 }

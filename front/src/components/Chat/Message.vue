@@ -28,6 +28,7 @@ export default {
     links_only : Boolean,
     selected   : Boolean,
     is_response: Boolean,
+    is_in_past : Boolean,
   },
 
   computed: {
@@ -131,6 +132,7 @@ export default {
         :sender="sender"
         :selected="selected"
         :is_response="is_response"
+        :is_in_past="is_in_past"
       />
     </div>
 
@@ -153,6 +155,7 @@ export default {
       <Reactions 
         :message="message"
         :received_reactions="received_reactions"
+        :is_in_past="is_in_past"
       />
     </div>
 
