@@ -20,9 +20,9 @@ export default [
     },
   },
   {
-    path: '/info',
-    name: 'Info',
-    component: () => import( '@/views/Info.vue' ),
+    path: '/archive',
+    name: 'Archive',
+    component: () => import( '@/views/Archive.vue' ),
     meta: {
       in_main_nav: true,
       desired_tabs : [
@@ -42,9 +42,9 @@ export default [
     },
   },
   {
-    path: '/archive',
-    name: 'Archive',
-    component: () => import( '@/views/Archive.vue' ),
+    path: '/info',
+    name: 'Info',
+    component: () => import( '@/views/Info.vue' ),
     meta: {
       in_main_nav: true,
       desired_tabs : [
