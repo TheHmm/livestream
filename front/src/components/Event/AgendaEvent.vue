@@ -74,44 +74,4 @@ export default {
 
 <style scoped >
 
-li::before {
-  content          : unset;
-}
-li.agendaevent {
-  text-shadow: var(--text-outline);
-  background-color: var(--back);
-  font-family: var(--font);
-  color: var(--fore);
-  min-height: 20rem;
-  flex-basis: 25%;
-  /* width: calc( 100% / 4 ); */
-  /* max-width: var(--side-width); */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 1rem;
-  max-height: 20rem;
-  border: var(--solid);
-  border-radius: var(--radius);
-}
-
-li.agendaevent section {
-  cursor           : pointer;
-  width            : 100%;
-  transition       : all var(--slow) linear;
-  padding-top      : 0.5rem;
-  max-height       : 2rem;
-  overflow         : hidden;
-}
-
-li.agendaevent p.title {
-  font-size: 2rem !important;
-  font-weight: bold;
-}
-.mobile li.agendaevent {
-  min-height: 8rem;
-}
-
 </style>

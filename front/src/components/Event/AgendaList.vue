@@ -16,6 +16,11 @@ export default {
       :i="index"
       :n="events.length - index"
     />
+    <li id="add_yours">
+      <RouterLink to="/renting-options">
+        Add yours!
+      </RouterLink>
+    </li>
   </ul>
 </template>
 
@@ -39,6 +44,55 @@ ul {
     transform var(--very-slow) ease,
     background-color var(--very-slow) ease
   ;
+}
+
+ul:has(> :last-child:nth-child(1)) {
+  grid-template-columns: repeat(1, 1fr);
+}
+ul:has(> :last-child:nth-child(2)) {
+  grid-template-columns: repeat(2, 1fr);
+}
+ul:has(> :last-child:nth-child(3)) {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+li::before {
+  content          : unset;
+}
+li {
+  text-shadow: var(--text-outline);
+  background-color: var(--back);
+  font-family: var(--font);
+  color: var(--fore);
+  min-height: 25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  max-height: 25rem;
+  border: var(--solid);
+  border-radius: var(--radius);
+}
+
+li section {
+  cursor           : pointer;
+  width            : 100%;
+  transition       : all var(--slow) linear;
+  padding-top      : 0.5rem;
+  max-height       : 2rem;
+  overflow         : hidden;
+}
+li :deep(p.title) {
+  font-size: 2rem;
+  font-weight: bold;
+}
+li#add_yours {
+  border: 2px dashed;
+}
+.mobile li {
+  min-height: 8rem;
 }
 .mobile ul {
   gap: 0.5rem;
