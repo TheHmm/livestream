@@ -65,7 +65,7 @@ export default {
     aria-label="Event information"
   >
     <h3 aria-label="event time">
-      <router-link
+      <!-- <router-link
         custom
         :to="{ path: event.is_in_past ? '/archive' : '/', query: $route.query }"
         v-slot="{ navigate }"
@@ -77,7 +77,7 @@ export default {
           type="button"
           @click.stop="navigate"
         />
-      </router-link>
+      </router-link> -->
       <time :datetime="starts">
         {{ timestamp }}
       </time>
@@ -127,7 +127,7 @@ export default {
   /* justify-content: center; */
 }
 #info h3 time {
-  margin-left: 1rem;
+  /* margin-left: 1rem; */
 }
 #info div {
   font-weight : lighter;
@@ -162,6 +162,6 @@ export default {
   /* margin-block: 0rem; */
 }
 .mobile #info h3 time {
-  margin-left: 0.5rem;
+  /* margin-left: 0.5rem; */
 }
 </style>

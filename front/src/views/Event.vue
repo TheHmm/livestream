@@ -140,7 +140,7 @@ export default {
       id="access_form"
       v-else-if="!password_authenticated"  
     >
-      <router-link
+      <!-- <router-link
         custom
         :to="{ path: is_in_past ? '/archive' : '/', query: $route.query }"
         v-slot="{ navigate }"
@@ -152,7 +152,7 @@ export default {
           type="button"
           @click.stop="navigate"
         />
-      </router-link>
+      </router-link> -->
       <h1 id="event_title">
         {{ event?.title }}
       </h1>
