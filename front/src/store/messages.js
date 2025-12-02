@@ -247,7 +247,7 @@ export default {
     async create_message( { getters, dispatch }, body ) {
       const message = {
         body   : body,
-        time   : $time.now(),
+        // time   : $time.now(), // set on server
         sender : getters.my_id,
         event  : getters.current_event_id,
         in_response_to : getters.selected_message?.documentId 

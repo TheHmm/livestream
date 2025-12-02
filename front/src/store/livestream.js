@@ -53,7 +53,16 @@ export default {
       return getters.get_livestreams.find(s => s.events.includes( event_id ) )
     },
     current_livestream : ( state, getters, rootState, rootGetters ) => {
-      return getters.get_livestream_by_event(rootGetters['events/current_event_id'])
+      let livestream
+      const current_event = rootGetters['events/current_event']
+      if ( current_event ) { 
+        if ( current_event.is_in_past ) {
+          livestream = current_event.recording 
+        } else {
+          livestream = getters.get_livestream_by_event( current_event.documentId )
+        }
+      }
+      return livestream
     },
     modes : ( state ) => state.modes,
     default_mode : ( state, getters, rootState, rootGetters ) => {

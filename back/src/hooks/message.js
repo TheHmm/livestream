@@ -32,7 +32,9 @@ const
     const body = context.params.data.body
     if ( body ) {
       // set time based on universal agreement
-      context.params.data.time  = new Date().getTime()
+      if ( !context.params.data.time ) {
+        context.params.data.time  = new Date().getTime()
+      }
       context.params.data.links = get_links( body )
       context.params.data.emoji = get_emoji( body )
     }
@@ -57,13 +59,17 @@ const
     if ( context.action == 'create' ) {
       message.is_new = true
     }
-    strapi.io.to(message.event.slug).emit( 'message', message )
+    if ( message.event?.slug ) {
+      strapi.io.to(message.event.slug).emit( 'message', message )
+    }
     if ( message.emoji ) {
       try {
         const { uuid } = message.sender
         const group    = '__DEFAULT__'
         const emoji    = message.emoji[0]
-        strapi.io.to(message.event.slug).emit( 'emoji', { group, emoji, uuid })
+        if ( message.event?.slug ) {
+          strapi.io.to(message.event.slug).emit( 'emoji', { group, emoji, uuid })
+        }
       } catch ( error ) {
         console.log(error)
       }
