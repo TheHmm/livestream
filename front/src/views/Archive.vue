@@ -71,6 +71,8 @@ h2 {
   font-weight: lighter;
   margin: 0;
   margin-inline: 1rem;
+  position: sticky;
+  top: 0;
 }
 section:first-of-type > h2 {
   padding-top: calc( 100vh - ( var(--header-height) + 5rem + 1.5ch) );
@@ -82,7 +84,8 @@ section:first-of-type > h2 {
 #subheader {
   margin-inline: 1rem;
   position: sticky;
-  top: 1rem;
+  /* top: 1rem; */
+  top: calc( var(--header-height) + 1rem);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;

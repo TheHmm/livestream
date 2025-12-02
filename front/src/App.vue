@@ -171,7 +171,8 @@ body {
   background-size: cover;
   animation        : enter var(--enter) ease forwards;
   transition: color var(--fast) linear, background-color var(--fast) linear;
-  height           : 100%;
+  min-height: 100vh;
+  /* height           : 100%; */
   width            : 100%;
   /* display          : flex; */
   /* flex-direction   : column; */

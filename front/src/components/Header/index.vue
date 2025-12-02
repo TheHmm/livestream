@@ -44,6 +44,10 @@ header {
   --dot-width: var(--size);
   --gap: calc( 1 * var(--dot-width) );
   width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background-color: var(--back);
 }
 #lower_header {
   width: 100%;
