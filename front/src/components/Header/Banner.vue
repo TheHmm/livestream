@@ -44,11 +44,12 @@ export default {
   max-width: var(--full-width);
   min-height: calc( 0.6 * var(--letter-height) + 2 * var(--padding) );
   width: 100%;
+  height: 100%;
   padding: var(--padding);
   padding-right: calc( var(--padding) + var(--size) / 2 );
   display: flex;
   justify-content: center;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .mobile #the_inbetween_banner {
   /* min-height: calc( 0.6 * var(--letter-height) + 2 * var(--padding) ); */

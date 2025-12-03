@@ -69,7 +69,7 @@
 
   /* Default ssizes of sections of the page */
 
-  --header-height  : max( 25vh, 10rem);
+  --header-height  : max( 23vh, 10rem); /* change this on scroll to stretch header */
   /* --header-height  : max( 25vh, 10rem); */
   /* --total-header   : calc( var(--marquee-height) + var(--header-height) ); */
   --total-header   : var(--header-height);
@@ -301,7 +301,7 @@ li::before {
 .mobile {
   --side-width     : 100%;
   --footer-height  : 2rem;
-  --header-height  : max( 10vh, 8rem);
+  --header-height  : max( 8vh, 5rem);
   --radius         : 0.5rem;
   font-size        : 10pt;
 }

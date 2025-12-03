@@ -57,6 +57,7 @@ export default {
       <OrganisationBar />
       <Preview />
     </header>
+    <h2 class="spacer"></h2>
     <section v-for="{ events, year } of events_by_year">
       <h2>{{  year  }}</h2>
       <ArchiveList
@@ -72,10 +73,12 @@ h2 {
   margin: 0;
   margin-inline: 1rem;
   position: sticky;
-  top: 0;
+  top: calc( 3.5rem + var(--header-height));
+  pointer-events: none;
+  z-index: 10;
 }
-section:first-of-type > h2 {
-  padding-top: calc( 100vh - ( var(--header-height) + 5rem + 1.5ch) );
+section .spacer {
+  height: calc( 100vh - ( var(--header-height) + 3rem + 1.5ch) );
 }
 #archive {
   padding: 0;
@@ -84,7 +87,7 @@ section:first-of-type > h2 {
 #subheader {
   margin-inline: 1rem;
   position: sticky;
-  /* top: 1rem; */
+  /* top: 0rem; */
   top: calc( var(--header-height) + 1rem);
   display: flex;
   justify-content: space-between;
@@ -97,6 +100,10 @@ section:first-of-type > h2 {
 .mobile #subheader {
   top: 0.5rem;
   margin-inline: 0.5rem;
+}
+
+.mobile section .spacer {
+  height: calc( 100vh - ( var(--header-height) + 9rem + 1.5ch) );
 }
 .mobile h2 {
   font-size: 6rem;

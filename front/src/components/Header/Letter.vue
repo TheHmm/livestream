@@ -40,6 +40,7 @@ export default {
   min-width: 1.2rem;
   display: flex;
   flex-direction: column;
+  justify-content: stretch;
   overflow: visible;
   filter: 
     drop-shadow( 1px  0px 0px var(--fore)) 
@@ -48,6 +49,7 @@ export default {
     drop-shadow( 0px -1px 0px var(--fore))
   ;
   margin-right: var(--gap);
+  height: 100%;
 }
 .letter:last-of-type {
   margin-right: unset;
@@ -56,6 +58,8 @@ export default {
   /* height: 100%; */
   /* position: sticky; */
   /* top: calc( 0.4 * var(--n) * var(--dot-height) ); */
+  flex-shrink: 1;
+  height: 100%;
   width: 100%;
   display: flex;
 }
@@ -65,7 +69,7 @@ export default {
   /* max-height: calc( 0.9 * var(--dot-height)); */
   max-width: var(--dot-width);
   width: 100%;
-  height: var(--dot-height);
+  /* height: var(--dot-height); */
   /* background-color: red; */
 }
 .dot::after {

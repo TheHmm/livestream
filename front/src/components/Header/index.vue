@@ -47,7 +47,10 @@ header {
   position: sticky;
   top: 0;
   z-index: 3;
-  background-color: var(--back);
+  /* background-color: red; */
+  height: var(--header-height);  
+  display: flex;
+  flex-direction: column;
 }
 #lower_header {
   width: 100%;
