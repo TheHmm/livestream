@@ -21,7 +21,7 @@ export default {
     mobile()  { return this.$store.state.meta.mobile },
   },
   created() {
-    this.mousemove = this.$throttle( this.set_preview_time, 125 )
+    this.mousemove = this.$throttle( this.set_preview_time, 250 )
   },  
   methods: {
     ...mapActions( 'events', [

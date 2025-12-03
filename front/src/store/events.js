@@ -127,13 +127,16 @@ export default {
     // for previewing events in arhcive page
 
     set_preview_event({ commit, dispatch, getters }, slug ) {
+      if ( getters.preview_event ) {
+        dispatch( 'set_event', { slug: getters.preview_event.slug, is_preview_event: false } )
+        commit( 'SET_PREVIEW_TIME', 0 )
+      }      
       if ( slug ) {
         dispatch( 'set_event', { slug, is_preview_event: true } )
-      } else {
-        getters.get_past_events.map( e => {
-          dispatch( 'set_event', { slug: e.slug, is_preview_event: false } )
-        })
-        commit( 'SET_PREVIEW_TIME', 0 )
+      // } else {
+        // getters.get_past_events.map( e => {
+        //   dispatch( 'set_event', { slug: e.slug, is_preview_event: false } )
+        // })
       }
     },
 
