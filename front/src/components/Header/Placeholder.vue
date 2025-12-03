@@ -1,5 +1,5 @@
 <script>
-import Viewers from '@/components/Viewers/index.vue'
+import Viewers from './Viewers/index.vue'
 import Banner from './Banner.vue'
 export default {
   name : 'Placeholder',
