@@ -78,8 +78,9 @@ export default {
   min-width: calc( 1 * var(--size));
   min-height: calc( 1 * var(--size));
   border-radius: 30rem;
-  background-color: var(--accent);
-  transition: background-color var(--slow) linear ;
+  background-color: var(--fore);
+  color: var(--back);
+  transition: background-color var(--fast) linear ;
   /* animation: blob cubic-bezier(0.36, 0.07, 0.19, 0.97) 1s forwards; */
 }
 .dot.on::after {
@@ -112,4 +113,9 @@ export default {
   min-width: 0.4rem;
   /* margin-right: calc(3* var(--dot-width)); */
 }
+
+#livestream .dot::after {
+  background-color: var(--accent);
+}
+
 </style>
