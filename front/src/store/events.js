@@ -1,5 +1,4 @@
 import api        from "../api"
-import { default_colors } from '@/utils/color'
 import config from '@/config'
 import $time      from '@/utils/time'
 import router     from '@/router'
@@ -318,7 +317,7 @@ function sanitize ( event, getters, commit ) {
   }
 
   // Define event styles
-
+  const { default_colors } = config
   event.styles = {
     '--back': event.background_color || default_colors['--back'],
     '--fore': event.text_color || default_colors['--fore'],

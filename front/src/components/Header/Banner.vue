@@ -2,7 +2,7 @@
 import letters from '@/utils/letters.js'
 import Letter from './Letter.vue'
 import DynamicLogo from './DynamicLogo.vue'
-import Viewers from '../Viewers/index.vue'
+import Viewers from './Viewers/index.vue'
 export default { 
   name : 'The Inbetween Banner',
   components : {

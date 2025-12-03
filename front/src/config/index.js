@@ -16,6 +16,12 @@ const
   md = {
     silent      : true,
     breaks      : true,
+  },
+
+  default_colors = {
+    '--back': 'var(--blue)',
+    '--fore': 'var(--black)',
+    '--accent': 'var(--yellow)',
   }
 
 export default {
@@ -24,4 +30,5 @@ export default {
   api_url,
   api_img_url,
   md,
+  default_colors
 }
