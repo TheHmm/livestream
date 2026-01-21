@@ -75,6 +75,7 @@ async function viewer_anonymization( strapi, now ) {
         data: {
           name    : new_name,
           expires : null
+          // does UUID reset?
         } } )
       }
 

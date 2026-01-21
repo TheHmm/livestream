@@ -269,6 +269,9 @@ export default {
 
     // update message, eg when sending an emoji reaction
     async update_message( { getters, dispatch }, message ) {
+      if ( getters.blocked ) {
+        return message
+      }
       return new Promise( ( resolve, reject ) =>
         api
         .messages
