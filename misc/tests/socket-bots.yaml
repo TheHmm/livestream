@@ -1,37 +1,131 @@
 config:
-  # target: "https://api.live.thehmm.karls.computer"
-  # target: "https://live.thehmm.karls.computer/LightLightLight"
-  # target: "http://localhost:3000/LightLightLight"
-  target: "https://live.thehmm.nl"
+  target: "http://localhost:1337/" # strapi url, can be changed with argument --target
+  variables:
+    room: 'test2'
+    emoji:
+      - 'letsgo'
+      - 'perfect'
+      - 'zuck'
+      - 'kaomoji1'
+      - 'sniff'
+  processor: './utils.js'
   plugins:
-    uuid:
-      vars: [ 'id' ]
+    ensure:
+      thresholds:
+        - http.response_time.p99: 100
+        - http.response_time.p95: 75
+    apdex:
+      threshold: 100
+    metrics-by-endpoint: {}
   phases:
+      # before event starts, some people arrive
+    - duration: 10
+      name: First livestream arrivals 
+      arrivalCount: 10
+      # event has started, most people arrive
     - duration: 30
-      arrivalCount: 500
-      name: Warm up
+      name: Beginning of event 
+      arrivalRate: 30
+      rampTo: 100
+      # event running, more people arrive, mainained load
+    - duration: 60
+      name: During event
+      arrivalRate: 10
+      rampTo: 30
 scenarios:
   - engine: socketio
+    name: Join a livestream event and move around
+    log: 'Current room is set to: {{ room }}'
     flow:
-      - options:
-          url: '/api'
-          beforeRequest: addUUID
+      - function: "setRandomFullName"
+      - log: 'Current user is: {{ fullName }}, {{ $uuid }}'
       - emit:
-          channel: 'viewer'
-          data:
-            uuid: '{{ id }}'
-            name: 'testBot'
+          channel: 'join_room'  
+          data: '{{ room }}'
       - think: 2
+      - emit:
+          channel: 'viewer'  
+          data:
+            uuid: '{{ $uuid }}'
+            name: '{{ fullName }}'
+      - think: 3
+      - function: "setRandomPosition"
+      - emit:
+          channel: 'position'  
+          data:
+            uuid: '{{ $uuid }}'
+            position:
+              x: '{{ x }}'
+              y: '{{ y }}'
+      - think: 2
+      - function: "setRandomPosition"
+      - emit: 
+          channel: 'position'  
+          data:
+            uuid: '{{ $uuid }}'
+            position:
+              x: '{{ x }}'
+              y: '{{ y }}'
+      - think: 2
+      - function: "setRandomPosition"
+      - emit: 
+          channel: 'position'  
+          data:
+            uuid: '{{ $uuid }}'
+            position:
+              x: '{{ x }}'
+              y: '{{ y }}'
+      - think: 2
+      - function: "setRandomPosition"
+      - emit: 
+          channel: 'position'  
+          data:
+            uuid: '{{ $uuid }}'
+            position:
+              x: '{{ x }}'
+              y: '{{ y }}'
+      - think: 2
+      - function: "setRandomPosition"
+      - emit: 
+          channel: 'position'  
+          data:
+            uuid: '{{ $uuid }}'
+            position:
+              x: '{{ x }}'
+              y: '{{ y }}'
       - emit:
           channel: 'emoji'
           data:
-            uuid: '{{ id }}'
-            group: 'the-creator-economy'
-            emoji: 'kim crying'
-      - emit:
-          channel: 'join_CC_room'
-      - think: 5
-      - emit:
-          channel: 'leave_CC_room'
+            uuid: '{{ $uuid }}'
+            group: 'general'
+            emoji: '{{ emoji }}'
+      - think: 2
+      - function: "setRandomPosition"
+      - emit: 
+          channel: 'position'  
+          data:
+            uuid: '{{ $uuid }}'
+            position:
+              x: '{{ x }}'
+              y: '{{ y }}'
+      - think: 2
+      - function: "setRandomPosition"
+      - emit: 
+          channel: 'position'  
+          data:
+            uuid: '{{ $uuid }}'
+            position:
+              x: '{{ x }}'
+              y: '{{ y }}'
+      - think: 2
+      - function: "setRandomPosition"
+      - emit: 
+          channel: 'position'  
+          data:
+            uuid: '{{ $uuid }}'
+            position:
+              x: '{{ x }}'
+              y: '{{ y }}'
       - think: 15
-      # - think: 30
+      - emit:
+          channel: 'leave_room'  

@@ -307,8 +307,9 @@
 	document.getElementById("shareLink").href= url+"/overlay?room="+roomID;
 	document.getElementById("shareLink").innerHTML = url+"/overlay?room="+roomID;
 
-	const io_url = 'https://api.live.thehmm.karls.computer';
+	// const io_url = 'https://api.live.thehmm.karls.computer';
 	// const io_url = 'https://live.thehmm.nl';
+	const io_url = 'https://theinbetween.live';
 	const socket = io( io_url )
 
 	document.getElementById('clear').onclick = () => {
@@ -339,8 +340,9 @@
 
 	// fetch livestreams
 
-		fetch('https://api.live.thehmm.karls.computer/api/livestreams')
+		// fetch('https://api.live.thehmm.karls.computer/api/livestreams')
 		// fetch('https://live.thehmm.nl/api/livestreams')
+		fetch('https://theinbetween.live/api/livestreams')
 		.then( response => response.json()).then( ({ data: livestreams }) => {
 			console.log('Got livetreams', livestreams)
 			

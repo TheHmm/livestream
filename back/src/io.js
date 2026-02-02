@@ -35,6 +35,7 @@ module.exports = server => {
     const clients = io.sockets.adapter.rooms.get(room)
     const count = clients ? clients.size : 0
     io.counts[room].push( count )
+    // console.log( count )
     return count
   }
 

@@ -37,6 +37,7 @@ export default {
         this.emoji_allowed &&
         !this.emoji_timeout &&
         !this.event.is_in_past
+        // add check on wether user is blocked
       )
     }
   },

@@ -1,0 +1,39 @@
+config:
+  target: "http://localhost:1337/"
+  plugins:
+    ensure:
+      thresholds:
+        - http.response_time.p99: 100
+        - http.response_time.p95: 75
+    apdex:
+      threshold: 100
+    metrics-by-endpoint: {}
+  phases:
+    - duration: 15
+      name: Warm up phase
+      arrivalRate: 30
+      rampTo: 60
+    # - duration: 60
+    #   arrivalRate: 5
+    #   rampTo: 15
+    #   name: Ramp up load
+    # - duration: 45
+    #   arrivalRate: 15
+    #   rampTo: 100
+    #   name: Spike phase
+scenarios:
+    - name: Test API
+      flow:
+        - get:
+            url: '/api/meta'
+        - get:
+            url: '/api/events'
+        - get:
+            url: '/api/livestreams'
+        - get:
+            url: '/api/viewers'
+        - get:
+            url: '/api/messages'
+        - get:
+            url: '/api/announcements'
+    
