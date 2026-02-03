@@ -1,8 +1,19 @@
 
 const { difference } = require('../utils')
 
-// link to livestream if not yet set
 const before_create = async context => {
+  
+  // link to organisation if not set
+  if ( !context.params.data.organisation ) {
+    const organisation = await strapi.documents( 'api::organisation.organisation' ).findFirst({
+      filters: { createdBy: context.params.data.createdBy }
+    })
+    if ( organisation ) {
+      context.params.data.organisation = organisation.documentId
+    }
+  }
+
+  // link to livestream if not set
   if ( !context.params.data.livestream ) {
     const found = await strapi.documents( 'api::livestream.livestream' ).findFirst()
     if ( found ) {
