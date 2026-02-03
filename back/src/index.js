@@ -6,6 +6,7 @@ const { announcement_hooks } = require('./hooks/announcement')
 const { livestream_hooks } = require('./hooks/livestream')
 const { message_hooks } = require('./hooks/message')
 const { meta_hooks } = require('./hooks/meta')
+const { organisation_hooks } = require('./hooks/organisation')
 
 module.exports = {
 
@@ -28,7 +29,8 @@ module.exports = {
       announcement_hooks,
       livestream_hooks,
       message_hooks,
-      meta_hooks
+      meta_hooks,
+      organisation_hooks
     ].forEach( middleware => strapi.documents.use(middleware()))
 
   },

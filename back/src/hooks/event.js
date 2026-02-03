@@ -8,25 +8,26 @@ const before_create = async context => {
   // link to organisation if not set
   if ( !context.params.data.organisation ) {
     organisation = await strapi.documents( 'api::organisation.organisation' ).findFirst({
-      filters: { createdBy: context.params.data.createdBy }
+      filters: { createdBy: context.params.data.createdBy },
+      populate: [ 'livestream' ]
     })
     if ( organisation ) {
       context.params.data.organisation = organisation.documentId
     }
   } else {
     organisation = await strapi.documents( 'api::organisation.organisation' ).findOne({
-      documentId: context.params.data.organisation.connect[0]?.documentId
+      documentId: context.params.data.organisation.connect[0]?.documentId,
+      populate: [ 'livestream' ]
     })
   }
 
-  // link to livestream if not set, try to match by organisation slug first, then go to default
+  // link to livestream if not set, try to match by organisation first, then go to default
   if ( !context.params.data.livestream ) {
-    async function livestream_by_slug( slug ) {
-      return await strapi.documents( 'api::livestream.livestream' ).findFirst({ filters: { slug } })
-    }
-    livestream = await livestream_by_slug( organisation ? organisation.slug : 'default' )
+    livestream = organisation.livestream
     if ( !livestream ) {
-      livestream = await livestream_by_slug( 'default' )
+      livestream = await strapi.documents( 'api::livestream.livestream' ).findFirst({ 
+        filters: { slug: 'default' } 
+      })
     }
     if ( livestream ) {
       context.params.data.livestream = livestream.documentId
