@@ -2,22 +2,34 @@
 const { difference } = require('../utils')
 
 const before_create = async context => {
-  
+
+  let organisation, livestream
+ 
   // link to organisation if not set
   if ( !context.params.data.organisation ) {
-    const organisation = await strapi.documents( 'api::organisation.organisation' ).findFirst({
+    organisation = await strapi.documents( 'api::organisation.organisation' ).findFirst({
       filters: { createdBy: context.params.data.createdBy }
     })
     if ( organisation ) {
       context.params.data.organisation = organisation.documentId
     }
+  } else {
+    organisation = await strapi.documents( 'api::organisation.organisation' ).findOne({
+      documentId: context.params.data.organisation.connect[0]?.documentId
+    })
   }
 
-  // link to livestream if not set
+  // link to livestream if not set, try to match by organisation slug first, then go to default
   if ( !context.params.data.livestream ) {
-    const found = await strapi.documents( 'api::livestream.livestream' ).findFirst()
-    if ( found ) {
-      context.params.data.livestream = found.documentId
+    async function livestream_by_slug( slug ) {
+      return await strapi.documents( 'api::livestream.livestream' ).findFirst({ filters: { slug } })
+    }
+    livestream = await livestream_by_slug( organisation ? organisation.slug : 'default' )
+    if ( !livestream ) {
+      livestream = await livestream_by_slug( 'default' )
+    }
+    if ( livestream ) {
+      context.params.data.livestream = livestream.documentId
     }
   }
 }
