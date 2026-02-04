@@ -191,7 +191,8 @@ export default {
 
 #player.video {
   justify-content : center;
-  align-self      : stretch;
+  align-self      : flex-start;
+  max-height: 100%;
 }
 
 #player.audio {
@@ -206,7 +207,7 @@ export default {
 }
 
 video {
-  height          : 100%;
+  /* height          : 100%; */
   max-width       : 100%;
   max-height      : 100%;
   object-fit      : contain;
