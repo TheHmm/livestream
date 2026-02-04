@@ -77,13 +77,13 @@ export default {
       if ( this.playing ) {
         return
       }
-      setTimeout(() => {
+      // setTimeout(() => {
         this.reload_image()
         this.start_time = new Date()
         this.interval = setInterval(() => {
           this.reload_image()
         }, this.reload_every )
-      }, this.remaining )
+      // }, this.remaining )
       this.playing = true
     },
 
