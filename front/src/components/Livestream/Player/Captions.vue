@@ -141,7 +141,11 @@ export default {
     // exists and converting it to text for the transcript mode
 
     get_and_set_cc( recording, dispatch ) {
-      const text_track = recording.tracks.find( t => t.type == 'text' && t.text_source.includes('final') )
+      const text_track = recording.tracks.find( 
+        t => t.type == 'text' && ( 
+          t.text_source.includes('final') ||
+          t.text_source.includes('generated_vod')  
+        ))
       if ( text_track ) {
         const cc_url = livestream.mux.text_src( recording.playbackId, text_track.id )
         api
