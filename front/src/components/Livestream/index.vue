@@ -42,7 +42,10 @@ export default {
     livestream()  { return this.$store.getters[ 'livestream/current_livestream' ] },
     playback_id() { return this.livestream?.playbackId },
     status()      { 
-      return this.event?.livestream_placeholder || 'unavailable' 
+      return this.livestream?.status || 'unavailable' 
+    },
+    displayed_status() {
+      return this.livestream?.status ? this.event?.livestream_placeholder : 'unavailable'
     },
     show_player() { return (
       this.playback_id && (
@@ -79,8 +82,8 @@ export default {
 <template>
   <Info :event="event" />
   <Chat :event="event" />
-  <Player v-if="show_player" :event="event" :livestream="livestream" />
-  <Status v-else :status="status" />
+  <Player v-if="show_player" :event="event" />
+  <Status v-else :status="displayed_status" />
 </template>
 
 

@@ -31,11 +31,12 @@ export default {
 
   props: {
     event : Object,
-    livestream : Object
+    // livestream : Object
   },
 
   computed: {
 
+    livestream()  { return this.$store.getters[ 'livestream/current_livestream' ] },
 
     // Computes the current mode by checking the route query
     // and defaults 'video' mode with automatic quality.
