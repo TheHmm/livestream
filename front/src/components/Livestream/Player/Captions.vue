@@ -214,8 +214,7 @@ export default {
 
 }
 #captions p span {
-  --fore: var(--accent);
-  --back: var(--white);
+  --back: var(--accent);
   display: inline;
   background-color: var(--back);
   padding: 0.125rem 0.5rem;
@@ -225,7 +224,7 @@ export default {
   width: 100%;
 }
 #playerpage #captions p span  {
-  --fore: var(--black);
+  /* --fore: var(--black); */
 }
 .mobile #captions {
   padding: 0.5rem;
