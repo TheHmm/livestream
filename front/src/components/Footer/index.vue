@@ -203,6 +203,10 @@ footer .tab .contents :deep(ul li::before ){
   content        : unset;
 }
 
+footer .tab:has(.disabled) {
+  display: none;
+}
+
 .mobile footer {
   padding          : 0;
   flex-direction   : row-reverse;
