@@ -19,7 +19,6 @@ export default {
         <div class="more_info">
           <p class="desc">{{ option.long_description }}</p>
           <p><a :href="option.email_link">Send us an email</a></p>
-          <p><RouterLink :to="`/renting-options/${option.id}`">Read more</RouterLink></p>
         </div>
       </li>
     </ul>
