@@ -117,6 +117,22 @@ export default {
     }
   },
 
+  watch: {
+    event() {
+      if ( this.event?.title && this.$route.meta.is_event ) {
+        document.title = this.event.title + ' | The Inbetween' 
+      }
+    },
+    $route: {
+      immediate: true,
+      handler(to) {
+        if ( !to.meta.is_event ) {
+          document.title = ( to.name || 'Welcome' ) + ' | The Inbetween'
+        }
+      }
+    },
+  }
+
 }
 
 </script>

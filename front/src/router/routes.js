@@ -60,6 +60,9 @@ export default [
   {
     path: '/:slug',
     name: 'Event',
+    meta: { 
+      is_event: true,
+    },
     component: () => import( '@/views/Event.vue' ),
     children: [
       {
