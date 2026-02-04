@@ -27,6 +27,7 @@ export default {
     ]),
     ...mapGetters( 'viewers', [
       'uuid',
+      'blocked'
     ]),
     event() {
       return this.get_event( this.$route.params.slug )
@@ -35,9 +36,9 @@ export default {
       return (
         this.event &&
         this.emoji_allowed &&
+        !this.blocked &&
         !this.emoji_timeout &&
         !this.event.is_in_past
-        // add check on wether user is blocked
       )
     }
   },

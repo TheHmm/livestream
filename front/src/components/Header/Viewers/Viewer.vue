@@ -34,7 +34,7 @@ export default {
     nick()    { return this.is_me && this.name + ' (you)' || this.name },
     emoji()   { return this.viewer.emoji },
     n()       { return this.uuid[ this.uuid.length-1 ] },
-    is_free() { return this.$store.getters[ 'events/release_dots' ] },
+    is_free() { return ( this.$store.getters[ 'events/release_dots' ] && !this.viewer.blocked )},
     pos() {
       let position = {
         x: this.local_position.x,
