@@ -73,7 +73,7 @@
   /* --header-height  : max( 25vh, 10rem); */
   /* --total-header   : calc( var(--marquee-height) + var(--header-height) ); */
   --total-header   : var(--header-height);
-  --footer-height  : 4rem;
+  --footer-height  : 3rem;
   --middle-height  : calc( 100vh - ( var(--total-header ) + var(--footer-height)) );
   --side-width     : 20rem;
   --side-width     : calc( 25vw - 1rem );

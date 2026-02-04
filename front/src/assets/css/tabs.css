@@ -2,7 +2,7 @@
 /* Options and Chat tabs at the bottom :) */
 
 .tab {
-  --base-height    : 3rem;
+  --base-height    : 2rem;
   --full-height    : 15rem;
   --tab-width      : 10rem;
   border: var(--solid);
@@ -10,6 +10,7 @@
   overflow: hidden;
 }
 .tab label.title {
+  font-size: 1rem;
   background-color : var(--accent);
   height           : var(--base-height);
   padding           : 0 0.5rem;
