@@ -110,7 +110,7 @@ export default {
         try {
           await dispatch( 'get_viewer', sender_id, { root: true } )
         } catch ( error ) {
-          $log.error( error )
+          return $log.error( error )
         }
       }
       
