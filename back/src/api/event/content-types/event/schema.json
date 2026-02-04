@@ -41,6 +41,7 @@
       "enum": [
         "video",
         "audio",
+        "audio_th",
         "thumbs",
         "transcript"
       ]

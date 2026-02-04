@@ -526,7 +526,7 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     default_player_mode: Schema.Attribute.Enumeration<
-      ['video', 'audio', 'thumbs', 'transcript']
+      ['video', 'audio', 'audio_th', 'thumbs', 'transcript']
     > &
       Schema.Attribute.DefaultTo<'video'>;
     emoji_groups: Schema.Attribute.Relation<
