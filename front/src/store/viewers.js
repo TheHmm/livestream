@@ -394,8 +394,10 @@ export default {
 
     // Confirmation that we left the room
 
-    async socket_confirmLeaveRoom({ }, { room }) {
+    async socket_confirmLeaveRoom({ commit }, { room }) {
       $log.info( 'SOCKET', `Confirm leave room ${ room }.` )
+      commit( 'SET_CHAT_AUTHENTICATED', false )
+      $log.info( 'AUTH', `You're no longer authenticated to chat.` )
     },
 
 
