@@ -42,7 +42,7 @@ export default {
     livestream()  { return this.$store.getters[ 'livestream/current_livestream' ] },
     playback_id() { return this.livestream?.playbackId },
     status()      { 
-      return this.livestream?.status || this.event?.livestream_placeholder || 'unavailable' 
+      return this.event?.livestream_placeholder || 'unavailable' 
     },
     show_player() { return (
       this.playback_id && (
