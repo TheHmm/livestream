@@ -35,7 +35,7 @@ export default {
 
     get_future_events : state => {
       return Object.values( state.events )
-      .filter( e => new Date( e.starts ) > new Date() )  
+      .filter( e => new Date( e.ends ) > new Date() )  
       .sort( ( a , b ) => new Date( b.starts ) - new Date( a.starts ))
     },
 

@@ -103,7 +103,7 @@ export default {
       .get( `${ config.api_url }/events`, { params: {
         sort: 'starts:asc',
         filters: {
-          starts: {
+          ends: {
             $gte: $time.now(),
           },
           show_in_agenda: {
