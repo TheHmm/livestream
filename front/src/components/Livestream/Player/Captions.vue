@@ -34,6 +34,12 @@ export default {
 
   },
 
+  data() {
+    return {
+      unavailable_message: 'Closed captions not available.'
+    }
+  },
+
   watch: {
 
     playing() {
@@ -141,6 +147,7 @@ export default {
     // exists and converting it to text for the transcript mode
 
     get_and_set_cc( recording, dispatch ) {
+      this.unavailable_message = 'Fetching closed captions...'
       const text_track = recording.tracks.find( 
         t => t.type == 'text' && ( 
           t.text_source.includes('final') ||
@@ -155,7 +162,10 @@ export default {
           captions.parse_vtt( data ),
           { root: true }
         ))
-        .catch( err => console.error( err ) )
+        .catch( err => {
+          this.unavailable_message = 'Closed captions not available.'
+          console.error( err ) 
+        })
       }
     }
 
@@ -191,7 +201,7 @@ export default {
     v-else-if="cc.length == 0"
     :id="$id()"
   >
-    <p>Closed captions not available.</p>
+    <p>{{ unavailable_message }}</p>
   </div>
 
 </template>
