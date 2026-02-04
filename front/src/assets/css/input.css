@@ -7,6 +7,7 @@ input {
 /* reset visible and restyle their colors ann sizes */
 
 input[type="text"],
+input[type="password"],
 input[type="number"],
 input[type="button"],
 input[type="submit"],
