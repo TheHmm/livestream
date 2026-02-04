@@ -202,7 +202,7 @@ body main {
   /* top: var(--header-height); */
   /* flex-grow        : 1; */
   z-index          : 2;
-  /* margin-top       : var(--header-height); */
+  /* margin-top        var(--header-height); */
 }
 
 body main > section {
@@ -212,6 +212,8 @@ body main > section {
 body#livestream main {
   height           : var(--middle-height);
   overflow: scroll;
+  z-index          : 3;
+
 }
 
 body#chatpage.hide_input footer {
