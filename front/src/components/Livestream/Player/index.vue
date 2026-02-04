@@ -213,12 +213,10 @@ video {
 }
 
 video::cue {
-  --fore: var(--accent);
-  --back: var(--white);
   font-size: 1rem;
   /* display: inlisne; */
   color: var(--fore);
-  background-color: var(--back);
+  background-color: var(--accent);
   /* padding: 0.125rem 0.5rem; */
 }
 
