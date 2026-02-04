@@ -147,6 +147,8 @@ async function event_post_processor( strapi, now ) {
 
       const event = events[i]
 
+      const updated = {}
+
       strapi.log.info(`[ * Processing event: ${ event.title }`)
 
       if ( !event.mux_recording ) {
@@ -165,18 +167,18 @@ async function event_post_processor( strapi, now ) {
         if ( asset_id ) {
           try {
             const asset = await strapi.mux.get_asset( asset_id )
-            event.mux_recording = strapi.mux.get_public_asset_details( asset )
+            updated.mux_recording = strapi.mux.get_public_asset_details( asset )
             strapi.log.info(`[ * Playback ID: ${ event.mux_recording.playbackId }`)
           } catch ( err ) {
             console.error(err)
-            event.mux_recording = {
+            updated.mux_recording = {
               message: "Got MUX error; please set asset_id below:",
               asset_id: null,
               error: err,
             }
           }
         } else {
-          event.mux_recording = {
+          updated.mux_recording = {
             error: "Could not automatically fetch MUX recording, please set asset_id below:",
             asset_id: null,
           }
@@ -196,7 +198,7 @@ async function event_post_processor( strapi, now ) {
         // from Strapi. In case there is none, we go for the
         // viewers array length.
 
-        event.count = current_max_count || event.viewers.length
+        updated.count = current_max_count || event.viewers.length
         strapi.log.info(`[ * Count: ${ event.count }`)
 
       }
@@ -204,7 +206,9 @@ async function event_post_processor( strapi, now ) {
 
       // We only update the event in Strapi if its changed.
 
-      await event_service.update({ documentId: event.documentId, data: event })
+      if ( updated.mux_recording || updated.count ) {
+        await event_service.update({ documentId: event.documentId, data: updated })
+      }
 
       strapi.log.info(`[ * * * * * * * * * * * * * * * * * * * ]`)
 

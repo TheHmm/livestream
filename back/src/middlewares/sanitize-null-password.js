@@ -4,7 +4,7 @@ module.exports = () => {
   return async (ctx, next) => {
     if (ctx.request.method === 'PUT') {
       // Log for debugging
-      console.log(ctx.request.body);
+      // console.log(ctx.request.body)
 
       // If password is null, remove it to avoid validation error
       if (ctx.request.body?.password === null) {
