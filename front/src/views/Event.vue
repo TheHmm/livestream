@@ -58,7 +58,8 @@ export default {
       }
       this.loading = null
     } catch ( error ) {
-      _throw( error )
+      this.loading = `Event "${ slug }" was not found. Do you have the right URL?`
+      // _throw( error )
       throw error
     }
   },
