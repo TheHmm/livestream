@@ -73,6 +73,11 @@ export default {
       } else {
         this.unfollow_cursor()
       }
+    },
+    emoji(to) {
+      if ( to && this.is_me ) {
+        this.$el.focus()
+      }
     }
   },
 

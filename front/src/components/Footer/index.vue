@@ -204,7 +204,8 @@ footer .tab .contents :deep(ul li::before ){
 }
 
 footer .tab:has(.disabled) {
-  display: none;
+  /* display: none; */
+  transform : translateY( 10rem )
 }
 
 .mobile footer {

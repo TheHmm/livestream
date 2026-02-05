@@ -214,6 +214,9 @@ body#livestream main {
   overflow: scroll;
   z-index          : 3;
 }
+body#livestream footer {
+  z-index: 4;
+}
 
 body#playerpage {
   height: 100vh;
