@@ -9,7 +9,10 @@ export default {
 
   name: 'Viewer',
   components: { Emo },
-  props: { viewer: Object },
+  props: { 
+    viewer: Object,
+    total: Number
+  },
 
 
   // Clicking on a dot will make it shake
@@ -18,7 +21,7 @@ export default {
     return {
       shaking: false,
       transitioning: false,
-      position_throttle: 250,
+      base_position_throttle: 500,
       local_position: { x: 0, y: 0 },
     }
   },
@@ -34,7 +37,11 @@ export default {
     nick()    { return this.is_me && this.name + ' (you)' || this.name },
     emoji()   { return this.viewer.emoji },
     n()       { return this.uuid[ this.uuid.length-1 ] },
-    is_free() { return ( this.$store.getters[ 'events/release_dots' ] && !this.viewer.blocked )},
+    is_free() { return ( 
+      this.$store.getters[ 'events/release_dots' ] 
+      && this.total <= 100
+      && !this.viewer.blocked 
+    )},
     pos() {
       let position = {
         x: this.local_position.x,
@@ -47,6 +54,9 @@ export default {
         } 
       }
       return position
+    },
+    position_throttle() {
+      return  this.base_position_throttle * ( this.total || 1 ) 
     }
   },
 
@@ -94,10 +104,10 @@ export default {
     follow_cursor() {
       if ( this.mobile ) {
         this.$el.addEventListener( "touchmove", this.touchmove)
-        this.$el.addEventListener( "touchmove", this.$throttle( this.send_position, this.position_throttle ))
+        this.$el.addEventListener( "touchmove", this.throttle( this.send_position ))
       } else {
         document.addEventListener( "mousemove", this.mousemove)
-        document.addEventListener( "mousemove", this.$throttle( this.send_position, this.position_throttle ))
+        document.addEventListener( "mousemove", this.throttle( this.send_position ))
       }
       this.transitioning = true
       setTimeout(() => this.transitioning = false, 500)
@@ -106,10 +116,10 @@ export default {
       this.save_current_position()
       if ( this.mobile ) {
         this.$el.removeEventListener( "touchmove", this.touchmove)
-        this.$el.removeEventListener( "touchmove", this.$throttle( this.send_position, this.position_throttle ))
+        this.$el.removeEventListener( "touchmove", this.throttle( this.send_position ))
       } else {
         document.removeEventListener('mousemove', this.mousemove )
-        document.removeEventListener('mousemove', this.$throttle( this.send_position, this.position_throttle ))
+        document.removeEventListener('mousemove', this.throttle( this.send_position ))
       }
     },
     touchmove(e) {
@@ -148,7 +158,18 @@ export default {
         clientY: Math.random() * (max_y - min_y) + min_y
       }
     }, 
-
+    throttle(func) {
+      let instance = this
+      let lastCall = 0
+      return function (...args) {
+        let delay = instance.position_throttle
+        const now = new Date().getTime()
+        if (now - lastCall >= delay) {
+          lastCall = now
+          func.apply(this, args)
+        }
+      }
+    }
   },
 
 }

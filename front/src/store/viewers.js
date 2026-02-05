@@ -45,6 +45,14 @@ export default {
       return getters.viewers_array.filter( v => v.connected )
     },
 
+    visible_connected_viewers : ( state, getters ) => {
+      if ( getters.connected_viewers.length <= 150 ) {
+        return getters.connected_viewers
+      } else {
+        return getters.connected_viewers.filter( v => v.emoji )
+      }
+    },
+
     count: ( state, getters ) => {
       return getters.connected_viewers.length
     },

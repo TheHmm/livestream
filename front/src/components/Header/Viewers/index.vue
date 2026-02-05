@@ -18,6 +18,7 @@ export default {
   computed: {
     ...mapGetters( 'viewers', [
       'connected_viewers',
+      'visible_connected_viewers',
       'viewers_array',
     ]),
     is_free() { 
@@ -31,8 +32,8 @@ export default {
     viewers() {
       if ( this.event?.is_in_past ) {
         return this.viewers_array
-      } else if ( this.connected_viewers.length ) {
-        return this.connected_viewers
+      } else if ( this.visible_connected_viewers.length ) {
+        return this.visible_connected_viewers
       } else {
         return []
       }
@@ -48,13 +49,14 @@ export default {
     tag="sectiion"
     :id="$id()"
     :class="{ is_free }"
-    :aria-label="`Area with dots representing the number of connected viewers. Currently: ${ connected_viewers.length  }`"
+    :aria-label="`Area with dots representing the number of connected viewers. Currently: ${ visible_connected_viewers.length  }`"
     name="dot"
   >
     <Viewer
       v-for="viewer in viewers"
       :key="viewer.uuid"
       :viewer="viewer"
+      :total="connected_viewers.length"
     />
   </transition-group>
 </template>
