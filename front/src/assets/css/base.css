@@ -159,6 +159,12 @@
   color            : var(--back);
 }
 
+/* hide all scrollbars */
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
 
 /* Any element that is focused get's a Hmm outline */
 
