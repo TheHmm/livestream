@@ -127,7 +127,7 @@ export default {
         id="message"
         tabindex="0"
         :disabled="sending || request_chat_registration || is_in_past"
-        placeholder ="Type your message and hit enter"
+        placeholder ="Type your message..."
         v-model.trim="message"
       />
       <input
