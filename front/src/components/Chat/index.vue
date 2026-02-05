@@ -358,7 +358,7 @@ export default {
   display         : none;
 }
 #chatpage #chat_container #chat .contents {
-  padding-bottom   : calc( var(--footer-height));
+  /* padding-bottom   : calc( var(--footer-height)); */
 }
 #chatpage.mobile #chat_container #chat .contents {
   padding-bottom   : calc( var(--footer-height) + 1rem );

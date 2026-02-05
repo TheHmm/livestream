@@ -231,10 +231,13 @@ export default {
   flex-direction: column-reverse;
 }
 
-#savepage .event,
-#chatpage .event {
+#savepage .event {
   padding: 0;
   padding-bottom: 0;
+}
+
+#chatpage .event {
+  /* padding-bottom: 0.5rem; */
 }
 
 #savepage .event {
@@ -246,7 +249,11 @@ export default {
   padding-bottom: var(--size-s);
   /* background: black !important; */
 }
-
+#chatpage.mobile .event {
+  padding: 0rem;
+  padding-block: 0.5rem;
+  height: 100%;
+}
 #playerpage.mobile .event {
   height: 100%;
 }

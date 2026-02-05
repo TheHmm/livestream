@@ -303,6 +303,7 @@ li::before {
   --footer-height  : 2rem;
   --header-height  : max( 8vh, 5rem);
   --radius         : 0.5rem;
+  --middle-height  : calc( 100vh - ( var(--header-height ) + var(--footer-height)) );
   font-size        : 10pt;
 }
 

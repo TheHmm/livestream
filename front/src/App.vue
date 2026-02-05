@@ -221,7 +221,9 @@ body#playerpage {
 body#playerpage main {
   height: 100%;
 }
-
+body#chatpage main {
+  height           : var(--middle-height);
+}
 body#chatpage.hide_input footer {
   display          : none;
 }
@@ -253,6 +255,10 @@ body.mobile main {
   flex-grow        : 1;
   /* overflow         : scroll; */
 }
+body#chatpage.mobile main {
+  height: calc(var(--middle-height) + var(--footer-height) - 0.5rem);
+}
+
 body#livestream.mobile main {
   height: unset;
 } 
