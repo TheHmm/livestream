@@ -126,6 +126,10 @@ export default {
   width           : 100%;
 }
 
+#chat h1 {
+  font-family: var(--font);
+  text-shadow: var(--text-outline);
+}
 
 #chat .options {
   font-size       : var(--size-m);
