@@ -21,6 +21,7 @@ export default {
 
 <style scoped>
 #dynamiclogo {
+  padding-block: var(--padding);
   display: flex;
   justify-content: center;
   align-items: center;

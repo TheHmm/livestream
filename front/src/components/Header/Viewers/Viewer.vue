@@ -260,9 +260,15 @@ export default {
 }
 
 .viewer.emoji {
-  transform       : scale(2);
-  max-width       : 10rem;
-  max-height      : 10rem;
+  margin-left: calc( -0.5 + var(--n) * var(--size-xs));
+  margin-top: -0.5rem;
+  max-width       : 2rem;
+  max-height      : 2rem;
+}
+
+.viewer.is_free.emoji {
+  margin-left: 0rem;
+  margin-top: 0rem;
 }
 
 

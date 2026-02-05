@@ -35,6 +35,7 @@ export default {
 
 <style scoped>
 .letter {
+  /* margin-block: var(--padding); */
   flex: 1;
   width: 100%;
   min-width: 1.2rem;
@@ -50,6 +51,7 @@ export default {
   ;
   margin-right: var(--gap);
   height: 100%;
+  padding-block: var(--padding);
 }
 .letter:last-of-type {
   margin-right: unset;

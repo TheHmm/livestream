@@ -73,6 +73,7 @@ export default {
   align-content: flex-start;
   flex-wrap       : wrap;
   z-index         : 3;
+  padding-block: var(--padding);
 }
 
 #viewers.is_free {

@@ -45,7 +45,7 @@ export default {
   min-height: calc( 0.6 * var(--letter-height) + 2 * var(--padding) );
   width: 100%;
   height: 100%;
-  padding: var(--padding);
+  padding-left: var(--padding);
   padding-right: calc( var(--padding) + var(--size) / 2 );
   display: flex;
   justify-content: center;
