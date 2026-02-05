@@ -250,4 +250,9 @@ export default {
   margin: 0.5rem auto;
   font-size: 1rem;
 }
+#playerpage.mobile .audio_th #captions,
+#playerpage.mobile .thumbs #captions,
+#playerpage.mobile .transcript #captions {
+  max-height: unset;
+}
 </style>

@@ -247,14 +247,19 @@ video::cue {
 }
 
 #playerpage #player {
+  /* --fore: var(--white); */
+}
+
+#playerpage #player.video {
   /* border: none; */
+  align-self: center;
 }
 
 #playerpage #captions {
   width: 100%;
 }
 #playerpage #captions p span  {
-  --fore: var(--black);
+  /* --fore: var(--black); */
 }
 #playerpage.mobile #player {
   min-height: 100%;

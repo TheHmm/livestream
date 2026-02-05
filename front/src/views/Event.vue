@@ -244,7 +244,11 @@ export default {
 
 #playerpage .event {
   padding-bottom: var(--size-s);
-  background: black !important;
+  /* background: black !important; */
+}
+
+#playerpage.mobile .event {
+  height: 100%;
 }
 
 </style>

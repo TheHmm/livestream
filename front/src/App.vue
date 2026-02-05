@@ -213,7 +213,13 @@ body#livestream main {
   height           : var(--middle-height);
   overflow: scroll;
   z-index          : 3;
+}
 
+body#playerpage {
+  height: 100vh;
+}
+body#playerpage main {
+  height: 100%;
 }
 
 body#chatpage.hide_input footer {
