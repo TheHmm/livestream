@@ -47,6 +47,8 @@ export default {
   text-shadow: var(--text-outline);
   position: relative;
   min-width: calc( 2 * 1ch * var(--radius) - 2ch );
+}
+.text-ring.animate {
   animation: spin 18s linear 0s infinite;
 }
 .text-ring [style*=--index] {
