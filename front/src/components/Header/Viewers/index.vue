@@ -49,6 +49,7 @@ export default {
     tag="sectiion"
     :id="$id()"
     :class="{ is_free }"
+    :style="{ '--dot-count': viewers.length }"
     :aria-label="`Area with dots representing the number of connected viewers. Currently: ${ visible_connected_viewers.length  }`"
     name="dot"
   >
@@ -69,13 +70,17 @@ export default {
   max-height: var(--letter-height);
   overflow-y: scroll;
   display         : flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   align-items     : flex-start;
   justify-content : flex-start;
   align-content: flex-start;
   flex-wrap       : wrap;
   z-index         : 3;
   padding-block: var(--padding);
+  width: 100%;
+  min-width: calc( var(--dot-height) * 1.5 );
+  max-width: calc( var(--dot-height) * 3 * var(--dot-count) / 7);
+  transition: max-width var(--fast) linear;
 }
 
 #viewers.is_free {

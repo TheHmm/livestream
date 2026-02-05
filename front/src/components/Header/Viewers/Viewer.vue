@@ -206,7 +206,7 @@ export default {
   display         : flex;
   justify-content : center;
   align-items     : center;
-  margin-left: calc( var(--n) * var(--size-xs));
+  margin-top: calc( var(--n) * var(--size-xs));
   /* margin-top: -0.08rem; */
   scale           : 1;
   transition      : all var(--slow) ease;
