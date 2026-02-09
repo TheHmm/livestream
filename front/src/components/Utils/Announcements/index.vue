@@ -38,7 +38,7 @@ export default {
   overflow   : visible;
   font-size  : var(--size-m);
   transform  : translateY( calc( var(--header-height) * -3 ) );
-  animation  : enter var(--enter) ease 0.75s forwards;
+  animation  : enter var(--enter) ease var(--slow) forwards;
   transition : all 0.5s ease;
   z-index    : 5;
   opacity    : 0;
