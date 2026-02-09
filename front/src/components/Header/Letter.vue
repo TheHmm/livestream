@@ -43,12 +43,12 @@ export default {
   flex-direction: column;
   justify-content: stretch;
   overflow: visible;
-  filter: 
+  /* filter: 
     drop-shadow( 1px  0px 0px var(--fore)) 
     drop-shadow(-1px  0px 0px var(--fore))
     drop-shadow( 0px  1px 0px var(--fore)) 
     drop-shadow( 0px -1px 0px var(--fore))
-  ;
+  ; */
   margin-right: var(--gap);
   height: 100%;
   padding-block: var(--padding);
@@ -88,6 +88,7 @@ export default {
   color: var(--back);
   transition: background-color var(--fast) linear ;
   /* animation: blob cubic-bezier(0.36, 0.07, 0.19, 0.97) 1s forwards; */
+  border: 0.5px solid var(--fore);
 }
 .dot.on::after {
   opacity: 1;
