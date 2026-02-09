@@ -117,13 +117,6 @@
 }
 
 
-@media (prefers-reduced-motion: no-preference) {
-}
-
-
-
-
-
 /* All shadow params are reduced to 0 to eliminate depth. */
 
 .reduce_depth {

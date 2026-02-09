@@ -37,8 +37,10 @@ export default {
     nick()    { return this.is_me && this.name + ' (you)' || this.name },
     emoji()   { return this.viewer.emoji },
     n()       { return this.uuid[ this.uuid.length-1 ] },
-    is_free() { return ( 
+    is_free() { 
+      return ( 
       this.$store.getters[ 'events/release_dots' ] 
+      && this.$route.query[ 'reduce_motion' ] !== 'true'
       && this.total <= 100
       && !this.viewer.blocked 
     )},

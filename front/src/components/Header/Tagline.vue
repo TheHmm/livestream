@@ -51,7 +51,8 @@ export default {
 .text-ring.animate {
   animation: spin 18s linear 0s infinite;
 }
-.text-ring [style*=--index] {
+.text-ring [style*=--index],
+.reduce_motion .text-ring [style*=--index] {
   font-weight: bold;
   font-style: italic;
   font-family: monospace;
@@ -62,7 +63,7 @@ export default {
   transform:
     translate(-50%, -50%)
     rotate(calc(360deg / var(--total) * var(--index)))
-    translateY(calc(var(--radius, 5) * -1.5ch));
+    translateY(calc(var(--radius, 5) * -1.5ch)) !important;
 }
 .text-ring .sr-only {
   position: absolute;

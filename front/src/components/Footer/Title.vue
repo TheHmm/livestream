@@ -79,20 +79,8 @@ label :deep(div) {
   padding                 : 0.2rem var(--size-s);
 }
 
-.reduce_motion label :deep(div span) {
-  font-size               : var(--size-s);
-  position                : relative !important;
-  left                    : unset !important;
-  bottom                  : calc( -0.5 * var(--size-s)) !important;
-}
-
 .mobile label {
   font-size               : var(--size-s);
-}
-
-.mobile.reduce_motion label :deep(div) {
-  padding: 0.2rem 0;
-  bottom: -0.1rem;
 }
 
 </style>

@@ -39,13 +39,16 @@ export default {
       return state.meta?.renting_options || []
     },
     tagline: state => {
-      return state.meta?.tagline
+      return state.meta?.tagline + ' '
     },
     censor_message: state => {
       return state.meta?.censorMessage
     },
     ui: state => {
       return state.ui
+    },
+    reduce_motion: state => {
+      return state.ui.reduce_motion
     },
     get_default_value: state => key => {
       return state.ui[key].default

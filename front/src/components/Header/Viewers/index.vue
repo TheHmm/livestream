@@ -22,8 +22,12 @@ export default {
       'viewers_array',
     ]),
     is_free() { 
-      return this.$store.getters[ 'events/release_dots' ] 
-    },
+      console.log( this.$route.query[ 'reduce_motion' ])
+      return ( 
+      this.$store.getters[ 'events/release_dots' ] 
+      && this.$route.query[ 'reduce_motion' ] !== 'true'
+      && this.connected_viewers.length <= 100
+    )},
     event() {
       return this.$store.getters[ 'events/get_event' ](
         this.$route.params.slug
@@ -94,6 +98,7 @@ export default {
   max-height: 0%;
   overflow: visible;
   /* pointer-events: none; */
+  min-width: 0;
 }
 
 .mobile #viewers {
