@@ -12,8 +12,8 @@
   "dependencies": {
     "@mux/mux-node": "^6.2.0",
     "@strapi/plugin-color-picker": "^5.30.1",
-    "@strapi/plugin-users-permissions": "5.29.0",
-    "@strapi/strapi": "5.29.0",
+    "@strapi/plugin-users-permissions": "5.35.0",
+    "@strapi/strapi": "5.35.0",
     "better-sqlite3": "11.3.0",
     "mqtt": "^4.3.7",
     "random-anonymous-animals": "^1.0.0",
@@ -29,7 +29,7 @@
   },
   "strapi": {},
   "engines": {
-    "node": ">=18.x.x <=20.x.x",
+    "node": ">=18.x.x <=24.x.x",
     "npm": ">=6.0.0"
   },
   "license": "MIT"
