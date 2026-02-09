@@ -253,6 +253,7 @@ export default {
 .viewer.is_free {
   position: fixed;
   margin-left: 0;
+  margin-top: 0;
   top: calc( var(--y) * 100vh - 0.5 * var(--size));
   left: calc( var(--x) * 100vw - 0.5 * var(--size));
   outline: var(--focus);
