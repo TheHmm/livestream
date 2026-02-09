@@ -83,6 +83,10 @@ export default {
   transition: max-width var(--fast) linear;
 }
 
+#viewers:empty {
+  min-width: 0;
+}
+
 #viewers.is_free {
   top: 0; 
   left            : 0;
@@ -93,7 +97,7 @@ export default {
 }
 
 .mobile #viewers {
-  padding         : 0rem;
+  /* padding         : 0rem; */
 }
 
 </style>

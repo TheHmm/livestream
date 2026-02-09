@@ -38,7 +38,7 @@ export default {
   /* margin-block: var(--padding); */
   flex: 1;
   width: 100%;
-  min-width: 1.2rem;
+  min-width: var(--size);
   display: flex;
   flex-direction: column;
   justify-content: stretch;
@@ -117,7 +117,7 @@ export default {
   40%, 60% { transform: translate3d(4px, 0, 0) }
 }
 .mobile .letter {
-  min-width: 0.4rem;
+  /* min-width: 0.4rem; */
   /* margin-right: calc(3* var(--dot-width)); */
 }
 

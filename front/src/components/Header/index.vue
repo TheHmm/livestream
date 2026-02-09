@@ -49,6 +49,7 @@ header {
   z-index: 3;
   /* background-color: red; */
   height: var(--header-height);  
+  max-height: var(--header-height);
   display: flex;
   flex-direction: column;
 }
