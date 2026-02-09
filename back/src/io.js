@@ -160,7 +160,7 @@ module.exports = server => {
 
   function socket_join_CC_room( socket, room ) {
     socket.join( `cc_${ room }` )
-    socket.emit( 'confirm_join_CC', io.cc[room] )
+    socket.emit( 'confirm_join_CC', io.cc[room] || [] )
   }
 
   function socket_leave_CC_room( socket, room ) {
@@ -191,7 +191,7 @@ module.exports = server => {
   // array when the livestream is over.
 
   function socket_clear_CC( room ) {
-    io.cc[room].length = 0
+    io.cc[room] = []
     io.to( `cc_${ room }` ).emit( 'clear_CC', io.cc[room] )
   }
 
