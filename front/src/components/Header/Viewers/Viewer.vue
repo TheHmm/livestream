@@ -218,7 +218,7 @@ export default {
 .viewer.dot-leave-active,
 .viewer.dot-move {
   transition      : all var(--slow) ease;
-  transition-delay: calc( var(--n) * 500ms );
+  transition-delay: calc(-0.5 * var(--n) * 100ms );
 }
 .dot-enter-to,
 .dot-leave-from {
@@ -281,8 +281,8 @@ export default {
 }
 
 .viewer.emoji {
-  margin-left: calc( -0.5 + var(--n) * var(--size-xs));
-  margin-top: -0.5rem;
+  margin-left: calc( -0.25 * var(--size) );
+  margin-top: calc( -0.25 + var(--n) * var(--size-xs));
   max-width       : 2rem;
   max-height      : 2rem;
 }
