@@ -141,7 +141,7 @@ export default {
 
       commit( 'SET_VIEWER', viewer )
 
-      console.log( getters.connected_viewers.length )
+      // console.log( getters.connected_viewers.length )
 
     },
 
