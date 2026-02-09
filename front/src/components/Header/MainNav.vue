@@ -22,7 +22,7 @@ export default {
         v-for="route in nav_routes"
         :class="{ selected: $route.name == route.name }"
       >
-        <RouterLink :to="route.path">
+        <RouterLink :to="{ path: route.path, query: $route.query }">
           {{ route.name }}
         </RouterLink>
       </li>

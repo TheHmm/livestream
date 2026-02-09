@@ -69,4 +69,11 @@ header {
 .mobile #lower_header {
   flex-direction: column;
 }
+
+.reduce_depth header {
+  background-color: var(--back);
+  padding-bottom: var(--padding);
+  border-bottom: 1px solid;
+}
+
 </style>
