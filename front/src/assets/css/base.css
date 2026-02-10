@@ -300,7 +300,7 @@ li::before {
 .mobile {
   --side-width     : 100%;
   --footer-height  : 2rem;
-  --header-height  : min( 12vh, 10rem);
+  --header-height  : max( 10vh, 5rem);
   --radius         : 0.5rem;
   --middle-height  : calc( 100vh - ( var(--header-height ) + var(--footer-height)) );
   font-size        : 10pt;
