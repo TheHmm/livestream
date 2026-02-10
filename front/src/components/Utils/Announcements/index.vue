@@ -38,10 +38,13 @@ export default {
   overflow   : visible;
   font-size  : var(--size-m);
   transform  : translateY( calc( var(--header-height) * -3 ) );
-  animation  : enter var(--enter) ease var(--slow) forwards;
+  animation  : enter var(--enter) ease var(--slow) forwards !important;
   transition : all 0.5s ease;
   z-index    : 5;
   opacity    : 0;
+}
+.mobile #announcements {
+  right: calc( 1 * var(--side-width));
 }
 .fall-in-move,
 .fall-in-enter-active,
