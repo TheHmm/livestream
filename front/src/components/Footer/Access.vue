@@ -58,6 +58,7 @@ export default {
       v-for="( option, key ) in ui"
       role="menuitem"
       :key="key"
+      :class="key"
     >
       <input
         type="checkbox"
@@ -75,3 +76,9 @@ export default {
     </li>
   </ul>
 </template>
+
+<style scoped>
+li.hide_input {
+  display: none !important;
+}
+</style>
