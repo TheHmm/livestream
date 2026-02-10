@@ -17,6 +17,7 @@
   display          : flex;
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
+  cursor: pointer;
 }
 .tab .contents {
   background       : var(--accent);
@@ -25,6 +26,7 @@
   min-height       : 0;
   max-height       : 0;
   padding          : 0;
+  overflow: hidden;
   border-bottom-left-radius: inherit;
   border-bottom-right-radius: inherit;  
   transition       :
@@ -46,9 +48,10 @@
 .tab .contents :deep(ul li) {
   padding          : 0.1rem 0.5rem;
 }
-.tab:hover .contents,
+/* .tab:hover .contents,
 .tab:focus .contents,
-.tab:focus-within .contents {
+.tab:focus-within .contents */
+.tab.visible .contents {
   max-height       : var(--full-height);
   max-width        : var(--tab-width);
   overflow         : scroll;

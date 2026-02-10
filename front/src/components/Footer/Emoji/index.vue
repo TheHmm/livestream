@@ -91,7 +91,7 @@ export default {
       >
         <Emo
           :emo="emo"
-          @click="send( group.slug, emo.name )"
+          @click.space="send( group.slug, emo.name )"
           @keyup.space="send( group.slug, emo.name )"
           @keyup.enter="send( group.slug, emo.name )"
         />

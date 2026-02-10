@@ -63,6 +63,7 @@ export default {
         type="checkbox"
         :id="key"
         :checked="get_value( key )"
+        @click.stop
         @change="toggle( key )"
       />
       <label

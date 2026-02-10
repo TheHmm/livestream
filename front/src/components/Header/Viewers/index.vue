@@ -21,9 +21,7 @@ export default {
       'visible_connected_viewers',
       'viewers_array',
     ]),
-    is_free() { 
-      console.log( this.$route.query[ 'reduce_motion' ])
-      return ( 
+    is_free() { return ( 
       this.$store.getters[ 'events/release_dots' ] 
       && this.$route.query[ 'reduce_motion' ] !== 'true'
       && this.connected_viewers.length <= 100

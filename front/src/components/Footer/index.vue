@@ -1,7 +1,6 @@
 <script>
 
 import Title  from './Title.vue'
-import About  from './About.vue'
 import Access from './Access.vue'
 import Modes  from './Modes.vue'
 import Emoji  from './Emoji/index.vue'
@@ -17,7 +16,6 @@ export default {
 
   components: {
     Title,
-    About,
     Access,
     Modes,
     Emoji
@@ -26,12 +24,6 @@ export default {
   data() {
     return {
       available_tabs: [
-        {
-          name       : 'about',
-          label      : 'About',
-          comp       : 'About',
-          aria_label : 'About this website',
-        },
         {
           name       : 'access',
           label      : 'Accessibility',
@@ -91,6 +83,34 @@ export default {
 
   },
 
+  mounted() {
+    document.addEventListener('click', this.clear)
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.clear)
+  },
+
+  methods: {
+    show(e) {
+      e.currentTarget.classList.add('visible')
+    },
+    hide(e) {
+      e.currentTarget.classList.remove('visible')
+    },
+    toggle(e) {
+      if ( e.currentTarget.classList.contains('visible') ) {
+        this.hide(e)
+      } else {
+        this.show(e)
+      }
+    },
+    clear() {
+      document.querySelectorAll( '.tab.visible' ).forEach(e => {
+        e.classList.remove('visible')
+      })
+    }
+  }
+
 }
 </script>
 
@@ -116,6 +136,7 @@ export default {
           '--n': index ,
           '--i': tabs.length - index
         }"
+        @click.stop="toggle"
       >
 
         <Title
@@ -124,18 +145,6 @@ export default {
         />
 
         <div class="contents">
-          <header
-            v-if="tab.name == 'about'"
-            aria-label="About section toggle"
-          >
-            <input
-              :value=" expanded ? '✕' : 'click to enlarge' "
-              :class="[ 'close', { circle: expanded } ]"
-              name="close"
-              type="button"
-              @click.stop="expanded = !expanded"
-            />
-          </header>
           <Component :is="tab.comp" />
         </div>
 
@@ -185,9 +194,11 @@ footer .tab {
   to   { transform : translateY(0) }
 }
 
-  footer .tab:focus .contents,
+/* footer .tab:focus .contents,
 footer .tab:focus-within .contents,
-footer .tab:hover .contents {
+footer .tab:hover .contents  */
+footer .tab.visible .contents 
+{
   padding-bottom : 0.5rem;
 }
 
@@ -229,16 +240,20 @@ footer .tab:has(.disabled) {
 .mobile footer .tab:first-of-type {
   margin-left    : 0;
 }
-.mobile footer .tab:focus ,
+/* .mobile footer .tab:focus ,
 .mobile footer .tab:focus-within ,
-.mobile footer .tab:hover {
+.mobile footer .tab:hover  */
+.mobile footer .tab.visible
+{
  margin-left    : calc( -2.5 * var(--n) * var(--size-s));
  margin-left    : calc( 2.5 * var(--n) * var(--size-s));
 }
 
-.mobile footer .tab:focus .contents,
+/* .mobile footer .tab:focus .contents,
 .mobile footer .tab:focus-within .contents,
-.mobile footer .tab:hover .contents {
+.mobile footer .tab:hover .contents  */
+.mobile footer .tab.visible .contents
+{
   padding-bottom : var(--base-height);
   --width        : 12rem;
   min-width: var(--width);
@@ -248,14 +263,6 @@ footer .tab:has(.disabled) {
   display: none;
 }
 
-
-.mobile footer .tab#about header {
-  justify-content: left;
-}
-.mobile footer .tab#about.expanded header {
-  justify-content: flex-end;
-}
-
 .mobile.chatpage footer .tab {
   margin-left    : calc( -1 * var(--size-s));
 }
@@ -263,14 +270,11 @@ footer .tab:has(.disabled) {
   margin-left    : 0;
 }
 
-.mobile.chatpage footer .tab:focus ,
+/* .mobile.chatpage footer .tab:focus ,
 .mobile.chatpage footer .tab:focus-within ,
-.mobile.chatpage footer .tab:hover {
+.mobile.chatpage footer .tab:hover  */
+.mobile.chatpage footer .tab.visible
+{
  margin-left    : calc( -1.5 * var(--n) * var(--size-s));
-}
-
-@keyframes hop {
-  from {  max-height: 0 }
-  to   {  max-height: 1rem }
 }
 </style>

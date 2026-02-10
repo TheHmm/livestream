@@ -85,6 +85,7 @@ export default {
         :name="mode.label"
         :value="mode"
         v-model="current_mode"
+        @click.stop
       />
       <label
         :for="mode.name"
