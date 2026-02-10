@@ -94,38 +94,16 @@ export default {
   },
 
   methods: {
-    shake() {
-      if ( this.is_me ) {
-        return
-      }
-      this.shaking = true
-      setTimeout(() => {
-        this.shaking = false
-      }, 1500)
-    },
     follow_cursor() {
-      if ( this.mobile ) {
-        this.$el.addEventListener( "touchmove", this.touchmove)
-        this.$el.addEventListener( "touchmove", this.throttle( this.send_position ))
-      } else {
-        document.addEventListener( "mousemove", this.mousemove)
-        document.addEventListener( "mousemove", this.throttle( this.send_position ))
-      }
+      document.addEventListener( "mousemove", this.mousemove)
+      document.addEventListener( "mousemove", this.throttle( this.send_position ))
       this.transitioning = true
       setTimeout(() => this.transitioning = false, 500)
     },
     unfollow_cursor() {
       this.save_current_position()
-      if ( this.mobile ) {
-        this.$el.removeEventListener( "touchmove", this.touchmove)
-        this.$el.removeEventListener( "touchmove", this.throttle( this.send_position ))
-      } else {
-        document.removeEventListener('mousemove', this.mousemove )
-        document.removeEventListener('mousemove', this.throttle( this.send_position ))
-      }
-    },
-    touchmove(e) {
-      this.set_position( e.touches[0] )
+      document.removeEventListener('mousemove', this.mousemove )
+      document.removeEventListener('mousemove', this.throttle( this.send_position ))
     },
     mousemove(e) {
       this.set_position(e)
@@ -171,7 +149,15 @@ export default {
           func.apply(this, args)
         }
       }
-    }
+    },
+    shake() {
+      if ( !this.is_me ) {
+        this.shaking = true
+        setTimeout(() => {
+          this.shaking = false
+        }, 1500)
+      }
+    },
   },
 
 }
@@ -264,8 +250,8 @@ export default {
   pointer-events: none;
 }
 .viewer.is_free.is_me.mobile {
-  pointer-events: all;
-  --size           : 1.5rem;
+  /* pointer-events: all; */
+  /* --size           : 1.5rem; */
 }
 
 .viewer :deep(.emo) {
