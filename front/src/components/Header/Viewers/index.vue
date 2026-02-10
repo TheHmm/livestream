@@ -103,4 +103,9 @@ export default {
   /* padding         : 0rem; */
 }
 
+.mobile #viewers:has( .emo ) {
+  min-width: calc( var(--dot-height) * 4 );
+  max-width: calc( var(--dot-height) * 2 * var(--dot-count) );
+}
+
 </style>

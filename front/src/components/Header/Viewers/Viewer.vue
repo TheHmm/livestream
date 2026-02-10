@@ -289,11 +289,20 @@ export default {
   max-height      : 2rem;
 }
 
-.viewer.is_free.emoji {
+.viewer.is_free.emoji,
+.mobile .viewer.is_free.emoji {
   margin-left: 0rem;
   margin-top: 0rem;
 }
 
-
+.mobile .viewer.emoji {
+  max-width       : 1rem;
+  max-height      : 1rem;
+  margin-left: calc( -0.125 * var(--size-xs) );
+  margin-top: calc( -0.125 * var(--size-xs));
+}
+.mobile .viewer.emoji :deep(.emo) {
+  height: 1rem;
+}
 
 </style>
