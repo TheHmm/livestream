@@ -155,7 +155,7 @@ export default {
       :class="[ 'tab', { expanded } ]"
       aria-label="View and send messages"
       tabindex="0"
-      @click.stop="expand"
+      @click="expand"
       @keyup.space="expand"
       @keyup.enter="expand"
     >

@@ -65,6 +65,12 @@ export default {
     }
   },
 
+  mounted() {
+    document.addEventListener('click', this.clear)
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.clear)
+  },
 
   methods: {
 
@@ -117,6 +123,10 @@ export default {
         reactions = [ reaction ]
       }
       this.post_reactions( reactions )
+    },
+
+    clear() {
+      this.show_available = false
     },
 
     async post_reactions( reactions ) { 
@@ -185,14 +195,14 @@ export default {
         <li
           v-if="!is_in_past && !show_available"
           class="add_reaction"
-          @click="show_available = true"
+          @click.stop="show_available = true"
         >
           <div>+</div>
         </li>
         <li
           v-if="!is_in_past && show_available"
           class="add_reaction"
-          @click="show_available = false"
+          @click.stop="show_available = false"
         >
           <div>-</div>
         </li>
@@ -234,11 +244,9 @@ export default {
 <style scoped>
 
 .reactions {
-  position: absolute;
-  bottom: -1.25rem;
-  right: -1rem;
-  max-width: fit-content;
-  max-height: calc(1rem + 2px);
+  margin-bottom: -1.25rem;
+  margin-right: -1rem;
+  margin-top: 0.25rem;
   overflow: hidden;
   transition: 
     max-height var(--fast) ease, 
@@ -255,8 +263,8 @@ export default {
 }
 
 .mine .reactions {
-  right: 0;
-  left: -1rem;
+  margin-right: 0;
+  margin-left: -1rem;
 }
 
 /* .reactions:hover, */
@@ -271,6 +279,7 @@ export default {
 }
 .reactions .received_reactions ul {
   display: flex;
+  flex-wrap: wrap;
   overflow: visible;
 }
 .reactions .received_reactions li {
@@ -303,12 +312,12 @@ export default {
 .reactions:focus-within .received_reactions li,
 .reactions.show_available .received_reactions li {
   /* box-shadow: var(--shadow); */
-  max-height: 2rem;
+  /* max-height: 2rem; */
 }
 
 .reactions:focus-within .received_reactions li .emoji,
 .reactions.show_available .received_reactions li .emoji {
-  max-height: 2rem;
+  /* max-height: 2rem; */
 }
 
 .reactions .received_reactions li.add_reaction {
@@ -331,14 +340,16 @@ export default {
 
 
 .reactions .available_reactions {
-  margin-top: 0.3rem;
-  max-height: 100%;
-  padding    : 0.5rem;
+  position: absolute;
+  bottom: 1.3rem;
+  max-height: 10rem;
+  padding: 0.5rem;
   background-color: var(--back);
   border: var(--solid);
   overflow: scroll;
   /* box-shadow: var(--shadow); */
   border-radius: 0.4rem;
+  z-index: 1;
 }
 
 .reactions .available_reactions .group {
