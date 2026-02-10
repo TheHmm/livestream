@@ -6,7 +6,6 @@
 // connection to the socket server.
 
 import { useRoute }  from 'vue-router'
-import store         from '@/store'
 import _throw        from '@/utils/throw'
 import Announcements from '@/components/Utils/Announcements/index.vue'
 import { mapGetters } from 'vuex/dist/vuex.cjs.js'
@@ -52,7 +51,7 @@ export default {
   async created() {
     const slug = useRoute().params.slug
     try {
-      let event = await store.dispatch( 'events/get_event', { slug })
+      let event = await this.$store.dispatch( 'events/get_event', { slug })
       if ( event.password_protected ? event.password_authenticated : true ) {
         await this.authenticated_setup()
       }
@@ -131,29 +130,16 @@ export default {
     class="event"
     aria-labelledby="event_title"
   >
-    <div 
+    <section 
       v-if="loading"
       id="loading"
     >
       {{ loading }}
-    </div>
+    </section>
     <form 
       id="access_form"
       v-else-if="!password_authenticated"  
     >
-      <!-- <router-link
-        custom
-        :to="{ path: is_in_past ? '/archive' : '/', query: $route.query }"
-        v-slot="{ navigate }"
-      >
-        <input
-          value="✕"
-          class="close circle"
-          name="close"
-          type="button"
-          @click.stop="navigate"
-        />
-      </router-link> -->
       <h1 id="event_title">
         {{ event?.title }}
       </h1>

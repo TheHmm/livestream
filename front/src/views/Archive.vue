@@ -1,5 +1,4 @@
 <script>
-import store     from '@/store'
 import _throw    from '@/utils/throw'
 import ArchiveList from '../components/Event/ArchiveList.vue'
 import OrganisationBar from '../components/Event/OrganisationBar.vue'
@@ -11,12 +10,18 @@ export default {
     Preview,
     ArchiveList,
   },
-  async setup() {
+  async created() {
     try {
-      await store.dispatch( 'events/get_past_events' )
+      await this.$store.dispatch( 'events/get_past_events' )
     } catch ( error ) {
       _throw( error )
       throw error
+      this.loading_message = `Error fetching events. ${ error.message }`
+    }
+  },
+  data() {
+    return {
+      loading_message: 'Fetching archived events...'
     }
   },
   computed: {
@@ -27,7 +32,7 @@ export default {
       return this.$route.query.org
     },
     events() {
-      return store.getters[ 'events/get_past_events' ].filter( e => {
+      return this.$store.getters[ 'events/get_past_events' ].filter( e => {
         if ( this.desired_org ) {
           return e.organisation && e.organisation.slug == this.desired_org
         } else {
@@ -52,7 +57,10 @@ export default {
 }
 </script>
 <template>
-  <section :id="$id()">
+  <section 
+    v-if="events.length"
+    :id="$id()"
+  >
     <header id="subheader">
       <OrganisationBar />
       <Preview />
@@ -64,6 +72,9 @@ export default {
         :events="events"
       />
     </section>
+  </section>
+  <section v-else class="loader">
+    {{ loading_message }}
   </section>
 </template>
 <style scoped>

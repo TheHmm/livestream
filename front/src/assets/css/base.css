@@ -366,14 +366,6 @@ li::before {
   }
 }
 
-
-
-.fallback.flyall-enter-active,
-.fallback.flyall-leave-active {
-  transition: opacity var(--very-fast) ease;
-}
-.fallback.flyall-enter-from,
-.fallback.flyall-leave-to {
-  opacity: 0;
-  transition: opacity var(--very-fast) ease;
+section.loader {
+  margin-top: 1rem;
 }
