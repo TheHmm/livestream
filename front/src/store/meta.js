@@ -15,6 +15,7 @@ export default {
     ui      : {
       reduce_motion : { label: "reduce motion", default: false },
       reduce_depth  : { label: "reduce depth",  default: false },
+      hide_input  : { label: "hide input",  default: false },
     },
     misc    : {}
   },

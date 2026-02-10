@@ -80,4 +80,7 @@ a:visited {
 .mobile li a  {
   padding: 0.25rem;
 }
+.hide_input nav {
+  display: none;
+}
 </style>

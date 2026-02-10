@@ -306,6 +306,15 @@ li::before {
   font-size        : 10pt;
 }
 
+.hide_input {
+  --footer-height: 0rem;
+  --middle-height  : calc( 100vh - ( var(--header-height ) + var(--footer-height)) );
+}
+
+.mobile.hide_input {
+  --header-height  : max( 10vh, 4rem);
+}
+
 
 /* when switching years and rotating events */
 .event.switch-enter-active {

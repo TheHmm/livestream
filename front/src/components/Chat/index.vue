@@ -361,7 +361,7 @@ export default {
   /* padding-bottom   : calc( var(--footer-height)); */
 }
 #chatpage.mobile #chat_container #chat .contents {
-  padding-bottom   : calc( var(--footer-height) + 1rem );
+  padding-bottom   : calc( var(--footer-height) + 0rem );
 }
 
 #chatpage.hide_input #chat_container #chat .contents,
