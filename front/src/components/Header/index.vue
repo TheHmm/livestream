@@ -46,7 +46,7 @@ header {
   width: 100%;
   position: sticky;
   top: 0;
-  z-index: 3;
+  z-index: 4;
   /* background-color: red; */
   height: var(--header-height);  
   max-height: var(--header-height);
