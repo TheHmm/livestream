@@ -67,7 +67,7 @@ export default {
   // For the same reason, we disconnect from the socket
   // server before we leave this route.
 
-  beforeUnmount() {
+  unmounted() {
     this.destroy()
   },
 
