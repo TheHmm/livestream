@@ -97,7 +97,7 @@ li#add_yours {
 .mobile ul {
   gap: 0.5rem;
   padding: 0.5rem;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(1, 1fr) !important;
 }
 .mobile ul li:last-of-type {
   margin-bottom: var(--footer-height);

@@ -73,5 +73,11 @@ export default {
 </template>
 
 <style scoped >
-
+.summary {
+  display: -webkit-box;
+  max-width: 20rem;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden; 
+}
 </style>

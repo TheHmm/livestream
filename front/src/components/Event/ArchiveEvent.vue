@@ -154,13 +154,15 @@ li a:hover {
   margin-bottom: 0;
 }
 .mobile li a {
-  padding: 0.25rem;
+  padding: 0.5rem;
   gap: 0.25rem;
   /* display: block; */
   /* flex-wrap: wrap; */
 }
-.mobile li a .organisation {
+.mobile li a .organisation_logo {
   /* display: none; */
+  height: 2rem;
+  max-width: 2rem;
 }
 
 
