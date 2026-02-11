@@ -37,12 +37,15 @@ const before_create = async context => {
 
 // fetch recording if asset_id provided
 const before_update = async context => {
-  const params    = context.params
-  const recording = params.data.mux_recording
+  let recording = context.params.data.mux_recording
   if ( recording ) {
+    if (typeof recording === 'string' ) {
+      recording = JSON.parse( recording )
+    }
     const asset_id = recording.asset_id
     const status = recording.status
     if ( asset_id  && !status ) {
+      strapi.log.info(`[ * Manually fetching recording with asset ID: ${ asset_id }`)
       try {
         const asset = await strapi.mux.get_asset( asset_id )
         params.data.mux_recording = strapi.mux.get_public_asset_details( asset )
