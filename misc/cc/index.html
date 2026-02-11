@@ -84,7 +84,19 @@
 			background-color: lightgrey;
 			white-space: pre;
 			font-family: monospace;
-			cursor: pointer;
+		}
+		#livestreams .livestream a {
+			text-decoration: none;
+		}
+		#livestreams .livestream form {
+			margin-top: 1rem;
+			white-space: normal;
+			display: flex;
+			align-items: center;
+		}
+		#livestreams .livestream form input[type="password"] {
+			flex-grow: 1;
+			margin-inline: 0.5rem;
 		}
 		#livestreams .livestream.active {
 			background-color: limegreen;
@@ -237,11 +249,22 @@
 	var urlParams = new URLSearchParams(window.location.search);
 
 	function update_livestream_innerHTML( livestream ) {
-		return `_SLUG_: ${ livestream.slug }` + '\n' +
+		return `<a href="#livestream_${ livestream.slug }">_SLUG_: ${ livestream.slug }` + '\n' +
 					 `MUX_ID: ${ livestream.mux_id }` + '\n' +
 					 `STATUS: ${ livestream.publicData.status }` + '\n' +
-					 `STARTS: ${ livestream.publicData.start_time }` 
-	} 
+					 `STARTS: ${ livestream.publicData.start_time }` +
+		       `</a>`
+	}
+
+	function create_authentication_form() {
+		const form = document.createElement( 'form' )
+		form.innerHTML = `<form>
+			<label>Enter stream key</label>
+			<input type="password" placeholder="XXXX-XXXXXX-XXXX-..." />
+			<input type="submit" value="authenticate" />
+		</form>`
+		return form
+	}
 
 	function generateStreamID(){
 		var text = "";
@@ -338,12 +361,15 @@
 
 	const livestreams_list = document.getElementById('livestreams')
 
+	let livestreams
+
 	// fetch livestreams
 
 		// fetch('https://api.live.thehmm.karls.computer/api/livestreams')
 		// fetch('https://live.thehmm.nl/api/livestreams')
 		fetch('https://theinbetween.live/api/livestreams')
-		.then( response => response.json()).then( ({ data: livestreams }) => {
+		.then( response => response.json()).then( ({ data }) => {
+			livestreams = data
 			console.log('Got livetreams', livestreams)
 			
 			// add a links the document to choose livestream
@@ -353,11 +379,18 @@
 				livestream_element.classList.add(livestream.publicData.status)
 				livestream_element.id = 'livestream_' + livestream.slug
 				livestream_element.innerHTML = update_livestream_innerHTML( livestream )
-				livestream_element.addEventListener('click', () => setup( livestream ))
 				livestreams_list.appendChild(livestream_element)
 			}
+
+			const hash = window.location.hash.replace( '#livestream_', '' )
+			if ( hash && livestreams.map( l => l.slug ).includes( hash ) ) {
+				setup()
+			} else {
+			}
+			window.onhashchange = setup
+
 		}).catch( err => {
-			document.body.style.background = 'red'
+			document.body.style.background = 'rgb(255, 84, 84)'
 			console.error('strapi error', err)
 		})
 
@@ -367,188 +400,222 @@
 	var interim_transcript = "";
 	var final_transcript_raw = "";
 	var idle = null;
-	// setup( livestream );
 
 
 
-	async function setup( livestream ){
+	async function setup( ){
 		if ('webkitSpeechRecognition' in window){
 
-			const { mux_id, slug, publicData } = livestream
-			const { start_time, status } = publicData
 
-			livestream_slug = slug
+			// check if we can use this livestream
+
+			const hash = window.location.hash.replace( '#livestream_', '' )
+			const livestream = livestreams.find( l => l.slug == hash )
+
+			if ( !livestream ) {
+				console.error(`Livestream ${ hash } not found.`)
+				return
+			}
+
 
 			// remove other elements
 
 			livestreams_list.querySelectorAll('.livestream').forEach( el => {
-				if (el.id !== 'livestream_' + slug ) {
+				if (el.id !== 'livestream_' + livestream.slug ) {
 					livestreams_list.removeChild(el)
 				}
 			})
 
-			// join CC room for this element
 
-			socket.emit('join_CC_room', slug)
+			// authenticate
 
-			timestamp_start = +start_time
-			if ( status == 'active' && start_time ) {
-				document.body.style.background = 'limegreen'
-			} else {
-				document.body.style.background = 'red'
+			const livestream_element = document.getElementById('livestream_' + hash)
+			const authentication_form = create_authentication_form()
+			authentication_form.onsubmit = handle_authentication
+			livestream_element.appendChild( authentication_form )
+
+			async function handle_authentication(e) {
+				// authenticate against strapi
+				// if all goes well 
+				transcribe( livestream )
+				e.preventDefault()
 			}
-			console.log(timestamp_start, 'livestream start time')
-			console.log(Date.now(), 'current time')
-
-			var recognition = new webkitSpeechRecognition();
-			if (myLang){
-				recognition.lang = myLang;
-			}
-			recognition.continuous = true;
-			recognition.interimResults = true;
 
 
-			recognition.onstart = async function() {
-				console.log("started transcription");
-			};
-			recognition.onerror = function(event){
-				console.log(event);
-			};
-			recognition.onend = function(e){
-				// console.log(e);
-				console.log("Stopped transcription");
-				setup( livestream );
-			};
-			recognition.onresult = function(event){
-				counter+=1;
-				var interim_transcript = '';
-				if(typeof(event.results) == 'undefined'){
-					//console.log("ended");
-					//recognition.onend = null;
-					//recognition.stop();
-					return;
+			// actual transcription area
+
+			function transcribe( livestream ) {
+
+				const { mux_id, slug, publicData } = livestream
+				const { start_time, status } = publicData
+	
+				livestream_slug = slug
+	
+	
+				// join CC room for this element
+	
+				socket.emit('join_CC_room', slug)
+	
+				timestamp_start = +start_time
+				if ( status == 'active' && start_time ) {
+					document.body.style.background = 'limegreen'
+				} else {
+					document.body.style.background = 'rgb(255, 84, 84)'
 				}
-
-				for(var i = event.resultIndex; i < event.results.length; ++i){
-					if(event.results[i].isFinal){
-						final_transcript_raw += event.results[i][0].transcript;
-					} else {
-						interim_transcript += event.results[i][0].transcript;
+				console.log(timestamp_start, 'livestream start time')
+				console.log(Date.now(), 'current time')
+	
+				var recognition = new webkitSpeechRecognition();
+				if (myLang){
+					recognition.lang = myLang;
+				}
+				recognition.continuous = true;
+				recognition.interimResults = true;
+	
+	
+				recognition.onstart = async function() {
+					console.log("started transcription");
+				};
+				recognition.onerror = function(event){
+					console.log(event);
+				};
+				recognition.onend = function(e){
+					// console.log(e);
+					console.log("Stopped transcription");
+					transcribe(livestream);
+				};
+				recognition.onresult = function(event){
+					counter+=1;
+					var interim_transcript = '';
+					if(typeof(event.results) == 'undefined'){
+						//console.log("ended");
+						//recognition.onend = null;
+						//recognition.stop();
+						return;
 					}
-				}
-
-				//final_transcript_raw = final_transcript_raw.toUpperCase();
-				//interim_transcript = interim_transcript.toUpperCase();
-
-				if (final_transcript_raw){
-					console.log("FINAL:", final_transcript_raw);
-					//final_transcript = final_transcript.split(" ");
-					final_transcript = "<span id='final_"+counter+"'>"+final_transcript_raw+"</span><br />";
-
-					document.getElementById("output").innerHTML+=final_transcript;
-					document.getElementById("interm").innerHTML="";
-
-					try {
+	
+					for(var i = event.resultIndex; i < event.results.length; ++i){
+						if(event.results[i].isFinal){
+							final_transcript_raw += event.results[i][0].transcript;
+						} else {
+							interim_transcript += event.results[i][0].transcript;
+						}
+					}
+	
+					//final_transcript_raw = final_transcript_raw.toUpperCase();
+					//interim_transcript = interim_transcript.toUpperCase();
+	
+					if (final_transcript_raw){
+						console.log("FINAL:", final_transcript_raw);
+						//final_transcript = final_transcript.split(" ");
+						final_transcript = "<span id='final_"+counter+"'>"+final_transcript_raw+"</span><br />";
+	
+						document.getElementById("output").innerHTML+=final_transcript;
+						document.getElementById("interm").innerHTML="";
+	
+						try {
+							if (timestamp_start===null){
+								timestamp_start = Date.now();
+								timestamp_intern = Date.now();
+							}
+							timestamp_stop = Date.now();
+							timestamp_stop = Date.now() - timestamp_start;
+	
+	
+							var date = new Date(0);
+							date.setSeconds(timestamp_stop/1000);
+							timestamp_stop = date.toISOString().replace(".",",").replace("1970-01-01T","");
+							timestamp_stop = timestamp_stop.substring(0, timestamp_stop.length - 1);
+	
+							caption_start = timestamp_intern
+							timestamp_intern -= timestamp_start;
+	
+							var date = new Date(0);
+							date.setSeconds(timestamp_intern/1000);
+							timestamp_intern = date.toISOString().replace(".",",").replace("1970-01-01T","");
+							timestamp_intern = timestamp_intern.substring(0, timestamp_intern.length - 1);
+	
+						} catch(e){console.error(e);}
+	
+	
+						try {
+							logcounter+=1;
+							srtFile += logcounter + "\n";
+							srtFile += timestamp_intern + " --\> " + timestamp_stop + "\n";
+							timestamp_intern=null;
+							srtFile += ">> " + final_transcript_raw + "\n\n";
+							srt_name = "transcription_"+roomID+"_"+timestamp_start
+							setStorage(srt_name, srtFile, 1);
+	
+							if (logcounter===1){
+								var button = document.createElement("button");
+								button.onclick = function(){
+									download("transcription_"+roomID+"_"+timestamp_start+".srt", srtFile);
+								};
+								button.innerHTML = "Download transcription";
+								button.style.position = "fixed";
+								button.style.top = "0";
+								button.style.left = "0";
+	
+								document.body.appendChild(button);
+							}
+	
+						} catch(e){console.error(e);}
+	
+	
+						try {
+							// console.log(srtFile)
+							socket.emit('final', {
+								id    : counter,
+								time  : new Date().getTime(),
+								text  : final_transcript_raw,
+								room  : livestream_slug
+							});
+							final_transcript="";
+							interim_transcript="";
+							final_transcript_raw="";
+						} catch(e){
+							console.error(e);
+						}
+	
+					} else {
 						if (timestamp_start===null){
 							timestamp_start = Date.now();
+						}
+						if (timestamp_intern===null){
 							timestamp_intern = Date.now();
 						}
-						timestamp_stop = Date.now();
-						timestamp_stop = Date.now() - timestamp_start;
-
-
-						var date = new Date(0);
-						date.setSeconds(timestamp_stop/1000);
-						timestamp_stop = date.toISOString().replace(".",",").replace("1970-01-01T","");
-						timestamp_stop = timestamp_stop.substring(0, timestamp_stop.length - 1);
-
-						caption_start = timestamp_intern
-						timestamp_intern -= timestamp_start;
-
-						var date = new Date(0);
-						date.setSeconds(timestamp_intern/1000);
-						timestamp_intern = date.toISOString().replace(".",",").replace("1970-01-01T","");
-						timestamp_intern = timestamp_intern.substring(0, timestamp_intern.length - 1);
-
-					} catch(e){console.error(e);}
-
-
-					try {
-						logcounter+=1;
-						srtFile += logcounter + "\n";
-						srtFile += timestamp_intern + " --\> " + timestamp_stop + "\n";
-						timestamp_intern=null;
-						srtFile += ">> " + final_transcript_raw + "\n\n";
-						srt_name = "transcription_"+roomID+"_"+timestamp_start
-						setStorage(srt_name, srtFile, 1);
-
-						if (logcounter===1){
-							var button = document.createElement("button");
-							button.onclick = function(){
-								download("transcription_"+roomID+"_"+timestamp_start+".srt", srtFile);
-							};
-							button.innerHTML = "Download transcription";
-							button.style.position = "fixed";
-							button.style.top = "0";
-							button.style.left = "0";
-
-							document.body.appendChild(button);
+						console.log("INTERM:", interim_transcript);
+						try {
+							//	socket.send(JSON.stringify({"msg":true, "interm":interim_transcript, "id":counter}));
+							socket.emit('interm', {
+								id   : counter,
+								time : new Date().getTime(),
+								text : interim_transcript,
+								room  : livestream_slug
+							});
+						} catch(e){
+							console.error(e);
+							interim_transcript="";
 						}
-
-					} catch(e){console.error(e);}
-
-
-					try {
-						// console.log(srtFile)
-						socket.emit('final', {
-							id    : counter,
-							time  : new Date().getTime(),
-							text  : final_transcript_raw,
-							room  : livestream_slug
-						});
-						final_transcript="";
-						interim_transcript="";
-						final_transcript_raw="";
-					} catch(e){
-						console.error(e);
+						interim_transcript = "<span>"+interim_transcript+"</span><br />";
+						document.getElementById("interm").innerHTML=interim_transcript;
 					}
+	
+					//if (idle){
+					//	clearInterval(idle);
+					//}
+					//idle = setTimeout(function(){
+					//	document.getElementById("output").innerHTML="";
+					//	document.getElementById("interm").innerHTML="";
+					//},10000);
+	
+				};
+	
+				//recognition.lang = 'en-US';
+				recognition.start();
+			}
 
-				} else {
-					if (timestamp_start===null){
-						timestamp_start = Date.now();
-					}
-					if (timestamp_intern===null){
-						timestamp_intern = Date.now();
-					}
-					console.log("INTERM:", interim_transcript);
-					try {
-						//	socket.send(JSON.stringify({"msg":true, "interm":interim_transcript, "id":counter}));
-						socket.emit('interm', {
-							id   : counter,
-							time : new Date().getTime(),
-							text : interim_transcript,
-							room  : livestream_slug
-						});
-					} catch(e){
-						console.error(e);
-						interim_transcript="";
-					}
-					interim_transcript = "<span>"+interim_transcript+"</span><br />";
-					document.getElementById("interm").innerHTML=interim_transcript;
-				}
-
-				//if (idle){
-				//	clearInterval(idle);
-				//}
-				//idle = setTimeout(function(){
-				//	document.getElementById("output").innerHTML="";
-				//	document.getElementById("interm").innerHTML="";
-				//},10000);
-
-			};
-
-			//recognition.lang = 'en-US';
-			recognition.start();
 
 		}
 

@@ -168,7 +168,7 @@ async function event_post_processor( strapi, now ) {
           try {
             const asset = await strapi.mux.get_asset( asset_id )
             updated.mux_recording = strapi.mux.get_public_asset_details( asset )
-            strapi.log.info(`[ * Playback ID: ${ event.mux_recording.playbackId }`)
+            strapi.log.info(`[ * Playback ID: ${ updated.mux_recording.playbackId }`)
           } catch ( err ) {
             console.error(err)
             updated.mux_recording = {
