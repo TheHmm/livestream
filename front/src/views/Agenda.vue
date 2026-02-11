@@ -7,6 +7,9 @@ export default {
   async created() {
     try {
       await this.$store.dispatch( 'events/get_future_events' )
+      if (!this.events.length) {
+        this.loading_message = 'There are no upcoming events.'
+      }
     } catch ( error ) {
       _throw( error )
       throw error
