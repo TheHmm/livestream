@@ -36,7 +36,37 @@ export default {
         reject( error )
       } )
     )
-  }
+  },
+
+  get_all() {
+    $log.info( `API`, `Fetching all livestreams.` )
+    return new Promise( ( resolve, reject ) =>
+      axios
+      .get( `${ config.api_url }/livestreams/`, {
+        params: {
+          fields: '*',
+        }
+      })
+      .then( result => resolve( result.data.data ) )
+      .catch( error => {
+        $log.error( 'API', error )
+        reject( error )
+      } )
+    )
+  },
+
+  request_access({ slug, key }) {
+    $log.info( `API`, `Requesting priviledged access to livestream ${ slug }.` )
+    return new Promise( ( resolve, reject ) =>
+      axios
+      .post( `${ config.api_url }/livestreams/${ slug }/authenticate`, { key })
+      .then( result => resolve( result.data.data ) )
+      .catch( error => {
+        $log.error( 'API', error )
+        reject( error )
+      } )
+    )
+  },
 
 
 }

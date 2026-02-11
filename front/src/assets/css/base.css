@@ -351,7 +351,7 @@ li::before {
 }
 
 /* event list items behaviour during component switching */
-.flyall-enter-active li.event {
+.flyall-enter-active li.event{} {
   /* animation : flyaway var(--enter) ease calc( 0.1s * var(--n) ) both; */
 }
 .flyall-leave-active li.event {

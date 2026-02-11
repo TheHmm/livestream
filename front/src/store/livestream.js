@@ -112,6 +112,7 @@ export default {
       commit( 'SET_LIVESTREAM', livestream )
     },
 
+
     // Fetch livestream object, only the public data
 
     fetch_livestream( { dispatch }, event_id ) {
@@ -123,6 +124,35 @@ export default {
           dispatch( 'set_livestream', livestream )
           resolve( livestream )
         } )
+        .catch( error => reject( error ) )
+      )
+    },
+
+
+    // Fetch livestreams only the public data
+
+    fetch_all( { dispatch }, event_id ) {
+      return new Promise( ( resolve, reject ) =>
+        api
+        .livestream
+        .get_all( )
+        .then( livestreams => {
+          // dispatch( 'set_livestream', livestream )
+          resolve( livestreams )
+        } )
+        .catch( error => reject( error ) )
+      )
+    },
+
+
+    // authentciate stream
+
+    request_access( { dispatch }, { slug, key } ) {
+      return new Promise( ( resolve, reject ) =>
+        api
+        .livestream
+        .request_access({ slug, key })
+        .then( result => resolve( result ) )
         .catch( error => reject( error ) )
       )
     },

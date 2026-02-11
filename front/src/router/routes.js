@@ -42,6 +42,16 @@ export default [
     },
   },
   {
+    path: '/send-cc',
+    name: 'SendCaptions',
+    component: () => import( '@/views/SendCaptions.vue' ),
+    meta: {
+      hide_header: true,
+      desired_tabs : [
+      ]
+    },
+  },
+  {
     path: '/info',
     name: 'Info',
     component: () => import( '@/views/Info.vue' ),

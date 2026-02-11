@@ -218,10 +218,12 @@ body#livestream footer {
   z-index: 4;
 }
 
-body#playerpage {
+body#playerpage,
+body#sendcaptions {
   height: 100vh;
 }
-body#playerpage main {
+body#playerpage main,
+body#sendcaptions main {
   height: 100%;
 }
 body#chatpage main {
