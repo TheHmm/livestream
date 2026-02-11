@@ -7,9 +7,6 @@ export default {
   async created() {
     try {
       await this.$store.dispatch( 'events/get_future_events' )
-      if (!this.events.length) {
-        this.loading_message = 'There are no upcoming events.'
-      }
     } catch ( error ) {
       _throw( error )
       throw error
@@ -30,7 +27,7 @@ export default {
 </script>
 <template>
   <AgendaList
-    v-if="events.length"
+    v-if="events.length >= 0"
     :events="events"
   />
   <section class="loader" v-else>

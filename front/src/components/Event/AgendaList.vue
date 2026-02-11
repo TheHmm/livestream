@@ -18,7 +18,7 @@ export default {
     />
     <li id="add_yours">
       <RouterLink to="/renting-options">
-        Add yours!
+        Add your event!
       </RouterLink>
     </li>
   </ul>
