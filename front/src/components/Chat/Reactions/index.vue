@@ -93,6 +93,9 @@ export default {
     },
 
     handle_received_reaction_click( emoji ) {
+      if ( !this.can_send_emoji ) {
+        return
+      }
       const found_reaction = this.received_reactions.find( r => {
         return r.sender.documentId == this.me.documentId && r.Emoji.name == emoji.name 
       })
@@ -193,14 +196,14 @@ export default {
             </span>  
           </li>
         <li
-          v-if="!is_in_past && !show_available"
+          v-if="can_send_emoji && !show_available"
           class="add_reaction"
           @click.stop="show_available = true"
         >
           <div>+</div>
         </li>
         <li
-          v-if="!is_in_past && show_available"
+          v-if="can_send_emoji && show_available"
           class="add_reaction"
           @click.stop="show_available = false"
         >
@@ -213,7 +216,7 @@ export default {
     <!-- only show this element when we want to react -->
     <div 
       class="available_reactions"
-        v-if="!is_in_past && show_available"
+        v-if="can_send_emoji && show_available"
     >
       <ul
         role="menu"
@@ -251,10 +254,12 @@ export default {
   transition: 
     max-height var(--fast) ease, 
     max-width var(--fast) ease,
+    margin var(--fast) ease,
     border var(--fast) ease,
     background-color var(--fast) ease,
     box-shadow var(--fast) ease
   ;
+  min-height: 0.75rem;
   z-index: 1;
   border: 1px solid transparent;
   /* box-shadow: 0 0 0 var(--shadow-color); */
