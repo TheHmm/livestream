@@ -36,10 +36,12 @@ nav {
   flex-shrink: 0;
   width: 100%; 
   height: 2rem;
+  display: flex;
 }
 ul {
   display: flex;
   gap: 1rem;
+  width: 100%;
 }
 li {
   flex-basis: 1;
@@ -70,6 +72,7 @@ a:visited {
   border: none;
   font-family: karrik;
   font-style: normal;
+  text-transform: uppercase;
   color: inherit;
   white-space: pre;
 }

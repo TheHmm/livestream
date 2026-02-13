@@ -258,7 +258,8 @@ export default {
 
 #chat .title {
   align-items     : center;
-  font-size       : var(--size-m);
+  justify-content: center;
+  /* font-size       : var(--size-m); */
 }
 
 #chat .title .options {
@@ -272,6 +273,7 @@ export default {
   display         : flex;
   align-items     : center;
   margin-right    : auto;
+  flex-shrink: 0;
 }
 
 /* #chat .title .options .links label::before {

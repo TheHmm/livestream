@@ -13,6 +13,7 @@
   font-size: 1rem;
   background-color : var(--accent);
   height           : var(--base-height);
+  text-transform: uppercase;
   padding           : 0 0.5rem;
   display          : flex;
   border-top-left-radius: inherit;
