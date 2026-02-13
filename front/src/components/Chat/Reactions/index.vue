@@ -183,6 +183,7 @@ export default {
             v-for="({ emoji, senders }, name) of ordered_received_reactions"
             :aria-label="`Emoji ${ name }`"
             :key="name"
+            class="emoji_reaction"
             @click="handle_received_reaction_click(emoji)"
             @keyup.space="handle_received_reaction_click(emoji)"
             @keyup.enter="handle_received_reaction_click(emoji)"
@@ -197,7 +198,7 @@ export default {
           </li>
         <li
           v-if="can_send_emoji && !show_available"
-          class="add_reaction"
+          class="add_reaction plus"
           @click.stop="show_available = true"
         >
           <div>+</div>
@@ -269,14 +270,13 @@ export default {
 
 .mine .reactions {
   margin-right: 0;
-  margin-left: -1rem;
 }
 
 /* .reactions:hover, */
 .reactions:focus-within,
 .reactions.show_available {
   max-width: calc(0.9 * var(--side-width));
-  max-height: 10rem;
+  /* max-height: 10rem; */
   overflow: visible;
 }
 .reactions .received_reactions {
@@ -284,8 +284,12 @@ export default {
 }
 .reactions .received_reactions ul {
   display: flex;
+  justify-content: end;
   flex-wrap: wrap;
   overflow: visible;
+}
+.mine .reactions .received_reactions ul {
+  justify-content: left;
 }
 .reactions .received_reactions li {
   max-height: 1rem;

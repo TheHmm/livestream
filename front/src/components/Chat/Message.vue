@@ -175,6 +175,7 @@ export default {
   padding             : 0.5rem;
   margin-top          : 0.5rem;
   pointer-events      : none;
+  transition: margin var(--fast) ease  ;
 }
 
 .message:not(.is_response, .selected) {
@@ -231,7 +232,8 @@ export default {
 .message.mine {
   align-self: flex-end;
 }
-.message:has(.emoji) {
+.message:has(.add_reaction.plus:hover),
+.message:has(.emoji_reaction) {
   margin-bottom: 0.5rem;
 }
 
