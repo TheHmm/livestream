@@ -2,11 +2,6 @@
 import { mapGetters } from 'vuex'
 import Bot from '../Utils/Bot.vue'
 
-
-// Dialog for registration with polyfill.
-
-import dialogPolyfill from 'dialog-polyfill'
-
 export default {
 
   name: 'Register',
@@ -88,7 +83,6 @@ export default {
   // The polyfill thing is very confusing.
 
   mounted() {
-    dialogPolyfill.registerDialog(this.$el)
     this.$el.showModal()
   },
 
