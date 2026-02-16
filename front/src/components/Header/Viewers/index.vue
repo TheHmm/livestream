@@ -23,6 +23,7 @@ export default {
     ]),
     release_dots() { return ( 
       this.$store.getters[ 'events/get_event' ]( this.$route.params.slug )
+      && !this.$store.getters[ 'events/get_event' ]( this.$route.params.slug ).is_in_past
       && this.$store.getters[ 'events/get_event' ]( this.$route.params.slug ).releaseDots
       && this.$route.query[ 'reduce_motion' ] !== 'true'
       && this.connected_viewers.length <= 100
