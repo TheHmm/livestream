@@ -17,7 +17,8 @@ export default {
     query()  { return this.$route.query },
     is_happening_now() { return this.event.is_happening_now },
     cover()  { return (
-      this.event.livestream 
+      this.is_happening_now 
+      && this.event.livestream 
       && this.event.livestream?.status == 'active'
       && livestream.mux.thumb_src( this.event.livestream.playbackId, 20, 1920 )
     )}
