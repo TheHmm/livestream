@@ -61,10 +61,6 @@ section {
 section p {
   margin     : 0;
 }
-section.is_loading {
-  --accent    : var(--light-grey);
-  color       : var(--accent);
-}
 section.is_loading :deep(section),
 section.is_loading :deep(section p) {
   color       : inherit;

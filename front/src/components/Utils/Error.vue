@@ -73,7 +73,7 @@ export default {
 h3 {
   color: var(--accent);
   font-weight: normal;
-  margin: auto;
+  /* margin: auto; */
   margin-bottom: var(--size-s);
   font-size: var(--size-s);
 }

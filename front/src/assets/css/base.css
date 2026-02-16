@@ -37,7 +37,7 @@
   --light-grey     : hsl(   0,   0%,  88% );
   --mid-grey       : hsl(   0,   0%,  39% );
   --dark-grey      : hsl(   0,   0%,  20% );
-  --orange-red     : hsl( 352, 100%,  69% );
+  --orange-red     : hsl(352, 100%, 49%);
   --error          : var(--orange-red);
 
 

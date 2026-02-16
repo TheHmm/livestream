@@ -86,6 +86,11 @@ export default {
     },
 
 
+    error() {
+      return this.$store.state.meta.error
+    },
+
+
 
   },
 
@@ -102,10 +107,6 @@ export default {
       this.$socket.client.connect()
     } catch ( error ) {
       _throw( error )
-      this.$router.push({
-        name:'Error',
-        query: { type: error.message }
-      })
       throw error
     }
   },
@@ -157,9 +158,10 @@ export default {
         <transition name="flyall" mode="out-in" type="animation" appear >
           <suspense :timeout="0">
             <template #default>
-              <Component :is="Component" />
+              <Fallback v-if="error" />
+              <Component v-else :is="Component" />
             </template>
-            <template #fallback >
+            <template #fallback>
               <Fallback :message="'Loading...'" />
             </template>
           </suspense>
