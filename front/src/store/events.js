@@ -35,7 +35,7 @@ export default {
 
     get_future_events : state => {
       return Object.values( state.events )
-      .filter( e => new Date( e.ends ) > new Date() )  
+      .filter( e => new Date( e.ends ) >= new Date() )  
       .sort( ( a , b ) => new Date( b.starts ) - new Date( a.starts ))
     },
 
@@ -89,7 +89,6 @@ export default {
     },
 
     emoji_groups : ( state, getters ) => {
-      console.log( getters.current_event.emoji_groups )
       return getters.current_event?.emoji_groups 
     },
 
@@ -345,6 +344,10 @@ function sanitize ( event, getters, commit ) {
   // event has ended.
 
   event.is_in_past = $time.is_in_past( event.ends )
+
+  // Is the event happening now ?
+
+  event.is_happening_now = $time.is_happening_now( event.starts, event.ends )
 
   return event
 }

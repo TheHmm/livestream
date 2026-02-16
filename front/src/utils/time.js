@@ -16,6 +16,10 @@ export default {
     return this.time( timestring ) < ( this.now() - this.BUFFER )
   },
 
+  is_happening_now( start, end ) {
+    return this.time( start ) <= this.now() && this.time( end ) > this.now()
+  },
+
 
   // Formatterings
 

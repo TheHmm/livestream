@@ -23,7 +23,7 @@ export default {
       }
     } else {
       filters = {
-        starts: {
+        ends: {
           $gte: $time.now(),
         },
         show_in_agenda: {
