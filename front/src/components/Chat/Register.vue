@@ -183,9 +183,9 @@ export default {
         />
         <span>pick a display name.</span>
       </label>
-      <p>To better handle chat moderation and prevent abusive behaviour, we are introducing a cookie-like function to our livestream.</p>
+      <p>To better handle chat moderation and prevent abusive behaviour, we use a cookie-like function.</p>
       <p>When you submit your display name, a unique identifier <code>UID</code> will be created for you on our server and stored in your browser's <code>localStorage</code>.</p>
-      <p>You can opt into automatic <em>scheduled anonymiztion</em>: specify a number of days after which your messages get anonymized. Keep this field empty to opt out of scheduled anonymization.</p>
+      <p>You can opt into automatic <em>scheduled anonymization</em>: specify a number of days after which your messages get anonymized. Keep this field empty to opt out of scheduled anonymization.</p>
       <label
         class="lifetime"
         title="User lifetime"
@@ -198,7 +198,7 @@ export default {
         />
         days.
       </label>
-      <p>If you need help with this or have any questions, please <a target="blank" href="https://thehmm.nl/contact/">contact us</a>.</p>
+      <p>If you need help with this or have any questions, please contact us.</p>
       <input
         required
         type="checkbox"

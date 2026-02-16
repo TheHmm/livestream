@@ -62,7 +62,7 @@ export default {
 
 
     // The current event, as selected by the route path
-    // e.g. 'live.thehmm.nl/event-slug', pulled from the
+    // e.g. 'live.aaaa.nl/event-slug', pulled from the
     // store. Only used to get accent colors
 
     event() {

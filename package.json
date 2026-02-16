@@ -1,7 +1,7 @@
 {
-  "name": "live.thehmm.nl",
+  "name": "The Inbetween",
   "version": "1.0.0",
-  "description": "livestreaam v2 for the hmm",
+  "description": "livestreaam v3 for the hmm",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
