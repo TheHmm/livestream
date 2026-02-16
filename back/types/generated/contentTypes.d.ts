@@ -509,8 +509,6 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    accent: Schema.Attribute.String &
-      Schema.Attribute.DefaultTo<'hsl(240, 100%, 50%)'>;
     accent_color: Schema.Attribute.String &
       Schema.Attribute.CustomField<'plugin::color-picker.color'>;
     allowEmoji: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
