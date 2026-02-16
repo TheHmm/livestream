@@ -21,7 +21,7 @@ export default {
       'visible_connected_viewers',
       'viewers_array',
     ]),
-    is_free() { return ( 
+    release_dots() { return ( 
       this.$store.getters[ 'events/get_event' ]( this.$route.params.slug )
       && this.$store.getters[ 'events/get_event' ]( this.$route.params.slug ).releaseDots
       && this.$route.query[ 'reduce_motion' ] !== 'true'
@@ -51,7 +51,7 @@ export default {
   <transition-group
     tag="sectiion"
     :id="$id()"
-    :class="{ is_free }"
+    :class="{ is_free: release_dots }"
     :style="{ '--dot-count': viewers.length }"
     :aria-label="`Area with dots representing the number of connected viewers. Currently: ${ visible_connected_viewers.length  }`"
     name="dot"
@@ -60,7 +60,7 @@ export default {
       v-for="viewer in viewers"
       :key="viewer.uuid"
       :viewer="viewer"
-      :total="connected_viewers.length"
+      :release_dots="release_dots"
     />
   </transition-group>
 </template>

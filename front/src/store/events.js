@@ -84,15 +84,12 @@ export default {
       return getters.current_event?.default_player_mode
     },
 
-    release_dots: ( state, getters ) => {
-      return getters.current_event?.releaseDots
-    },
-
     emoji_allowed : ( state, getters ) => {
-     return getters.current_event?.allowEmoji
+      return getters.current_event?.allowEmoji
     },
 
     emoji_groups : ( state, getters ) => {
+      console.log( getters.current_event.emoji_groups )
       return getters.current_event?.emoji_groups 
     },
 

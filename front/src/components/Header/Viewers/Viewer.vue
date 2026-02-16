@@ -11,7 +11,7 @@ export default {
   components: { Emo },
   props: { 
     viewer: Object,
-    total: Number
+    release_dots: Boolean
   },
 
 
@@ -37,13 +37,7 @@ export default {
     nick()    { return this.is_me && this.name + ' (you)' || this.name },
     emoji()   { return this.viewer.emoji },
     n()       { return this.uuid[ this.uuid.length-1 ] },
-    is_free() { return ( 
-      this.$store.getters[ 'events/get_event' ]( this.$route.params.slug )
-      && this.$store.getters[ 'events/get_event' ]( this.$route.params.slug ).releaseDots
-      && this.$route.query[ 'reduce_motion' ] !== 'true'
-      && this.total <= 100
-      && !this.viewer.blocked 
-    )},
+    is_free() { return this.release_dots && !this.viewer.blocked },
     pos() {
       let position = {
         x: this.local_position.x,
