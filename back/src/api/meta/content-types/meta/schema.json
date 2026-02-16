@@ -27,16 +27,6 @@
     "censorMessage": {
       "type": "richtext",
       "required": true
-    },
-    "transcription_vocabulary": {
-      "type": "component",
-      "private": true,
-      "component": "phrases.phrase",
-      "repeatable": true
-    },
-    "transcription_vocabulary_id": {
-      "type": "string",
-      "private": true
     }
   }
 }

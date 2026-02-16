@@ -707,13 +707,6 @@ export interface ApiMetaMeta extends Struct.SingleTypeSchema {
       true
     >;
     tagline: Schema.Attribute.Text;
-    transcription_vocabulary: Schema.Attribute.Component<
-      'phrases.phrase',
-      true
-    > &
-      Schema.Attribute.Private;
-    transcription_vocabulary_id: Schema.Attribute.String &
-      Schema.Attribute.Private;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
