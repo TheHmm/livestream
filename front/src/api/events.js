@@ -130,6 +130,7 @@ export default {
           'background_image',
           'organisation',
           'organisation.Logo',
+          'livestream',
         ],
         pagination: {
           pageSize: 100,

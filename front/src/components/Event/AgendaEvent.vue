@@ -16,33 +16,24 @@ export default {
     protected() { return this.event?.password_protected },
     query()  { return this.$route.query },
     is_happening_now() { return this.event.is_happening_now },
-    cover()  {
-      let cover
-      if ( this.event.recording
-        && this.event.recording.status
-        && this.event.recording.status == 'ready'
-        ) {
-        cover = livestream.mux.thumb_src( this.event.recording.playbackId, 10, 1920 )
-       } else {
-        const event_livestream = this.$store.getters['livestream/get_livestream_by_event'](this.event.documentId)
-        if ( event_livestream?.status == 'active' ) {
-          cover = livestream.mux.thumb_src( current_livestream.playbackId, 0, 1920 )
-        }
-      }
-      return cover
-    }
+    cover()  { return (
+      this.event.livestream 
+      && this.event.livestream?.status == 'active'
+      && livestream.mux.thumb_src( this.event.livestream.playbackId, 20, 1920 )
+    )}
   },
 }
 </script>
 
 <template>
   <li
-    :class="[ $id(), { is_happening_now } ]"
+    :class="[ $id(), { is_happening_now, has_cover: cover && true } ]"
     :aria-label="title"
     :style="{
       ...styles,
       '--i': i,
       '--n': n,
+      '--cover-url' : `url(${ cover })`,
     }"
   >
     <router-link
@@ -61,7 +52,6 @@ export default {
           class="summary"
           v-html="$mdi(info).replaceAll('<br>', ' ')"
         />
-        <p>{{ cover }}</p>
         <time
           aria-label="event start time"
           class="time"
@@ -99,5 +89,19 @@ p.live_now_text {
   margin: auto;
   padding: 0.5rem;
   border-radius: var(--radius);
+}
+.has_cover::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%; width: 100%;
+  background-image: var(--cover-url);
+  background-position: center;
+  background-size: cover;
+  opacity: 0.5;
+  filter: grayscale(1);
+}
+.has_cover {
+  overflow: hidden; 
 }
 </style>

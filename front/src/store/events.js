@@ -340,6 +340,10 @@ function sanitize ( event, getters, commit ) {
     event.recording = event.mux_recording
   }
 
+  if ( event.livestream ) {
+    event.livestream = event.livestream.publicData
+  }
+
   // Way to tell if it has been more than 12 hours since the
   // event has ended.
 
