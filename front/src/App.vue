@@ -38,6 +38,12 @@ export default {
       return this.$store.state.meta.mobile
     },
 
+    // our landscape class
+
+    landscape() {
+      return this.$store.state.meta.landscape
+    },
+
 
     // Produces our accessibility classes by first looking in
     // the store for our ui options and then looking in the
@@ -140,7 +146,7 @@ export default {
 <template>
   <body
     :id="[ $id( $route.name )]"
-    :class="{ mobile, ...access, ...misc }"
+    :class="{ mobile, landscape, ...access, ...misc }"
     :style="{ ...styles }"
   >
 

@@ -306,6 +306,10 @@ li::before {
   font-size        : 10pt;
 }
 
+.landscape {
+  --header-height  : 3rem;
+}
+
 .hide_input {
   --footer-height: 0rem;
   --middle-height  : calc( 100vh - ( var(--header-height ) + var(--footer-height)) );

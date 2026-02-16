@@ -121,4 +121,15 @@ section .spacer {
   margin-inline: 0.5rem;
   margin-top: 1rem;
 }
+
+.landscape #archive {
+  margin-top: 0.5rem;
+}
+.landscape section .spacer {
+  height: calc( 100vh - ( var(--header-height) + 7rem + 3ch) );
+}
+.landscape h2 {
+  margin-top: 1rem;
+  font-size: 6rem;
+}
 </style>

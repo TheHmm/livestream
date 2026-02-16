@@ -17,7 +17,10 @@ export default {
   computed: {
     hide_header() {
       return this.$route.meta.hide_header
-    }
+    },
+    landscape() {
+      return this.$store.state.meta.landscape
+    },
   }
 }
 
@@ -28,7 +31,7 @@ export default {
     v-if="!hide_header"
     aria-label="Banner and network information"
   >
-    <Banner />
+    <Banner v-if="!landscape" />
     <div id="lower_header">
       <MainNav />
       <Network />
@@ -68,6 +71,9 @@ header {
 }
 .mobile #lower_header {
   flex-direction: column;
+}
+.landscape header {
+  padding-block: var(--padding);
 }
 
 .reduce_depth header {

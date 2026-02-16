@@ -10,6 +10,7 @@ export default {
   state: {
     meta    : null,
     mobile  : false,
+    landscape  : false,
     muted   : true,
     error   : null,
     ui      : {
@@ -23,6 +24,7 @@ export default {
   mutations: {
     SET_META   : ( state, meta )   => { state.meta = meta },
     SET_MOBILE : ( state, mobile ) => { state.mobile = mobile },
+    SET_LANDSCAPE : ( state, landscape ) => { state.landscape = landscape },
     SET_MUTED  : ( state, muted )  => { state.muted = muted },
     SET_ERROR  : ( state, error )  => { state.error = error },
     SET_MISC   : ( state, misc )   => { state.misc = misc }
@@ -33,6 +35,7 @@ export default {
       return state.meta
     },
     mobile: state => state.mobile,
+    landscape: state => state.landscape,
     about: state => {
       return state.meta?.about
     },
@@ -75,8 +78,10 @@ export default {
 
     handle_mobile({ commit }) {
       commit( 'SET_MOBILE', window.innerWidth < 700 )
+      commit( 'SET_LANDSCAPE', window.innerHeight < 500 )
       window.onresize = () => {
         commit( 'SET_MOBILE', window.innerWidth < 700 )
+        commit( 'SET_LANDSCAPE', window.innerHeight < 500 )
       }
     },
 

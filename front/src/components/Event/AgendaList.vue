@@ -102,4 +102,7 @@ li#add_yours {
 .mobile ul li:last-of-type {
   margin-bottom: var(--footer-height);
 }
+.landscape li {
+  min-height: 8rem;
+}
 </style>

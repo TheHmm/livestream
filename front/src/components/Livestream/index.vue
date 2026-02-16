@@ -52,7 +52,10 @@ export default {
         this.status == 'active' ||
         this.status == 'ready'
       )
-    )}
+    )},
+    landscape() {
+      return this.$store.state.meta.landscape
+    },
   },
 
   methods: {
@@ -81,7 +84,7 @@ export default {
 
 <template>
   <Info :event="event" />
-  <Chat :event="event" />
+  <Chat v-if="!landscape" :event="event" />
   <Player v-if="show_player" :event="event" />
   <Status v-else :status="displayed_status" />
 </template>
