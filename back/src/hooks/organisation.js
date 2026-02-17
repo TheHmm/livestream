@@ -21,7 +21,7 @@ module.exports = {
 
       const { uid, action } = context
       if (uid == 'api::organisation.organisation' && [ 'create' ].includes( action )) {
-        await before_create_or_update( context )
+        await before_create( context )
       }
       let result = await next()
       
