@@ -23,7 +23,7 @@ const before_create = async context => {
 
   // link to livestream if not set, try to match by organisation first, then go to default
   if ( !context.params.data.livestream ) {
-    livestream = organisation.livestream
+    livestream = organisation?.livestream
     if ( !livestream ) {
       livestream = await strapi.documents( 'api::livestream.livestream' ).findFirst({ 
         filters: { slug: 'default' } 
