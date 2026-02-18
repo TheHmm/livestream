@@ -10,12 +10,14 @@ nano .env
 ```
 ## Installation
 
-Then you can install the required libraries ( ~ 700MB ) and build the admin UI.
+Then you can install the required libraries and build the admin UI.
 
 ```
 npm i
 npm run build
 ```
+
+Running the build command will require approximately 2GB of RAM.
 
 ## Development
 
@@ -43,8 +45,6 @@ Next, configure a site in your apache or nginx webserver for this domain and set
 **Please refer to the [apache configuration example](/back/api.apache.example.conf).**
 
 The example given assumes that you can generate a self-signged SSL certificate on your server, as this is recccommended for Strapi to work across origins!
-
-# todo: maxconnections count on apache
 
 ## Creating Users
 
