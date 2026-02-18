@@ -40,7 +40,7 @@ export default {
   transform  : translateY( calc( var(--header-height) * -3 ) );
   animation  : enter var(--enter) ease var(--slow) forwards !important;
   transition : all 0.5s ease;
-  z-index    : 5;
+  z-index    : 4;
   opacity    : 0;
 }
 .mobile #announcements {

@@ -7,16 +7,11 @@
 
 import { useRoute }  from 'vue-router'
 import _throw        from '@/utils/throw'
-import Announcements from '@/components/Utils/Announcements/index.vue'
 import { mapGetters } from 'vuex/dist/vuex.cjs.js'
 
 export default {
 
   name : 'EventPage',
-
-  components : {
-    Announcements,
-  },
 
   data() {
     return {
@@ -177,7 +172,6 @@ export default {
         :event="event"
       />
     </router-view>
-    <Announcements />
   </section>
 </template>
 

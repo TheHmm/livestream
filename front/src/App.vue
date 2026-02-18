@@ -4,6 +4,7 @@ import _throw   from '@/utils/throw'
 import Header   from '@/components/Header/index.vue'
 import Footer   from '@/components/Footer/index.vue'
 import Fallback from '@/views/Fallback.vue'
+import Announcements from '@/components/Utils/Announcements/index.vue'
 
 
 // Our App component. This wraps our routes in a router
@@ -18,6 +19,7 @@ export default {
     Header,
     Footer,
     Fallback,
+    Announcements,
   },
 
 
@@ -170,6 +172,7 @@ export default {
     </main>
 
     <Footer />
+    <Announcements />
 
   </body>
 </template>
