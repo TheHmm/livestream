@@ -83,10 +83,10 @@ h2 {
   font-weight: lighter;
   margin: 0;
   margin-inline: 1rem;
-  position: sticky;
-  top: calc( 1rem + var(--header-height));
-  pointer-events: none;
-  z-index: 10;
+  /* position: sticky; */
+  /* top: calc( 1rem + var(--header-height)); */
+  /* pointer-events: none; */
+  /* z-index: 10 */
 }
 section .spacer {
   height: calc( 100vh - ( var(--header-height) + 2rem + 2ch) );
