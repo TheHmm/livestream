@@ -16,6 +16,7 @@ export default {
           'about',
           'censorMessage',
           'tagline',
+          'docs'
         ],
         populate: [
           'renting_options'

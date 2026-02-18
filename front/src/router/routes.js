@@ -42,6 +42,16 @@ export default [
     },
   },
   {
+    path: '/docs',
+    name: 'Documentation',
+    component: () => import( '@/views/Docs.vue' ),
+    meta: {
+      desired_tabs : [
+        'access',
+      ]
+    },
+  },
+  {
     path: '/send-cc',
     name: 'SendCaptions',
     component: () => import( '@/views/SendCaptions.vue' ),

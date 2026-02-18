@@ -42,6 +42,9 @@ export default {
     renting_options: state => {
       return state.meta?.renting_options || []
     },
+    docs: state => {
+      return state.meta?.docs || " "
+    },
     tagline: state => {
       return state.meta?.tagline + ' '
     },

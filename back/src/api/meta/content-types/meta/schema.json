@@ -27,6 +27,9 @@
     "censorMessage": {
       "type": "richtext",
       "required": true
+    },
+    "docs": {
+      "type": "richtext"
     }
   }
 }
