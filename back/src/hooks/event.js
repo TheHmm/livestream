@@ -42,7 +42,6 @@ const before_update = async context => {
     if (typeof recording === 'string' ) {
       recording = JSON.parse( recording )
     }
-    console.log( recording, recording.asset_id, recording.status )
     const asset_id = recording.asset_id
     const status = recording.status
     if ( asset_id  && !status ) {
