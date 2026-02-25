@@ -42,17 +42,18 @@ const before_update = async context => {
     if (typeof recording === 'string' ) {
       recording = JSON.parse( recording )
     }
+    console.log( recording, recording.asset_id, recording.status )
     const asset_id = recording.asset_id
     const status = recording.status
     if ( asset_id  && !status ) {
       strapi.log.info(`[ * Manually fetching recording with asset ID: ${ asset_id }`)
       try {
         const asset = await strapi.mux.get_asset( asset_id )
-        params.data.mux_recording = strapi.mux.get_public_asset_details( asset )
-        strapi.log.info(`[ * Playback ID: ${ params.data.mux_recording.playbackId }`)
+        context.params.data.mux_recording = strapi.mux.get_public_asset_details( asset )
+        strapi.log.info(`[ * Playback ID: ${ context.params.data.mux_recording.playbackId }`)
       } catch ( err ) {
         console.error(err)
-        params.data.mux_recording = {
+        context.params.data.mux_recording = {
           error: err,
           asset_id: null,
         }
