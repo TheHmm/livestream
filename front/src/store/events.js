@@ -36,7 +36,7 @@ export default {
     get_future_events : state => {
       return Object.values( state.events )
       .filter( e => new Date( e.ends ) >= new Date() )  
-      .sort( ( a , b ) => new Date( b.starts ) - new Date( a.starts ))
+      .sort( ( a , b ) => new Date( a.starts ) - new Date( b.starts ))
     },
 
     years : ( state, getters ) => {
