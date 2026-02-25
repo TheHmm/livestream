@@ -166,6 +166,8 @@ export default {
           this.unavailable_message = 'Closed captions not available.'
           console.error( err ) 
         })
+      } else {
+        this.unavailable_message = 'Closed captions not available.'
       }
     }
 
