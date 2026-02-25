@@ -102,6 +102,11 @@ export default {
   max-width: 0 !important;
 }
 
+#viewers:has( .emo ) {
+  min-width: calc( var(--dot-height) * 2 );
+  /* max-width: calc( var(--dot-height) * 2 * var(--dot-count) ); */
+}
+
 .mobile #viewers {
   /* padding         : 0rem; */
 }

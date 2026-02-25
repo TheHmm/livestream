@@ -264,8 +264,8 @@ export default {
 }
 
 .viewer.emoji {
-  margin-left: calc( -0.25 * var(--size) );
-  margin-top: calc( -0.25 + var(--n) * var(--size-xs));
+  /* margin-left: calc( -0.25 * var(--size) ); */
+  /* margin-top: calc( -0.25 + var(--n) * var(--size-xs)); */
   max-width       : 2rem;
   max-height      : 2rem;
 }
