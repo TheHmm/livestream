@@ -77,13 +77,13 @@ export default {
   flex-direction: column;
   align-items     : flex-start;
   justify-content : flex-start;
-  align-content: flex-start;
+  align-content: center;
   flex-wrap       : wrap;
   z-index         : 3;
   padding-block: var(--padding);
   width: 100%;
   min-width: calc( var(--dot-height) * 1.5 );
-  max-width: calc( var(--dot-height) * 3 * var(--dot-count) / 7);
+  max-width: calc( var(--dot-height) * 3.5 * var(--dot-count) / 7);
   transition: max-width var(--fast) linear;
 }
 
