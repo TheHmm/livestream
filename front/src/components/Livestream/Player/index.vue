@@ -214,14 +214,6 @@ video {
   object-fit      : contain;
 }
 
-video::cue {
-  font-size: 1rem;
-  /* display: inlisne; */
-  color: var(--fore);
-  background-color: var(--accent);
-  /* padding: 0.125rem 0.5rem; */
-}
-
 #tester {
   display: none;
 }
