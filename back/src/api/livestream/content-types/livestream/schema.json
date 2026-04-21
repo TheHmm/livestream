@@ -38,6 +38,17 @@
     },
     "mux_id": {
       "type": "uid"
+    },
+    "subtitle_lang": {
+      "type": "enumeration",
+      "enum": [
+        "en",
+        "fr",
+        "de",
+        "pt",
+        "it",
+        "es"
+      ]
     }
   }
 }

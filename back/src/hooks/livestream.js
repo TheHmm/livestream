@@ -19,7 +19,10 @@ const
 
 
   before_create = async context => {
-    const livestream = await strapi.mux.create_livestream()
+    if ( !context.params.data.subtitle_lang ) {
+      context.params.data.subtitle_lang = 'en'
+    }
+    const livestream = await strapi.mux.create_livestream( context.params.data.subtitle_lang )
     context.params.data = {
       ... context.params.data,
       ... sanitize_livestream( livestream )
@@ -30,7 +33,18 @@ const
   before_update = async context => {
     // we get the event payload
     const data = context.params.data
-    const livestream = data.livestream || data.privateData
+    let livestream
+    // if the generated subtitles has changed, we update the livestream
+    if ( data.subtitle_lang ) {
+      try {
+        livestream = await strapi.mux.update_livestream_generated_subtitles( data.mux_id, data.subtitle_lang )
+      } catch ( error ) {
+        livestream = data.livestream || data.privateData
+        console.error( error )
+      }
+    } else {
+      livestream = data.livestream || data.privateData
+    }
     // we merge the old "data"; with the new sanitized one.
     // we conserve the old event payload here because it
     // contains strapi-generated metadata like "dateCreated"

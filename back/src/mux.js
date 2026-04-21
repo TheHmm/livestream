@@ -24,11 +24,40 @@ module.exports = MUX_TOKEN => {
         playback_policy   : 'public',
         mp4_support       : 'standard',
       },
-      generated_subtitles : [{
-        name          : "English CC (auto)",
+    },
+
+    subtitle_langs = {
+      en: {
+        name          : "English (auto)",
         passthrough   : "English closed captions (auto-generated)",
         language_code : "en"
-      }],
+      },
+      fr: {
+        name          : "Français (auto)",
+        passthrough   : "Sous-titres en français (générés automatiquement)",
+        language_code : "fr"
+      },
+      es: {
+        name          : "Español (auto)",
+        passthrough   : "Subtítulos en español (generados automáticamente)",
+        language_code : "es"
+      },
+      it: {
+        name          : "Italiano (auto)",
+        passthrough   : "Sottotitoli in italiano (generati automaticamente)",
+        language_code : "it"
+      },
+      pt: {
+        name          : "Português (auto)",
+        passthrough   : "Legendas em português (geradas automaticamente)",
+        language_code : "pt"
+      },
+      de: {
+        name          : "Deutsche (auto)",
+        passthrough   : "Deutsche untertitel (automatisch generiert)",
+        language_code : "de"
+      },
+      
     },
 
 
@@ -42,16 +71,20 @@ module.exports = MUX_TOKEN => {
       return await Video.Assets.get( id )
     }
 
-    create_livestream = async () => {
-      return await Video.LiveStreams.create( livestream_options )
+    create_livestream = async subtitle_lang => {
+      return await Video.LiveStreams.create( { 
+        ...livestream_options, 
+        ... { generated_subtitles: [ subtitle_langs[subtitle_lang] ] }
+      })
     },
 
     update_livestream = async ( id, options ) => {
       return await Video.LiveStreams.update( id, options )
     },
 
-    update_livestream_generated_subtitles = async ( id, options ) => {
-      return await Video.LiveStreams.updateGeneratedSubtitles( id, options )
+    update_livestream_generated_subtitles = async ( id, subtitle_lang ) => {
+      console.log( id, { generated_subtitles: subtitle_langs[subtitle_lang] })
+      return await Video.LiveStreams.updateGeneratedSubtitles( id, { generated_subtitles: [ subtitle_langs[subtitle_lang] ] } )
     },
 
 
@@ -100,6 +133,7 @@ module.exports = MUX_TOKEN => {
 
   return {
     livestream_options,
+    subtitle_langs,
     get_livestream,
     get_asset,
     create_livestream,

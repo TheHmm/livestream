@@ -634,6 +634,9 @@ export interface ApiLivestreamLivestream extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'Name'>;
     stream_key: Schema.Attribute.String & Schema.Attribute.Private;
+    subtitle_lang: Schema.Attribute.Enumeration<
+      ['en', 'fr', 'de', 'pt', 'it', 'es']
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
