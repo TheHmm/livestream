@@ -35,28 +35,19 @@ const before_create = async context => {
   }
 }
 
-// fetch recording if asset_id provided
+// fetch recording if asset_id overridwe is provided
 const before_update = async context => {
-  let recording = context.params.data.mux_recording
-  if ( recording ) {
-    if (typeof recording === 'string' ) {
-      recording = JSON.parse( recording )
-    }
-    const asset_id = recording.asset_id
-    const status = recording.status
-    if ( asset_id  && !status ) {
-      strapi.log.info(`[ * Manually fetching recording with asset ID: ${ asset_id }`)
-      try {
-        const asset = await strapi.mux.get_asset( asset_id )
-        context.params.data.mux_recording = strapi.mux.get_public_asset_details( asset )
-        strapi.log.info(`[ * Playback ID: ${ context.params.data.mux_recording.playbackId }`)
-      } catch ( err ) {
-        console.error(err)
-        context.params.data.mux_recording = {
-          error: err,
-          asset_id: null,
-        }
-      }
+  let mux_recording_override = context.params.data.mux_recording_override
+  if ( mux_recording_override ) {
+    strapi.log.info(`[ * Manually fetching recording with provided asset ID: ${ mux_recording_override }`)
+    try {
+      const asset = await strapi.mux.get_asset( mux_recording_override )
+      context.params.data.mux_recording = strapi.mux.get_public_asset_details( asset )
+      context.params.data.mux_recording_override = null
+      strapi.log.info(`[ * Playback ID: ${ context.params.data.mux_recording.playbackId }`)
+    } catch ( err ) {
+      console.error(err)
+      context.params.data.mux_recording_override = `Error: ${ JSON.stringify(err) }`
     }
   }
 }

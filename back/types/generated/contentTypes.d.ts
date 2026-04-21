@@ -552,6 +552,7 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     messages: Schema.Attribute.Relation<'oneToMany', 'api::message.message'>;
     mux_recording: Schema.Attribute.JSON;
+    mux_recording_override: Schema.Attribute.String & Schema.Attribute.Private;
     organisation: Schema.Attribute.Relation<
       'manyToOne',
       'api::organisation.organisation'

@@ -118,6 +118,10 @@
       "target": "api::emoji-group.emoji-group",
       "inversedBy": "events"
     },
+    "mux_recording_override": {
+      "type": "string",
+      "private": true
+    },
     "mux_recording": {
       "type": "json"
     },
