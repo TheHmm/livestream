@@ -83,7 +83,6 @@ module.exports = MUX_TOKEN => {
     },
 
     update_livestream_generated_subtitles = async ( id, subtitle_lang ) => {
-      console.log( id, { generated_subtitles: subtitle_langs[subtitle_lang] })
       return await Video.LiveStreams.updateGeneratedSubtitles( id, { generated_subtitles: [ subtitle_langs[subtitle_lang] ] } )
     },
 
